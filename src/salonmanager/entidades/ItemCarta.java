@@ -17,14 +17,15 @@ public class ItemCarta {
     double price;
     int stock;
     Timestamp dateCreation;
-    Timestamp dateCostUpdate;
+    Timestamp dateUpdate;
+    boolean altaTip;
     boolean altaItem;
 
     public ItemCarta() {
 
     }
 
-    public ItemCarta(String name, String caption, String description, double cost, double price, int stock) throws Exception {
+    public ItemCarta(String name, String caption, String description, double cost, double price, int stock, boolean altaTip) throws Exception {
         this.code = sic.codeCreator(caption);
         this.name = name;
         this.caption = caption;
@@ -32,12 +33,12 @@ public class ItemCarta {
         this.cost = cost;
         this.price = price;
         this.stock = stock;
+        this.altaTip = altaTip;
         this.dateCreation = new Timestamp(new Date().getTime());
-        this.dateCostUpdate = null;
         this.altaItem = true;
     }
 
-    public ItemCarta(int id, String code, String name, String caption, String description, double cost, double price, int stock, Timestamp dateCreation, Timestamp dateCostUpdate, boolean altaItem) {
+    public ItemCarta(int id, String code, String name, String caption, String description, double cost, double price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean altaTip, boolean altaItem) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -47,7 +48,8 @@ public class ItemCarta {
         this.price = price;
         this.stock = stock;
         this.dateCreation = dateCreation;
-        this.dateCostUpdate = dateCostUpdate;
+        this.dateUpdate = dateUpdate;
+        this.altaTip = altaTip;
         this.altaItem = altaItem;
     }
 
@@ -123,13 +125,23 @@ public class ItemCarta {
         this.dateCreation = dateCreation;
     }
 
-    public Timestamp getDateCostUpdate() {
-        return dateCostUpdate;
+    public Timestamp getDateUpdate() {
+        return dateUpdate;
     }
 
-    public void setDateCostUpdate(Timestamp dateCostUpdate) {
-        this.dateCostUpdate = dateCostUpdate;
+    public void setDateUpdate(Timestamp dateUpdate) {
+        this.dateUpdate = dateUpdate;
     }
+
+    public boolean isAltaTip() {
+        return altaTip;
+    }
+
+    public void setAltaTip(boolean altaTip) {
+        this.altaTip = altaTip;
+    }
+    
+    
 
     public boolean isAltaItem() {
         return altaItem;

@@ -12,7 +12,7 @@ import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import salonmanager.utilidades.UtilidadesUpdate;
 
-public class Administrador extends FrameFull {
+public class Administrador extends FrameGeneral {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();

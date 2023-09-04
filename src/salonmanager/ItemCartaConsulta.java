@@ -14,10 +14,6 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-/**
- *
- * @author Gonzalo
- */
 public class ItemCartaConsulta extends FrameThird{
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();

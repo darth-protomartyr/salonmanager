@@ -98,12 +98,12 @@ public class Ingresar extends FrameWindow {
 
         
         if (mail == "" || pass == "") {
-            utiliMsg.dataNull();
+            utiliMsg.errorDataNull();
             error = true;
         }
 
         if (!userAux.getPassword().equals(pass)) {
-            utiliMsg.userNull();
+            utiliMsg.errorUserNull();
             error = true;
         }
 
@@ -122,7 +122,7 @@ public class Ingresar extends FrameWindow {
                     Logger.getLogger(Ingresar.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                utiliMsg.accessDenied();
+                utiliMsg.errorAccessDenied();
                 fieldMail.setText("");
                 fieldPass.setText("");
             }

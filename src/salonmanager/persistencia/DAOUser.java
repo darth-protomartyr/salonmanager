@@ -30,10 +30,10 @@ public class DAOUser extends DAO {
                     + "VALUES('" + id + "', '" + nombre + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', " + alta + ");";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
-            utiliMsg.registroExitoso();
+            utiliMsg.cargaRegistroExitoso();
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.registroFallido();
+                utiliMsg.errorRegistroFallido();
             } else {
                 e.printStackTrace();
             }

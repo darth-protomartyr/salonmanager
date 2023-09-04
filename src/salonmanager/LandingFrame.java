@@ -2,58 +2,30 @@ package salonmanager;
 
 import salonmanager.utilidades.UtilidadesGraficas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import salonmanager.entidades.FrameFull;
+import salonmanager.entidades.FrameGeneral;
 import salonmanager.entidades.PanelPpal;
 
-public class LandingFrame extends FrameFull {
-
+public class LandingFrame extends FrameGeneral {
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-    SalonManager sm = new SalonManager();
-    private int anchoFrame = 0;
-    private int alturaFrame = 0;
 
-    public LandingFrame() throws Exception {
-        Toolkit pantalla = Toolkit.getDefaultToolkit();
-        Dimension tamanioPantalla = pantalla.getScreenSize();
-        anchoFrame = tamanioPantalla.width;
-        alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
-        setTitle("Ingreso");
-        anchoFrame = anchoFrame;
-        alturaFrame = alturaFrame;
+    public LandingFrame()  {
         setBounds(3, 3, anchoFrame, alturaFrame);
-        ImageIcon icono = new ImageIcon("menu.png");
-        setIconImage(icono.getImage());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setLayout(null);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowIconified(WindowEvent e) {
-                setState(JFrame.NORMAL);
-            }
-        });
-
+        setTitle("Ingreso");
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
 
@@ -102,6 +74,7 @@ public class LandingFrame extends FrameFull {
             }
         });
         panelPpal.add(butSalir);
+        setVisible(true);
     }
 
     public JFrame getJFrame() {

@@ -5,7 +5,7 @@
  */
 package salonmanager.entidades;
 
-import salonmanager.entidades.FrameFull;
+import salonmanager.entidades.FrameGeneral;
 
 public class FrameWindow extends FrameFull {
     public FrameWindow() {

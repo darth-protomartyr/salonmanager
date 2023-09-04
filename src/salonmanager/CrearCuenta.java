@@ -185,7 +185,7 @@ public class CrearCuenta extends FrameHalf {
         }
 
         if (su.repeatMail(mail)) {
-            utiliMsg.mailRepeat();
+            utiliMsg.errorMailRepeat();
             error = true;
         }
 

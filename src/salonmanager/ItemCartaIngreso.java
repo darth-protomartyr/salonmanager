@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,6 +44,7 @@ public class ItemCartaIngreso extends FrameHalf {
     double cost = 0;
     double price = 0;
     int stock = 0;
+    boolean tipAlta = false;
     ItemCarta itemAux = new ItemCarta();
     ArrayList<String> captionsDB = utili.captionList();
 
@@ -50,6 +54,7 @@ public class ItemCartaIngreso extends FrameHalf {
     JTextField fieldCost = new JTextField();
     JTextField fieldPrice = new JTextField();
     JTextField fieldStock = new JTextField();
+    JCheckBox checkTip = new JCheckBox("");
     JButton butCrearItem = null;
 
     public ItemCartaIngreso() throws Exception {
@@ -62,14 +67,18 @@ public class ItemCartaIngreso extends FrameHalf {
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 
-        JPanel panelForm = utiliGraf.panelItemCartaForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, captionsDB, null);
+        JPanel panelForm = utiliGraf.panelItemCartaForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, captionsDB, null);
         panelPpal.add(panelForm);
 
-        butCrearItem = utiliGraf.button1("Crear Item", 206, 580, 270);
+        butCrearItem = utiliGraf.button1("Crear Item", 206, 600, 270);
         butCrearItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                butCrearItemActionPerformed();
+                try {
+                    butCrearItemActionPerformed();
+                } catch (Exception ex) {
+                    Logger.getLogger(ItemCartaIngreso.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         panelPpal.add(butCrearItem);
@@ -84,11 +93,108 @@ public class ItemCartaIngreso extends FrameHalf {
         panelPpal.add(butSalir);
     }
 
-    private void butCrearItemActionPerformed() {
+    private void butCrearItemActionPerformed() throws Exception {
+        boolean error = false;
         name = fieldName.getText();
+        caption = utili.selectorCaption(comboCaption.getSelectedIndex());
+        description = areaDescription.getText();
+
+        if (name.length() > 30 || name.length() < 2) {
+            error = true;
+            utiliMsg.errorCantCharName();
+        }
+
+        if (utili.itemCartaRepeat(name, itemsCartaDB, null)) {
+            error = true;
+            utiliMsg.errorNameRepeat();
+        }
+
+        if (description.length() > 149) {
+            error = true;
+            utiliMsg.errorCantCharDescription();
+        }
+
+        try {
+            String cos = fieldCost.getText();
+            if (cos.length() > 12) {
+                error = true;
+                utiliMsg.errorCantCharNum();
+            }
+
+            if (cos.equals("")) {
+                cost = 0;
+            } else {
+                cost = utili.toNumberD(cos);
+            }
+
+            String pric = fieldPrice.getText();
+            if (pric.length() > 12) {
+                error = true;
+                utiliMsg.errorCantCharNum();
+            }
+
+            if (pric.equals("")) {
+                int confirm = utiliMsg.errorPriceNull();
+                if (confirm == 0) {
+                    pric = "0";
+                    price = utili.toNumberD(pric);
+                } else {
+                    error = true;
+                }
+            } else {
+                price = utili.toNumberD(pric);
+            }
+
+            String sto = fieldStock.getText();
+            if (sto.length() > 12) {
+                error = true;
+                utiliMsg.errorCantCharNum();
+            }
+
+            if (sto.equals("")) {
+                stock = 0;
+            } else {
+                stock = utili.toNumberI(sto);
+            }
+
+        } catch (NumberFormatException e) {
+            utiliMsg.errorNumerico();
+            error = true;
+            resetItemCarta();
+        } catch (Exception ex) {
+            Logger.getLogger(ItemCartaIngreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (cost > price) {
+            utiliMsg.errorPriceCost();
+            error = true;
+        }
+
+        tipAlta = checkTip.isSelected();
+
+        if (error == false) {
+            itemAux = new ItemCarta(name, caption, description, cost, price, stock, tipAlta);
+            sic.ingresarItem(itemAux);
+            resetItemCarta();
+        }
     }
 
-    private void butSelCaption() {
-        
+    private void resetItemCarta() throws Exception {
+        itemsCartaDB = daoIC.listarItemsCarta();
+        name = "";
+        caption = "";
+        description = "";
+        cost = 0;
+        price = 0;
+        stock = 0;
+        tipAlta = false;
+        itemAux = new ItemCarta();
+
+        fieldName.setText("");
+        areaDescription.setText("");
+        fieldCost.setText("");
+        fieldPrice.setText("");
+        fieldStock.setText("");
+        checkTip.setSelected(false);
     }
 }

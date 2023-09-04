@@ -19,6 +19,7 @@ public class Register {
     int id;
     Timestamp ejecution;
     String user;
+    String userModify;
     String operation;
     String object;
     String modification;
@@ -27,27 +28,39 @@ public class Register {
     }
 
     //Completo consulta
-    public Register(int id, Timestamp ejecution, String user, String operation, String object, String modification) {
+    public Register(int id, Timestamp ejecution, String user, String userModify, String operation, String object, String modification) {
         this.id = id;
         this.ejecution = ejecution;
         this.user = user;
+        this.userModify = userModify;
         this.operation = operation;
         this.object = object;
         this.modification = modification;
     }
 
-    //Dar inicio en los daos
-    public Register(String operation, String object, String modification) {
+//    //Dar inicio en los daos
+//    public Register(String userModify, String operation, String object, String modification) {
+//        this.ejecution = new Timestamp(new Date().getTime());
+//        this.userModify = userModify;
+//        this.userModify = userModify;
+//        this.operation = operation;
+//        this.object = object;
+//        this.modification = modification;
+//    }
+    public Register(String user, String operation, String object, String modification) {
         this.ejecution = new Timestamp(new Date().getTime());;
+        this.user = user;
+        this.userModify = "";
         this.operation = operation;
         this.object = object;
         this.modification = modification;
     }
 
     //Agregar User en DAORegister
-    public Register(Timestamp ejecution, String user, String operation, String object, String modification) {
-        this.ejecution = ejecution;
+    public Register(String user, String userModify, String operation, String object, String modification) {
+        this.ejecution = new Timestamp(new Date().getTime());;
         this.user = user;
+        this.userModify = userModify;
         this.operation = operation;
         this.object = object;
         this.modification = modification;
@@ -77,6 +90,14 @@ public class Register {
         this.user = user;
     }
 
+    public String getUserModify() {
+        return userModify;
+    }
+
+    public void setUserModify(String userModify) {
+        this.userModify = userModify;
+    }
+
     public String getOperation() {
         return operation;
     }
@@ -99,6 +120,6 @@ public class Register {
 
     public void setModification(String modification) {
         this.modification = modification;
-    }    
-    
+    }
+
 }

@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -102,6 +103,7 @@ public class UtilidadesGraficas extends JFrame {
             }
         }
         );
+        
 //----------------------------------------------------------------------------------------------------------
         itemIngresoItemCarta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -570,11 +572,11 @@ public class UtilidadesGraficas extends JFrame {
         return scrollPane;
     }
 
-    public JPanel panelItemCartaForm(JTextField fieldName, JComboBox comboCaption, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, ArrayList<String> captionsDB, ItemCarta item) {
+    public JPanel panelItemCartaForm(JTextField fieldName, JComboBox comboCaption, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> captionsDB, ItemCarta item) {
         JPanel panelA =  new JPanel();
         panelA.setLayout(null);
-        panelA.setBounds(134, 70, 416, 490);
-        panelA.setBackground(bluSt);
+        panelA.setBounds(135, 50, 416, 545);
+        panelA.setBackground(viol);
         
         JPanel panelData1 = dataPanelBacker("Nombre", 14);
         panelData1.setBounds(20, 20, 375, 50);
@@ -607,19 +609,25 @@ public class UtilidadesGraficas extends JFrame {
         panelData5.setBounds(20, 350, 375, 50);
         panelData5.add(fieldPrice);
         panelA.add(panelData5);
-        
+
         JPanel panelData6 = dataPanelBacker("Stock", 14);
         panelData6.setBounds(20, 420, 375, 50);
         panelData6.add(fieldStock);
         panelA.add(panelData6);
+        
+        JPanel panelData7 = dataPanelBacker("Propina deducible", 14);
+        panelData7.setBounds(180, 490, 215, 35);
+        panelData7.add(checkTip);
+        panelA.add(panelData7);
 
         if (item != null) {
             fieldName.setText(item.getName());
             comboCaption.setSelectedItem(item.getCaption());
             areaDescription.setText(item.getDescription());
-            fieldCost.setText(item.getCost() + "");            
+            fieldCost.setText(item.getCost() + "");    
             fieldPrice.setText(item.getPrice() + "");
             fieldStock.setText(item.getStock() + "");
+            checkTip.setSelected(item.isAltaTip());
         }
         return panelA;
     }

@@ -1,6 +1,5 @@
 package salonmanager.utilidades;
 
-
 import salonmanager.entidades.User;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -10,8 +9,10 @@ import java.util.regex.Pattern;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import salonmanager.entidades.ItemCarta;
 
 public class Utilidades {
+
     public double toNumberD(String str) {
         double d = -1;
         if (str != "") {
@@ -53,7 +54,6 @@ public class Utilidades {
 //        }
 //        return modeloCombo;
 //    }
-
 //    public DefaultComboBoxModel<String> ingreComboModelReturn(ArrayList<Ingrediente> listMayor, ArrayList<Ingrediente> listMenor) {
 //        ArrayList<Ingrediente> lma = listMayor;
 //        ArrayList<Ingrediente> lme = listMenor;
@@ -72,11 +72,6 @@ public class Utilidades {
 //        }
 //        return modeloCombo;
 //    }
-
-
-
-
-
 //    public DefaultListModel<String> ingreListModelReturn(ArrayList<Ingrediente> listMayor, ArrayList<Ingrediente> listMenor) {
 //        DefaultListModel<String> modeloLista = new DefaultListModel<String>();
 //        ArrayList<Ingrediente> lma = listMayor;
@@ -98,8 +93,6 @@ public class Utilidades {
 //        }
 //        return modeloLista;
 //    }
-
-
 //    public Rubro rubSelReturn(String rub, ArrayList<Rubro> rubroDB) {
 //        Rubro r = new Rubro();
 //        for (Rubro ru : rubroDB) {
@@ -119,8 +112,6 @@ public class Utilidades {
 //        }
 //        return ing;
 //    }
-
-
     public User userSelReturn(String usr, ArrayList<User> userDB) {
         User user = new User();
         for (User u : userDB) {
@@ -146,7 +137,6 @@ public class Utilidades {
 //        }
 //        return txt;
 //    }
-
 //    public String listarTxtSbr(ArrayList<Subreceta> subrecetasR, ArrayList<Integer> porcionesSbr) {
 //        String txt = "";
 //        if (subrecetasR.size() > 0) {
@@ -159,7 +149,6 @@ public class Utilidades {
 //        }
 //        return txt;
 //    }
-
     public String strShorter(String str, int limite) {
         String st = "";
         if (str.length() > limite) {
@@ -177,8 +166,6 @@ public class Utilidades {
 //        }
 //        return test;
 //    }
-
-
     public <T> String conversorCadena(ArrayList<T> lista) {
         String listaStr = "";
         if (lista.size() > 0) {
@@ -238,8 +225,6 @@ public class Utilidades {
 //        }
 //        return bool;
 //    }
-
-
     public String stringPlain(String st) {
         st.replaceAll("\\s", "");
         st.toLowerCase();
@@ -282,7 +267,6 @@ public class Utilidades {
 //        }
 //        return txt;
 //    }
-
     public String idRandom() {
         String id = "";
         String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -315,8 +299,8 @@ public class Utilidades {
         path = path.replace("|", "\\");
         return path;
     }
-    
-     public DefaultListModel<String> usersListModelReturn(ArrayList<User> listMayor, ArrayList<User> listMenor, boolean mail) {
+
+    public DefaultListModel<String> usersListModelReturn(ArrayList<User> listMayor, ArrayList<User> listMenor, boolean mail) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<User> lma = listMayor;
         ArrayList<User> lme = listMenor;
@@ -365,5 +349,44 @@ public class Utilidades {
             modeloCombo.addElement(i);
         }
         return modeloCombo;
+    }
+
+    public String selectorCaption(int comboC) {
+        String caption = "";
+        switch (comboC) {
+            case 0:
+                caption = "BEBIDAS";
+                break;
+            case 1:
+                caption = "PLATOS";
+                break;
+            case 2:
+                caption = "CAFETERIA";
+                break;
+            case 3:
+                caption = "OTROS";
+                break;
+        }
+        return caption;
+    }
+
+    public boolean itemCartaRepeat(String ic, ArrayList<ItemCarta> items, ItemCarta itemCarta) {
+        boolean bool = false;
+        ic = stringPlain(ic);
+        for (ItemCarta i : items) {
+            if (itemCarta == null) {
+                if (ic.equals(stringPlain(i.getName()))) {
+                    bool = true;
+                }
+//            } else {
+//                if (!itemCarta.getName().equals(i.getName())) {
+//                    if (ic.equals(stringPlain(i.getName()))) {
+//                        bool = true;
+//                    }
+//                }
+//            }
+            }
+        }
+        return bool;
     }
 }

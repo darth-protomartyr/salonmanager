@@ -9,20 +9,21 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import javax.swing.JFrame;
+import salonmanager.entidades.FrameGeneral;
 
 public class SalonManager {
 
-    static private User userIn = new User();
-    static private String passIn = "";
-    private String pass = "";
-    private User user = null;
+    private static User userIn = new User();
+    private static String passIn = "";
     private static final String SECRET_KEY = "HappyWhenItRains";
-
+//    FrameGeneral fg = new FrameGeneral();
+    
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
 
+    
     public static void main(String[] args) {
         try {
             new LandingFrame();
