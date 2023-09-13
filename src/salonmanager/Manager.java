@@ -3,18 +3,21 @@ package salonmanager;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import salonmanager.entidades.FrameFull;
+import salonmanager.entidades.FrameFullManager;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
-public class Manager extends FrameFull {
+public class Manager extends FrameFullManager {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     Color bluSt = new Color(3, 166, 136);
@@ -25,11 +28,12 @@ public class Manager extends FrameFull {
     User userIn = null; 
     
     public Manager (User userIn, String passIn) throws Exception {
+        sm.addFrame(this);
         sm.setUserIn(userIn);
         sm.setPassIn(passIn);
         setTitle("Salón Manager");
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
-        add(panelPpal);    
+        add(panelPpal);
         
         JMenuBar menuBar = utiliGraf.navegador(userIn, sm.getPassIn());
         setJMenuBar(menuBar);
@@ -55,13 +59,25 @@ public class Manager extends FrameFull {
         labelRol.setBounds(130, 20, 120, 120);
         panelUser.add(labelRol);
 
-        JButton butSalir = utiliGraf.buttonSalir(anchoFrame);
+        JButton butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                sm.frameCloser();
                 dispose();
             }
         });
         panelPpal.add(butSalir);
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirmacion = JOptionPane.showConfirmDialog( Manager.this ,"¿Estás seguro de que quieres cerrar el programa?", "Confirmar cierre", JOptionPane.YES_NO_OPTION);
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    sm.frameCloser();
+                    dispose();   
+                }
+            }
+        });
     }
 }

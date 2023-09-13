@@ -6,18 +6,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import salonmanager.LandingFrame;
 
 public class FrameGeneral extends JFrame {
 
 //    UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     static protected int anchoFrame;
     static protected int alturaFrame;
-    
 
     public FrameGeneral() {
-        
+
         Toolkit pantalla = Toolkit.getDefaultToolkit();
         Dimension tamanioPantalla = pantalla.getScreenSize();
         anchoFrame = tamanioPantalla.width;
@@ -30,20 +27,17 @@ public class FrameGeneral extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(null);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                int option = JOptionPane.showConfirmDialog(FrameGeneral.this, "¿Estás seguro de que quieres cerrar la ventana?");
-                if (option == JOptionPane.YES_OPTION) {
-                    dispose();
-                }
-            }
+//        addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosing(WindowEvent e) {
+//                dispose();
+//            }
 
-            @Override
-            public void windowIconified(WindowEvent e) {
-                setState(JFrame.NORMAL);
-            }
-        });
+//            @Override
+//            public void windowIconified(WindowEvent e) {
+//                setState(JFrame.NORMAL);
+//            }
+//        });
     }
 
     public int getAnchoFrame() {

@@ -7,12 +7,12 @@ import salonmanager.entidades.User;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import javax.swing.JFrame;
-import salonmanager.entidades.FrameGeneral;
 
 public class SalonManager {
-
+    private static ArrayList<JFrame> framesOpen = new ArrayList<JFrame>();
     private static User userIn = new User();
     private static String passIn = "";
     private static final String SECRET_KEY = "HappyWhenItRains";
@@ -133,5 +133,15 @@ public class SalonManager {
             }    
         }
         return rol;
+    }
+    
+    public void addFrame(JFrame of) {
+        framesOpen.add(of);
+    }
+    
+    public void frameCloser() {
+        for (JFrame of : framesOpen) {
+            of.dispose();
+        }
     }
 }

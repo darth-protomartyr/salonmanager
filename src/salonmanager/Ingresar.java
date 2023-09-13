@@ -10,7 +10,6 @@ import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -33,7 +32,6 @@ public class Ingresar extends FrameWindow {
     Color narMed = new Color(255, 172, 13);
     Color bluLg = new Color(3, 166, 136);
 
-    ArrayList<String> ingredientesRct = new ArrayList<String>();
     String mail = "";
     String pass = "";
     User userAux = new User();

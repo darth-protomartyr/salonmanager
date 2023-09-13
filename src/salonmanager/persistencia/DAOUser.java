@@ -14,7 +14,7 @@ public class DAOUser extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
 
-        public void guardarTablaUsers(User user) throws Exception {
+    public void guardarTablaUsers(User user) throws Exception {
         try {
             String nombre = user.getNombre();
             String apellido = user.getApellido();
@@ -104,9 +104,8 @@ public class DAOUser extends DAO {
         desconectarBase();
         return users;
     }
-    
-    
-        public ArrayList<User> listarUsersCompleto() throws Exception {
+
+    public ArrayList<User> listarUsersCompleto() throws Exception {
         String sql = "SELECT * FROM users;";
         System.out.println(sql);
         consultarBase(sql);
@@ -129,7 +128,6 @@ public class DAOUser extends DAO {
         return users;
     }
 
-
     public void userModAlta(String id, boolean alta) throws Exception {
         String sql = "UPDATE users "
                 + "SET user_alta = " + alta
@@ -147,10 +145,7 @@ public class DAOUser extends DAO {
         insertarModificarEliminar(sql);
         desconectarBase();
     }
-    
-    
-    
-    
+
 //    public void guardarTablaUsers(User user) throws Exception {
 //        try {
 //            String nombre = SalonManager.encrypt(user.getNombre());
@@ -284,4 +279,26 @@ public class DAOUser extends DAO {
 //        insertarModificarEliminar(sql);
 //        desconectarBase();
 //    }
+    public ArrayList<User> listWaiter() throws Exception {
+        String sql = "SELECT * FROM users WHERE user_role = 'MOZO' AND user_alta = true;";
+        System.out.println(sql);
+        consultarBase(sql);
+        User user = null;
+        ArrayList<User> users = new ArrayList<User>();
+        while (resultado.next()) {
+            user = new User();
+            user.setId(resultado.getString(1));
+            user.setNombre(resultado.getString(2));
+            user.setApellido(resultado.getString(3));
+            user.setMail(resultado.getString(4));
+            user.setRol(resultado.getString(5));
+            user.setRouteImage(resultado.getString(6));
+            user.setNameImage(resultado.getString(7));
+            user.setPassword(resultado.getString(8));
+            user.setAlta(resultado.getBoolean(9));
+            users.add(user);
+        }
+        desconectarBase();
+        return users;
+    }
 }

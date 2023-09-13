@@ -27,10 +27,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import salonmanager.ItemCartaConsulta;
 import salonmanager.ItemCartaIngreso;
-import salonmanager.ItemCartaModificacion;
 import salonmanager.SalonManager;
+import salonmanager.ItemSelector;
+import salonmanager.Salon;
 import salonmanager.entidades.Administrador;
 import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.Register;
@@ -49,6 +49,7 @@ public class UtilidadesGraficas extends JFrame {
         JMenu menuInicio = new JMenu("Inicio");
         JMenu menuCarta = new JMenu("Carta");
         JMenu menuFacturacion = new JMenu("Facturación");
+        JMenu menuSalon = new JMenu("Salón");
         JMenuItem itemAdministrador = new JMenuItem("Administrador");
         JMenuItem itemSalir = new JMenuItem("Salir");
         JMenuItem itemIngresoItemCarta = new JMenuItem("Ingreso Item Carta");
@@ -56,7 +57,7 @@ public class UtilidadesGraficas extends JFrame {
         JMenuItem itemConsultaItemCarta = new JMenuItem("Consulta Item Carta");
         JMenuItem itemSesion = new JMenuItem("Sesiones");
         JMenuItem itemTurno = new JMenuItem("Turnos");
-        JMenuItem itemSalon = new JMenu("Salón");
+        JMenuItem itemSalon = new JMenuItem("Salón");
 
         if (sm.rolPermission(2)) {
             menuInicio.add(itemAdministrador);
@@ -67,15 +68,16 @@ public class UtilidadesGraficas extends JFrame {
         menuCarta.add(itemConsultaItemCarta);
         menuFacturacion.add(itemSesion);
         menuFacturacion.add(itemTurno);
+        menuSalon.add(itemSalon);
+
 
         menuBar.add(menuInicio);
         if (sm.rolPermission(2)) {
             menuBar.add(menuCarta);
         }
         menuBar.add(menuFacturacion);
-        menuBar.add(itemSalon);
-        
-        
+        menuBar.add(menuSalon);
+
 //---------------------------------------------------------------------------------------------------------        
         if (sm.rolPermission(2)) {
             itemAdministrador.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +105,7 @@ public class UtilidadesGraficas extends JFrame {
             }
         }
         );
-        
+
 //----------------------------------------------------------------------------------------------------------
         itemIngresoItemCarta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,27 +121,12 @@ public class UtilidadesGraficas extends JFrame {
             }
         }
         );
-        
+
         itemModificacionItemCarta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
-                        new ItemCartaModificacion();
-                    } else {
-                        sm.salir();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(UtilidadesGraficas.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        );        
-        
-        itemConsultaItemCarta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    if (user.getPassword().equals(pass)) {
-                        new ItemCartaConsulta();
+                        new ItemSelector("m");
                     } else {
                         sm.salir();
                     }
@@ -149,7 +136,38 @@ public class UtilidadesGraficas extends JFrame {
             }
         }
         );
-//-------------------------------------------------------------------------------------------------------------
+
+        itemConsultaItemCarta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    if (user.getPassword().equals(pass)) {
+                        new ItemSelector("s");
+                    } else {
+                        sm.salir();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(UtilidadesGraficas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        );
+
+        if (sm.rolPermission(2)) {
+            itemSalon.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        if (user.getPassword().equals(pass)) {
+                            new Salon();
+                        } else {
+                            sm.salir();
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(UtilidadesGraficas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        }
+//-------------------------------------------
         return menuBar;
     }
 
@@ -462,7 +480,13 @@ public class UtilidadesGraficas extends JFrame {
 
     public JButton buttonSalir(int width) {
         JButton butSalir = new JButton();
-        butSalir = button2("salir", width - 100, 691 - 65, 70);
+        butSalir = button2("salir", width - 90, 691 - 45, 70);
+        return butSalir;
+    }
+
+    public JButton buttonSalir2(int width, int height) {
+        JButton butSalir = new JButton();
+        butSalir = button2("salir", width - 90, height, 70);
         return butSalir;
     }
 
@@ -573,23 +597,23 @@ public class UtilidadesGraficas extends JFrame {
     }
 
     public JPanel panelItemCartaForm(JTextField fieldName, JComboBox comboCaption, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> captionsDB, ItemCarta item) {
-        JPanel panelA =  new JPanel();
+        JPanel panelA = new JPanel();
         panelA.setLayout(null);
         panelA.setBounds(135, 50, 416, 545);
         panelA.setBackground(viol);
-        
+
         JPanel panelData1 = dataPanelBacker("Nombre", 14);
         panelData1.setBounds(20, 20, 375, 50);
         panelData1.add(fieldName);
         panelA.add(panelData1);
-        
+
         JPanel panelData2 = dataPanelBacker("Rubro", 14);
         panelData2.setBounds(20, 90, 375, 50);
         comboCaption.setModel(utili.captionComboModelReturn(captionsDB));
         panelData2.add(comboCaption);
         panelData2.add(Box.createHorizontalStrut(30));
         panelA.add(panelData2);
-        
+
         JPanel panelData3 = dataPanelBacker("Descripción", 14);
         panelData3.setBounds(20, 160, 375, 100);
         areaDescription.setRows(4);
@@ -599,12 +623,12 @@ public class UtilidadesGraficas extends JFrame {
         JScrollPane paneDesc = new JScrollPane(areaDescription);
         panelData3.add(paneDesc);
         panelA.add(panelData3);
-        
+
         JPanel panelData4 = dataPanelBacker("Costo", 14);
         panelData4.setBounds(20, 280, 375, 50);
         panelData4.add(fieldCost);
         panelA.add(panelData4);
-        
+
         JPanel panelData5 = dataPanelBacker("Precio", 14);
         panelData5.setBounds(20, 350, 375, 50);
         panelData5.add(fieldPrice);
@@ -614,7 +638,7 @@ public class UtilidadesGraficas extends JFrame {
         panelData6.setBounds(20, 420, 375, 50);
         panelData6.add(fieldStock);
         panelA.add(panelData6);
-        
+
         JPanel panelData7 = dataPanelBacker("Propina deducible", 14);
         panelData7.setBounds(180, 490, 215, 35);
         panelData7.add(checkTip);
@@ -624,11 +648,25 @@ public class UtilidadesGraficas extends JFrame {
             fieldName.setText(item.getName());
             comboCaption.setSelectedItem(item.getCaption());
             areaDescription.setText(item.getDescription());
-            fieldCost.setText(item.getCost() + "");    
+            fieldCost.setText(item.getCost() + "");
             fieldPrice.setText(item.getPrice() + "");
             fieldStock.setText(item.getStock() + "");
             checkTip.setSelected(item.isAltaTip());
         }
         return panelA;
+    }
+
+    public JPanel panelListItemBack(int mWidth, int mHeight, int width, int height, JList listaItems, ArrayList<ItemCarta> itemsDB, ArrayList<ItemCarta> itemsMesa) {
+        JPanel panelListIngreDB = new JPanel();
+        panelListIngreDB.setLayout(null);
+        panelListIngreDB.setBackground(narLg);
+        panelListIngreDB.setBounds(mWidth, mHeight, width, height);
+
+        if (listaItems != null) {
+            listaItems.setModel(utili.itemsListModelReturn(itemsDB, itemsMesa));
+            JScrollPane scrollPane = scrollBackPane(listaItems, 15, 15, width - 30, height - 30);
+            panelListIngreDB.add(scrollPane);
+        }
+        return panelListIngreDB;
     }
 }

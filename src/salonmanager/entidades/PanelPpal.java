@@ -14,6 +14,7 @@ import javax.swing.JPanel;
  */
 public class PanelPpal extends JPanel {
     Color bluSt = new Color(3, 166, 136);
+
     public PanelPpal(int anchoPanel, int alturaPanel) {
         setBackground(bluSt);
         setLayout(null);

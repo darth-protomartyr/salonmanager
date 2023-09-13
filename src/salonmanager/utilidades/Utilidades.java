@@ -1,5 +1,6 @@
 package salonmanager.utilidades;
 
+import static java.lang.Integer.parseInt;
 import salonmanager.entidades.User;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.regex.Pattern;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 import salonmanager.entidades.ItemCarta;
 
 public class Utilidades {
@@ -113,6 +115,16 @@ public class Utilidades {
 //        return ing;
 //    }
     public User userSelReturn(String usr, ArrayList<User> userDB) {
+        User user = new User();
+        for (User u : userDB) {
+            if (usr.equals(u.getMail())) {
+                user = u;
+            }
+        }
+        return user;
+    }
+
+    public User userSelReturnAlta(String usr, ArrayList<User> userDB) {
         User user = new User();
         for (User u : userDB) {
             if (usr.equals(u.getNombre() + "(" + u.isAlta() + ")")) {
@@ -351,6 +363,14 @@ public class Utilidades {
         return modeloCombo;
     }
 
+    public ComboBoxModel userComboModelReturn(ArrayList<User> users) {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (User user : users) {
+            modeloCombo.addElement(user.getMail());
+        }
+        return modeloCombo;
+    }
+
     public String selectorCaption(int comboC) {
         String caption = "";
         switch (comboC) {
@@ -388,5 +408,92 @@ public class Utilidades {
             }
         }
         return bool;
+    }
+
+    ListModel itemsListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) {
+        DefaultListModel<String> modeloLista = new DefaultListModel<String>();
+        ArrayList<ItemCarta> lma = listMayor;
+        ArrayList<ItemCarta> lme = listMenor;
+        if (lme != null) {
+            Iterator<ItemCarta> iterator = lma.iterator();
+            while (iterator.hasNext()) {
+                ItemCarta ic = iterator.next();
+                for (int i = 0; i < lme.size(); i++) {
+                    if (ic.getId() == lme.get(i).getId()) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        for (ItemCarta i : lma) {
+            modeloLista.addElement(i.getName());
+        }
+        return modeloLista;
+    }
+
+    public ItemCarta itemSelReturn(String item, ArrayList<ItemCarta> itemsDB) {
+        ItemCarta ic = null;
+        for (ItemCarta i : itemsDB) {
+            if (item.equals(i.getName())) {
+                ic = i;
+            }
+        }
+        return ic;
+    }
+
+    public String booleanStringBack(boolean altaTip) {
+        String yn = "NO";
+        if (altaTip) {
+            yn = "SÍ";
+        }
+        return yn;
+    }
+
+    public String arrayIntToStr(ArrayList<Integer> numTab) {
+        String str = "";
+        for (Integer i : numTab) {
+            str += i + "-";
+        }
+        return str;
+    }
+
+    public ArrayList<Integer> strToArrayInt(String str) {
+        ArrayList<Integer> arrayInt = new ArrayList<Integer>();
+        String strAux = "";
+        for (int i = 0; i < str.length(); i++) {
+            String s = str.substring(i, i + 1);
+            if (s.equals("-")) {
+                int num = parseInt(strAux);
+                arrayInt.add(num);
+                strAux = "";
+            } else {
+                strAux += s;
+            }
+        }
+        return arrayInt;
+    }
+
+    public String arrayStrToStr(ArrayList<String> strPane) {
+        String str = "";
+        for (String s : strPane) {
+            str += s + "-";
+        }
+        return str;
+    }
+
+    public ArrayList<String> strToArrayStr(String str) {
+        ArrayList<String> arrayStr = new ArrayList<String>();
+        String strAux = "";
+        for (int i = 0; i < str.length(); i++) {
+            String s = str.substring(i, i + 1);
+            if (s.equals("-")) {
+                arrayStr.add(strAux);
+                strAux = "";
+            } else {
+                strAux += s;
+            }
+        }
+        return arrayStr;
     }
 }

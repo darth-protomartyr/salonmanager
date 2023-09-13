@@ -58,6 +58,7 @@ public class ItemCartaIngreso extends FrameHalf {
     JButton butCrearItem = null;
 
     public ItemCartaIngreso() throws Exception {
+        sm.addFrame(this);        
         setTitle("Ingreso Item de Carta");
         itemsCartaDB = daoIC.listarItemsCarta();
         PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
@@ -174,7 +175,7 @@ public class ItemCartaIngreso extends FrameHalf {
 
         if (error == false) {
             itemAux = new ItemCarta(name, caption, description, cost, price, stock, tipAlta);
-            sic.ingresarItem(itemAux);
+            daoIC.guardarItemCarta(itemAux);
             resetItemCarta();
         }
     }

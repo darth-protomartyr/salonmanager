@@ -1,12 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import salonmanager.entidades.FrameThird;
+import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
 import salonmanager.servicios.ServicioItemCarta;
@@ -14,7 +15,8 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class ItemCartaConsulta extends FrameThird{
+public class ItemCartaConsulta extends FrameThird {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -25,10 +27,71 @@ public class ItemCartaConsulta extends FrameThird{
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
     User userIn = null;
-    
-    public ItemCartaConsulta() {        
-        setTitle("Modificación Item de Carta");
+    ItemCarta itemAux = null;
+
+    public ItemCartaConsulta(ItemCarta ic) {
+        sm.addFrame(this);
+        itemAux = ic;
+        setTitle("Consulta Item Carta");
         PanelPpal panelPpal = new PanelPpal(anchoFrameThird, alturaFrame);
         add(panelPpal);
+
+        JLabel labelTit = utiliGraf.labelTitleBacker1("Consulta Item de la carta");
+        labelTit.setBounds(10, 20, 300, 30);
+        panelPpal.add(labelTit);
+
+        JPanel panelB = new JPanel();
+        panelB.setLayout(null);
+        panelB.setBounds(40, 100, 365, 510);
+        panelB.setBackground(bluLg);
+        panelPpal.add(panelB);
+
+        JLabel labelNombreItem = utiliGraf.labelTitleBacker2("Nombre: " + itemAux.getName());
+        labelNombreItem.setBounds(10, 10, 345, 40);
+        panelB.add(labelNombreItem);
+
+        JLabel labelCaptionItem = utiliGraf.labelTitleBacker2("Rubro: " + itemAux.getCaption());
+        labelCaptionItem.setBounds(10, 60, 345, 40);
+        panelB.add(labelCaptionItem);
+
+        JLabel labelCodeItem = utiliGraf.labelTitleBacker2("Código del Item: " + itemAux.getCode());
+        labelCodeItem.setBounds(10, 110, 345, 40);
+        panelB.add(labelCodeItem);
+
+        JLabel labelDescriptionItem = utiliGraf.labelTitleBacker2("Descripcion: ");
+        labelDescriptionItem.setBounds(10, 160, 345, 40);
+        panelB.add(labelDescriptionItem);
+
+        String descr = "<html>" + itemAux.getDescription() + "</html>";
+        JLabel labelDescriptionTextItem = utiliGraf.labelTitleBacker3(descr);
+//        labelDescriptionTextItem.setToolTipText(descr);
+        labelDescriptionTextItem.setBounds(20, 180, 345, 80);
+        panelB.add(labelDescriptionTextItem);
+
+        JLabel labelCostItem = utiliGraf.labelTitleBacker2("Costo: " + itemAux.getCost());
+        labelCostItem.setBounds(10, 280, 345, 40);
+        panelB.add(labelCostItem);
+
+        JLabel labelPriceItem = utiliGraf.labelTitleBacker2("Precio: " + itemAux.getPrice());
+        labelPriceItem.setBounds(10, 330, 345, 40);
+        panelB.add(labelPriceItem);
+
+        JLabel labelStockItem = utiliGraf.labelTitleBacker2("Stock: " + itemAux.getStock());
+        labelStockItem.setBounds(10, 380, 345, 40);
+        panelB.add(labelStockItem);
+
+        String tip = utili.booleanStringBack(itemAux.isAltaTip());
+        JLabel labelTipItem = utiliGraf.labelTitleBacker2("Con propina deducible: " + tip);
+        labelTipItem.setBounds(10, 430, 345, 40);
+        panelB.add(labelTipItem);
+
+        JButton butSalir = utiliGraf.buttonSalir(400);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
     }
 }

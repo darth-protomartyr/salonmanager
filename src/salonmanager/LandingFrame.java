@@ -5,25 +5,28 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
-import salonmanager.entidades.FrameFull;
 import salonmanager.entidades.FrameGeneral;
 import salonmanager.entidades.PanelPpal;
 
 public class LandingFrame extends FrameGeneral {
+
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
 
-    public LandingFrame()  {
+    public LandingFrame() {
         setBounds(3, 3, anchoFrame, alturaFrame);
         setTitle("Ingreso");
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
@@ -75,6 +78,13 @@ public class LandingFrame extends FrameGeneral {
         });
         panelPpal.add(butSalir);
         setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
     }
 
     public JFrame getJFrame() {

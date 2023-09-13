@@ -35,7 +35,11 @@ public class ServicioItemCarta {
         return code;
     }
 
-    public void ingresarItem(ItemCarta itemAux) throws Exception {
-        daoIC.guardarItemCarta(itemAux);
-    }
+//    public void ingresarItem(ItemCarta itemAux) throws Exception {
+//        daoIC.guardarItemCarta(itemAux);
+//    }
+//
+//    public void modificarItem(ItemCarta itemAux, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
+//        daoIC.modificarItem(itemAux, name, caption, description, cost, price, stock, tipAlta);
+//    }
 }

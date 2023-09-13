@@ -95,4 +95,12 @@ public class UtilidadesMensajes extends JFrame {
         int dialogResult = JOptionPane.showOptionDialog(null, "¿Estás seguro de que quieres que el precio de venta sea 0?", "Confirmar precio 0", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Aceptar"}, null);
         return dialogResult;
     }
+
+    public void errorSeleccion() {
+        optionPaneOk.showMessageDialog(null, "Ningún elemento fue seleccionado.");
+    }
+
+    public void errorWaiterNull() {
+        optionPaneOk.showMessageDialog(null, "No ha seleccionado un mozo.");
+    }
 }

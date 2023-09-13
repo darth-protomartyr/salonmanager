@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.entidades;
 
 import salonmanager.utilidades.Utilidades;
-import java.awt.Image;
 
-/**
- *
- * @author Gonzalo
- */
 public class User {
 
     Utilidades utili = new Utilidades();
@@ -51,6 +41,15 @@ public class User {
         this.nameImage = nameImage;
         this.password = password;
         this.alta = true;
+    }
+
+    public User(String id, String nombre, String apellido, String mail, boolean alta) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.mail = mail;
+        this.rol = "MOZO";
+        this.alta = alta;
     }
 
     public String getId() {
