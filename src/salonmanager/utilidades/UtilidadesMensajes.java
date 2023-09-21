@@ -101,6 +101,20 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorWaiterNull() {
-        optionPaneOk.showMessageDialog(null, "No ha seleccionado un mozo.");
+        optionPaneOk.showMessageDialog(null, "Antes debe seleccionar un mozo del panel ubicado arriba a la derecha.");
+    }
+
+    public void errorTableNull() {
+        optionPaneOk.showMessageDialog(null, "Para realizar esta acción antes debe seleccionar una mesa.");
+    }
+
+    public void errorItemsTableNull() {
+        optionPaneOk.showMessageDialog(null, "Para realizar esta acción antes debe haber items cargados en la mesa.");
+
+    }
+
+    public void cargaTableErases() {
+        optionPaneOk.showMessageDialog(null, "La mesa fue cerrada con éxito.");
+
     }
 }

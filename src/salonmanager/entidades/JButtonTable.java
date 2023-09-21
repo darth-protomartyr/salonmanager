@@ -114,10 +114,10 @@ public class JButtonTable extends JButton {
         this.text = text;
     }
 
-    public void tableButtonActionPerformed(JButtonTable jbtAux, User waiter) {
-        if (jbtAux.getTable() == null) {
-            Table table = new Table(jbtAux.getNum(), jbtAux.getPos(), waiter);
-            jbtAux.setTable(table);
-        }
+    public JButtonTable uttonActionPerformed(JButtonTable jbtAux, User waiter) {
+        JButtonTable jbt = jbtAux;
+        Table table = new Table(jbtAux.getNum(), jbtAux.getPos(), waiter);
+        jbtAux.setTable(table);
+        return jbt;
     }
 }

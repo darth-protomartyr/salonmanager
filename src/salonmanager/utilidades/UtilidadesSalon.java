@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import salonmanager.SalonManager;
+import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Table;
 
 public class UtilidadesSalon extends JFrame {
 
     Color bluSt = new Color(3, 166, 136);
-    Color narLg = new Color(217, 103, 4);
+    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     Utilidades utili = new Utilidades();
@@ -53,7 +55,33 @@ public class UtilidadesSalon extends JFrame {
         configValues.add(hUnit);
         configValues.add(rows);
         configValues.add(col);
-        
+
         return configValues;
+    }
+
+    public double countBill(Table tableAux, int prop, ArrayList<ItemCarta> gifts, int discount) {
+        double bill = 0;
+        ArrayList<ItemCarta> itemsTable = tableAux.getOrder();
+        ArrayList<Integer> itemUnits = tableAux.getUnits();
+        if (gifts.size() > 0) {
+            for (ItemCarta ic : gifts) {
+                for (int i = 0; i < itemsTable.size(); i++) {
+                    if (ic.getCode().equals(itemsTable.get(i).getCode())) {
+                        int newUnit = itemUnits.get(i) - 1;
+                        itemUnits.set(i, newUnit);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < itemsTable.size(); i++) {
+            bill = bill + (itemsTable.get(i).getPrice() * itemUnits.get(i));
+        }
+        
+        if (discount > 0) {
+            bill = Math.round(bill * discount/100);
+        }
+
+        return bill;
     }
 }

@@ -22,11 +22,12 @@ public class Table {
     boolean open;
     boolean bill;
     ArrayList<ItemCarta> order;
+    ArrayList<ItemCarta> gifts;
     ArrayList<Integer> units;
     User waiter;
-    double payment;
-    double tip;
+    int discount;
     double total;
+    
 
     public Table() {
     }
@@ -40,26 +41,26 @@ public class Table {
         this.open = true;
         this.bill = false;
         this.order = new ArrayList<ItemCarta>();
+        this.gifts = new ArrayList<ItemCarta>();
         this.units = new ArrayList<Integer>();
         this.waiter = waiter;
-        this.payment = 0;
-        this.tip = 0;
+                this.discount = 0;
         this.total = 0;
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<Integer> units, User waiter, double payment, double tip, double total) {
+    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<Integer> units, User waiter, int discount, double total) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
         this.id = id;
         this.open = open;
         this.bill = bill;
+        this.discount = discount;
         this.order = order;
+        this.order = gifts;
         this.units = units;
         this.waiter = waiter;
-        this.payment = payment;
-        this.tip = tip;
         this.total = total;
     }
 
@@ -114,9 +115,17 @@ public class Table {
     public ArrayList<ItemCarta> getOrder() {
         return order;
     }
-
+    
     public void setOrder(ArrayList<ItemCarta> order) {
         this.order = order;
+    }
+
+    public void setGifts(ArrayList<ItemCarta> order) {
+        this.gifts = gifts;
+    }
+    
+    public ArrayList<ItemCarta> getGifts() {
+        return gifts;
     }
 
     public ArrayList<Integer> getUnits() {
@@ -133,22 +142,6 @@ public class Table {
 
     public void setWaiter(User waiter) {
         this.waiter = waiter;
-    }
-
-    public double getPayment() {
-        return payment;
-    }
-
-    public void setPayment(double payment) {
-        this.payment = payment;
-    }
-
-    public double getTip() {
-        return tip;
-    }
-
-    public void setTip(double tip) {
-        this.tip = tip;
     }
 
     public double getTotal() {

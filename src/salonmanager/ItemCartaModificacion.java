@@ -31,7 +31,7 @@ public class ItemCartaModificacion extends FrameHalf {
     DAOItemCarta daoIC = new DAOItemCarta();
     ServicioItemCarta sic = new ServicioItemCarta();
     Color bluSt = new Color(3, 166, 136);
-    Color narLg = new Color(217, 103, 4);
+    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();

@@ -20,9 +20,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -38,8 +41,9 @@ import salonmanager.entidades.Register;
 public class UtilidadesGraficas extends JFrame {
 
     Color bluSt = new Color(3, 166, 136);
-    Color narLg = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
+    Color narSt = new Color(217, 103, 4);
+    Color narLg = new Color(252, 203, 5);
     Color viol = new Color(242, 29, 41);
     Utilidades utili = new Utilidades();
     SalonManager sm = new SalonManager();
@@ -195,7 +199,7 @@ public class UtilidadesGraficas extends JFrame {
 //    public JPanel fieldIngrePanel(int mWidth, int mHeight, int width, int height, JTextField fieldCantidad, JTextField fieldMerma, JTextField fieldDesperdicio, int type) {
 //        JPanel panelFieldIngre = new JPanel();
 //        panelFieldIngre.setLayout(null);
-//        panelFieldIngre.setBackground(narLg);
+//        panelFieldIngre.setBackground(narSt);
 //        panelFieldIngre.setBounds(mWidth, mHeight, width, height);
 //
 //        JLabel labelPanelA = new JLabel();
@@ -229,7 +233,7 @@ public class UtilidadesGraficas extends JFrame {
 //    public JPanel selectIngrePanel(int mWidth, int mHeight, int width, int height, JList listaIngreDB, ArrayList<Ingrediente> ingredientesDB, ArrayList<Ingrediente> ingredientesSbr) {
 //        JPanel panelListIngreDB = new JPanel();
 //        panelListIngreDB.setLayout(null);
-//        panelListIngreDB.setBackground(narLg);
+//        panelListIngreDB.setBackground(narSt);
 //        panelListIngreDB.setBounds(mWidth, mHeight, width, height);
 //
 //        JLabel labelPanelA = labelTitleBacker2("Seleccione un ingrediente");
@@ -246,7 +250,7 @@ public class UtilidadesGraficas extends JFrame {
     public JPanel selectUserPanel(int mWidth, int mHeight, int width, int height, JList listaUserDB, ArrayList<User> usersDB, ArrayList<User> usersNull, boolean mail) {
         JPanel panelListRctDB = new JPanel();
         panelListRctDB.setLayout(null);
-        panelListRctDB.setBackground(narLg);
+        panelListRctDB.setBackground(narSt);
         panelListRctDB.setBounds(mWidth, mHeight, width, height);
 
         JLabel labelPanelA = labelTitleBacker2("Seleccione un Usuario");
@@ -265,6 +269,15 @@ public class UtilidadesGraficas extends JFrame {
         return panelListRctDB;
     }
 
+    public JLabel labelTitleBackerA(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(35f);
+        title.setFont(newFont);
+        return title;
+    }
+    
+    
     public JLabel labelTitleBacker1(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
@@ -430,7 +443,7 @@ public class UtilidadesGraficas extends JFrame {
 //        table.setBounds(10, 10, anchoPanel - 50, alturaPanel - 50);
 //        JTableHeader header = table.getTableHeader();
 //        header.setFont(new Font("Arial", Font.BOLD, 16));
-//        header.setBackground(narLg);
+//        header.setBackground(narSt);
 //
 //        Font cellFont = new Font("Arial", Font.BOLD, 14);
 //        table.setFont(cellFont);
@@ -475,6 +488,18 @@ public class UtilidadesGraficas extends JFrame {
         bot.setText(text);
         bot.setBorder(new EmptyBorder(8, 8, 8, 8));
         bot.setBounds(mWidth, mHeight, width, 30);
+        return bot;
+    }
+    
+    
+    public JButton button3(String text, int mWidth, int mHeight, int width) {
+        JButton bot = new JButton();
+        text = text.toUpperCase();
+        Font font = new Font("Arial", Font.BOLD, 11); // Crear una nueva fuente
+        bot.setFont(font); // Establecer la fuente en el botón
+        bot.setText(text);
+        bot.setBorder(new EmptyBorder(5, 5, 5, 5));
+        bot.setBounds(mWidth, mHeight, width, 25);
         return bot;
     }
 
@@ -565,7 +590,7 @@ public class UtilidadesGraficas extends JFrame {
         JTable table = new JTable(tableModel);
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 16));
-        header.setBackground(narLg);
+        header.setBackground(narSt);
         Font cellFont = new Font("Arial", Font.BOLD, 12);
         table.setFont(cellFont);
         table.setRowHeight(25);
@@ -659,14 +684,24 @@ public class UtilidadesGraficas extends JFrame {
     public JPanel panelListItemBack(int mWidth, int mHeight, int width, int height, JList listaItems, ArrayList<ItemCarta> itemsDB, ArrayList<ItemCarta> itemsMesa) {
         JPanel panelListIngreDB = new JPanel();
         panelListIngreDB.setLayout(null);
-        panelListIngreDB.setBackground(narLg);
+        panelListIngreDB.setBackground(narSt);
         panelListIngreDB.setBounds(mWidth, mHeight, width, height);
 
         if (listaItems != null) {
             listaItems.setModel(utili.itemsListModelReturn(itemsDB, itemsMesa));
-            JScrollPane scrollPane = scrollBackPane(listaItems, 15, 15, width - 30, height - 30);
+            JScrollPane scrollPane = scrollBackPane(listaItems, 5, 5, width - 10, height - 10);
             panelListIngreDB.add(scrollPane);
         }
         return panelListIngreDB;
     }
+
+    public JSpinner spinnerBack(int mw, int mh, int w, int h, JSpinner spinner) {
+        JSpinner spin  = spinner; 
+        SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
+        spin.setModel(model);
+        spin.setBounds(mw, mh, w, h);
+        return spin;
+    }
+
+   
 }

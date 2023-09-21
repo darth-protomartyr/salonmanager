@@ -21,7 +21,7 @@ import salonmanager.entidades.PanelPpal;
 public class LandingFrame extends FrameGeneral {
 
     Color bluSt = new Color(3, 166, 136);
-    Color narLg = new Color(217, 103, 4);
+    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();

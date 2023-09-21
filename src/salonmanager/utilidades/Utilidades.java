@@ -355,7 +355,7 @@ public class Utilidades {
         return st;
     }
 
-    ComboBoxModel captionComboModelReturn(ArrayList<String> captionsDB) {
+    public ComboBoxModel captionComboModelReturn(ArrayList<String> captionsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (String i : captionsDB) {
             modeloCombo.addElement(i);
@@ -363,6 +363,15 @@ public class Utilidades {
         return modeloCombo;
     }
 
+    public ComboBoxModel itemsComboModelReturn(ArrayList<ItemCarta> itemsDB) {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (ItemCarta ic : itemsDB) {
+            modeloCombo.addElement(ic.getName());
+        }
+        return modeloCombo;
+    }
+    
+    
     public ComboBoxModel userComboModelReturn(ArrayList<User> users) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (User user : users) {
@@ -389,6 +398,8 @@ public class Utilidades {
         }
         return caption;
     }
+    
+    
 
     public boolean itemCartaRepeat(String ic, ArrayList<ItemCarta> items, ItemCarta itemCarta) {
         boolean bool = false;
@@ -495,5 +506,19 @@ public class Utilidades {
             }
         }
         return arrayStr;
+    }
+
+    public ItemCarta itemCartaBacker(String carta, ArrayList<ItemCarta> itemsDB) {
+        ItemCarta ic = null;
+        for(ItemCarta i : itemsDB) {
+            if (i.getName().equals(carta)) {
+                ic = i;
+            }
+        }
+        return ic;
+    }
+
+    public int itemRepeat(ItemCarta ic, ArrayList<ItemCarta> itemsTableAux) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

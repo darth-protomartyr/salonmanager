@@ -27,7 +27,7 @@ public class ItemSelector extends FrameWindow {
     DAOItemCarta daoIC = new DAOItemCarta();
     ServicioUser si = new ServicioUser();
     SalonManager sm = new SalonManager();
-    Color narLg = new Color(217, 103, 4);
+    Color narSt = new Color(217, 103, 4);
     Color bluSt = new Color(1, 64, 64);
     Color narMed = new Color(255, 172, 13);
     Color bluLg = new Color(3, 166, 136);
