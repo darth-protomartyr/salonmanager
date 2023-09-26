@@ -58,30 +58,43 @@ public class UtilidadesSalon extends JFrame {
 
         return configValues;
     }
+    
+//    public double countBillParcial(Table tableAux, int prop, ArrayList<ItemCarta> gifts, int discount) {
+//        double bill = 0;
+//        ArrayList<ItemCarta> itemsTable = tableAux.getOrder();
+//        ArrayList<Integer> itemUnits = tableAux.getUnits();
+//        for (int i = 0; i < itemsTable.size(); i++) {
+//            bill = bill + (itemsTable.get(i).getPrice() * itemUnits.get(i));
+//        }
+//        return bill;
+//    }
 
-    public double countBill(Table tableAux, int prop, ArrayList<ItemCarta> gifts, int discount) {
+    public double countBill(Table tableAux, int discount) {
+        if (tableAux.getGifts().size() > 0) {
+            double bill = 0;
+        }
         double bill = 0;
         ArrayList<ItemCarta> itemsTable = tableAux.getOrder();
         ArrayList<Integer> itemUnits = tableAux.getUnits();
-        if (gifts.size() > 0) {
-            for (ItemCarta ic : gifts) {
-                for (int i = 0; i < itemsTable.size(); i++) {
-                    if (ic.getCode().equals(itemsTable.get(i).getCode())) {
-                        int newUnit = itemUnits.get(i) - 1;
-                        itemUnits.set(i, newUnit);
-                    }
-                }
-            }
-        }
 
         for (int i = 0; i < itemsTable.size(); i++) {
             bill = bill + (itemsTable.get(i).getPrice() * itemUnits.get(i));
         }
-        
         if (discount > 0) {
-            bill = Math.round(bill * discount/100);
+            bill = bill - Math.round(bill * discount/100);
         }
-
         return bill;
     }
+
+//    public ArrayList<ItemCarta> orderDeployer(Table ta) {
+//        ArrayList<ItemCarta> alIc = new ArrayList<ItemCarta>();
+//        for (int i = 0; i < ta.getOrder().size(); i++) {
+//            int n= 0;
+//            while( n < ta.getUnits().get(i)) {
+//                alIc.add(ta.getOrder().get(i));
+//                n++;
+//            }
+//        }
+//        return alIc;
+//    }
 }

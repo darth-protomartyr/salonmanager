@@ -92,8 +92,6 @@ public class Ingresar extends FrameWindow {
         pass = "27949874";    
         boolean error = false;
         userAux = daoU.consultaUser(mail);
-
-
         
         if (mail == "" || pass == "") {
             utiliMsg.errorDataNull();
@@ -105,8 +103,6 @@ public class Ingresar extends FrameWindow {
             error = true;
         }
 
-        
-        
         if (error == false) {            
             if (userAux.getPassword().equals(pass)) {
                 try {

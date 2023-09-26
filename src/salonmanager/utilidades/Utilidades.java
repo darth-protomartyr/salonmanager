@@ -363,11 +363,21 @@ public class Utilidades {
         return modeloCombo;
     }
 
-    public ComboBoxModel itemsComboModelReturn(ArrayList<ItemCarta> itemsDB) {
+    public ComboBoxModel itemsComboModelReturnWNull(ArrayList<ItemCarta> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (ItemCarta ic : itemsDB) {
             modeloCombo.addElement(ic.getName());
         }
+        modeloCombo.addElement("");
+        return modeloCombo;
+    }
+    
+        public ComboBoxModel itemsComboModelReturn(ArrayList<ItemCarta> itemsDB) {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (ItemCarta ic : itemsDB) {
+            modeloCombo.addElement(ic.getName());
+        }
+        modeloCombo.addElement("");
         return modeloCombo;
     }
     

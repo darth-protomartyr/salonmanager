@@ -26,6 +26,7 @@ public class Table {
     ArrayList<Integer> units;
     User waiter;
     int discount;
+    double error;
     double total;
     
 
@@ -44,23 +45,25 @@ public class Table {
         this.gifts = new ArrayList<ItemCarta>();
         this.units = new ArrayList<Integer>();
         this.waiter = waiter;
-                this.discount = 0;
+        this.discount = 0;
+        this.error = 0;
         this.total = 0;
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<Integer> units, User waiter, int discount, double total) {
+    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<Integer> units, User waiter, int discount, double error, double total) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
         this.id = id;
         this.open = open;
         this.bill = bill;
-        this.discount = discount;
         this.order = order;
-        this.order = gifts;
+        this.gifts = gifts;
         this.units = units;
         this.waiter = waiter;
+        this.discount = discount;
+        this.error  = error;
         this.total = total;
     }
 
@@ -120,7 +123,7 @@ public class Table {
         this.order = order;
     }
 
-    public void setGifts(ArrayList<ItemCarta> order) {
+    public void setGifts(ArrayList<ItemCarta> gifts) {
         this.gifts = gifts;
     }
     
@@ -143,7 +146,23 @@ public class Table {
     public void setWaiter(User waiter) {
         this.waiter = waiter;
     }
+    
+    public int getDiscount() {
+        return discount;
+    }
+    
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
 
+    public double getError() {
+        return error;
+    }
+
+    public void setError(double error) {
+        this.total = error;
+    }
+    
     public double getTotal() {
         return total;
     }

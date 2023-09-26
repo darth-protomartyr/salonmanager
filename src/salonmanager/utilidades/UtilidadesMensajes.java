@@ -2,6 +2,7 @@ package salonmanager.utilidades;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import salonmanager.entidades.ItemCarta;
 
 public class UtilidadesMensajes extends JFrame {
 
@@ -113,8 +114,41 @@ public class UtilidadesMensajes extends JFrame {
 
     }
 
-    public void cargaTableErases() {
+    public void cargaTableErase() {
         optionPaneOk.showMessageDialog(null, "La mesa fue cerrada con éxito.");
+    }
 
+    public int cargaNewWaiter() {
+        int dialogResult = JOptionPane.showOptionDialog(null, "¿Estás seguro de que quieres modificar el mozo?", "Confirmar Cambio de mozo", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Aceptar"}, null);
+        return dialogResult;
+    }
+
+    public void errorItemGift(String item) {
+        optionPaneOk.showMessageDialog(null, "No queda " + item + " por obsequiar en esta mesa");
+    }
+
+    public void cargaGift(String item) {
+        optionPaneOk.showMessageDialog(null, "Se ingresó " + item + " a la lista de obsequios");
+    }
+    
+    public int cargaConfirmarCierre() {
+        int dialogResult = JOptionPane.showOptionDialog(null, "Si confirma el cierre de mesa, no podrá \n agregar Obsequios ni descuentos", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+        return dialogResult;
+    }
+
+    public void errorBillSend() {
+        optionPaneOk.showMessageDialog(null, "La cuenta ya fue enviada, no se puede realizar la acción.");
+    }
+
+    public void errorTotalLess() {
+        optionPaneOk.showMessageDialog(null, "No se registra error: el monto ingtresado es mayor a cuenta Total.");
+    }
+
+    public void errorMountNull() {
+                optionPaneOk.showMessageDialog(null, "El monto ingtresado es nulo.");
+    }
+
+    public void cargaError() {
+                optionPaneOk.showMessageDialog(null, "El error fue ingresado al sistema.");
     }
 }

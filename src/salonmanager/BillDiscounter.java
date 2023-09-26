@@ -1,0 +1,93 @@
+package salonmanager;
+
+import salonmanager.entidades.FrameWindow;
+import salonmanager.utilidades.Utilidades;
+import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesMensajes;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import salonmanager.entidades.PanelPpal;                                                                                                                                                                                                                                                                                                                                                                            
+import salonmanager.servicios.ServicioSalon;
+import salonmanager.servicios.ServicioTable;
+
+public class BillDiscounter extends FrameWindow {
+    UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    Utilidades utili = new Utilidades();
+    ServicioTable st = new ServicioTable();
+    ServicioSalon ss = new ServicioSalon();
+    SalonManager sm = new SalonManager();
+    
+    Color red = new Color(240, 82, 7);
+    Color green = new Color(31, 240, 100);
+    Color narUlg = new Color(255, 255, 176);
+    Color bluSt = new Color(3, 166, 136);
+    Color narSt = new Color(217, 103, 4);
+    Color narLg = new Color(252, 203, 5);
+
+    Color bluLg = new Color(194, 242, 206);
+    Color viol = new Color(242, 29, 41);
+    
+    JButton butInGift = new JButton();
+    JSpinner spinnerDiscount = null;
+    Salon salon = null;
+    
+    public BillDiscounter(Salon sal) {
+        salon = sal;
+        sm.addFrame(this);
+        setTitle("Descuento");
+        PanelPpal panelPpal = new PanelPpal(390, 300);
+        add(panelPpal);
+
+        JPanel panelLabel = new JPanel();
+        panelLabel.setBackground(bluSt);
+        panelLabel.setBounds(0, 0, 390, 40);
+        panelPpal.add(panelLabel);
+
+        JLabel labelTit = utiliGraf.labelTitleBacker1("Elija un porcentaje para descontar");
+        panelLabel.add(labelTit);
+
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 5);
+        spinnerDiscount = new JSpinner(spinnerModel);
+        spinnerDiscount.setBounds(90, 90, 140, 80);
+        spinnerDiscount.setBackground(bluLg);
+        spinnerDiscount.setFont(new Font("Arial", Font.PLAIN, 75)); //
+        panelPpal.add(spinnerDiscount);
+        JLabel labelPercentage = utiliGraf.labelTitleBackerA1("%");
+        labelPercentage.setBounds(240, 90, 80, 80);
+        panelPpal.add(labelPercentage);
+        
+        JPanel panelBut = new JPanel();
+        panelBut.setBackground(bluSt);
+        panelBut.setBounds(0, 210, 390, 40);
+        panelPpal.add(panelBut);
+
+        butInGift = utiliGraf.button1("Descontar", 206, 580, 270);
+        butInGift.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {           
+                    butDiscounterActionPerformed();
+                } catch (Exception ex) {
+                    Logger.getLogger(BillDiscounter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelBut.add(butInGift);        
+    }
+
+    private void butDiscounterActionPerformed() throws Exception {
+        int u = (int) spinnerDiscount.getValue();
+        salon.discountBacker(u);
+        dispose();
+    }
+}

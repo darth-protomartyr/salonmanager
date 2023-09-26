@@ -269,13 +269,31 @@ public class UtilidadesGraficas extends JFrame {
         return panelListRctDB;
     }
 
-    public JLabel labelTitleBackerA(String tit) {
+    public JLabel labelTitleBackerA1(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(75f);
+        title.setFont(newFont);
+        return title;
+    }
+    
+        public JLabel labelTitleBackerA2(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(50f);
+        title.setFont(newFont);
+        return title;
+    }
+    
+    public JLabel labelTitleBackerA3(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(35f);
         title.setFont(newFont);
         return title;
     }
+    
+    
     
     
     public JLabel labelTitleBacker1(String tit) {

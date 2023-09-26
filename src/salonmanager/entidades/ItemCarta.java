@@ -22,7 +22,7 @@ public class ItemCarta {
     boolean altaItem;
 
     public ItemCarta() {
-
+        
     }
 
     public ItemCarta(String name, String caption, String description, double cost, double price, int stock, boolean altaTip) throws Exception {
