@@ -1,6 +1,5 @@
 package salonmanager;
 
-import java.awt.BorderLayout;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemCarta;
 import java.awt.Color;
@@ -88,7 +87,7 @@ public class Salon extends FrameFullManager {
     ArrayList<ItemCarta> itemsDB = new ArrayList<ItemCarta>();
     ArrayList<ItemCarta> itemsTableAux = new ArrayList<ItemCarta>();
     ArrayList<ItemCarta> itemsGift = new ArrayList<ItemCarta>();
-
+    ArrayList<ItemCarta> itemsPartialPaid = new ArrayList<ItemCarta>();
     ArrayList<Integer> itemUnits = new ArrayList<Integer>();
     ArrayList<ItemCarta> aic = new ArrayList<ItemCarta>();
     User waiterAux = null;
@@ -151,7 +150,7 @@ public class Salon extends FrameFullManager {
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
         panelA.setLayout(null);
-        panelA.setBounds(20, 100, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
+        panelA.setBounds(20, altoUnit * 18, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
         panelA.setBackground(bluLg);
         panelPpal.add(panelA);
 
@@ -224,13 +223,13 @@ public class Salon extends FrameFullManager {
         JPanel panelLateral = new JPanel();
         panelLateral.setBackground(bluLg);
         panelLateral.setLayout(null);
-        panelLateral.setBounds((anchoFrame * 7 / 10) + anchoUnit * 5, 20, anchoFrame - (anchoPane + anchoUnit * 7), (alturaPane + altoUnit * 18));
+        panelLateral.setBounds((anchoFrame * 7 / 10) + anchoUnit * 5, altoUnit * 3, anchoFrame - (anchoPane + anchoUnit * 7), (alturaPane + altoUnit * 22));
         panelPpal.add(panelLateral);
 
         JPanel panelTable = new JPanel();
         panelTable.setLayout(null);
         panelTable.setBackground(narLg);
-        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (anchoPane + anchoUnit * 9), altoUnit * 85);
+        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (anchoPane + anchoUnit * 9), altoUnit * 89);
         panelLateral.add(panelTable);
         labelMesa = utiliGraf.labelTitleBackerA3("Mesa:--");
         labelMesa.setBounds(altoUnit, altoUnit * 1, anchoUnit * 13, 50);
@@ -378,10 +377,10 @@ public class Salon extends FrameFullManager {
         });
         panelSelItem.add(butSelItem);
 
-        scrollPaneItems = scrollItemsBack(altoUnit, altoUnit * 30, anchoUnit * 21 + altoUnit, altoUnit * 30);
+        scrollPaneItems = scrollItemsBack(altoUnit, altoUnit * 28, anchoUnit * 21 + altoUnit, altoUnit * 30);
         panelTable.add(scrollPaneItems);
 
-        JButton butGift = utiliGraf.button2("Obsequio", altoUnit, altoUnit * 61, anchoUnit * 11);
+        JButton butGift = utiliGraf.button2("Obsequio", altoUnit, altoUnit * 59, anchoUnit * 11);
         butGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -402,7 +401,7 @@ public class Salon extends FrameFullManager {
         });
         panelTable.add(butGift);
 
-        JButton butDiscount = utiliGraf.button2("Descuento", altoUnit * 2 + anchoUnit * 11, altoUnit * 61, anchoUnit * 10);
+        JButton butDiscount = utiliGraf.button2("Descuento", altoUnit * 2 + anchoUnit * 11, altoUnit * 59, anchoUnit * 10);
         butDiscount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -423,7 +422,7 @@ public class Salon extends FrameFullManager {
         });
         panelTable.add(butDiscount);
 
-        butCloseTable = utiliGraf.button1("CERRAR MESA", altoUnit, altoUnit * 66, anchoUnit * 21 + altoUnit);
+        butCloseTable = utiliGraf.button1("CERRAR MESA", altoUnit, altoUnit * 64, anchoUnit * 21 + altoUnit);
         panelTable.add(butCloseTable);
         butCloseTable.addActionListener(new ActionListener() {
             @Override
@@ -451,22 +450,42 @@ public class Salon extends FrameFullManager {
             }
         });
 
-        butErrorTable = utiliGraf.button1("ERROR", altoUnit * 2 + anchoUnit * 14, altoUnit * 66, anchoUnit * 7);
-        butErrorTable.setVisible(false);
-        panelTable.add(butErrorTable);
-        butErrorTable.addActionListener(new ActionListener() {
+        JButton butPartialPay = utiliGraf.button3("PAGO PARCIAL", altoUnit, altoUnit * 71, anchoUnit * 11);
+        butPartialPay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    errorTaker();
+                    if (tableAux.isBill() == false) {
+                        utiliMsg.errorBillUnsend();
+                    } else {
+                        partialPayer();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+        panelTable.add(butPartialPay);
+
+        JButton butErrorTable = utiliGraf.button3("ERROR MESA", altoUnit * 2 + anchoUnit * 11, altoUnit * 71, anchoUnit * 10);
+        butErrorTable.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    if (tableAux.isBill() == false) {
+                        utiliMsg.errorBillUnsend();
+                    } else {
+                        errorTaker();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelTable.add(butErrorTable);
 
         panelCuenta.setLayout(null);
-        panelCuenta.setBounds(altoUnit, altoUnit * 73, anchoUnit * 21 + altoUnit, altoUnit * 11);
+        panelCuenta.setBounds(altoUnit, altoUnit * 76, anchoUnit * 21 + altoUnit, altoUnit * 11);
         panelCuenta.setBackground(narUlg);
         panelTable.add(panelCuenta);
 
@@ -550,6 +569,7 @@ public class Salon extends FrameFullManager {
                 itemUnits.add(u);
                 tableAux.setOrder(itemsTableAux);
                 tableAux.setUnits(itemUnits);
+                tableAux = st.orderTable(tableAux);
                 spinnerUnitsItem.setValue(1);
                 total = utiliSal.countBill(tableAux, discount);
                 tableAux.setTotal(total);
@@ -665,9 +685,7 @@ public class Salon extends FrameFullManager {
         double tot = total + Math.round(total * 0.1);
         labelTotal.setText("Total: " + tot);
         jbtAux.setBackground(red);
-        butCloseTable.setText("Confirmar Pago");
-        butCloseTable.setBounds(altoUnit, altoUnit * 66, anchoUnit * 14, 40);
-        butErrorTable.setVisible(true);
+        butCloseTable.setText("CONFIRMAR PAGO");
     }
 
     private void resetTable() {
@@ -693,8 +711,6 @@ public class Salon extends FrameFullManager {
         itemsTableAux = tableAux.getOrder();
         itemUnits = tableAux.getUnits();
         new GiftSelector(this);
-
-//        GiftSelector gf = new GiftSelector(this);
     }
 
     private void discounter() {
@@ -754,16 +770,20 @@ public class Salon extends FrameFullManager {
         tableAux.setBill(true);
         tableAux.setOpen(false);
         butErrorTable.setVisible(false);
-        butCloseTable.setBounds(altoUnit, altoUnit * 66, anchoUnit * 21 + altoUnit, 40);
+//        butCloseTable.setBounds(altoUnit, altoUnit * 66, anchoUnit * 21 + altoUnit, 40);
         jbtAux.setBackground(red);
         jbtSetter();
         resetTable();
-
     }
 
     private void errorTaker() {
         new ErrorTableCount(this);
     }
+    
+    private void partialPayer() {
+        new PartialPayer(this);
+    }
+    
 
     private void jbtSetter() {
         for (int i = 0; i < openTables.size(); i++) {
@@ -774,8 +794,7 @@ public class Salon extends FrameFullManager {
             }
         }
     }
-    
-    
+
     void ErrorBacker(double errorBack) {
         error = total - errorBack;
         utiliMsg.cargaError();

@@ -102,8 +102,6 @@ public class GiftSelector extends FrameWindow {
         int i = comboItems.getSelectedIndex();
         ItemCarta ic = aIC.get(i);
         int units = tab.getUnits().get(i);
-//        ArrayList<ItemCarta> gifts = tab.getGifts();
-//        int giftUnits = st.giftCounter(gifts, ic);
         if (units>0) {
             salon.giftBacker(ic);
             dispose();

@@ -151,4 +151,12 @@ public class UtilidadesMensajes extends JFrame {
     public void cargaError() {
                 optionPaneOk.showMessageDialog(null, "El error fue ingresado al sistema.");
     }
+
+    public void errorBillUnsend() {
+        optionPaneOk.showMessageDialog(null, "La acción no puede realizarse,\n el cierre de mesa no ha sido iniciado.");
+    }
+
+    public void errorItemNull() {
+        optionPaneOk.showMessageDialog(null, "No seleccionó ningún Item.");
+    }
 }

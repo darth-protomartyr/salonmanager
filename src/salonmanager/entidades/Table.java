@@ -23,6 +23,8 @@ public class Table {
     boolean bill;
     ArrayList<ItemCarta> order;
     ArrayList<ItemCarta> gifts;
+    ArrayList<ItemCarta> toPay;
+    ArrayList<ItemCarta> partialPayed;
     ArrayList<Integer> units;
     User waiter;
     int discount;
@@ -43,6 +45,8 @@ public class Table {
         this.bill = false;
         this.order = new ArrayList<ItemCarta>();
         this.gifts = new ArrayList<ItemCarta>();
+        this.toPay = new ArrayList<ItemCarta>();
+        this.partialPayed = new ArrayList<ItemCarta>();
         this.units = new ArrayList<Integer>();
         this.waiter = waiter;
         this.discount = 0;
@@ -51,7 +55,7 @@ public class Table {
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<Integer> units, User waiter, int discount, double error, double total) {
+    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<Integer> units, User waiter, int discount, double error, double total) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
@@ -60,6 +64,8 @@ public class Table {
         this.bill = bill;
         this.order = order;
         this.gifts = gifts;
+        this.toPay = new ArrayList<ItemCarta>();
+        this.partialPayed = new ArrayList<ItemCarta>();
         this.units = units;
         this.waiter = waiter;
         this.discount = discount;
@@ -129,6 +135,22 @@ public class Table {
     
     public ArrayList<ItemCarta> getGifts() {
         return gifts;
+    }
+        
+    public void setToPay(ArrayList<ItemCarta> toPay) {
+        this.toPay = toPay ;
+    }
+    
+    public ArrayList<ItemCarta> getToPay() {
+        return gifts;
+    }
+    
+    public void setPartialPayed(ArrayList<ItemCarta> partialPayed) {
+        this.partialPayed = partialPayed;
+    }
+    
+    public ArrayList<ItemCarta> getPartialPayed() {
+        return partialPayed;
     }
 
     public ArrayList<Integer> getUnits() {

@@ -70,13 +70,10 @@ public class UtilidadesSalon extends JFrame {
 //    }
 
     public double countBill(Table tableAux, int discount) {
-        if (tableAux.getGifts().size() > 0) {
-            double bill = 0;
-        }
         double bill = 0;
         ArrayList<ItemCarta> itemsTable = tableAux.getOrder();
         ArrayList<Integer> itemUnits = tableAux.getUnits();
-
+        
         for (int i = 0; i < itemsTable.size(); i++) {
             bill = bill + (itemsTable.get(i).getPrice() * itemUnits.get(i));
         }

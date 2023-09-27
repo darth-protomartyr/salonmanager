@@ -528,7 +528,47 @@ public class Utilidades {
         return ic;
     }
 
-    public int itemRepeat(ItemCarta ic, ArrayList<ItemCarta> itemsTableAux) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ListModel itemListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) { 
+        DefaultListModel<String> modeloLista = new DefaultListModel<String>();
+        ArrayList<ItemCarta> lma = listMayor;
+        ArrayList<ItemCarta> lme = listMenor;
+        if (lme != null) {
+            Iterator<ItemCarta> iterator = lma.iterator();
+            while (iterator.hasNext()) {
+                ItemCarta ingre = iterator.next();
+                for (int i = 0; i < lme.size(); i++) {
+                    if (ingre.getId() == lme.get(i).getId()) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        for (ItemCarta ic : lma) {
+            modeloLista.addElement(ic.getName());
+        }
+        return modeloLista;
+    }
+    
+    
+    public ListModel itemListModelReturnMono(ArrayList<ItemCarta> listMayor) { 
+        DefaultListModel<String> modeloLista = new DefaultListModel<String>();
+        ArrayList<ItemCarta> lma = listMayor;
+        for (ItemCarta ic : lma) {
+            modeloLista.addElement(ic.getName());
+        }
+        return modeloLista;
+    }
+        
+     public double billPartial(ArrayList<ItemCarta> items, int discount) {
+        double bill = 0;
+        for (ItemCarta ic : items) {
+            bill += ic.getPrice();
+        }
+        if (discount == 0) {
+            discount = 100;
+        }
+        bill = bill * discount / 100;
+        return bill;
     }
 }

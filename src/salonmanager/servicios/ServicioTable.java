@@ -55,8 +55,16 @@ public class ServicioTable {
         }
         return txt;
     }
-        
-        
-        
-    
+
+    public ArrayList<ItemCarta> orderItemComplete(Table tab) {
+        ArrayList<ItemCarta> orderDeploy = new ArrayList<ItemCarta>();
+        for (int i = 0; i < tab.getOrder().size(); i++) {
+            int repeat = 1;
+            while ( repeat <=  tab.getUnits().get(i)) {
+                orderDeploy.add(tab.getOrder().get(i));
+                repeat += 1;
+            }
+        }
+        return orderDeploy;
+    }
 }
