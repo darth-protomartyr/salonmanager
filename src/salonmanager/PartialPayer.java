@@ -50,7 +50,7 @@ public class PartialPayer extends FrameWindow {
     Salon salon = null;
     ArrayList<ItemCarta> itemsToPay = new ArrayList<ItemCarta>();
     ArrayList<ItemCarta> itemsPartialToPay = new ArrayList<ItemCarta>();
-    ArrayList<ItemCarta> itemsPayed = new ArrayList<ItemCarta>();
+    ArrayList<ItemCarta> itemsPartialPaye = new ArrayList<ItemCarta>();
     ItemCarta itemAux = new ItemCarta();
     double subTotal = 0;
     double total = 0;
@@ -61,6 +61,7 @@ public class PartialPayer extends FrameWindow {
     JLabel labelSubTotal = new JLabel();
     JLabel labelPrice = new JLabel();
     JLabel labelRest = new JLabel();
+    JLabel labelTip = new JLabel();
     JButton butPartialIn = new JButton();
 
     PartialPayer(Salon sal) {
@@ -70,7 +71,6 @@ public class PartialPayer extends FrameWindow {
         total = tab.getTotal();
         discount = tab.getDiscount();
         itemsToPay = st.orderItemComplete(tab);
-        itemsPayed = tab.getPartialPayed();
         setTitle("Pago Parcial");
         PanelPpal panelPpal = new PanelPpal(390, 300);
         add(panelPpal);
@@ -131,9 +131,14 @@ public class PartialPayer extends FrameWindow {
 //        labelPrice.setBounds(100, 170, 40, 30);
         panelSubTotal.add(labelPrice);
 
-        labelRest = utiliGraf.labelTitleBacker3("Monto restante $: 0,0");
-        labelRest.setBounds(260, 170, 130, 30);
+        labelRest = utiliGraf.labelTitleBacker3("Resto $:" + total);
+        labelRest.setBounds(260, 160, 130, 25);
         panelPpal.add(labelRest);
+        
+        labelTip = utiliGraf.labelTitleBacker3("Prop $:" + Math.round(subTotal/10));
+        labelTip.setBounds(260, 180, 130, 25);
+        panelPpal.add(labelTip);
+        
 
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluSt);
@@ -178,6 +183,7 @@ public class PartialPayer extends FrameWindow {
         subTotal = utili.billPartial(itemsPartialToPay,discount);
         labelPrice.setText(subTotal + "");
         labelRest.setText("Resto:" + (total - subTotal));
+        labelTip.setText("Prop:" + (Math.round(subTotal/10)));
         if ((total - subTotal) == 0) {
             butPartialIn.setText("Finalizar Pago");
         }
@@ -206,7 +212,8 @@ public class PartialPayer extends FrameWindow {
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsPartialToPay);
         listPartialToPay.setModel(modeloLista2);
         labelPrice.setText(subTotal + "");
-        labelRest.setText("Resto:" + (total - subTotal));
+        labelRest.setText("Resto: " + (total - subTotal));
+        labelTip.setText("Prop.: " + Math.round(subTotal/10));
         if ((total - subTotal) > 0) {
             butPartialIn.setText("Pago Parcial");
         }
@@ -214,13 +221,16 @@ public class PartialPayer extends FrameWindow {
 
     private void butPartialInActionPerformed() throws Exception {
         if (itemsPartialToPay.size() > 0) {
-
             if ((total - subTotal == 0)) {
                 
             } else {
-                
+                Table tabAux = new Table();
+                tabAux = tab;
+                ArrayList<ItemCarta>itemsPartialPayed = itemsPartialToPay;
+                tabAux.setPartialPayed(itemsPartialPayed);
+                salon.partialPayTaker(tabAux);
+                dispose();
             }
-
         } else {
             utiliMsg.errorItemNull();
         }

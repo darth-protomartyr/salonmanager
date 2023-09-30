@@ -559,8 +559,8 @@ public class Utilidades {
         }
         return modeloLista;
     }
-        
-     public double billPartial(ArrayList<ItemCarta> items, int discount) {
+
+    public double billPartial(ArrayList<ItemCarta> items, int discount) {
         double bill = 0;
         for (ItemCarta ic : items) {
             bill += ic.getPrice();

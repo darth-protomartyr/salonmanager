@@ -73,13 +73,20 @@ public class UtilidadesSalon extends JFrame {
         double bill = 0;
         ArrayList<ItemCarta> itemsTable = tableAux.getOrder();
         ArrayList<Integer> itemUnits = tableAux.getUnits();
+        ArrayList<ItemCarta> itemsTableNoDiscount = tableAux.getPartialPayedNoDiscount();
         
         for (int i = 0; i < itemsTable.size(); i++) {
             bill = bill + (itemsTable.get(i).getPrice() * itemUnits.get(i));
         }
+        
         if (discount > 0) {
             bill = bill - Math.round(bill * discount/100);
         }
+        
+//        for (int i = 0; i < itemsTableNoDiscount.size(); i++) {
+//            bill = bill + (itemsTable.get(i).getPrice() * itemUnits.get(i));
+//        }
+
         return bill;
     }
 

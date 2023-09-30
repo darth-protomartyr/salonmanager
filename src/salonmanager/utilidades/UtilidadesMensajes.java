@@ -153,10 +153,14 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorBillUnsend() {
-        optionPaneOk.showMessageDialog(null, "La acción no puede realizarse,\n el cierre de mesa no ha sido iniciado.");
+        optionPaneOk.showMessageDialog(null, "La acción no puede realizarse,\nel cierre de mesa no ha sido iniciado.");
     }
 
     public void errorItemNull() {
         optionPaneOk.showMessageDialog(null, "No seleccionó ningún Item.");
+    }
+
+    public void errorDiscountRepeat() {
+        optionPaneOk.showMessageDialog(null, "Ya fue aplicado un descuento \ny no puede ser modificado.");
     }
 }
