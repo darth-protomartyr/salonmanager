@@ -7,6 +7,8 @@ import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import salonmanager.SalonManager;
+import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Table;
 
 public class DAOUser extends DAO {
 
@@ -301,4 +303,27 @@ public class DAOUser extends DAO {
         desconectarBase();
         return users;
     }
+    
+    
+    public void guardarWaiterTable(Table tab) throws Exception {
+        try {
+            String sql = "INSERT INTO waiter_mesas(waiter_id_fkey, table_id_fkey) ";
+            String parcialA = "VALUES('" + tab.getWaiter().getId() + "', '" + tab.getId() + "');";
+            sql += parcialA;
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
+    
+    
 }

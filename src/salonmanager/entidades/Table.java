@@ -1,20 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.entidades;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- *
- * @author Gonzalo
- */
 public class Table {
-
     int num;
     String pos;
     Timestamp openTime;
@@ -25,15 +15,15 @@ public class Table {
     ArrayList<ItemCarta> gifts;
     ArrayList<ItemCarta> toPay;
     ArrayList<ItemCarta> partialPayed;
-    ArrayList<ItemCarta> partialPayedNoDiscount;
-    ArrayList<Integer> units;
+    ArrayList<ItemCarta> auxiliarPartialPayedNoDiscount;
+    ArrayList<ItemCarta> errorItems;
     User waiter;
     int discount;
     double error;
+    double priceCorrection;
     double total;
-    
 
-    public Table() {
+    public Table() {    
     }
 
     //Creacion
@@ -41,23 +31,24 @@ public class Table {
         this.num = num;
         this.pos = pos;
         this.openTime = new Timestamp(new Date().getTime());
-        this.id = num + pos + "-" + openTime;
+        this.id = emptyEraser(num + pos + "_" + openTime);
         this.open = true;
         this.bill = false;
         this.order = new ArrayList<ItemCarta>();
         this.gifts = new ArrayList<ItemCarta>();
         this.toPay = new ArrayList<ItemCarta>();
         this.partialPayed = new ArrayList<ItemCarta>();
-        this.partialPayedNoDiscount = new ArrayList<ItemCarta>();
-        this.units = new ArrayList<Integer>();
+        this.auxiliarPartialPayedNoDiscount = new ArrayList<ItemCarta>();
+        this.errorItems = new ArrayList<ItemCarta>();
         this.waiter = waiter;
         this.discount = 0;
         this.error = 0;
+        this.priceCorrection = 0;
         this.total = 0;
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<ItemCarta> partialPayedNoDiscount,ArrayList<Integer> units, User waiter, int discount, double error, double total) {
+    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<ItemCarta> partialPayedNoDiscount,  ArrayList<ItemCarta> errorItems, User waiter, int discount, double error, double priceCorrection, double total) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
@@ -66,14 +57,36 @@ public class Table {
         this.bill = bill;
         this.order = order;
         this.gifts = gifts;
-        this.toPay = new ArrayList<ItemCarta>();
-        this.partialPayed = new ArrayList<ItemCarta>();
-        this.partialPayedNoDiscount = new ArrayList<ItemCarta>();
-        this.units = units;
+        this.toPay = toPay;
+        this.partialPayed = partialPayed;
+        this.auxiliarPartialPayedNoDiscount = partialPayedNoDiscount;
+        this.errorItems = errorItems;
         this.waiter = waiter;
         this.discount = discount;
         this.error  = error;
+        this.priceCorrection = priceCorrection;
         this.total = total;
+    }
+
+    //Clonar
+    public Table(Table tab) {
+        this.num = tab.getNum();
+        this.pos = tab.getPos();
+        this.openTime = tab.getOpenTime();
+        this.id = tab.getId();
+        this.open = tab.isOpen();
+        this.bill = tab.isBill();
+        this.order = tab.getOrder();
+        this.gifts = tab.getGifts();
+        this.toPay = tab.getToPay();
+        this.partialPayed = tab.getPartialPayed();
+        this.auxiliarPartialPayedNoDiscount = tab.getAuxiliarPartialPayedNoDiscount();
+        this.waiter = tab.getWaiter();
+        this.discount = tab.getDiscount();
+        this.error  = tab.getError();
+        this.errorItems = tab.getErrorItems();
+        this.priceCorrection = tab.getPriceCorrection();
+        this.total = tab.getTotal();
     }
 
     public int getNum() {
@@ -156,20 +169,20 @@ public class Table {
         return partialPayed;
     }
     
-    public void setPartialPayedNoDiscount(ArrayList<ItemCarta> partialPayed) {
-        this.partialPayed = partialPayed;
+    public void setAuxiliarPartialPayedNoDiscount(ArrayList<ItemCarta> partialPayedNoDiscount) {
+        this.auxiliarPartialPayedNoDiscount = partialPayedNoDiscount;
     }
     
-    public ArrayList<ItemCarta> getPartialPayedNoDiscount() {
-        return partialPayed;
+    public ArrayList<ItemCarta> getAuxiliarPartialPayedNoDiscount() {
+        return auxiliarPartialPayedNoDiscount;
     }
-
-    public ArrayList<Integer> getUnits() {
-        return units;
+    
+    public void setErrorItems(ArrayList<ItemCarta> errorItems) {
+        this.errorItems = errorItems;
     }
-
-    public void setUnits(ArrayList<Integer> units) {
-        this.units = units;
+    
+    public ArrayList<ItemCarta> getErrorItems() {
+        return errorItems;
     }
 
     public User getWaiter() {
@@ -196,11 +209,26 @@ public class Table {
         this.total = error;
     }
     
+    public double getPriceCorrection() {
+        return priceCorrection;
+    }
+
+    public void setPriceCorrection(double priceCorrection) {
+        this.priceCorrection = priceCorrection;
+    }
+
     public double getTotal() {
         return total;
     }
 
     public void setTotal(double total) {
         this.total = total;
+    }
+    
+    
+    
+    private String emptyEraser(String s) {
+        s = s.replace(" ", "_");
+        return s;
     }
 }

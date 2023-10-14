@@ -1,7 +1,9 @@
 package salonmanager.utilidades;
 
+import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import salonmanager.entidades.ItemCarta;
 
 public class UtilidadesMensajes extends JFrame {
@@ -130,9 +132,14 @@ public class UtilidadesMensajes extends JFrame {
     public void cargaGift(String item) {
         optionPaneOk.showMessageDialog(null, "Se ingresó " + item + " a la lista de obsequios");
     }
-    
+
     public int cargaConfirmarCierre() {
         int dialogResult = JOptionPane.showOptionDialog(null, "Si confirma el cierre de mesa, no podrá \n agregar Obsequios ni descuentos", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+        return dialogResult;
+    }
+
+    public int cargaConfirmarPago() {
+        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que el total del dinero fue abonado?", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
         return dialogResult;
     }
 
@@ -141,15 +148,18 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorTotalLess() {
-        optionPaneOk.showMessageDialog(null, "No se registra error: el monto ingtresado es mayor a cuenta Total.");
+        optionPaneOk.showMessageDialog(null, "No se registra error: el monto ingtresado es mayor al Total de la cuenta.");
     }
 
+//    public void errorTotalEqual() {
+//        optionPaneOk.showMessageDialog(null, "No se registra error: el monto ingtresado es igual al Total de la cuenta.");
+//    }
     public void errorMountNull() {
-                optionPaneOk.showMessageDialog(null, "El monto ingtresado es nulo.");
+        optionPaneOk.showMessageDialog(null, "El monto ingtresado es nulo.");
     }
 
     public void cargaError() {
-                optionPaneOk.showMessageDialog(null, "El error fue ingresado al sistema.");
+        optionPaneOk.showMessageDialog(null, "El error fue ingresado al sistema.");
     }
 
     public void errorBillUnsend() {
@@ -163,4 +173,57 @@ public class UtilidadesMensajes extends JFrame {
     public void errorDiscountRepeat() {
         optionPaneOk.showMessageDialog(null, "Ya fue aplicado un descuento \ny no puede ser modificado.");
     }
+
+    public int cargaConfirmarMontoError(double in, double out) {
+        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que el monto ingresado es de " + in + "\n"
+                + "y el faltante de $" + out + "?", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+        return dialogResult;
+    }
+
+    public int cargaConfirmarItemsError(int num) {
+        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que faltó el pago de " + num + " items?", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+        return dialogResult;
+    }
+
+    public void errorIngresoNum() {
+        optionPaneOk.showMessageDialog(null, "El número de la mesa no fue ingresado.");
+
+    }
+
+    public void errorIngresoPos() {
+        optionPaneOk.showMessageDialog(null, "La ubicación de la mesa no fue ingresada.");
+
+    }
+
+    public void errorIngresoOpenTime() {
+        optionPaneOk.showMessageDialog(null, "El momento de apertura de la mesa no fue ingresado.");
+
+    }
+
+    public void errorIngresoId() {
+        optionPaneOk.showMessageDialog(null, "La mesa no tiene identificador.");
+    }
+
+    public void cargaTable() {
+        optionPaneOk.showMessageDialog(null, "La mesa fue creada correctamente.");
+    }
+    
+    public char[] solicitudMod() {
+        JPasswordField passwordField = new JPasswordField();
+        Object[] message = {"Contraseña:", passwordField};
+
+        int option = JOptionPane.showConfirmDialog(null, message, "Ingrese su contraseña", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            return passwordField.getPassword();
+        } else {
+            return null;
+        }
+    }
+    
+    
+    
+    
+    
+    
 }

@@ -1,20 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.entidades;
 
-import java.awt.Color;
 import javax.swing.JButton;
-import salonmanager.utilidades.UtilidadesGraficas;
 
-/**
- *
- * @author Gonzalo
- */
-public class JButtonTable extends JButton {
-    
+public class JButtonTable extends JButton {    
     String pos;
     int num;
     int width;
@@ -23,9 +11,9 @@ public class JButtonTable extends JButton {
     int marginH;
     Table table;
     String text;
+    boolean openJBT;
 
     public JButtonTable() {
-
     }
 
     public JButtonTable(String pos, int num, int marginW, int marginH, int width, int height) {
@@ -37,9 +25,10 @@ public class JButtonTable extends JButton {
         this.height = height;
         this.table = null;
         this.text = pos + num;
+        this.openJBT = false;
     }
 
-    public JButtonTable(String pos, int num, int marginW, int marginH, int width, int height, Table table, String text) {
+    public JButtonTable(String pos, int num, int marginW, int marginH, int width, int height, Table table, String text, boolean openJBT) {
         this.pos = pos;
         this.num = num;
         this.marginW = marginW;
@@ -48,6 +37,7 @@ public class JButtonTable extends JButton {
         this.height = height;
         this.table = table;
         this.text = text;
+        this.openJBT = openJBT;
     }
 
     public String getPos() {
@@ -113,11 +103,23 @@ public class JButtonTable extends JButton {
     public void setText(String text) {
         this.text = text;
     }
-
-    public JButtonTable uttonActionPerformed(JButtonTable jbtAux, User waiter) {
-        JButtonTable jbt = jbtAux;
-        Table table = new Table(jbtAux.getNum(), jbtAux.getPos(), waiter);
-        jbtAux.setTable(table);
-        return jbt;
+    
+    public boolean isOpenJBT() {
+        return openJBT;
     }
+
+    public void setOpenJBT (boolean ojbt) {
+        this.openJBT = ojbt;
+    }
+    
+    
+    
+    
+
+//    public JButtonTable uttonActionPerformed(JButtonTable jbtAux, User waiter) {
+//        JButtonTable jbt = jbtAux;
+//        Table table = new Table(jbtAux.getNum(), jbtAux.getPos(), waiter);
+//        jbtAux.setTable(table);
+//        return jbt;
+//    }
 }

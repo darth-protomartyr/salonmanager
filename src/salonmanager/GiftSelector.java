@@ -17,19 +17,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import salonmanager.entidades.ItemCarta;
-import salonmanager.entidades.PanelPpal;                                                                                                                                                                                                                                                                                                                                                                            
+import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 
 public class GiftSelector extends FrameWindow {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
-    
+
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -39,14 +40,14 @@ public class GiftSelector extends FrameWindow {
 
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
-    
+
     JComboBox comboItems = new JComboBox();
     JTextArea textAreaGifts = new JTextArea();
     Table tab = new Table();
     JButton butInGift = new JButton();
     Salon salon = null;
     ArrayList<ItemCarta> aIC = null;
-    
+
     GiftSelector(Salon sal) {
         salon = sal;
         sm.addFrame(this);
@@ -62,7 +63,7 @@ public class GiftSelector extends FrameWindow {
 
         JLabel labelTit = utiliGraf.labelTitleBacker1("Selecione un item para obsequiar");
         panelLabel.add(labelTit);
-        
+
         aIC = tab.getOrder();
 //        HashSet<ItemCarta> hsaIC = new HashSet<ItemCarta>(aIC1);
 //        aIC2 = new ArrayList<ItemCarta>(hsaIC);
@@ -88,25 +89,20 @@ public class GiftSelector extends FrameWindow {
         butInGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                try {           
+                try {
                     butInGiftActionPerformed();
                 } catch (Exception ex) {
                     Logger.getLogger(GiftSelector.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelBut.add(butInGift);        
+        panelBut.add(butInGift);
     }
 
     private void butInGiftActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
         ItemCarta ic = aIC.get(i);
-        int units = tab.getUnits().get(i);
-        if (units>0) {
-            salon.giftBacker(ic);
-            dispose();
-        } else {
-            utiliMsg.errorItemGift(ic.getName());
-        }
+        salon.giftBacker(ic);
+        dispose();
     }
 }

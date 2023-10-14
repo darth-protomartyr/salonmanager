@@ -13,15 +13,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
@@ -48,9 +45,9 @@ public class PartialPayer extends FrameWindow {
 
     Table tab = new Table();
     Salon salon = null;
-    ArrayList<ItemCarta> itemsToPay = new ArrayList<ItemCarta>();
+    ArrayList<ItemCarta> itemsToPay = null;
     ArrayList<ItemCarta> itemsPartialToPay = new ArrayList<ItemCarta>();
-    ArrayList<ItemCarta> itemsPartialPaye = new ArrayList<ItemCarta>();
+//    ArrayList<ItemCarta> itemsPartialPayed = new ArrayList<ItemCarta>();
     ItemCarta itemAux = new ItemCarta();
     double subTotal = 0;
     double total = 0;
@@ -67,10 +64,12 @@ public class PartialPayer extends FrameWindow {
     PartialPayer(Salon sal) {
         salon = sal;
         sm.addFrame(this);
-        tab = salon.getTable();
+        Table table = salon.getTable();
+        tab = new Table(table);
         total = tab.getTotal();
         discount = tab.getDiscount();
-        itemsToPay = st.orderItemComplete(tab);
+        ArrayList<ItemCarta> itemsAux = tab.getOrder();
+        itemsToPay = new ArrayList<ItemCarta>(itemsAux);
         setTitle("Pago Parcial");
         PanelPpal panelPpal = new PanelPpal(390, 300);
         add(panelPpal);
@@ -177,10 +176,10 @@ public class PartialPayer extends FrameWindow {
                 }
             }
         }
-        labelPrice.setText(utili.billPartial(itemsPartialToPay,discount) + "");
+        labelPrice.setText(ss.billPartial(itemsPartialToPay,discount) + "");
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsToPay);
         listToPay.setModel(modeloLista2);
-        subTotal = utili.billPartial(itemsPartialToPay,discount);
+        subTotal = ss.billPartial(itemsPartialToPay,discount);
         labelPrice.setText(subTotal + "");
         labelRest.setText("Resto:" + (total - subTotal));
         labelTip.setText("Prop:" + (Math.round(subTotal/10)));
@@ -207,7 +206,7 @@ public class PartialPayer extends FrameWindow {
             }
         }
         
-        subTotal = utili.billPartial(itemsPartialToPay,discount);
+        subTotal = ss.billPartial(itemsPartialToPay,discount);
         labelPrice.setText(subTotal + "");
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsPartialToPay);
         listPartialToPay.setModel(modeloLista2);
@@ -222,13 +221,10 @@ public class PartialPayer extends FrameWindow {
     private void butPartialInActionPerformed() throws Exception {
         if (itemsPartialToPay.size() > 0) {
             if ((total - subTotal == 0)) {
-                
+                salon.totalPayTaker(itemsPartialToPay);
+                dispose();
             } else {
-                Table tabAux = new Table();
-                tabAux = tab;
-                ArrayList<ItemCarta>itemsPartialPayed = itemsPartialToPay;
-                tabAux.setPartialPayed(itemsPartialPayed);
-                salon.partialPayTaker(tabAux);
+                salon.partialPayTaker(itemsPartialToPay);
                 dispose();
             }
         } else {

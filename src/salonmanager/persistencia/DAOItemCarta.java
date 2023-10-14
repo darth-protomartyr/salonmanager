@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Table;
 import salonmanager.servicios.ServicioRegister;
 import salonmanager.utilidades.UtilidadesMensajes;
 
@@ -123,8 +124,149 @@ public class DAOItemCarta extends DAO {
                 + " WHERE itemCarta_id = " + itemAux.getId() + ";";
         System.out.println(sql);
         insertarModificarEliminar(sql);
-        String values = name + " - " + caption + " - " + description + " - " + cost + " - " + price + " - " +  stock + " - " + true;
+        String values = name + " - " + caption + " - " + description + " - " + cost + " - " + price + " - " + stock + " - " + true;
         sr.crearRegistro("modificarItemCarta", name, values);
         desconectarBase();
+    }
+
+    public void guardarItemOrderTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "INSERT INTO itemscartaOrder_mesas(itemCartaOrder_id_fkey, table_id_fkey) ";
+            String parcialA = "VALUES(" + ic.getId() + ", '" + tab.getId() + "');";
+            sql += parcialA;
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public void eliminarItemOrderTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "DELETE FROM itemscartaOrder_mesas WHERE itemcartaOrder_id_fkey = " + ic.getId() + " AND table_id_fkey = '" + tab.getId() + "' LIMIT 1;";
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public void guardarItemGiftTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "INSERT INTO itemscartaGift_mesas(itemCartaGift_id_fkey, table_id_fkey) ";
+            String parcialA = "VALUES(" + ic.getId() + ", '" + tab.getId() + "');";
+            sql += parcialA;
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    
+    public void eliminarItemGiftTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "DELETE FROM itemscartaGift_mesas WHERE itemcartaGift_id_fkey = " + ic.getId() + " AND table_id_fkey = '" + tab.getId() + "' LIMIT 1;";
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    
+    public void guardarItemPayedTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "INSERT INTO itemscartaPayed_mesas(itemCartaPayed_id_fkey, table_id_fkey) ";
+            String parcialA = "VALUES(" + ic.getId() + ", '" + tab.getId() + "');";
+            sql += parcialA;
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+
+    public void eliminarItemPayedTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "DELETE FROM itemscartaPayed_mesas WHERE itemcartaPayed_id_fkey = " + ic.getId() + " AND table_id_fkey = '" + tab.getId() + "' LIMIT 1;";
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    
+    public void guardarItemPayedNDTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "INSERT INTO itemscartaPayedND_mesas(itemCartaPayedND_id_fkey, table_id_fkey) ";
+            String parcialA = "VALUES(" + ic.getId() + ", '" + tab.getId() + "');";
+            sql += parcialA;
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    
+    public void eliminarItemPayedNDTable(ItemCarta ic, Table tab) throws Exception {
+        try {
+            String sql = "DELETE FROM itemscartaPayedND_mesas WHERE itemcartaPayedND_id_fkey = " + ic.getId() + " AND table_id_fkey = '" + tab.getId() + "' LIMIT 1;";
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
     }
 }

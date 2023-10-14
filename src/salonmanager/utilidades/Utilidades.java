@@ -560,15 +560,26 @@ public class Utilidades {
         return modeloLista;
     }
 
-    public double billPartial(ArrayList<ItemCarta> items, int discount) {
-        double bill = 0;
-        for (ItemCarta ic : items) {
-            bill += ic.getPrice();
+    public boolean requiredPerm(char[] pass) {
+        boolean perm = false;
+        String p;
+        if (pass == null) {
+            p = "";
+        } else {
+            p = new String(pass);
         }
-        if (discount == 0) {
-            discount = 100;
+        String w = "papa";
+        if (p.equals(w)) {
+            perm = true;
         }
-        bill = bill * discount / 100;
-        return bill;
+        return perm;
     }
+    
+    
+    
+    
+    
+    
+    
+    
 }
