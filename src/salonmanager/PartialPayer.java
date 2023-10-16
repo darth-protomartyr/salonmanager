@@ -221,10 +221,10 @@ public class PartialPayer extends FrameWindow {
     private void butPartialInActionPerformed() throws Exception {
         if (itemsPartialToPay.size() > 0) {
             if ((total - subTotal == 0)) {
-                salon.totalPayTaker(itemsPartialToPay);
+                salon.moneyKind(salon, true, itemsPartialToPay);
                 dispose();
             } else {
-                salon.partialPayTaker(itemsPartialToPay);
+                salon.moneyKind(salon, false, itemsPartialToPay);
                 dispose();
             }
         } else {

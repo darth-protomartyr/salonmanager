@@ -27,17 +27,6 @@ public class FrameGeneral extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(null);
-//        addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosing(WindowEvent e) {
-//                dispose();
-//            }
-
-//            @Override
-//            public void windowIconified(WindowEvent e) {
-//                setState(JFrame.NORMAL);
-//            }
-//        });
     }
 
     public int getAnchoFrame() {

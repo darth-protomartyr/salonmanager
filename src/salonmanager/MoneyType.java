@@ -5,6 +5,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.servicios.ServicioSalon;
@@ -47,6 +49,8 @@ public class MoneyType extends FrameWindow {
     double electronic = 0;
     boolean mixedPay = false;
     ArrayList<Double> amounts = new ArrayList<Double>();
+    ArrayList<ItemCarta> itemsPayed = null;
+    
     JLabel labelSubTotal = new JLabel();
     JLabel labelMixed = new JLabel();
     JTextField fieldAmountCash = new JTextField();
@@ -55,10 +59,11 @@ public class MoneyType extends FrameWindow {
     JButton butElectronicIn = new JButton();
     JButton butMixedIn = new JButton();
 
-    public MoneyType(Salon sal, boolean end) {
+    public MoneyType(Salon sal, boolean end, ArrayList<ItemCarta> itemsPayed1) {
         salon = sal;
         sm.addFrame(this);
         Table table = salon.getTable();
+        itemsPayed = itemsPayed1;
         tab = new Table(table);
         endex = end;
         total = tab.getTotal();
@@ -158,12 +163,12 @@ public class MoneyType extends FrameWindow {
         switch (type) {
             case 1:
                 amounts.set(0, total);
-                salon.amountsTypes(amounts, endex);
+                salon.amountsTypes(amounts, endex, itemsPayed);
                 dispose();
                 break;
             case 2:
                 amounts.set(1, total);
-                salon.amountsTypes(amounts, endex);
+                salon.amountsTypes(amounts, endex, itemsPayed);
                 dispose();
                 break;
             case 3:
@@ -179,7 +184,7 @@ public class MoneyType extends FrameWindow {
         double cash = parseDouble(amountCash);
         amounts.set(0, cash);
         amounts.set(1, total - cash);
-        salon.amountsTypes(amounts, endex);
+        salon.amountsTypes(amounts, endex, itemsPayed);
         dispose();
     }
 }

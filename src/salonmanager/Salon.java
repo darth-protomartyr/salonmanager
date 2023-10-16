@@ -3,6 +3,7 @@ package salonmanager;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemCarta;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -96,7 +97,7 @@ public class Salon extends FrameFullManager {
     double amountElectronic = 0; //dinero electrónico
     double total = 0; // total a pagar(pago parcial restado)
     double error = 0; // dinero faltante a pagar;
-
+    
     //Botonera
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
@@ -516,7 +517,7 @@ public class Salon extends FrameFullManager {
                                     tableClose();
                                 }
                             } else {
-                                moneyKind(sal, true);
+                                moneyKind(sal, true, null);
                             }
                         }
                     }
@@ -848,7 +849,6 @@ public class Salon extends FrameFullManager {
         }
         labelCuenta.setText(total + "");
         double payed = ss.partialBillPayed(tableAux);
-        moneyKind(sal, false);
         labelPartialPay.setText("Pagado: $" + (payed));
         jbtSetter();
         setTableItems();
@@ -870,7 +870,6 @@ public class Salon extends FrameFullManager {
             daoI.eliminarItemOrderTable(ic, tableAux);
         }
         labelCuenta.setText(total + "");
-        moneyKind(sal, true);
 //        double payed = ss.partialBillPayed(tableAux);
 //        labelPartialPay.setText("Pagado: $" + payed);
 //        tablePaid();
@@ -899,8 +898,8 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------
 //Forma de pago
-    private void moneyKind(Salon sal, boolean end) {
-        new MoneyType(sal, end);
+    public void moneyKind(Salon sal, boolean end, ArrayList<ItemCarta> itemsPayed) {
+        new MoneyType(sal, end, itemsPayed);
     }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -915,14 +914,22 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------
 //Forma de pago
-    public void amountsTypes(ArrayList<Double> amounts, boolean endex) throws Exception {
+    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<ItemCarta> itemsPayed) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
         tableAux.setAmountCash(amountC);
         tableAux.setAmountElectronic(amountE);
+        daoT.updateTableMountsKind(tableAux);
+        if(itemsPayed != null) {
+            if(endex == true) {
+                totalPayTaker(itemsPayed);
+            } else  {
+                partialPayTaker(itemsPayed);
+            }
+        }
         if (endex == true) {
             tablePaid();
-        }
+        }       
     }
 
 //----------------------------------------------------ERROR---------------------------------------------------------    

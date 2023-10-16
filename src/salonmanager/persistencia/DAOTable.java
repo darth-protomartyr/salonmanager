@@ -35,8 +35,8 @@ public class DAOTable extends DAO {
 
         if (error == false) {
             try {
-                String sql = "INSERT INTO mesas(table_num, table_pos, table_open_time, table_id, table_open, table_bill, table_discount, table_error, table_price_correction, table_total) "
-                        + "VALUES( '" + tab.getNum() + "','" + tab.getPos() + "','" + tab.getOpenTime() + "','" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", '" + tab.getDiscount() + "', '" + tab.getError() + "'," + tab.getPriceCorrection() + ", " + tab.getTotal() + ");";
+                String sql = "INSERT INTO mesas(table_num, table_pos, table_open_time, table_id, table_open, table_bill, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total) "
+                        + "VALUES( '" + tab.getNum() + "','" + tab.getPos() + "','" + tab.getOpenTime() + "','" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", '" + tab.getDiscount() + "', '" + tab.getError() + "'," + tab.getPriceCorrection() + ", " + tab.getAmountCash()+ ", " + tab.getAmountElectronic() + ", " + tab.getTotal() + ");";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
             } catch (SQLException e) {
@@ -102,6 +102,22 @@ public class DAOTable extends DAO {
     public void updateTableDiscount(Table tab) throws Exception {
         try {
             String sql1 = "UPDATE mesas SET table_discount = " + tab.getDiscount() + " WHERE table_id = '" + tab.getId() + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    public void updateTableMountsKind(Table tab) throws Exception {
+        try {
+            String sql1 = "UPDATE mesas SET table_amount_cash = " + tab.getAmountCash()+ " AND table_amount_electronic = " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
