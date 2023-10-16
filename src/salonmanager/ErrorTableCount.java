@@ -86,18 +86,18 @@ public class ErrorTableCount extends FrameWindow {
         
 //----------------------------------------------------------------------------------------------------------------------
 //PanelMount
-        JPanel panelMount = new JPanel();
-        panelMount.setLayout(null);
-        panelMount.setBackground(bluLg);
-        panelMount.setSize(280, 200);
+        JPanel panelAmount = new JPanel();
+        panelAmount.setLayout(null);
+        panelAmount.setBackground(bluLg);
+        panelAmount.setSize(280, 200);
 
-        JLabel labelMount = utiliGraf.labelTitleBacker1("Ingrese el monto recibido");
-        labelMount.setBounds(60, 5, 240, 30);
-        panelMount.add(labelMount);
+        JLabel labelAmount = utiliGraf.labelTitleBacker1("Ingrese el monto recibido");
+        labelAmount.setBounds(60, 5, 240, 30);
+        panelAmount.add(labelAmount);
 
         JLabel label$ = utiliGraf.labelTitleBackerA2("$");
         label$.setBounds(10, 40, 45, 60);
-        panelMount.add(label$);
+        panelAmount.add(label$);
 
         fieldAmount.setBounds(45, 40, 190, 50);
         fieldAmount.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -140,11 +140,11 @@ public class ErrorTableCount extends FrameWindow {
             }
         });
 
-        panelMount.add(fieldAmount);
+        panelAmount.add(fieldAmount);
 
         JLabel labelLossCheck = utiliGraf.labelTitleBacker3("Pérdida Total");
         labelLossCheck.setBounds(245, 70, 120, 20);
-        panelMount.add(labelLossCheck);
+        panelAmount.add(labelLossCheck);
 
         checkTotalLossMount.setBounds(335, 70, 20, 20);
         checkTotalLossMount.addItemListener(new ItemListener() {
@@ -157,11 +157,11 @@ public class ErrorTableCount extends FrameWindow {
                 }
             }
         });
-        panelMount.add(checkTotalLossMount);
+        panelAmount.add(checkTotalLossMount);
 
         labelLoss = utiliGraf.labelTitleBacker2("");
         labelLoss.setBounds(80, 100, 230, 25);
-        panelMount.add(labelLoss);
+        panelAmount.add(labelLoss);
 
         JButton butErrorMount = utiliGraf.button2("Confirmar Error", 90, 135, 160);
         butErrorMount.addActionListener(new ActionListener() {
@@ -174,7 +174,7 @@ public class ErrorTableCount extends FrameWindow {
                 }
             }
         });
-        panelMount.add(butErrorMount);
+        panelAmount.add(butErrorMount);
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -257,7 +257,7 @@ public class ErrorTableCount extends FrameWindow {
 
 //----------------------------------------------------------------------------------------------------------------------
 //Pestañas
-        tabbedPane.addTab("Error por Monto", panelMount);
+        tabbedPane.addTab("Error por Monto", panelAmount);
         tabbedPane.addTab("Error por Item", panelItem);
 
         tabbedPane.setBounds(10, 40, 365, 200);

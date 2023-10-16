@@ -138,11 +138,6 @@ public class UtilidadesMensajes extends JFrame {
         return dialogResult;
     }
 
-    public int cargaConfirmarPago() {
-        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que el total del dinero fue abonado?", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
-        return dialogResult;
-    }
-
     public void errorBillSend() {
         optionPaneOk.showMessageDialog(null, "La cuenta ya fue enviada, no se puede realizar la acción.");
     }
@@ -203,10 +198,6 @@ public class UtilidadesMensajes extends JFrame {
     public void errorIngresoId() {
         optionPaneOk.showMessageDialog(null, "La mesa no tiene identificador.");
     }
-
-    public void cargaTable() {
-        optionPaneOk.showMessageDialog(null, "La mesa fue creada correctamente.");
-    }
     
     public char[] solicitudMod() {
         JPasswordField passwordField = new JPasswordField();
@@ -220,6 +211,13 @@ public class UtilidadesMensajes extends JFrame {
             return null;
         }
     }
+
+    public void errorMixedPayUp() {
+            optionPaneOk.showMessageDialog(null, "Debe ingresar el pago mixto \n"
+                    + "en la parte inferior del cuadro \n"
+                    + "o cerrar la ventana y volverla abrir.");
+    }
+    
     
     
     

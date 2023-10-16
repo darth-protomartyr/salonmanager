@@ -21,6 +21,8 @@ public class Table {
     int discount;
     double error;
     double priceCorrection;
+    double amountCash;
+    double amountElectronic;
     double total;
 
     public Table() {    
@@ -48,7 +50,7 @@ public class Table {
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<ItemCarta> partialPayedNoDiscount,  ArrayList<ItemCarta> errorItems, User waiter, int discount, double error, double priceCorrection, double total) {
+    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<ItemCarta> partialPayedNoDiscount,  ArrayList<ItemCarta> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
@@ -65,6 +67,8 @@ public class Table {
         this.discount = discount;
         this.error  = error;
         this.priceCorrection = priceCorrection;
+        this.amountCash = amountCash;
+        this.amountElectronic = amountElectronic;
         this.total = total;
     }
 
@@ -86,6 +90,8 @@ public class Table {
         this.error  = tab.getError();
         this.errorItems = tab.getErrorItems();
         this.priceCorrection = tab.getPriceCorrection();
+        this.amountCash = tab.getAmountCash();
+        this.amountElectronic = tab.getAmountElectronic();
         this.total = tab.getTotal();
     }
 
@@ -217,6 +223,22 @@ public class Table {
         this.priceCorrection = priceCorrection;
     }
 
+    public double getAmountCash() {
+        return amountCash;
+    }
+
+    public void setAmountCash(double amountCash) {
+        this.amountCash = amountCash;
+    }
+    
+    public double getAmountElectronic() {
+        return amountElectronic;
+    }
+
+    public void setAmountElectronic(double amountElectronic) {
+        this.amountElectronic = amountElectronic;
+    }
+    
     public double getTotal() {
         return total;
     }

@@ -39,7 +39,6 @@ public class DAOTable extends DAO {
                         + "VALUES( '" + tab.getNum() + "','" + tab.getPos() + "','" + tab.getOpenTime() + "','" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", '" + tab.getDiscount() + "', '" + tab.getError() + "'," + tab.getPriceCorrection() + ", " + tab.getTotal() + ");";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
-                utiliMsg.cargaTable();
             } catch (SQLException e) {
                 if (e.getErrorCode() == 1062) {
                     utiliMsg.errorCargaDB();
