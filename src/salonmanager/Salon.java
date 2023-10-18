@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -26,6 +25,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -57,6 +57,7 @@ public class Salon extends FrameFullManager {
     DAOTable daoT = new DAOTable();
     ServicioSalon ss = new ServicioSalon();
 
+    Color black = new Color(50, 50, 50);
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -68,8 +69,6 @@ public class Salon extends FrameFullManager {
     ArrayList<String> configSalon = new ArrayList<String>(); //Configuración de l salón
     int anchoPane = (anchoFrame * 7 / 10);
     int alturaPane = (alturaFrame * 7 / 10);
-    int anchoUnit = anchoFrame / 100;
-    int altoUnit = alturaFrame / 100;
     int totalTable = 0;
     int numBut = 1;
     int rowsButtons = 0;
@@ -97,7 +96,7 @@ public class Salon extends FrameFullManager {
     double amountElectronic = 0; //dinero electrónico
     double total = 0; // total a pagar(pago parcial restado)
     double error = 0; // dinero faltante a pagar;
-    
+
     //Botonera
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
@@ -197,6 +196,14 @@ public class Salon extends FrameFullManager {
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                jbtAux.setBorder(null);
+                if (jbtAux.isOpenJBT() == true) {
+                    try {
+                        resetTableValues();
+                    } catch (Exception ex) {
+                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 JButtonTable botonClicado = (JButtonTable) e.getSource();
                 for (int i = 0; i < tableButtons.size(); i++) {
                     if (tableButtons.get(i).getNum() == botonClicado.getNum()) {
@@ -208,15 +215,20 @@ public class Salon extends FrameFullManager {
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                jbtAux.setBorder(new LineBorder(bluSt, 8));
 
                 if (jbtAux.isOpenJBT() == false) {
+                    try {
+                        getWaiter(0);
+                    } catch (Exception ex) {
+                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     tableAux = new Table(jbtAux.getNum(), jbtAux.getPos(), waiterAux);
                     tableAux.setOpen(true);
                     String nameT = tableAux.getPos() + tableAux.getNum();
                     labelMesa.setText("Mesa:" + nameT);
-                    botonClicado.setBackground(green);
+//                    jbtAux.setBackground(green);
                     tableAux.setOrder(new ArrayList<ItemCarta>());
-                    jbtAux.setOpenJBT(true);
                     try {
                         jbtSetter();
                     } catch (Exception ex) {
@@ -249,59 +261,13 @@ public class Salon extends FrameFullManager {
         panelTable.setBackground(narLg);
         panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (anchoPane + anchoUnit * 9), altoUnit * 89);
         panelLateral.add(panelTable);
-        labelMesa = utiliGraf.labelTitleBackerA3("Mesa:--");
-        labelMesa.setBounds(altoUnit, altoUnit * 1, anchoUnit * 13, 50);
+        labelMesa = utiliGraf.labelTitleBackerA2("Mesa:--");
+        labelMesa.setBounds(altoUnit, altoUnit, anchoUnit * 20, 40);
         panelTable.add(labelMesa);
-        labelWaiter = utiliGraf.labelTitleBacker1("Mozo:--");
-        labelWaiter.setBounds(altoUnit, altoUnit * 7, anchoUnit * 10, 30);
+
+        labelWaiter = utiliGraf.labelTitleBackerA4("Mozo: --");
+        labelWaiter.setBounds(altoUnit, altoUnit * 7, anchoUnit * 20, 30);
         panelTable.add(labelWaiter);
-
-        JPanel panelWaiter = new JPanel();
-        panelWaiter.setBackground(bluLg);
-        panelWaiter.setLayout(null);
-        panelWaiter.setBounds(anchoUnit * 14, altoUnit * 1, anchoUnit * 8, altoUnit * 10);
-        panelTable.add(panelWaiter);
-
-        comboWaiters.setModel(utili.userComboModelReturn(waiters));
-        comboWaiters.setBounds(altoUnit, altoUnit, anchoUnit * 7, altoUnit * 3);
-        DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-        renderer.setFont(new Font("Arial", Font.PLAIN, 8)); // Ajusta el tamaño de la fuente aquí    
-        comboWaiters.setRenderer(renderer);
-        panelWaiter.add(comboWaiters);
-        JButton butSelWaiter = utiliGraf.button3("Elija mozo", anchoUnit * 1, altoUnit * 6, anchoUnit * 6);
-        butSelWaiter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (tableAux == null) {
-                        utiliMsg.errorTableNull();
-                    } else {
-                        if (tableAux.isBill() == false) {
-                            if (waiterAux == null) {
-                                waiterAux = getWaiter();
-                                labelWaiter.setText("Mozo:" + waiterAux.getNombre());
-                                tableAux.setWaiter(waiterAux);
-                            } else {
-                                User waiter = getWaiter();
-                                if (!waiter.getMail().equals(waiterAux.getMail())) {
-                                    int confirm = utiliMsg.cargaNewWaiter();
-                                    if (confirm == 0) {
-                                        waiterAux = getWaiter();
-                                        tableAux.setWaiter(waiterAux);
-                                        labelWaiter.setText("Mozo:" + waiterAux.getNombre());
-                                    }
-                                }
-                            }
-                        } else {
-                            utiliMsg.errorBillSend();
-                        }
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelWaiter.add(butSelWaiter);
 
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
@@ -601,11 +567,14 @@ public class Salon extends FrameFullManager {
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------    
 //Seleccionar Mozo
-    public User getWaiter() {
-        User waiter = new User();
-        String selection = (String) comboWaiters.getSelectedItem();
-        waiter = utili.userSelReturn(selection, waiters);
-        return waiter;
+    public void getWaiter(int i) throws Exception {
+        new WaiterSelector(this, i);
+    }
+
+    void waiterBacker(User waiter) {
+        waiterAux = waiter;
+        labelWaiter.setText("Mozo: " + waiterAux.getNombre()  + " " + utili.strShorter(waiterAux.getApellido(), 2).toUpperCase());
+        tableAux.setWaiter(waiterAux);
     }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -625,6 +594,8 @@ public class Salon extends FrameFullManager {
     private void butSelItemActionPerformed() throws Exception {
         if (itemsTableAux.size() < 1) {
             ss.createTable(tableAux);
+            jbtAux.setOpenJBT(true);
+            jbtAux.setBackground(green);
         }
         ItemCarta ic = null;
         String item = (String) comboItems.getSelectedItem();
@@ -920,16 +891,16 @@ public class Salon extends FrameFullManager {
         tableAux.setAmountCash(amountC);
         tableAux.setAmountElectronic(amountE);
         daoT.updateTableMountsKind(tableAux);
-        if(itemsPayed != null) {
-            if(endex == true) {
+        if (itemsPayed != null) {
+            if (endex == true) {
                 totalPayTaker(itemsPayed);
-            } else  {
+            } else {
                 partialPayTaker(itemsPayed);
             }
         }
         if (endex == true) {
             tablePaid();
-        }       
+        }
     }
 
 //----------------------------------------------------ERROR---------------------------------------------------------    
@@ -1107,7 +1078,7 @@ public class Salon extends FrameFullManager {
         } else {
             labelTotalParcial.setText("Parcial $:");
         }
-        labelWaiter.setText(waiterAux.getNombre());
+        labelWaiter.setText("Mozo: " + waiterAux.getNombre()  + " " + utili.strShorter(waiterAux.getApellido(), 1).toUpperCase() + ".");
         String nameT = tableAux.getPos() + tableAux.getNum();
         labelMesa.setText("Mesa:" + nameT);
         labelCuenta.setText(total + "");
@@ -1141,8 +1112,9 @@ public class Salon extends FrameFullManager {
         labelTotal.setText("Total: $0.00");
         labelPartialPay.setText("Pagado: $0.00");
         labelMesa.setText("Mesa:--");
-        labelWaiter.setText("Mozo:--");
+        labelWaiter.setText("Mozo: --");
         butCloseTable.setText("CERRAR MESA");
+        jbtAux.setBorder(null);
         if (jbtAux.isOpenJBT() == true) {
             if (itemsTableAux.size() > 0) {
                 if (tableAux.isBill() == true) {

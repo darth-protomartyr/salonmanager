@@ -12,6 +12,9 @@ public class FrameGeneral extends JFrame {
 //    UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     static protected int anchoFrame;
     static protected int alturaFrame;
+    static protected int anchoUnit;
+    static protected int altoUnit;
+
 
     public FrameGeneral() {
 
@@ -19,6 +22,8 @@ public class FrameGeneral extends JFrame {
         Dimension tamanioPantalla = pantalla.getScreenSize();
         anchoFrame = tamanioPantalla.width;
         alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
+        anchoUnit = anchoFrame / 100;
+        altoUnit = alturaFrame / 100;
         ImageIcon icono = new ImageIcon("menu.png");
         setIconImage(icono.getImage());
         setBounds(3, 3, anchoFrame, alturaFrame);

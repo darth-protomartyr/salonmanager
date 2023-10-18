@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import salonmanager.entidades.FrameFullManager;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
+import salonmanager.entidades.Workshift;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
@@ -25,7 +26,8 @@ public class Manager extends FrameFullManager {
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
-    User userIn = null; 
+    User userIn = null;
+    Workshift actualShift = null;
     
     public Manager (User userIn, String passIn) throws Exception {
         sm.addFrame(this);
@@ -40,15 +42,14 @@ public class Manager extends FrameFullManager {
 
         JPanel panelUser = new JPanel();
         panelUser.setLayout(null);
-        panelUser.setBounds((anchoFrame - 30 - (anchoFrame / 5)), 15, (anchoFrame - 30) / 5, (alturaFrame - 30) / 6);
+        panelUser.setBounds(anchoUnit * 87, altoUnit, anchoUnit * 17, altoUnit * 17);
         panelUser.setBackground(narSt);
         panelPpal.add(panelUser);
 
         String route = utili.barrReplaceInverse(userIn.getRouteImage());
         ImageIcon imageIcon = new ImageIcon(route);
         JLabel labelImage = new JLabel(imageIcon);
-        int fotM = ((alturaFrame - 30) / 6) - 20;
-        labelImage.setBounds(10, 10, fotM, fotM);
+        labelImage.setBounds(altoUnit, altoUnit , anchoUnit *8, anchoUnit * 8);
         panelUser.add(labelImage);
 
         JLabel labelName = utiliGraf.labelTitleBacker2(userIn.getNombre());
@@ -58,6 +59,43 @@ public class Manager extends FrameFullManager {
         JLabel labelRol = utiliGraf.labelTitleBacker2(userIn.getRol());
         labelRol.setBounds(130, 20, 120, 120);
         panelUser.add(labelRol);
+        
+        JPanel panelSession = new JPanel();
+        panelSession.setLayout(null);
+        panelSession.setBackground(bluLg);
+        panelSession.setBounds(anchoUnit * 54, altoUnit * 21, anchoUnit * 50, altoUnit * 65);
+        panelPpal.add(panelSession);
+
+        JLabel labelActualSession = utiliGraf.labelTitleBackerA4("Session Actual");
+        labelActualSession.setBounds(altoUnit, altoUnit, anchoUnit * 25, altoUnit * 10);
+        panelSession.add(labelActualSession);
+        
+        JLabel labelActualShift = utiliGraf.labelTitleBacker1("");
+        labelActualShift.setBounds(altoUnit, altoUnit * 14, anchoUnit * 25, altoUnit * 50);
+        if (actualShift != null) {
+            labelActualShift.setText("Te encuentras con una sesión activa \ny un turno abierto a tu nombre.");
+        } else {
+            labelActualShift.setText("No hay ningún turno activo.");
+        }
+        panelSession.add(labelActualShift);        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         JButton butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
         butSalir.addActionListener(new ActionListener() {
@@ -79,5 +117,9 @@ public class Manager extends FrameFullManager {
                 }
             }
         });
+    }
+    
+    public Workshift getActualWorkShift() {
+        return actualShift;
     }
 }

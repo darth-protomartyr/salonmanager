@@ -117,7 +117,7 @@ public class Utilidades {
     public User userSelReturn(String usr, ArrayList<User> userDB) {
         User user = new User();
         for (User u : userDB) {
-            if (usr.equals(u.getMail())) {
+            if (usr.equals(u.getNombre() + " " + u.getApellido())) {
                 user = u;
             }
         }
@@ -385,7 +385,7 @@ public class Utilidades {
     public ComboBoxModel userComboModelReturn(ArrayList<User> users) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (User user : users) {
-            modeloCombo.addElement(user.getMail());
+            modeloCombo.addElement(user.getNombre() + " " + user.getApellido() );
         }
         return modeloCombo;
     }

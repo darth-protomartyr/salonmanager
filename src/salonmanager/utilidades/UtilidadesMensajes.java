@@ -107,9 +107,9 @@ public class UtilidadesMensajes extends JFrame {
         optionPaneOk.showMessageDialog(null, "Antes debe seleccionar un mozo del panel ubicado arriba a la derecha.");
     }
 
-    public void errorTableNull() {
-        optionPaneOk.showMessageDialog(null, "Para realizar esta acción antes debe seleccionar una mesa.");
-    }
+//    public void errorTableNull() {
+//        optionPaneOk.showMessageDialog(null, "Para realizar esta acción antes debe seleccionar una mesa.");
+//    }
 
     public void errorItemsTableNull() {
         optionPaneOk.showMessageDialog(null, "Para realizar esta acción antes debe haber items cargados en la mesa.");
