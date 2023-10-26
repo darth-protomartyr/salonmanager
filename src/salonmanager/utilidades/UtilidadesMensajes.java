@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.User;
 
 public class UtilidadesMensajes extends JFrame {
 
@@ -217,11 +218,34 @@ public class UtilidadesMensajes extends JFrame {
                     + "en la parte inferior del cuadro \n"
                     + "o cerrar la ventana y volverla abrir.");
     }
+
+    public void errorWorkshift() {
+        optionPaneOk.showMessageDialog(null, "Para comenzar a cargar mesas \n"
+                + "debes iniciar un turno.");
+    }
     
     
-    
-    
-    
-    
-    
+    public void errorCashierNull() {
+        optionPaneOk.showMessageDialog(null, "El turno que desea iniciar \n no tiene un cajero asignado.");
+    }
+
+    public int cargaConfirmarInicioTurno(String name, String lastName) {
+        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que desea iniciar un turno \n"
+                + "con el usuario " + name + " " + lastName + "?", "CONFIRMAR INICIO DE TURNO", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+        return dialogResult;
+    }
+
+    public int cargaConfirmarCierreTurno(String name, String lastName) {
+        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que desea cerrar el turno?", "CONFIRMAR CIERRE DE TURNO", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+        return dialogResult;
+    }
+
+
+
+    public int cargaConfirmarCambioTurno(User user) {
+        int dialogResult = JOptionPane.showOptionDialog(null, "Aún hay mesas abiertas, \n" 
+                + "¿Iniciará el próximo turno \n"
+                + " con otro usuario?", "CONFIRMAR CIERRE DE TURNO", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+        return dialogResult;
+    }
 }

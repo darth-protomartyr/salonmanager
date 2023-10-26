@@ -33,7 +33,9 @@ import javax.swing.table.TableColumn;
 import salonmanager.ItemCartaIngreso;
 import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
+import salonmanager.Manager;
 import salonmanager.Salon;
+import salonmanager.WorkshiftSession;
 import salonmanager.entidades.Administrador;
 import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.Register;
@@ -47,8 +49,10 @@ public class UtilidadesGraficas extends JFrame {
     Color viol = new Color(242, 29, 41);
     Utilidades utili = new Utilidades();
     SalonManager sm = new SalonManager();
+    Manager manager = null;
 
-    public JMenuBar navegador(User user, String pass) throws Exception {
+    public JMenuBar navegador(User user, String pass, Manager man) throws Exception {
+        manager  = man;
         JMenuBar menuBar = new JMenuBar();
         JMenu menuInicio = new JMenu("Inicio");
         JMenu menuCarta = new JMenu("Carta");
@@ -161,7 +165,8 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            new Salon();
+                            new WorkshiftSession(manager);
+//                            new Salon();
                         } else {
                             sm.salir();
                         }

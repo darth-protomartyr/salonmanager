@@ -10,6 +10,8 @@ import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -18,9 +20,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import salonmanager.entidades.PanelPpal;                                                                                                                                                                                                                                                                                                                                                                            
+import salonmanager.entidades.PanelPpal;
 
 public class Ingresar extends FrameWindow {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
@@ -70,12 +73,12 @@ public class Ingresar extends FrameWindow {
         panelBut.setBackground(bluLg);
         panelBut.setBounds(0, 210, 390, 40);
         panelPpal.add(panelBut);
-        
+
         butInUser = utiliGraf.button1("Ingresar", 206, 580, 270);
         butInUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                try {             
+                try {
                     butInUserActionPerformed();
                 } catch (Exception ex) {
                     Logger.getLogger(Ingresar.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,16 +86,22 @@ public class Ingresar extends FrameWindow {
             }
         });
         panelBut.add(butInUser);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
     }
 
     private void butInUserActionPerformed() throws Exception {
 //        mail = fieldMail.getText();
 //        pass = fieldPass.getText();        
         mail = "gon@gmail.com";
-        pass = "27949874";    
+        pass = "27949874";
         boolean error = false;
         userAux = daoU.consultaUser(mail);
-        
+
         if (mail == "" || pass == "") {
             utiliMsg.errorDataNull();
             error = true;
@@ -103,7 +112,7 @@ public class Ingresar extends FrameWindow {
             error = true;
         }
 
-        if (error == false) {            
+        if (error == false) {
             if (userAux.getPassword().equals(pass)) {
                 try {
 //                    sm.setUserIn(userAux);

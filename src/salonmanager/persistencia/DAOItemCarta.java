@@ -181,7 +181,6 @@ public class DAOItemCarta extends DAO {
         }
     }
 
-    
     public void eliminarItemGiftTable(ItemCarta ic, Table tab) throws Exception {
         try {
             String sql = "DELETE FROM itemscartaGift_mesas WHERE itemcartaGift_id_fkey = " + ic.getId() + " AND table_id_fkey = '" + tab.getId() + "' LIMIT 1;";
@@ -198,7 +197,6 @@ public class DAOItemCarta extends DAO {
         }
     }
 
-    
     public void guardarItemPayedTable(ItemCarta ic, Table tab) throws Exception {
         try {
             String sql = "INSERT INTO itemscartaPayed_mesas(itemCartaPayed_id_fkey, table_id_fkey) ";
@@ -216,7 +214,6 @@ public class DAOItemCarta extends DAO {
             desconectarBase();
         }
     }
-    
 
     public void eliminarItemPayedTable(ItemCarta ic, Table tab) throws Exception {
         try {
@@ -234,7 +231,6 @@ public class DAOItemCarta extends DAO {
         }
     }
 
-    
     public void guardarItemPayedNDTable(ItemCarta ic, Table tab) throws Exception {
         try {
             String sql = "INSERT INTO itemscartaPayedND_mesas(itemCartaPayedND_id_fkey, table_id_fkey) ";
@@ -253,7 +249,6 @@ public class DAOItemCarta extends DAO {
         }
     }
 
-    
     public void eliminarItemPayedNDTable(ItemCarta ic, Table tab) throws Exception {
         try {
             String sql = "DELETE FROM itemscartaPayedND_mesas WHERE itemcartaPayedND_id_fkey = " + ic.getId() + " AND table_id_fkey = '" + tab.getId() + "' LIMIT 1;";
@@ -265,6 +260,156 @@ public class DAOItemCarta extends DAO {
             } else {
                 e.printStackTrace();
             }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<ItemCarta> listarItemCartaOrder(String tabId) throws Exception {
+        ArrayList<ItemCarta> items = new ArrayList<ItemCarta>();
+        try {
+            String sql = "SELECT * FROM itemscartaOrder_mesas WHERE itemcartaOrder_id_fkey = '" + tabId + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            while (resultado.next()) {
+                int idIc = resultado.getInt(1);
+                String idT = resultado.getString(2);
+                idItems.add(idIc);
+            }
+
+            ArrayList<ItemCarta> itemsCompleta = listarItemsCarta();
+            for (int i = 0; i < idItems.size(); i++) {
+                for (int j = 0; j < itemsCompleta.size(); j++) {
+                    if (idItems.get(i) == itemsCompleta.get(j).getId()) {
+                        items.add(itemsCompleta.get(j));
+                    }
+                }
+            }
+
+            return items;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+
+    public ArrayList<ItemCarta> listarItemCartaGifts(String tabId) throws Exception {
+        ArrayList<ItemCarta> items = new ArrayList<ItemCarta>();
+        try {
+            String sql = "SELECT * FROM itemscartaGift_mesas WHERE itemcartaGift_id_fkey = '" + tabId + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            while (resultado.next()) {
+                int idIc = resultado.getInt(1);
+                String idT = resultado.getString(2);
+                idItems.add(idIc);
+            }
+
+            ArrayList<ItemCarta> itemsCompleta = listarItemsCarta();
+            for (int i = 0; i < idItems.size(); i++) {
+                for (int j = 0; j < itemsCompleta.size(); j++) {
+                    if (idItems.get(i) == itemsCompleta.get(j).getId()) {
+                        items.add(itemsCompleta.get(j));
+                    }
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+
+    public ArrayList<ItemCarta> listarItemCartaPartialPayed(String tabId) throws Exception {
+        ArrayList<ItemCarta> items = new ArrayList<ItemCarta>();
+        try {
+            String sql = "SELECT * FROM itemscartaPayed_mesas WHERE itemcartaPayed_id_fkey = '" + tabId + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            while (resultado.next()) {
+                int idIc = resultado.getInt(1);
+                String idT = resultado.getString(2);
+                idItems.add(idIc);
+            }
+
+            ArrayList<ItemCarta> itemsCompleta = listarItemsCarta();
+            for (int i = 0; i < idItems.size(); i++) {
+                for (int j = 0; j < itemsCompleta.size(); j++) {
+                    if (idItems.get(i) == itemsCompleta.get(j).getId()) {
+                        items.add(itemsCompleta.get(j));
+                    }
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
+    public ArrayList<ItemCarta> listarItemCartaPartialPayedND(String tabId) throws Exception {
+        ArrayList<ItemCarta> items = new ArrayList<ItemCarta>();
+        try {
+            String sql = "SELECT * FROM itemscartaPayedND_mesas WHERE itemcartaPayedND_id_fkey = '" + tabId + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            while (resultado.next()) {
+                int idIc = resultado.getInt(1);
+                String idT = resultado.getString(2);
+                idItems.add(idIc);
+            }
+
+            ArrayList<ItemCarta> itemsCompleta = listarItemsCarta();
+            for (int i = 0; i < idItems.size(); i++) {
+                for (int j = 0; j < itemsCompleta.size(); j++) {
+                    if (idItems.get(i) == itemsCompleta.get(j).getId()) {
+                        items.add(itemsCompleta.get(j));
+                    }
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
+    public ArrayList<ItemCarta> listarItemCartaError(String tabId) throws Exception {
+        ArrayList<ItemCarta> items = new ArrayList<ItemCarta>();
+        try {
+            String sql = "SELECT * FROM itemscartaError_mesas WHERE itemcartaError_id_fkey = '" + tabId + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            while (resultado.next()) {
+                int idIc = resultado.getInt(1);
+                String idT = resultado.getString(2);
+                idItems.add(idIc);
+            }
+
+            ArrayList<ItemCarta> itemsCompleta = listarItemsCarta();
+            for (int i = 0; i < idItems.size(); i++) {
+                for (int j = 0; j < itemsCompleta.size(); j++) {
+                    if (idItems.get(i) == itemsCompleta.get(j).getId()) {
+                        items.add(itemsCompleta.get(j));
+                    }
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            throw e;
         } finally {
             desconectarBase();
         }

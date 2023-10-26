@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Table {
+
     int num;
     String pos;
     Timestamp openTime;
@@ -25,7 +26,7 @@ public class Table {
     double amountElectronic;
     double total;
 
-    public Table() {    
+    public Table() {
     }
 
     //Creacion
@@ -50,7 +51,7 @@ public class Table {
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<ItemCarta> partialPayedNoDiscount,  ArrayList<ItemCarta> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total) {
+    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<ItemCarta> partialPayedNoDiscount, ArrayList<ItemCarta> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
@@ -65,12 +66,34 @@ public class Table {
         this.errorItems = errorItems;
         this.waiter = waiter;
         this.discount = discount;
-        this.error  = error;
+        this.error = error;
         this.priceCorrection = priceCorrection;
         this.amountCash = amountCash;
         this.amountElectronic = amountElectronic;
         this.total = total;
     }
+    
+    //crear table pendiente para cambio de turno
+    public Table(int num, String pos, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, User waiter, int discount, double total) {
+        this.num = num;
+        this.pos = pos;
+        this.openTime = new Timestamp(new Date().getTime());
+        this.id = emptyEraser(num + pos + "_" + openTime);
+        this.open = true;
+        this.bill = bill;
+        this.order = order;
+        this.gifts = gifts;    
+        this.toPay = new ArrayList<ItemCarta>();
+        this.partialPayed = new ArrayList<ItemCarta>();
+        this.auxiliarPartialPayedNoDiscount = new ArrayList<ItemCarta>();
+        this.errorItems = new ArrayList<ItemCarta>();
+        this.waiter = waiter;
+        this.discount = discount;
+        this.error = 0;
+        this.priceCorrection = 0;
+        this.total = total;
+    }
+    
 
     //Clonar
     public Table(Table tab) {
@@ -87,7 +110,7 @@ public class Table {
         this.auxiliarPartialPayedNoDiscount = tab.getAuxiliarPartialPayedNoDiscount();
         this.waiter = tab.getWaiter();
         this.discount = tab.getDiscount();
-        this.error  = tab.getError();
+        this.error = tab.getError();
         this.errorItems = tab.getErrorItems();
         this.priceCorrection = tab.getPriceCorrection();
         this.amountCash = tab.getAmountCash();
@@ -146,7 +169,7 @@ public class Table {
     public ArrayList<ItemCarta> getOrder() {
         return order;
     }
-    
+
     public void setOrder(ArrayList<ItemCarta> order) {
         this.order = order;
     }
@@ -154,39 +177,39 @@ public class Table {
     public void setGifts(ArrayList<ItemCarta> gifts) {
         this.gifts = gifts;
     }
-    
+
     public ArrayList<ItemCarta> getGifts() {
         return gifts;
     }
-        
+
     public void setToPay(ArrayList<ItemCarta> toPay) {
-        this.toPay = toPay ;
+        this.toPay = toPay;
     }
-    
+
     public ArrayList<ItemCarta> getToPay() {
         return gifts;
     }
-    
+
     public void setPartialPayed(ArrayList<ItemCarta> partialPayed) {
         this.partialPayed = partialPayed;
     }
-    
+
     public ArrayList<ItemCarta> getPartialPayed() {
         return partialPayed;
     }
-    
+
     public void setAuxiliarPartialPayedNoDiscount(ArrayList<ItemCarta> partialPayedNoDiscount) {
         this.auxiliarPartialPayedNoDiscount = partialPayedNoDiscount;
     }
-    
+
     public ArrayList<ItemCarta> getAuxiliarPartialPayedNoDiscount() {
         return auxiliarPartialPayedNoDiscount;
     }
-    
+
     public void setErrorItems(ArrayList<ItemCarta> errorItems) {
         this.errorItems = errorItems;
     }
-    
+
     public ArrayList<ItemCarta> getErrorItems() {
         return errorItems;
     }
@@ -198,11 +221,11 @@ public class Table {
     public void setWaiter(User waiter) {
         this.waiter = waiter;
     }
-    
+
     public int getDiscount() {
         return discount;
     }
-    
+
     public void setDiscount(int discount) {
         this.discount = discount;
     }
@@ -214,7 +237,7 @@ public class Table {
     public void setError(double error) {
         this.total = error;
     }
-    
+
     public double getPriceCorrection() {
         return priceCorrection;
     }
@@ -230,7 +253,7 @@ public class Table {
     public void setAmountCash(double amountCash) {
         this.amountCash = amountCash;
     }
-    
+
     public double getAmountElectronic() {
         return amountElectronic;
     }
@@ -238,7 +261,7 @@ public class Table {
     public void setAmountElectronic(double amountElectronic) {
         this.amountElectronic = amountElectronic;
     }
-    
+
     public double getTotal() {
         return total;
     }
@@ -246,11 +269,14 @@ public class Table {
     public void setTotal(double total) {
         this.total = total;
     }
-    
-    
-    
+
     private String emptyEraser(String s) {
         s = s.replace(" ", "_");
         return s;
+    }
+
+    @Override
+    public String toString() {
+        return "Table{" + "num=" + num + ", pos=" + pos + ", openTime=" + openTime + ", id=" + id + ", open=" + open + ", bill=" + bill + ", order=" + order + ", gifts=" + gifts + ", toPay=" + toPay + ", partialPayed=" + partialPayed + ", auxiliarPartialPayedNoDiscount=" + auxiliarPartialPayedNoDiscount + ", errorItems=" + errorItems + ", waiter=" + waiter + ", discount=" + discount + ", error=" + error + ", priceCorrection=" + priceCorrection + ", amountCash=" + amountCash + ", amountElectronic=" + amountElectronic + ", total=" + total + '}';
     }
 }

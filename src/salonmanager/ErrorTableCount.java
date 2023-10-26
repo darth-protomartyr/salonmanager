@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 
 public class ErrorTableCount extends FrameWindow {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
@@ -83,7 +86,7 @@ public class ErrorTableCount extends FrameWindow {
         panelPpal.add(panelLabel);
         JLabel labelTit = utiliGraf.labelTitleBacker1("ERROR");
         panelLabel.add(labelTit);
-        
+
 //----------------------------------------------------------------------------------------------------------------------
 //PanelMount
         JPanel panelAmount = new JPanel();
@@ -176,7 +179,6 @@ public class ErrorTableCount extends FrameWindow {
         });
         panelAmount.add(butErrorMount);
 
-
 //----------------------------------------------------------------------------------------------------------------------
 //PanelItem
         JPanel panelItem = new JPanel();
@@ -219,15 +221,15 @@ public class ErrorTableCount extends FrameWindow {
         JScrollPane jSPPayed = new JScrollPane(listError);
         jSPPayed.setBounds(185, 25, 165, 80);
         panelItem.add(jSPPayed);
-        
+
         labelTotalMount = utiliGraf.labelTitleBacker2("Faltante: $0.0");
         labelTotalMount.setBounds(20, 110, 180, 20);
         panelItem.add(labelTotalMount);
-        
+
         JLabel labelLossCheck2 = utiliGraf.labelTitleBacker3("Pérdida Total");
         labelLossCheck2.setBounds(210, 110, 120, 20);
         panelItem.add(labelLossCheck2);
-        
+
         checkTotalLossItems.setBounds(300, 110, 20, 20);
         checkTotalLossItems.addItemListener(new ItemListener() {
             @Override
@@ -254,7 +256,6 @@ public class ErrorTableCount extends FrameWindow {
         });
         panelItem.add(butErrorItem);
 
-
 //----------------------------------------------------------------------------------------------------------------------
 //Pestañas
         tabbedPane.addTab("Error por Monto", panelAmount);
@@ -262,9 +263,15 @@ public class ErrorTableCount extends FrameWindow {
 
         tabbedPane.setBounds(10, 40, 365, 200);
         panelPpal.add(tabbedPane);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                sal.enableSalon();
+                dispose();
+            }
+        });
     }
 
-    
 //FUNCIONES------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------
 //Funciones por Monto--------------------------------------------------------------------------------------------------    
@@ -299,7 +306,7 @@ public class ErrorTableCount extends FrameWindow {
         if (error == false) {
             if (wrong == total) {
                 labelLoss.setText("El monto faltante es total");
-            } else if (wrong == 0) {     
+            } else if (wrong == 0) {
                 labelLoss.setText("No hay monto faltante");
             } else {
                 labelLoss.setText("Monto Faltante: $" + wrong);
@@ -312,8 +319,7 @@ public class ErrorTableCount extends FrameWindow {
 //            fieldAmount.setEditable(true);
 //        }
     }
-    
-    
+
     private void butErrorMountActionPerformed() throws Exception {
         boolean error = false;
         String err = fieldAmount.getText();
@@ -325,7 +331,7 @@ public class ErrorTableCount extends FrameWindow {
             } else {
                 errorMount = total - parseInt(err);
             }
-            
+
             if (errorMount > total) {
                 utiliMsg.errorTotalLess();
                 error = true;
@@ -354,17 +360,15 @@ public class ErrorTableCount extends FrameWindow {
         }
     }
 
-
     private void resetFrame() {
         checkTotalLossMount.setSelected(false);
         fieldAmount.setText("");
     }
 
-
 //Funciones por Item--------------------------------------------------------------------------------------------------
     private void updateItems() {
         boolean totalLoss = checkTotalLossItems.isSelected();
-        if(totalLoss == true) {
+        if (totalLoss == true) {
             for (ItemCarta ic : itemsToPay) {
                 itemsError.add(ic);
             }
@@ -375,17 +379,17 @@ public class ErrorTableCount extends FrameWindow {
             }
             itemsError = new ArrayList<ItemCarta>();
         }
-        
+
         listToPay.setModel(utili.itemListModelReturnMono(itemsToPay));
         listError.setModel(utili.itemListModelReturnMono(itemsError));
-        
+
         double error = 0;
         for (ItemCarta ic : itemsError) {
             error += ic.getPrice();
         }
         labelTotalMount.setText("Faltante: $" + error);
     }
-    
+
     private void selItemToPay() {
         checkTotalLossItems.setSelected(false);
         String selectedValue = (String) listToPay.getSelectedValue();
@@ -414,7 +418,6 @@ public class ErrorTableCount extends FrameWindow {
         labelTotalMount.setText("Faltante: $" + error);
     }
 
-    
     private void unSelItemToPay() {
         checkTotalLossItems.setSelected(false);
         String selectedValue = (String) listError.getSelectedValue();
@@ -435,15 +438,14 @@ public class ErrorTableCount extends FrameWindow {
         }
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsError);
         listError.setModel(modeloLista2);
-        
+
         double error = 0;
         for (ItemCarta ic : itemsError) {
             error += ic.getPrice();
         }
         labelTotalMount.setText("Faltante: $" + error);
-        
-    }
 
+    }
 
     private void butErrorItemActionPerformed() throws Exception {
         salon.errorItemsBacker(itemsError);

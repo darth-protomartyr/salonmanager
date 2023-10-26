@@ -7,6 +7,8 @@ import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,6 +99,13 @@ public class GiftSelector extends FrameWindow {
             }
         });
         panelBut.add(butInGift);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                sal.enableSalon();
+                dispose();
+            }
+        });
     }
 
     private void butInGiftActionPerformed() throws Exception {

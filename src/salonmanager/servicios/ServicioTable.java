@@ -4,35 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.Table;
+import salonmanager.entidades.Workshift;
+import salonmanager.persistencia.DAOItemCarta;
+import salonmanager.persistencia.DAOTable;
+import salonmanager.persistencia.DAOUser;
 
 public class ServicioTable {
 
-//    public Table orderTable(Table table) {
-//        Table tableAux = table;
-//        ArrayList<ItemCarta> iT = table.getOrder();
-//        ArrayList<ItemCarta> iTAux = new ArrayList<ItemCarta>();
-//        ArrayList<Integer> byId = new ArrayList<Integer>();
-//        for (ItemCarta ic : iT) {
-//            int i = ic.getId();
-//            byId.add(i);
-//        }
-//
-//        Collections.sort(byId);
-//
-//        for (int e = 0; e < byId.size(); e++) {
-//            for (int y = 0; y < iT.size(); y++) {
-//                int counter = 0;
-//                if (byId.get(e) == iT.get(y).getId()) {
-//                    while (counter < 1) {
-//                        iTAux.add(iT.get(y));
-//                        counter += 1;
-//                    }
-//                }
-//            }
-//        }
-//        tableAux.setOrder(iTAux);
-//        return tableAux;
-//    }
+    DAOTable daoT = new DAOTable();
+    DAOItemCarta daoI = new DAOItemCarta();
+    DAOUser daoU = new DAOUser();
+
 
     public int giftCounter(ArrayList<ItemCarta> gifts, ItemCarta ic) {
         int units = 0;
@@ -44,6 +26,7 @@ public class ServicioTable {
         return units;
     }
 
+    
     public String listarGifts(ArrayList<ItemCarta> gifts) {
         String txt = "";
         txt = txt + "Obsequios:\n";
@@ -56,17 +39,7 @@ public class ServicioTable {
         return txt;
     }
 
-//    public ArrayList<ItemCarta> orderItemComplete(Table tab) {
-//        ArrayList<ItemCarta> orderDeploy = new ArrayList<ItemCarta>();
-//        for (int i = 0; i < tab.getOrder().size(); i++) {
-//            int repeat = 1;
-//            while ( repeat <=  tab.getUnits().get(i)) {
-//                orderDeploy.add(tab.getOrder().get(i));
-//                repeat += 1;
-//            }
-//        }
-//        return orderDeploy;
-//    }
+
     public int itemUnitsBacker(ArrayList<ItemCarta> items, ItemCarta ic) {
         int units = 0;
         for (int i = 0; i < items.size(); i++) {
@@ -75,5 +48,23 @@ public class ServicioTable {
             }
         }
         return units;
+    }
+
+    ArrayList<Table> workshiftTableslistComplete(Workshift ws) throws Exception {
+        ArrayList<Table> wsTabs = new ArrayList<Table>();
+        ArrayList<Table> workshiftTabs = daoT.listarTablesByTimestamp(ws);
+        for (Table tab : workshiftTabs) {
+            tab.setOrder(daoI.listarItemCartaOrder(tab.getId()));
+            tab.setGifts(daoI.listarItemCartaGifts(tab.getId()));
+            tab.setPartialPayed(daoI.listarItemCartaPartialPayed(tab.getId()));
+            tab.setAuxiliarPartialPayedNoDiscount(daoI.listarItemCartaPartialPayedND(tab.getId()));
+            tab.setErrorItems(daoI.listarItemCartaError(tab.getId()));
+            tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
+            wsTabs.add(tab);
+//            tab.setAuxiliarPartialPayedNoDiscount(daoI.listarItemCartaPartialPayedNoDiscount(tab.getId()));
+//            tab.setErrorItems(daoI.listarItemCartaErrorItems(tab.getId()));
+//            tab.setWaiter(tab.getWaiter());
+        }
+        return wsTabs;
     }
 }

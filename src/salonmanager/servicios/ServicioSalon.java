@@ -8,6 +8,7 @@ package salonmanager.servicios;
 import java.util.ArrayList;
 import salonmanager.Salon;
 import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.JButtonTable;
 import salonmanager.entidades.Table;
 import salonmanager.persistencia.DAOItemCarta;
 import salonmanager.persistencia.DAOTable;
@@ -162,5 +163,15 @@ public class ServicioSalon {
         for (int i = 0; i < arrayAux.size(); i++) {
             daoIC.guardarItemOrderTable(arrayAux.get(i), tableAux);
         }
+    }
+
+    public boolean openJBTButtonsTester(ArrayList<JButtonTable> tableButtons) {
+        boolean close = true;
+        for (JButtonTable jbt : tableButtons) {
+            if (jbt.isOpenJBT() == true) {
+                close = false;
+            }
+        }
+        return close;
     }
 }

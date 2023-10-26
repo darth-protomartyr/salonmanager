@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -133,11 +135,10 @@ public class PartialPayer extends FrameWindow {
         labelRest = utiliGraf.labelTitleBacker3("Resto $:" + total);
         labelRest.setBounds(260, 160, 130, 25);
         panelPpal.add(labelRest);
-        
-        labelTip = utiliGraf.labelTitleBacker3("Prop $:" + Math.round(subTotal/10));
+
+        labelTip = utiliGraf.labelTitleBacker3("Prop $:" + Math.round(subTotal / 10));
         labelTip.setBounds(260, 180, 130, 25);
         panelPpal.add(labelTip);
-        
 
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluSt);
@@ -156,6 +157,13 @@ public class PartialPayer extends FrameWindow {
             }
         });
         panelBut.add(butPartialIn);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                sal.enableSalon();
+                dispose();
+            }
+        });
     }
 
     private void selItemToPay() {
@@ -176,13 +184,13 @@ public class PartialPayer extends FrameWindow {
                 }
             }
         }
-        labelPrice.setText(ss.billPartial(itemsPartialToPay,discount) + "");
+        labelPrice.setText(ss.billPartial(itemsPartialToPay, discount) + "");
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsToPay);
         listToPay.setModel(modeloLista2);
-        subTotal = ss.billPartial(itemsPartialToPay,discount);
+        subTotal = ss.billPartial(itemsPartialToPay, discount);
         labelPrice.setText(subTotal + "");
         labelRest.setText("Resto:" + (total - subTotal));
-        labelTip.setText("Prop:" + (Math.round(subTotal/10)));
+        labelTip.setText("Prop:" + (Math.round(subTotal / 10)));
         if ((total - subTotal) == 0) {
             butPartialIn.setText("Finalizar Pago");
         }
@@ -205,14 +213,14 @@ public class PartialPayer extends FrameWindow {
                 }
             }
         }
-        
-        subTotal = ss.billPartial(itemsPartialToPay,discount);
+
+        subTotal = ss.billPartial(itemsPartialToPay, discount);
         labelPrice.setText(subTotal + "");
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsPartialToPay);
         listPartialToPay.setModel(modeloLista2);
         labelPrice.setText(subTotal + "");
         labelRest.setText("Resto: " + (total - subTotal));
-        labelTip.setText("Prop.: " + Math.round(subTotal/10));
+        labelTip.setText("Prop.: " + Math.round(subTotal / 10));
         if ((total - subTotal) > 0) {
             butPartialIn.setText("Pago Parcial");
         }

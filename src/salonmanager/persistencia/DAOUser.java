@@ -322,8 +322,24 @@ public class DAOUser extends DAO {
             desconectarBase();
         }
     }
-    
-    
-    
-    
+
+
+    public User getWaiterByTable(String tabId) throws Exception {
+        User waiter = null;
+        String waiterId = "";
+        String sql = "SELECT * FROM waiter_mesas WHERE table_id_fkey = '" + tabId + "';";
+        System.out.println(sql);
+        consultarBase(sql);
+        while (resultado.next()) {
+            waiterId = resultado.getString(1);
+        }
+        
+        ArrayList<User> waiters = listWaiter();
+        for (int i = 0; i < waiters.size(); i++) {
+            if (waiters.get(i).getId().equals(waiterId)) {
+                waiter = waiters.get(i);
+            }
+        }   
+        return waiter; 
+    }
 }

@@ -4,18 +4,22 @@ import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import salonmanager.entidades.User;
+import salonmanager.entidades.Workshift;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import javax.swing.JFrame;
+import salonmanager.entidades.Session;
 
 public class SalonManager {
     private static ArrayList<JFrame> framesOpen = new ArrayList<JFrame>();
     private static User userIn = new User();
     private static String passIn = "";
     private static final String SECRET_KEY = "HappyWhenItRains";
+    private static Workshift workshiftActual = null;
+    private static Session sessionActual = null;
 //    FrameGeneral fg = new FrameGeneral();
     
     Color bluSt = new Color(3, 166, 136);
@@ -143,5 +147,21 @@ public class SalonManager {
         for (JFrame of : framesOpen) {
             of.dispose();
         }
+    }
+    
+    public void workshiftBacker(Workshift ws) {
+        workshiftActual = ws;
+    }
+    
+    public void workshiftEraser() {
+        workshiftActual = null;
+    }
+    
+    public void sessionBacker(Session ses) {
+        sessionActual = ses;
+    }
+    
+    public void sessionEraser() {
+        sessionActual = null;
     }
 }

@@ -18,46 +18,48 @@ public class Workshift {
     User cashier;
     Timestamp openShift;
     Timestamp closeShift;
-    boolean openWorkshift;
+    boolean stateWorkshift;
     ArrayList<Table> shiftTables;
     ArrayList<String> registers;
-    double giftMountShift;
-    double errorMountShift;
-    double errorMountShiftReal;
+    double totalMountShiftCash;
+    double totalMountShiftElectronic;
     double totalMountShift;
     double totalMountShiftReal;
+    double errorMountShift;
+    double errorMountShiftReal;
 
 
     public Workshift() {
-        
     }
 
     //Crear Turno
-    public Workshift(User cashier, ArrayList<Table> shiftTables, ArrayList<String> registers, double giftShift, double errorShift, double totalShift) {
+    public Workshift(User cashier) {
         this.cashier = cashier;
         this.openShift =  new Timestamp(new Date().getTime());
         this.closeShift =  null;
-        this.openWorkshift = true;
+        this.stateWorkshift = true;
         this.shiftTables = new ArrayList<Table>();
         this.registers = new ArrayList<String>();
-        this.giftMountShift = 0;
-        this.errorMountShift = 0;
+        this.totalMountShiftCash = 0;
+        this.totalMountShiftElectronic = 0;
+                this.errorMountShift = 0;
         this.errorMountShiftReal = 0;
         this.totalMountShift = 0;
         this.totalMountShiftReal = 0;
-    }
-    
-    //Consulta Turno
 
-    public Workshift(int id, User cashier, Timestamp openShift, Timestamp closeShift, boolean openWorkshift, ArrayList<Table> shiftTables, ArrayList<String> registers, double giftShift, double errorShift, double errorShiftReal, double totalShift, double totalShiftReal) {
+    }
+
+    //Consulta Turno
+    public Workshift(int id, User cashier, Timestamp openShift, Timestamp closeShift, boolean stateWorkshift, ArrayList<Table> shiftTables, ArrayList<String> registers, double totalMountShiftCash, double totalMountShiftElectronic, double giftShift, double errorShift, double errorShiftReal, double totalShift, double totalShiftReal) {
         this.id = id;
         this.cashier = cashier;
         this.openShift = openShift;
         this.closeShift = closeShift;
-        this.openWorkshift = openWorkshift;
+        this.stateWorkshift = stateWorkshift;
         this.shiftTables = shiftTables;
         this.registers = registers;
-        this.giftMountShift = giftShift;
+        this.totalMountShiftCash = totalMountShiftCash;
+        this.totalMountShiftElectronic = totalMountShiftElectronic;        
         this.errorMountShift = errorShift;
         this.errorMountShiftReal = errorShiftReal;
         this.totalMountShift = totalShift;
@@ -96,13 +98,13 @@ public class Workshift {
     public void setCloseShift(Timestamp closeShift) {
         this.closeShift = closeShift;
     }
-    
-    public boolean isOpenWorkshift() {
-        return openWorkshift;
+
+    public boolean isStateWorkshift() {
+        return stateWorkshift;
     }
-    
-    public void setOpenWorkshift(boolean openWorkshift) {
-        this.openWorkshift = openWorkshift;
+
+    public void setStateWorkshift(boolean stateWorkshift) {
+        this.stateWorkshift = stateWorkshift;
     }
 
     public ArrayList<Table> getShiftTables() {
@@ -121,20 +123,20 @@ public class Workshift {
         this.registers = registers;
     }
 
-    public double getGiftMountShift() {
-        return giftMountShift;
+    public double getTotalMountShiftCash() {
+        return totalMountShiftCash;
     }
 
-    public void setGiftMountShift(double giftMountShift) {
-        this.giftMountShift = giftMountShift;
-    }
-    
-    public double getErrorMountShift() {
-        return errorMountShift;
+    public void setTotalMountShiftCash(double totalMountShiftCash) {
+        this.totalMountShiftCash = totalMountShiftCash;
     }
 
-    public void setErrorMountShift(double errorMountShift) {
-        this.errorMountShift = errorMountShift;
+    public double getTotalMountShiftElectronic() {
+        return totalMountShiftElectronic;
+    }
+
+    public void setTotalMountShiftElectronic(double totalMountShiftElectronic) {
+        this.totalMountShiftElectronic = totalMountShiftElectronic;
     }
 
     public double getTotalMountShift() {
@@ -143,5 +145,29 @@ public class Workshift {
 
     public void setTotalMountShift(double totalMountShift) {
         this.totalMountShift = totalMountShift;
+    }
+
+    public double getTotalMountShiftReal() {
+        return totalMountShiftReal;
+    }
+
+    public void setTotalMountShiftReal(double totalMountShiftReal) {
+        this.totalMountShiftReal = totalMountShiftReal;
+    }
+
+    public double getErrorMountShift() {
+        return errorMountShift;
+    }
+
+    public void setErrorMountShift(double errorMountShift) {
+        this.errorMountShift = errorMountShift;
+    }
+
+    public double getErrorMountShiftReal() {
+        return errorMountShiftReal;
+    }
+
+    public void setErrorMountShiftReal(double errorMountShiftReal) {
+        this.errorMountShiftReal = errorMountShiftReal;
     }
 }

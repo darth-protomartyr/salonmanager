@@ -37,7 +37,7 @@ public class Manager extends FrameFullManager {
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
         
-        JMenuBar menuBar = utiliGraf.navegador(userIn, sm.getPassIn());
+        JMenuBar menuBar = utiliGraf.navegador(userIn, sm.getPassIn(), this);
         setJMenuBar(menuBar);
 
         JPanel panelUser = new JPanel();
@@ -77,25 +77,7 @@ public class Manager extends FrameFullManager {
         } else {
             labelActualShift.setText("No hay ningún turno activo.");
         }
-        panelSession.add(labelActualShift);        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        panelSession.add(labelActualShift);
 
         JButton butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
         butSalir.addActionListener(new ActionListener() {
@@ -106,7 +88,7 @@ public class Manager extends FrameFullManager {
             }
         });
         panelPpal.add(butSalir);
-        
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

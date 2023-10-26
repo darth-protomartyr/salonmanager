@@ -5,9 +5,12 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.entidades.User;
@@ -42,7 +42,6 @@ public class WaiterSelector extends FrameWindow {
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
 
@@ -58,6 +57,7 @@ public class WaiterSelector extends FrameWindow {
         tableAux = salon.getTable();
         sm.addFrame(this);
         setTitle("Selector de Mozos");
+
         PanelPpal panelPpal = new PanelPpal(390, 300);
         add(panelPpal);
         waiters = daoU.listWaiter();
@@ -99,6 +99,13 @@ public class WaiterSelector extends FrameWindow {
             }
         });
         panelPpal.add(butSelWaiter);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                sal.enableSalon();
+                dispose();
+            }
+        });
     }
 
     public void getWaiter() {

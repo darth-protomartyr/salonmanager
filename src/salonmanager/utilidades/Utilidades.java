@@ -3,7 +3,10 @@ package salonmanager.utilidades;
 import static java.lang.Integer.parseInt;
 import salonmanager.entidades.User;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,72 +51,8 @@ public class Utilidades {
         sh = sh / num;
         return sh;
     }
-
-//    public DefaultComboBoxModel<String> rubComboModelReturn(ArrayList<Rubro> rubs) {
-//        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
-//        for (Rubro r : rubs) {
-//            modeloCombo.addElement(r.getNombre());
-//        }
-//        return modeloCombo;
-//    }
-//    public DefaultComboBoxModel<String> ingreComboModelReturn(ArrayList<Ingrediente> listMayor, ArrayList<Ingrediente> listMenor) {
-//        ArrayList<Ingrediente> lma = listMayor;
-//        ArrayList<Ingrediente> lme = listMenor;
-//        if (lme != null) {
-//            Iterator<Ingrediente> iterator = lma.iterator();
-//            while (iterator.hasNext()) {
-//                Ingrediente ingre = iterator.next();
-//                if (lme.contains(ingre)) {
-//                    iterator.remove();
-//                }
-//            }
-//        }
-//        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
-//        for (Ingrediente i : lma) {
-//            modeloCombo.addElement(i.getNombre());
-//        }
-//        return modeloCombo;
-//    }
-//    public DefaultListModel<String> ingreListModelReturn(ArrayList<Ingrediente> listMayor, ArrayList<Ingrediente> listMenor) {
-//        DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-//        ArrayList<Ingrediente> lma = listMayor;
-//        ArrayList<Ingrediente> lme = listMenor;
-//        if (lme != null) {
-//            Iterator<Ingrediente> iterator = lma.iterator();
-//            while (iterator.hasNext()) {
-//                Ingrediente ingre = iterator.next();
-//                for (int i = 0; i < lme.size(); i++) {
-//                    if (ingre.getId() == lme.get(i).getId()) {
-//                        iterator.remove();
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (Ingrediente i : lma) {
-//            modeloLista.addElement(i.getNombre());
-//        }
-//        return modeloLista;
-//    }
-//    public Rubro rubSelReturn(String rub, ArrayList<Rubro> rubroDB) {
-//        Rubro r = new Rubro();
-//        for (Rubro ru : rubroDB) {
-//            if (rub.equals(ru.getNombre())) {
-//                r = ru;
-//            }
-//        }
-//        return r;
-//    }
-//
-//    public Ingrediente ingreSelReturn(String ingre, ArrayList<Ingrediente> ingreDB) {
-//        Ingrediente ing = new Ingrediente();
-//        for (Ingrediente i : ingreDB) {
-//            if (ingre.equals(i.getNombre())) {
-//                ing = i;
-//            }
-//        }
-//        return ing;
-//    }
+    
+    
     public User userSelReturn(String usr, ArrayList<User> userDB) {
         User user = new User();
         for (User u : userDB) {
@@ -134,33 +73,7 @@ public class Utilidades {
         return user;
     }
 
-//    public String listarTxtIngre(ArrayList<Ingrediente> ingredientesR, ArrayList<Integer> cantidades, ArrayList<Double> mermas) {
-//        String txt = "";
-//        txt = txt + "INGREDIENTES:\n";
-//        if (ingredientesR.size() > 0) {
-//            for (int i = 0; i < ingredientesR.size(); i++) {
-//                Ingrediente ingre = ingredientesR.get(i);
-//                Integer in = cantidades.get(i);
-//                Double despe = mermas.get(i * 2);
-//                Double mer = mermas.get((i * 2) + 1);
-//                String u = ingre.getUnidadMedicion();
-//                txt += mayusculaInicial(strShorter(ingre.getNombre(), 25)) + "(c: " + in + u + ", d:" + despe + "%, m: " + mer + "%).\n";
-//            }
-//        }
-//        return txt;
-//    }
-//    public String listarTxtSbr(ArrayList<Subreceta> subrecetasR, ArrayList<Integer> porcionesSbr) {
-//        String txt = "";
-//        if (subrecetasR.size() > 0) {
-//            txt = "SUBRECETAS:\n";
-//            for (int i = 0; i < subrecetasR.size(); i++) {
-//                Subreceta sr = subrecetasR.get(i);
-//                Integer u = porcionesSbr.get(i);
-//                txt += mayusculaInicial(strShorter(sr.getNombre(), 25)) + "(" + u + "uni.).\n";
-//            }
-//        }
-//        return txt;
-//    }
+
     public String strShorter(String str, int limite) {
         String st = "";
         if (str.length() > limite) {
@@ -171,13 +84,7 @@ public class Utilidades {
         return st;
     }
 
-//    public boolean testIgualdadArrayI(ArrayList<Ingrediente> ingredientesSbr, ArrayList<Integer> cantidades, ArrayList<Double> mermas) {
-//        boolean test = false;
-//        if (ingredientesSbr.size() == cantidades.size() && cantidades.size() == (mermas.size() / 2)) {
-//            test = true;
-//        }
-//        return test;
-//    }
+
     public <T> String conversorCadena(ArrayList<T> lista) {
         String listaStr = "";
         if (lista.size() > 0) {
@@ -191,58 +98,14 @@ public class Utilidades {
         return listaStr.trim();
     }
 
-    public ArrayList<Integer> arrayIntConversor(String string) {
-        String st = string;
-        ArrayList<Integer> cantidades = new ArrayList();
-        String[] cant = st.split("-");
-        if (!st.equals("")) {
-            for (String s : cant) {
-                cantidades.add(Integer.parseInt(s));
-            }
-        } else {
-            cantidades = null;
-        }
-        return cantidades;
-    }
 
-    public ArrayList<Double> arrayDoubleConversor(String string) {
-        String st = string;
-        ArrayList<Double> mermas = new ArrayList();
-        String[] merms = string.split("-");
-        if (!string.equals("")) {
-            for (String s : merms) {
-                mermas.add(Double.parseDouble(s));
-            }
-        } else {
-            mermas = null;
-        }
-        return mermas;
-    }
-
-//    public boolean ingreRepeat(String ing, ArrayList<Ingrediente> ingres, Ingrediente ingre) {
-//        boolean bool = false;
-//        ing = stringPlain(ing);
-//        for (Ingrediente in : ingres) {
-//            if (ingre == null) {
-//                if (ing.equals(stringPlain(in.getNombre()))) {
-//                    bool = true;
-//                }
-//            } else {
-//                if (!ingre.getNombre().equals(in.getNombre())) {
-//                    if (ing.equals(stringPlain(in.getNombre()))) {
-//                        bool = true;
-//                    }
-//                }
-//            }
-//        }
-//        return bool;
-//    }
     public String stringPlain(String st) {
         st.replaceAll("\\s", "");
         st.toLowerCase();
         return st;
     }
 
+    
     public double reductorDecimales(double costo, int f) {
         String cost = "" + costo;
         String c = "";
@@ -262,23 +125,14 @@ public class Utilidades {
         return costo;
     }
 
+    
     public String mayusculaInicial(String string) {
         String str = string.substring(0, 1).toUpperCase();
         str += string.substring(1, string.length());
         return str;
     }
 
-//    public String listarTxtSbrIngre(ArrayList<Subreceta> sbrIngres) {
-//        String txt = "Subrecetas que contienen al ingrediente consultado:\n";
-//        if (sbrIngres.size() > 0) {
-//            for (int i = 0; i < sbrIngres.size(); i++) {
-//                txt += i + 1 + "-" + sbrIngres.get(i).getNombre().toUpperCase() + "\n";
-//            }
-//        } else {
-//            txt = "El ingrediente no forma parte de ninguna subreceta";
-//        }
-//        return txt;
-//    }
+
     public String idRandom() {
         String id = "";
         String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -419,18 +273,12 @@ public class Utilidades {
                 if (ic.equals(stringPlain(i.getName()))) {
                     bool = true;
                 }
-//            } else {
-//                if (!itemCarta.getName().equals(i.getName())) {
-//                    if (ic.equals(stringPlain(i.getName()))) {
-//                        bool = true;
-//                    }
-//                }
-//            }
             }
         }
         return bool;
     }
 
+    
     ListModel itemsListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<ItemCarta> lma = listMayor;
@@ -453,6 +301,7 @@ public class Utilidades {
         return modeloLista;
     }
 
+    
     public ItemCarta itemSelReturn(String item, ArrayList<ItemCarta> itemsDB) {
         ItemCarta ic = null;
         for (ItemCarta i : itemsDB) {
@@ -463,6 +312,7 @@ public class Utilidades {
         return ic;
     }
 
+    
     public String booleanStringBack(boolean altaTip) {
         String yn = "NO";
         if (altaTip) {
@@ -471,6 +321,7 @@ public class Utilidades {
         return yn;
     }
 
+    
     public String arrayIntToStr(ArrayList<Integer> numTab) {
         String str = "";
         for (Integer i : numTab) {
@@ -478,6 +329,7 @@ public class Utilidades {
         }
         return str;
     }
+
 
     public ArrayList<Integer> strToArrayInt(String str) {
         ArrayList<Integer> arrayInt = new ArrayList<Integer>();
@@ -495,6 +347,7 @@ public class Utilidades {
         return arrayInt;
     }
 
+
     public String arrayStrToStr(ArrayList<String> strPane) {
         String str = "";
         for (String s : strPane) {
@@ -502,6 +355,7 @@ public class Utilidades {
         }
         return str;
     }
+
 
     public ArrayList<String> strToArrayStr(String str) {
         ArrayList<String> arrayStr = new ArrayList<String>();
@@ -518,6 +372,7 @@ public class Utilidades {
         return arrayStr;
     }
 
+    
     public ItemCarta itemCartaBacker(String carta, ArrayList<ItemCarta> itemsDB) {
         ItemCarta ic = null;
         for(ItemCarta i : itemsDB) {
@@ -528,6 +383,7 @@ public class Utilidades {
         return ic;
     }
 
+    
     public ListModel itemListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) { 
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<ItemCarta> lma = listMayor;
@@ -560,6 +416,7 @@ public class Utilidades {
         return modeloLista;
     }
 
+
     public boolean requiredPerm(char[] pass) {
         boolean perm = false;
         String p;
@@ -574,12 +431,13 @@ public class Utilidades {
         }
         return perm;
     }
+
     
-    
-    
-    
-    
-    
-    
-    
+    public String friendlyDate(Timestamp timeInitSes) {
+        String time = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date date = new Date(timeInitSes.getTime());
+        time = dateFormat.format(date);
+        return time;
+    }
 }
