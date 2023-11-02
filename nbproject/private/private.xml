@@ -20,11 +20,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/entidades/Workshift.java</file>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/persistencia/DAOWorkshift.java</file>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/servicios/ServicioCloseWorkshift.java</file>
+            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/entidades/CustomDialogPass.java</file>
+            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/entidades/FrameGeneral.java</file>
+            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/utilidades/UtilidadesMensajes.java</file>
             <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/Salon.java</file>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/entidades/Table.java</file>
         </group>
     </open-files>
 </project-private>

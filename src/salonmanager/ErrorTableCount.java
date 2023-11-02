@@ -350,8 +350,8 @@ public class ErrorTableCount extends FrameWindow {
         }
 
         if (error == false) {
-            int confirm = utiliMsg.cargaConfirmarMontoError(total - errorMount, errorMount);
-            if (confirm == 0) {
+            boolean confirm = utiliMsg.cargaConfirmarMontoError(total - errorMount, errorMount);
+            if (confirm) {
                 salon.errorMountBacker(errorMount);
                 dispose();
             }

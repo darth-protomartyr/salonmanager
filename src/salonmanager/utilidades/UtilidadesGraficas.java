@@ -52,7 +52,7 @@ public class UtilidadesGraficas extends JFrame {
     Manager manager = null;
 
     public JMenuBar navegador(User user, String pass, Manager man) throws Exception {
-        manager  = man;
+        manager = man;
         JMenuBar menuBar = new JMenuBar();
         JMenu menuInicio = new JMenu("Inicio");
         JMenu menuCarta = new JMenu("Carta");
@@ -77,7 +77,6 @@ public class UtilidadesGraficas extends JFrame {
         menuFacturacion.add(itemSesion);
         menuFacturacion.add(itemTurno);
         menuSalon.add(itemSalon);
-
 
         menuBar.add(menuInicio);
         if (sm.rolPermission(2)) {
@@ -281,15 +280,15 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
-        public JLabel labelTitleBackerA2(String tit) {
+
+    public JLabel labelTitleBackerA2(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(50f);
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBackerA3(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
@@ -297,7 +296,7 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBackerA4(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
@@ -305,10 +304,7 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
-    
-    
-    
+
     public JLabel labelTitleBacker1(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
@@ -521,8 +517,7 @@ public class UtilidadesGraficas extends JFrame {
         bot.setBounds(mWidth, mHeight, width, 30);
         return bot;
     }
-    
-    
+
     public JButton button3(String text, int mWidth, int mHeight, int width) {
         JButton bot = new JButton();
         text = text.toUpperCase();
@@ -727,12 +722,11 @@ public class UtilidadesGraficas extends JFrame {
     }
 
     public JSpinner spinnerBack(int mw, int mh, int w, int h, JSpinner spinner) {
-        JSpinner spin  = spinner; 
+        JSpinner spin = spinner;
         SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
         spin.setModel(model);
         spin.setBounds(mw, mh, w, h);
         return spin;
     }
 
-   
 }

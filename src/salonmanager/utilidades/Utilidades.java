@@ -51,8 +51,7 @@ public class Utilidades {
         sh = sh / num;
         return sh;
     }
-    
-    
+
     public User userSelReturn(String usr, ArrayList<User> userDB) {
         User user = new User();
         for (User u : userDB) {
@@ -73,7 +72,6 @@ public class Utilidades {
         return user;
     }
 
-
     public String strShorter(String str, int limite) {
         String st = "";
         if (str.length() > limite) {
@@ -83,7 +81,6 @@ public class Utilidades {
         }
         return st;
     }
-
 
     public <T> String conversorCadena(ArrayList<T> lista) {
         String listaStr = "";
@@ -98,14 +95,12 @@ public class Utilidades {
         return listaStr.trim();
     }
 
-
     public String stringPlain(String st) {
         st.replaceAll("\\s", "");
         st.toLowerCase();
         return st;
     }
 
-    
     public double reductorDecimales(double costo, int f) {
         String cost = "" + costo;
         String c = "";
@@ -125,13 +120,11 @@ public class Utilidades {
         return costo;
     }
 
-    
     public String mayusculaInicial(String string) {
         String str = string.substring(0, 1).toUpperCase();
         str += string.substring(1, string.length());
         return str;
     }
-
 
     public String idRandom() {
         String id = "";
@@ -225,8 +218,8 @@ public class Utilidades {
         modeloCombo.addElement("");
         return modeloCombo;
     }
-    
-        public ComboBoxModel itemsComboModelReturn(ArrayList<ItemCarta> itemsDB) {
+
+    public ComboBoxModel itemsComboModelReturn(ArrayList<ItemCarta> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (ItemCarta ic : itemsDB) {
             modeloCombo.addElement(ic.getName());
@@ -234,12 +227,11 @@ public class Utilidades {
         modeloCombo.addElement("");
         return modeloCombo;
     }
-    
-    
+
     public ComboBoxModel userComboModelReturn(ArrayList<User> users) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (User user : users) {
-            modeloCombo.addElement(user.getNombre() + " " + user.getApellido() );
+            modeloCombo.addElement(user.getNombre() + " " + user.getApellido());
         }
         return modeloCombo;
     }
@@ -262,8 +254,6 @@ public class Utilidades {
         }
         return caption;
     }
-    
-    
 
     public boolean itemCartaRepeat(String ic, ArrayList<ItemCarta> items, ItemCarta itemCarta) {
         boolean bool = false;
@@ -278,7 +268,6 @@ public class Utilidades {
         return bool;
     }
 
-    
     ListModel itemsListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<ItemCarta> lma = listMayor;
@@ -301,7 +290,6 @@ public class Utilidades {
         return modeloLista;
     }
 
-    
     public ItemCarta itemSelReturn(String item, ArrayList<ItemCarta> itemsDB) {
         ItemCarta ic = null;
         for (ItemCarta i : itemsDB) {
@@ -312,7 +300,6 @@ public class Utilidades {
         return ic;
     }
 
-    
     public String booleanStringBack(boolean altaTip) {
         String yn = "NO";
         if (altaTip) {
@@ -321,7 +308,6 @@ public class Utilidades {
         return yn;
     }
 
-    
     public String arrayIntToStr(ArrayList<Integer> numTab) {
         String str = "";
         for (Integer i : numTab) {
@@ -329,7 +315,6 @@ public class Utilidades {
         }
         return str;
     }
-
 
     public ArrayList<Integer> strToArrayInt(String str) {
         ArrayList<Integer> arrayInt = new ArrayList<Integer>();
@@ -347,7 +332,6 @@ public class Utilidades {
         return arrayInt;
     }
 
-
     public String arrayStrToStr(ArrayList<String> strPane) {
         String str = "";
         for (String s : strPane) {
@@ -355,7 +339,6 @@ public class Utilidades {
         }
         return str;
     }
-
 
     public ArrayList<String> strToArrayStr(String str) {
         ArrayList<String> arrayStr = new ArrayList<String>();
@@ -372,10 +355,9 @@ public class Utilidades {
         return arrayStr;
     }
 
-    
     public ItemCarta itemCartaBacker(String carta, ArrayList<ItemCarta> itemsDB) {
         ItemCarta ic = null;
-        for(ItemCarta i : itemsDB) {
+        for (ItemCarta i : itemsDB) {
             if (i.getName().equals(carta)) {
                 ic = i;
             }
@@ -383,8 +365,7 @@ public class Utilidades {
         return ic;
     }
 
-    
-    public ListModel itemListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) { 
+    public ListModel itemListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<ItemCarta> lma = listMayor;
         ArrayList<ItemCarta> lme = listMenor;
@@ -405,9 +386,8 @@ public class Utilidades {
         }
         return modeloLista;
     }
-    
-    
-    public ListModel itemListModelReturnMono(ArrayList<ItemCarta> listMayor) { 
+
+    public ListModel itemListModelReturnMono(ArrayList<ItemCarta> listMayor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<ItemCarta> lma = listMayor;
         for (ItemCarta ic : lma) {
@@ -415,7 +395,6 @@ public class Utilidades {
         }
         return modeloLista;
     }
-
 
     public boolean requiredPerm(char[] pass) {
         boolean perm = false;
@@ -432,12 +411,43 @@ public class Utilidades {
         return perm;
     }
 
-    
     public String friendlyDate(Timestamp timeInitSes) {
         String time = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date date = new Date(timeInitSes.getTime());
         time = dateFormat.format(date);
         return time;
+    }
+
+    public String stringMsgFrd(String st) {
+        String stFrd = "";
+        String jump = "<br><br>";
+        int limit = 0;
+        
+        if (st.length() <= 25) {
+            limit = 25; 
+        } else if (st.length() >= 25)  {
+            limit = 15;
+        }
+        
+        if (st.length() > 60) {
+            jump = "<br>";
+        }
+        
+        int counter = 0;
+        for (int i = 0; i < st.length(); i++) {
+            String letra = st.substring(i, i + 1);
+            stFrd = stFrd + letra;
+            counter += 1;
+            if (counter >= limit) {
+                if (letra.equals(" ")) {
+                    stFrd += jump;
+                    counter = 0;
+                }
+            }
+        }
+        
+        stFrd = "<html>" + stFrd + "</html>";
+        return stFrd;
     }
 }

@@ -1,251 +1,287 @@
 package salonmanager.utilidades;
 
 import java.awt.Component;
+import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.CrearCuenta;
+import salonmanager.Salon;
+import salonmanager.entidades.CustomDialog;
+import salonmanager.entidades.CustomDialogConfirm;
+import salonmanager.entidades.CustomDialogPass;
 import salonmanager.entidades.User;
 
 public class UtilidadesMensajes extends JFrame {
 
     private javax.swing.JOptionPane optionPaneOk;
 
-//    public int paneEliminarIngre() {
-//        int dialogResult = JOptionPane.showOptionDialog(null, "¿Estás seguro de que quieres eliminar el ingrediente?", "Eliminar Ingrediente", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Aceptar"}, null);
-//        return dialogResult;
-//    }
     public void cargaRegistroExitoso() {
-        optionPaneOk.showMessageDialog(null, "El usuario fue registrado con éxito.");
+        CustomDialog cm = new CustomDialog("El usuario fue registrado con éxito.", 1);
+        cm.setVisible(true);
     }
 
     public void errorRegistroFallido() {
-        optionPaneOk.showMessageDialog(null, "Error: El registro no fue realizado.");
+        CustomDialog cm = new CustomDialog("Debe iniciar un turno antes de cargar mesas", 2);
+        cm.setVisible(true);
+
     }
 
     public void errorCantCharName() {
-        optionPaneOk.showMessageDialog(null, "Error: el número de caracteres del nombre no debe superar los 30 ni ser menor a 2.");
+        CustomDialog cm = new CustomDialog("El número de caracteres del nombre no debe superar los 30 ni ser menor a 2.", 2);
+        cm.setVisible(true);
     }
 
     public void errorNameRepeat() {
-        optionPaneOk.showMessageDialog(null, "Error: el mail ya se encuentra ingresado en nuestra base de datos.");
+        CustomDialog cm = new CustomDialog("El mail ya se encuentra ingresado en nuestra base de datos.", 2);
+        cm.setVisible(true);
     }
 
     public void errorMailRepeat() {
-        optionPaneOk.showMessageDialog(null, "Error: el mail ya se encuentra ingresado en nuestra base de datos.");
+        CustomDialog cm = new CustomDialog("Error: el mail ya se encuentra ingresado en nuestra base de datos.", 2);
+        cm.setVisible(true);
     }
 
     public void errorMail() {
-        optionPaneOk.showMessageDialog(null, "Error: el mail ingresado no es válido.");
+        CustomDialog cm = new CustomDialog("Error: el mail ingresado no es válido.", 2);
+        cm.setVisible(true);
     }
 
     public void errorPassChar() {
-        optionPaneOk.showMessageDialog(null, "Error: el password debe tener entre 8 y 30 caracteres.");
+        CustomDialog cm = new CustomDialog("Error: el password debe tener entre 8 y 30 caracteres.", 2);
+        cm.setVisible(true);
     }
 
     public void errorPassCoincidence() {
-        optionPaneOk.showMessageDialog(null, "Error: las contraseñas ingresadas no coinciden.");
+        CustomDialog cm = new CustomDialog("Error: las contraseñas ingresadas no coinciden.", 2);
+        cm.setVisible(true);
     }
 
     public void errorDataNull() {
-        optionPaneOk.showMessageDialog(null, "Error: Usted no ingresó todos los datos requeridos.");
+        CustomDialog cm = new CustomDialog("Error: Usted no ingresó todos los datos requeridos.", 2);
+        cm.setVisible(true);
     }
 
     public void errorUserNull() {
-        optionPaneOk.showMessageDialog(null, "Error: no hay un usuario registrado con el mail ingresado.");
+        CustomDialog cm = new CustomDialog("Error: no hay un usuario registrado con el mail ingresado.", 2);
+        cm.setVisible(true);
     }
 
     public void errorAccessDenied() {
-        optionPaneOk.showMessageDialog(null, "Error: Acceso denegado.");
+        CustomDialog cm = new CustomDialog("Error: Acceso denegado.", 2);
+        cm.setVisible(true);
     }
 
     public void errorCantCharDescription() {
-        optionPaneOk.showMessageDialog(null, "Error: el número de caracteres de la descripción no debe superar los 149.");
+        CustomDialog cm = new CustomDialog("Error: el número de caracteres de la descripción no debe superar los 149.", 2);
+        cm.setVisible(true);
     }
 
     public void errorNumerico() {
-        optionPaneOk.showMessageDialog(null, "El dato ingresado no es numérico");
+        CustomDialog cm = new CustomDialog("Error: el dato ingresado no es numérico", 2);
+        cm.setVisible(true);
     }
 
     public void errorCantCharNum() {
-        optionPaneOk.showMessageDialog(null, "Error: el número de caracteres del numero ingresado no debe superar los 12.");
+        CustomDialog cm = new CustomDialog("Error: el número de caracteres del numero ingresado no debe superar los 12.", 2);
+        cm.setVisible(true);
     }
 
     public void errorIngresoItem() {
-        optionPaneOk.showMessageDialog(null, "Error: no se generó un item.");
+        CustomDialog cm = new CustomDialog("Error: no se generó un item.", 2);
+        cm.setVisible(true);
     }
 
     public void errorNameItem() {
-        optionPaneOk.showMessageDialog(null, "Error: item debe tener un nombre.");
+        CustomDialog cm = new CustomDialog("Error: item debe tener un nombre.", 2);
+        cm.setVisible(true);
     }
 
     public void errorPriceItem() {
-        optionPaneOk.showMessageDialog(null, "Error: el item debe tener un precio.");
+        CustomDialog cm = new CustomDialog("Error: el item debe tener un precio.", 2);
+        cm.setVisible(true);
     }
 
     public void errorCargaDB() {
-        optionPaneOk.showMessageDialog(null, "Error: no pudo cargarse la información en la Base de Datos.");
+        CustomDialog cm = new CustomDialog("Error: no pudo cargarse la información en la Base de Datos.", 2);
+        cm.setVisible(true);
     }
 
     public void cargaItem() {
-        optionPaneOk.showMessageDialog(null, "El item de la carta fue cargado con éxito a la base de datos.");
+        CustomDialog cm = new CustomDialog("El item de la carta fue cargado con éxito a la base de datos.", 1);
+        cm.setVisible(true);
     }
 
     public void errorPriceCost() {
-        optionPaneOk.showMessageDialog(null, "El precio de venta es inferior al costo.");
+        CustomDialog cm = new CustomDialog("Error: el precio de venta es inferior al costo.", 2);
+        cm.setVisible(true);
     }
 
-    public int errorPriceNull() {
-        int dialogResult = JOptionPane.showOptionDialog(null, "¿Estás seguro de que quieres que el precio de venta sea 0?", "Confirmar precio 0", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Aceptar"}, null);
-        return dialogResult;
+    public boolean errorPriceNull() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres que el precio de venta sea 0?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 
     public void errorSeleccion() {
-        optionPaneOk.showMessageDialog(null, "Ningún elemento fue seleccionado.");
+        CustomDialog cm = new CustomDialog("Error: Ningún elemento fue seleccionado.", 2);
+        cm.setVisible(true);
     }
 
     public void errorWaiterNull() {
-        optionPaneOk.showMessageDialog(null, "Antes debe seleccionar un mozo del panel ubicado arriba a la derecha.");
+        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un mozo del panel ubicado arriba a la derecha.", 2);
+        cm.setVisible(true);
     }
 
-//    public void errorTableNull() {
-//        optionPaneOk.showMessageDialog(null, "Para realizar esta acción antes debe seleccionar una mesa.");
-//    }
-
     public void errorItemsTableNull() {
-        optionPaneOk.showMessageDialog(null, "Para realizar esta acción antes debe haber items cargados en la mesa.");
-
+        CustomDialog cm = new CustomDialog("Error: Realizar esta acción antes debe haber items cargados en la mesa.", 2);
+        cm.setVisible(true);
     }
 
     public void cargaTableErase() {
-        optionPaneOk.showMessageDialog(null, "La mesa fue cerrada con éxito.");
+        CustomDialog cm = new CustomDialog("La mesa fue cerrada con éxito.", 1);
+        cm.setVisible(true);
     }
 
-    public int cargaNewWaiter() {
-        int dialogResult = JOptionPane.showOptionDialog(null, "¿Estás seguro de que quieres modificar el mozo?", "Confirmar Cambio de mozo", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Aceptar"}, null);
-        return dialogResult;
-    }
+//    public int cargaNewWaiter() {
+//        int dialogResult = JOptionPane.showOptionDialog(null, "¿Estás seguro de que quieres modificar el mozo?", "Confirmar Cambio de mozo", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Aceptar"}, null);
+//        return dialogResult;
+//    }
 
     public void errorItemGift(String item) {
-        optionPaneOk.showMessageDialog(null, "No queda " + item + " por obsequiar en esta mesa");
+        CustomDialog cm = new CustomDialog("No queda " + item + " por obsequiar en esta mesa", 2);
+        cm.setVisible(true);
     }
 
     public void cargaGift(String item) {
-        optionPaneOk.showMessageDialog(null, "Se ingresó " + item + " a la lista de obsequios");
+        CustomDialog cm = new CustomDialog("Se ingresó " + item + " a la lista de obsequios", 1);
+        cm.setVisible(true);
     }
 
-    public int cargaConfirmarCierre() {
-        int dialogResult = JOptionPane.showOptionDialog(null, "Si confirma el cierre de mesa, no podrá \n agregar Obsequios ni descuentos", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
-        return dialogResult;
+    public boolean cargaConfirmarCierre() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma el cierre de mesa, no podrá agregar Obsequios ni descuentos");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 
     public void errorBillSend() {
-        optionPaneOk.showMessageDialog(null, "La cuenta ya fue enviada, no se puede realizar la acción.");
+        CustomDialog cm = new CustomDialog("La cuenta ya fue enviada, no se puede realizar la acción.", 2);
+        cm.setVisible(true);
     }
 
     public void errorTotalLess() {
-        optionPaneOk.showMessageDialog(null, "No se registra error: el monto ingtresado es mayor al Total de la cuenta.");
+        CustomDialog cm = new CustomDialog("No se registra error: el monto ingtresado es mayor al Total de la cuenta.", 2);
+        cm.setVisible(true);
     }
 
-//    public void errorTotalEqual() {
-//        optionPaneOk.showMessageDialog(null, "No se registra error: el monto ingtresado es igual al Total de la cuenta.");
-//    }
     public void errorMountNull() {
-        optionPaneOk.showMessageDialog(null, "El monto ingtresado es nulo.");
+        CustomDialog cm = new CustomDialog("El monto ingtresado es nulo.", 2);
+        cm.setVisible(true);
     }
 
     public void cargaError() {
-        optionPaneOk.showMessageDialog(null, "El error fue ingresado al sistema.");
+        CustomDialog cm = new CustomDialog("El error fue ingresado al sistema.", 1);
+        cm.setVisible(true);
+
     }
 
     public void errorBillUnsend() {
-        optionPaneOk.showMessageDialog(null, "La acción no puede realizarse,\nel cierre de mesa no ha sido iniciado.");
+        CustomDialog cm = new CustomDialog("La acción no puede realizarse, el cierre de mesa no ha sido iniciado.", 2);
+        cm.setVisible(true);
     }
 
     public void errorItemNull() {
-        optionPaneOk.showMessageDialog(null, "No seleccionó ningún Item.");
+        CustomDialog cm = new CustomDialog("No seleccionó ningún Item.", 2);
+        cm.setVisible(true);
     }
 
     public void errorDiscountRepeat() {
-        optionPaneOk.showMessageDialog(null, "Ya fue aplicado un descuento \ny no puede ser modificado.");
+        CustomDialog cm = new CustomDialog("Ya fue aplicado un descuento y no puede ser modificado.", 2);
+        cm.setVisible(true);
     }
 
-    public int cargaConfirmarMontoError(double in, double out) {
-        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que el monto ingresado es de " + in + "\n"
-                + "y el faltante de $" + out + "?", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
-        return dialogResult;
+    public boolean cargaConfirmarMontoError(double in, double out) {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que el monto ingresado es de $" + in + " y el faltante de $" + out + "?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 
-    public int cargaConfirmarItemsError(int num) {
-        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que faltó el pago de " + num + " items?", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
-        return dialogResult;
-    }
+//    public int cargaConfirmarItemsError(int num) {
+//        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que faltó el pago de " + num + " items?", "CONFIRMAR CIERRE DE MESA", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
+//        return dialogResult;
+//    }
 
     public void errorIngresoNum() {
-        optionPaneOk.showMessageDialog(null, "El número de la mesa no fue ingresado.");
-
+        CustomDialog cm = new CustomDialog("El número de la mesa no fue ingresado.", 2);
+        cm.setVisible(true);
     }
 
     public void errorIngresoPos() {
-        optionPaneOk.showMessageDialog(null, "La ubicación de la mesa no fue ingresada.");
-
+        CustomDialog cm = new CustomDialog("La ubicación de la mesa no fue ingresada.", 2);
+        cm.setVisible(true);
     }
 
     public void errorIngresoOpenTime() {
-        optionPaneOk.showMessageDialog(null, "El momento de apertura de la mesa no fue ingresado.");
-
+        CustomDialog cm = new CustomDialog("El momento de apertura de la mesa no fue ingresado.", 2);
+        cm.setVisible(true);
     }
 
     public void errorIngresoId() {
-        optionPaneOk.showMessageDialog(null, "La mesa no tiene identificador.");
+        CustomDialog cm = new CustomDialog("La mesa no tiene identificador.", 2);
+        cm.setVisible(true);
     }
-    
+
     public char[] solicitudMod() {
-        JPasswordField passwordField = new JPasswordField();
-        Object[] message = {"Contraseña:", passwordField};
-
-        int option = JOptionPane.showConfirmDialog(null, message, "Ingrese su contraseña", JOptionPane.OK_CANCEL_OPTION);
-
-        if (option == JOptionPane.OK_OPTION) {
-            return passwordField.getPassword();
-        } else {
-            return null;
-        }
+        char[] chars = null;
+        CustomDialogPass cdp = new CustomDialogPass("Ingrese su contraseña");
+        cdp.setVisible(true);
+        chars = cdp.getChar();
+        return chars;
     }
 
     public void errorMixedPayUp() {
-            optionPaneOk.showMessageDialog(null, "Debe ingresar el pago mixto \n"
-                    + "en la parte inferior del cuadro \n"
-                    + "o cerrar la ventana y volverla abrir.");
+        CustomDialog cm = new CustomDialog("Debe ingresar el pago mixto en la parte inferior del cuadro o cerrar la ventana y volverla abrir.", 2);
+        cm.setVisible(true);
     }
 
     public void errorWorkshift() {
-        optionPaneOk.showMessageDialog(null, "Para comenzar a cargar mesas \n"
-                + "debes iniciar un turno.");
+        CustomDialog cm = new CustomDialog("Debe iniciar un turno antes de cargar mesas.", 2);
+        cm.setVisible(true);
     }
-    
-    
+
     public void errorCashierNull() {
-        optionPaneOk.showMessageDialog(null, "El turno que desea iniciar \n no tiene un cajero asignado.");
+        CustomDialog cm = new CustomDialog("Debe iniciar un turno antes de cargar mesas.", 2);
+        cm.setVisible(true);
     }
 
-    public int cargaConfirmarInicioTurno(String name, String lastName) {
-        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que desea iniciar un turno \n"
-                + "con el usuario " + name + " " + lastName + "?", "CONFIRMAR INICIO DE TURNO", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
-        return dialogResult;
+    public boolean cargaConfirmarInicioTurno(String name, String lastName) {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que desea iniciar un turno con el usuario " + name + " " + lastName + "?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 
-    public int cargaConfirmarCierreTurno(String name, String lastName) {
-        int dialogResult = JOptionPane.showOptionDialog(null, "¿Cónfirma que desea cerrar el turno?", "CONFIRMAR CIERRE DE TURNO", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
-        return dialogResult;
+    public boolean cargaConfirmarCierreTurno(String name, String lastName) {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que desea cerrar el turno?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 
+    public boolean cargaConfirmarCambioTurno(User user) {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Aún hay mesas abiertas, ¿iniciará el próximo turno con otro usuario?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
 
-
-    public int cargaConfirmarCambioTurno(User user) {
-        int dialogResult = JOptionPane.showOptionDialog(null, "Aún hay mesas abiertas, \n" 
-                + "¿Iniciará el próximo turno \n"
-                + " con otro usuario?", "CONFIRMAR CIERRE DE TURNO", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Confirmar"}, null);
-        return dialogResult;
+    public boolean cargaConfirmarFacturacion() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Aún hay mesas abiertas, ¿Iniciará el próximo turno con otro usuario?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 }

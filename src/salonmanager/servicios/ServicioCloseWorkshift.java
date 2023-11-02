@@ -3,6 +3,7 @@ package salonmanager.servicios;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import salonmanager.Salon;
 import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.Table;
 import salonmanager.entidades.User;
@@ -26,85 +27,90 @@ public class ServicioCloseWorkshift {
     ArrayList<Table> tabsWsAux = new ArrayList<Table>();
     Workshift actualWs = null;
     Workshift partialWs = null;
-    
+    Salon sal = null;
 
-    public Workshift closeWorkshift(Workshift ws) throws Exception {
+    public void closeWorkshift(Workshift ws, Salon sal1) throws Exception {
+        sal = sal1;
         actualWs = ws;
-        actualWs.setCloseShift(new Timestamp(new Date().getTime()));
-        actualWs.setStateWorkshift(false);
-//        ws.setRegisters();
-        actualWs.setCloseShift(new Timestamp(new Date().getTime()));
-        tabsWs = st.workshiftTableslistComplete(ws);
+        tabsWs = st.workshiftTableslistComplete(actualWs);
         boolean partialEnd = openTableVerificate();
+
         if (partialEnd == true) {
+            Thread.sleep(10); // Espera durante 10 milisegundos (1 segundo) para no pisarse con la marca temporal del cierre del turno anterior
             tabsWsAux = new ArrayList<Table>();
-            partialWs = new Workshift(); 
+            partialWs = new Workshift();
+            partialWs.setCashier(null);
+            partialWs.setOpenShift(new Timestamp(new Date().getTime()));
+            partialWs.setCloseShift(null);
+            partialWs.setStateWorkshift(true);
+            partialWs.setTotalMountShiftCash(0);
+            partialWs.setTotalMountShiftElectronic(0);
+            partialWs.setTotalMountShift(0);
+            partialWs.setTotalMountShiftReal(0);
+            partialWs.setErrorMountShift(0);
+            partialWs.setErrorMountShiftReal(0);
         }
 
         for (int i = 0; i < tabsWs.size(); i++) {
             Table tab = tabsWs.get(i);
-            if (tab.getPartialPayed().size() > 0 || tab.getAuxiliarPartialPayedNoDiscount().size() > 0) {
+            if (tab.getPartialPayed().size() > 0 || tab.getAuxiliarPartialPayedNoDiscount().size() > 0) { //Divide a la mesa para cerrar lo pagado y que el resto pase al proximo turno 
+                //crea mesa para nuevo turno
                 int num = tab.getNum();
                 String pos = tab.getPos();
                 boolean bill = tab.isBill();
                 ArrayList<ItemCarta> order = tab.getOrder();
-                ArrayList<ItemCarta> gifts = tab.getGifts();
                 User waiter = tab.getWaiter();
                 int discount = tab.getDiscount();
                 double total = tab.getTotal();
-                Table tabNewWs = new Table(num, pos, bill, order, gifts, waiter, discount, total);
+                Table tabNewWs = new Table(num, pos, bill, order, waiter, discount, total);
                 tabsWsAux.add(tabNewWs);
                 daoT.guardarTable(tabNewWs);
-
+                for (ItemCarta ic : tab.getPartialPayed()) {
+                    daoI.eliminarItemPayedTable(ic, tabNewWs);
+                }
+                for (ItemCarta ic : tab.getOrder()) {
+                    daoI.guardarItemOrderTable(ic, tabNewWs);
+                }
+                tabsWsAux.add(tabNewWs);
                 tab.setOpen(false);
                 tab.setOrder(tab.getPartialPayed());
                 tab.setPartialPayed(null);
                 tab.setTotal(ss.countBill(tab));
                 daoT.updateTableTotal(tab);
-                
-
-            } else {
-                
-                if (tab.isOpen() == false) {
-                    mount += tab.getTotal();
-                    mountError += tab.getError();
-                    mountCash += tab.getAmountCash();
-                    mountElectronic += tab.getAmountElectronic();    
-                } else {
-                    openTablesWorkshift.add(tab);
-                }
             }
+
+            mount += tab.getTotal();
+            mountError += tab.getError();
+            mountCash += tab.getAmountCash();
+            mountElectronic += tab.getAmountElectronic();
         }
-        
-        ws.setStateWorkshift(false);
+
+        actualWs.setTotalMountShift(mount);
+        actualWs.setErrorMountShift(mountError);
+        actualWs.setTotalMountShiftCash(mountCash);
+        actualWs.setTotalMountShiftElectronic(mountElectronic);
+        daoW.updateWorkshiftTotal(actualWs);
+        daoW.updateWorkshiftError(actualWs);
+        daoW.updateWorkshiftCash(actualWs);
+        daoW.updateWorkshiftElectronic(actualWs);
 
         if (partialEnd == true) {
-            newWsPayed = new Workshift();
-            newWsPayed.setCashier(null);
-            newWsPayed.setOpenShift(new Timestamp(new Date().getTime()));
-            newWsPayed.setCloseShift(null);
-            newWsPayed.setStateWorkshift(true);
-            newWsPayed.setShiftTables(new ArrayList<Table>());
-            newWsPayed.setRegisters(new ArrayList<String>());
-            newWsPayed.setTotalMountShiftCash(0);
-            newWsPayed.setTotalMountShiftElectronic(0);
-            newWsPayed.setTotalMountShift(0);
-            newWsPayed.setTotalMountShiftReal(0);
-            newWsPayed.setErrorMountShift(0);
-            newWsPayed.setErrorMountShiftReal(0);
+            daoW.guardarWorkshift(partialWs);
+            for (Table tab : tabsWsAux) {
+                daoT.guardarTable(tab);
+            }
         }
-        return newWs;
-    }
 
-    private void tableDivide(Table tab) {
-
+        sal.workshiftConclude(actualWs, tabsWs, partialEnd);
     }
 
     private boolean openTableVerificate() {
         boolean openTable = false;
-        for (int i = 0; i <; i++) {
-
+        for (int i = 0; i < tabsWs.size(); i++) {
+            if (tabsWs.get(i).isOpen() == true) {
+                openTable = true;
+            }
         }
-
+        return openTable;
     }
 }

@@ -19,8 +19,6 @@ public class Workshift {
     Timestamp openShift;
     Timestamp closeShift;
     boolean stateWorkshift;
-    ArrayList<Table> shiftTables;
-    ArrayList<String> registers;
     double totalMountShiftCash;
     double totalMountShiftElectronic;
     double totalMountShift;
@@ -38,11 +36,9 @@ public class Workshift {
         this.openShift =  new Timestamp(new Date().getTime());
         this.closeShift =  null;
         this.stateWorkshift = true;
-        this.shiftTables = new ArrayList<Table>();
-        this.registers = new ArrayList<String>();
         this.totalMountShiftCash = 0;
         this.totalMountShiftElectronic = 0;
-                this.errorMountShift = 0;
+        this.errorMountShift = 0;
         this.errorMountShiftReal = 0;
         this.totalMountShift = 0;
         this.totalMountShiftReal = 0;
@@ -50,14 +46,12 @@ public class Workshift {
     }
 
     //Consulta Turno
-    public Workshift(int id, User cashier, Timestamp openShift, Timestamp closeShift, boolean stateWorkshift, ArrayList<Table> shiftTables, ArrayList<String> registers, double totalMountShiftCash, double totalMountShiftElectronic, double giftShift, double errorShift, double errorShiftReal, double totalShift, double totalShiftReal) {
+    public Workshift(int id, User cashier, Timestamp openShift, Timestamp closeShift, boolean stateWorkshift, double totalMountShiftCash, double totalMountShiftElectronic, double giftShift, double errorShift, double errorShiftReal, double totalShift, double totalShiftReal) {
         this.id = id;
         this.cashier = cashier;
         this.openShift = openShift;
         this.closeShift = closeShift;
         this.stateWorkshift = stateWorkshift;
-        this.shiftTables = shiftTables;
-        this.registers = registers;
         this.totalMountShiftCash = totalMountShiftCash;
         this.totalMountShiftElectronic = totalMountShiftElectronic;        
         this.errorMountShift = errorShift;
@@ -105,22 +99,6 @@ public class Workshift {
 
     public void setStateWorkshift(boolean stateWorkshift) {
         this.stateWorkshift = stateWorkshift;
-    }
-
-    public ArrayList<Table> getShiftTables() {
-        return shiftTables;
-    }
-
-    public void setShiftTables(ArrayList<Table> shiftTables) {
-        this.shiftTables = shiftTables;
-    }
-
-    public ArrayList<String> getRegisters() {
-        return registers;
-    }
-
-    public void setRegisters(ArrayList<String> registers) {
-        this.registers = registers;
     }
 
     public double getTotalMountShiftCash() {

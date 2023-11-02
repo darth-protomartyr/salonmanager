@@ -74,7 +74,7 @@ public class Table {
     }
     
     //crear table pendiente para cambio de turno
-    public Table(int num, String pos, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, User waiter, int discount, double total) {
+    public Table(int num, String pos, boolean bill, ArrayList<ItemCarta> order, User waiter, int discount, double total) {
         this.num = num;
         this.pos = pos;
         this.openTime = new Timestamp(new Date().getTime());
@@ -82,7 +82,7 @@ public class Table {
         this.open = true;
         this.bill = bill;
         this.order = order;
-        this.gifts = gifts;    
+        this.gifts = new ArrayList();    
         this.toPay = new ArrayList<ItemCarta>();
         this.partialPayed = new ArrayList<ItemCarta>();
         this.auxiliarPartialPayedNoDiscount = new ArrayList<ItemCarta>();

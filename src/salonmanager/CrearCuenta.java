@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -52,8 +53,9 @@ public class CrearCuenta extends FrameHalf {
     JPasswordField fieldPass1 = new JPasswordField();
     JPasswordField fieldPass2 = new JPasswordField();
     JButton butCrearUser;
-
+    JFrame frame = null;
     public CrearCuenta() throws Exception {
+        frame = this;
         setTitle("Registrar");
         JPanel panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
@@ -208,6 +210,8 @@ public class CrearCuenta extends FrameHalf {
             labelImage.setText("Imagen: " + nameImage);
         }
     }
+    
+    
 
     //Resets
     private void resetRegister() {

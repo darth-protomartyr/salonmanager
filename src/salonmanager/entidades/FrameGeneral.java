@@ -14,10 +14,10 @@ public class FrameGeneral extends JFrame {
     static protected int alturaFrame;
     static protected int anchoUnit;
     static protected int altoUnit;
-
+    protected JFrame frame = null;
 
     public FrameGeneral() {
-
+        frame = this;
         Toolkit pantalla = Toolkit.getDefaultToolkit();
         Dimension tamanioPantalla = pantalla.getScreenSize();
         anchoFrame = tamanioPantalla.width;
@@ -49,5 +49,4 @@ public class FrameGeneral extends JFrame {
     public void setAlturaFrame(int alturaFrame) {
         this.alturaFrame = alturaFrame;
     }
-
 }

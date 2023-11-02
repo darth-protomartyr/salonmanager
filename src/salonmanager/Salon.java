@@ -198,23 +198,29 @@ public class Salon extends FrameFullManager {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (workshiftActual == null) {
-                        int confirm1 = utiliMsg.cargaConfirmarInicioTurno(user.getNombre(), user.getApellido());
-                        if (confirm1 == 0) {
+                        boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(user.getNombre(), user.getApellido());
+                        if (confirm1 == true) {
                             workshiftActual = new Workshift(user);
                             daoW.guardarWorkshift(workshiftActual);
                             sm.workshiftBacker(workshiftActual);
                             labelWorkshift.setText("Inicio Turno: " + utili.friendlyDate(workshiftActual.getOpenShift()));
-                            butInitWorkshift.setText("Cerrar Turno");
+                            butInitWorkshift.setText("CERRAR TURNO");
                         }
                     } else {
                         if (ss.openJBTButtonsTester(tableButtons) == true) {
-                            int confirm2 = utiliMsg.cargaConfirmarCierreTurno(user.getNombre(), user.getApellido());
-                            if (confirm2 == 0) {
+                            int id = daoW.findId(workshiftActual.getOpenShift());
+                            workshiftActual.setId(id);
+                            workshiftActual.setCloseShift(new Timestamp(new Date().getTime()));
+                            workshiftActual.setStateWorkshift(false);
+                            daoW.updateWorkshiftClose(workshiftActual);
+                            daoW.updateWorkshiftState(workshiftActual);
+                            boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(user.getNombre(), user.getApellido());
+                            if (confirm2 == true) {
                                 endWorkshift();
                                 butInitWorkshift.setText("Iniciar Turno");
                             } else {
-                                int confirm3 = utiliMsg.cargaConfirmarCambioTurno(user);
-                                if (confirm3 == 0) {
+                                boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(user);
+                                if (confirm3 == true) {
                                     //Cerrar Turno actual para que uno nuevo se abierto
                                 }
                             }
@@ -561,8 +567,8 @@ public class Salon extends FrameFullManager {
                             resetTableFull();
                         } else {
                             if (tableAux.isBill() == false) {
-                                int confirm = utiliMsg.cargaConfirmarCierre();
-                                if (confirm == 0) {
+                                boolean confirm = utiliMsg.cargaConfirmarCierre();
+                                if (confirm) {
                                     tableClose();
                                 }
                             } else {
@@ -682,7 +688,7 @@ public class Salon extends FrameFullManager {
             jbtAux.setOpenJBT(true);
             jbtAux.setBackground(green);
         }
-        
+
         ItemCarta ic = null;
         String item = (String) comboItems.getSelectedItem();
         int u = (int) spinnerUnitsItem.getValue();
@@ -999,6 +1005,9 @@ public class Salon extends FrameFullManager {
         double amountE = amounts.get(1);
         tableAux.setAmountCash(amountC);
         tableAux.setAmountElectronic(amountE);
+        tableAux.setTotal(total);
+        total = ss.countBill(tableAux);
+        tableAux.setTotal(total);
         daoT.updateTableMountCash(tableAux);
         daoT.updateTableMountElectronic(tableAux);
         if (itemsPayed != null) {
@@ -1129,12 +1138,10 @@ public class Salon extends FrameFullManager {
 
     }
 
-    
-    
-//-------------------------------------------------Tipo de Dinero---------------------------------------------------    
+//----------------------------------------------Finalización Turno--------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
     private void endWorkshift() throws Exception {
-        workshiftActual = sw.closeWorkshift(workshiftActual);
+        sw.closeWorkshift(workshiftActual, sal);
     }
 
 //--------------------------------------------------FUNCIONES-------------------------------------------------------
@@ -1254,5 +1261,10 @@ public class Salon extends FrameFullManager {
                 }
             }
         }
+    }
+
+    public void workshiftConclude(Workshift actualWs, ArrayList<Table> tabs, boolean partialEnd) throws Exception {  //new WorkshiftEndPanel(sal, tabs, partialEnd);
+        workshiftActual = actualWs;
+//        new WorkshiftEndPanel(sal, workshiftActual, tabs, partialEnd);
     }
 }

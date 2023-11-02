@@ -138,8 +138,8 @@ public class ItemCartaModificacion extends FrameHalf {
             }
 
             if (pric.equals("")) {
-                int confirm = utiliMsg.errorPriceNull();
-                if (confirm == 0) {
+                boolean confirm = utiliMsg.errorPriceNull();
+                if (confirm) {
                     pric = "0";
                     price = utili.toNumberD(pric);
                 } else {
