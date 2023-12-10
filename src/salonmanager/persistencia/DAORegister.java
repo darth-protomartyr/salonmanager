@@ -19,7 +19,7 @@ public class DAORegister extends DAO {
     SalonManager sm = new SalonManager();
     User user1 = sm.getUserIn();
 
-    public void guardarTablaRegistros(Register rgo) throws Exception {
+    public void saveTablaRegistros(Register rgo) throws Exception {
         try {
             Timestamp ejecution = rgo.getEjecution();
             String object = rgo.getObject();

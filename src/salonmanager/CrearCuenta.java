@@ -193,7 +193,7 @@ public class CrearCuenta extends FrameHalf {
 
         if (error == false) {
             User user = new User(name, lastName, mail, routeImage, nameImage, pass1);
-            daoU.guardarTablaUsers(user);
+            daoU.saveTablaUsers(user);
             resetRegister();
             dispose();
         }

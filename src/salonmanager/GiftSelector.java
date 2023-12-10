@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.servicios.ServicioSalon;
@@ -48,7 +48,7 @@ public class GiftSelector extends FrameWindow {
     Table tab = new Table();
     JButton butInGift = new JButton();
     Salon salon = null;
-    ArrayList<ItemCarta> aIC = null;
+    ArrayList<Itemcard> aIC = null;
 
     GiftSelector(Salon sal) {
         salon = sal;
@@ -67,8 +67,8 @@ public class GiftSelector extends FrameWindow {
         panelLabel.add(labelTit);
 
         aIC = tab.getOrder();
-//        HashSet<ItemCarta> hsaIC = new HashSet<ItemCarta>(aIC1);
-//        aIC2 = new ArrayList<ItemCarta>(hsaIC);
+//        HashSet<Itemcard> hsaIC = new HashSet<Itemcard>(aIC1);
+//        aIC2 = new ArrayList<Itemcard>(hsaIC);
 
         comboItems.setModel(utili.itemsComboModelReturn(aIC));
         comboItems.setBounds(30, 50, 150, 40);
@@ -110,7 +110,7 @@ public class GiftSelector extends FrameWindow {
 
     private void butInGiftActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
-        ItemCarta ic = aIC.get(i);
+        Itemcard ic = aIC.get(i);
         salon.giftBacker(ic);
         dispose();
     }

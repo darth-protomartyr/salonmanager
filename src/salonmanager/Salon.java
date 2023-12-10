@@ -1,11 +1,13 @@
 package salonmanager;
 
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemCarta;
+import salonmanager.persistencia.DAOItemcard;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -31,8 +33,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import salonmanager.entidades.Config;
 import salonmanager.entidades.FrameFullManager;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
+import salonmanager.entidades.JButtonBarr;
+import salonmanager.entidades.JButtonDelivery;
 import salonmanager.entidades.JButtonTable;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
@@ -58,7 +63,7 @@ public class Salon extends FrameFullManager {
     SalonManager sm = new SalonManager();
     DAOConfig daoC = new DAOConfig();
     DAOUser daoU = new DAOUser();
-    DAOItemCarta daoI = new DAOItemCarta();
+    DAOItemcard daoI = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioSalon ss = new ServicioSalon();
@@ -83,20 +88,28 @@ public class Salon extends FrameFullManager {
     int wUnit = 0;
     int hUnit = 0;
 
+    int f = anchoUnit * 3;
+    Font font = new Font("Arial", Font.BOLD, f);
+    JScrollPane scrPaneBarr = new JScrollPane();
+    JPanel panelBarrBut = new JPanel();
+    JScrollPane scrPaneDeli = new JScrollPane();
+    JPanel panelDeliBut = new JPanel();
+
     ArrayList<Integer> tableNum = new ArrayList<Integer>(); // número de mesa
     ArrayList<String> tablePan = new ArrayList<String>(); // Nombre del sector
     ArrayList<String> tablePanCh = new ArrayList<String>(); // Primer Char del Nombre del sector
+
     ArrayList<User> waiters = new ArrayList<User>(); // mozos
-    ArrayList<ItemCarta> itemsDB = new ArrayList<ItemCarta>(); // Items Completos
-    ArrayList<ItemCarta> itemsTableAux = new ArrayList<ItemCarta>();//items a cobrar de la mesa
-    ArrayList<ItemCarta> itemsGift = new ArrayList<ItemCarta>(); //items obsequiados
-    ArrayList<ItemCarta> itemsPartialPaid = new ArrayList<ItemCarta>(); // items cobrados por pago parcial
-    ArrayList<ItemCarta> itemsPartialPaidNoDiscount = new ArrayList<ItemCarta>(); // items cobrados anted de aplicar descuento
-    ArrayList<ItemCarta> itemsError = new ArrayList<ItemCarta>();
+    ArrayList<Itemcard> itemsDB = new ArrayList<Itemcard>(); // Items Completos
+    ArrayList<Itemcard> itemsTableAux = new ArrayList<Itemcard>();//items a cobrar de la mesa
+    ArrayList<Itemcard> itemsGift = new ArrayList<Itemcard>(); //items obsequiados
+    ArrayList<Itemcard> itemsPartialPaid = new ArrayList<Itemcard>(); // items cobrados por pago parcial
+    ArrayList<Itemcard> itemsPartialPaidNoDiscount = new ArrayList<Itemcard>(); // items cobrados anted de aplicar descuento
+    ArrayList<Itemcard> itemsError = new ArrayList<Itemcard>();
     User user = null;
     User waiterAux = null; // mozo actual
     Table tableAux = null; // mesa actual
-    Workshift workshiftActual = null;
+    Workshift workshiftNow = null;
 
     int discount = 0; //porcentaje de descuento
     double priceCorrection = 0; //correccion debido a modificación de precio de un item que se encontraba pago;
@@ -108,6 +121,10 @@ public class Salon extends FrameFullManager {
     //Botonera
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
+    ArrayList<JButtonBarr> barrButtons = new ArrayList<JButtonBarr>();
+    JButton butBarrDeli = null;
+    JPanel panelBDButtons = new JPanel();
+
     JPanel panelA = new JPanel();
     JTabbedPane tabbedPane = new JTabbedPane();
     JButtonTable jbtAux = new JButtonTable(); //boton de mesa actual
@@ -138,36 +155,40 @@ public class Salon extends FrameFullManager {
     JLabel labelTotal = new JLabel();
     JLabel labelPartialPay = new JLabel();
     JButton butInitWorkshift = new JButton();
+    JButton butPartialPay = new JButton();
+    JPanel panelPartial = new JPanel();
+
     Salon sal = null;
 
-    public Salon() throws Exception {
+    public Salon(ArrayList<Table> tables) throws Exception {
         sm.addFrame(this);
         /*test*/
-        user = daoU.consultaUser("gon@gmail.com");
-//        user = sm.getUserIn();
+//        user = daoU.consultaUser("gon@gmail.com");
+        user = sm.getUserIn();
         setTitle("Salón Manager");
         sal = this;
-        itemsDB = daoI.listarItemsCarta();
+        itemsDB = daoI.listarItemsCard();
         waiters = daoU.listWaiter();
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
 
-//        Config cfg = daoC.consultarConfig();
-//        totalTable = cfg.getTotalTable();
-//        tableNum = cfg.getTableNum();
-//        tablePan = cfg.getTablePan();
-//        tablePanCh = cfg.getTablePanCh();
-        tableNum.add(12);
-        tablePan.add("Salón");
-        tablePanCh.add("s");
+        Config cfg = daoC.consultarConfig();
+        totalTable = cfg.getTotalTable();
+        tableNum = cfg.getTableNum();
+        tablePan = cfg.getTablePan();
+        tablePanCh = cfg.getTablePanCh();
 
+//        Test Salon
+//        tableNum.add(12);
+//        tablePan.add("Salón");
+//        tablePanCh.add("s");
         JPanel panelActual = new JPanel();
-        panelActual.setBounds(anchoUnit * 60, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
+        panelActual.setBounds(anchoUnit * 24, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
         panelActual.setBackground(bluLg);
         panelActual.setLayout(null);
         panelPpal.add(panelActual);
 
-        JLabel labelUser = utiliGraf.labelTitleBacker3("Usuario: " + user.getNombre().toUpperCase() + " " + utili.strShorter(user.getApellido(), 2).toUpperCase());
+        JLabel labelUser = utiliGraf.labelTitleBacker3("Usuario: " + user.getName().toUpperCase() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
         labelUser.setBounds(altoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
         panelActual.add(labelUser);
 
@@ -183,8 +204,8 @@ public class Salon extends FrameFullManager {
         panelActual.add(labelSession);
 
         JLabel labelWorkshift = utiliGraf.labelTitleBacker3("");
-        if (workshiftActual != null) {
-            Timestamp timeInitWork = workshiftActual.getOpenShift();
+        if (workshiftNow != null) {
+            Timestamp timeInitWork = workshiftNow.getWsOpen();
             labelWorkshift.setText("Inicio Turno: " + utili.friendlyDate(timeInitWork));
         } else {
             labelWorkshift.setText("Turno no iniciado.");
@@ -197,42 +218,102 @@ public class Salon extends FrameFullManager {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (workshiftActual == null) {
-                        boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(user.getNombre(), user.getApellido());
+                    if (workshiftNow == null) {
+                        boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(user.getName(), user.getLastName());
                         if (confirm1 == true) {
-                            workshiftActual = new Workshift(user);
-                            daoW.guardarWorkshift(workshiftActual);
-                            sm.workshiftBacker(workshiftActual);
-                            labelWorkshift.setText("Inicio Turno: " + utili.friendlyDate(workshiftActual.getOpenShift()));
+                            workshiftNow = new Workshift(user);
+                            daoW.saveWorkshift(workshiftNow);
+                            sm.workshiftBacker(workshiftNow);
+                            labelWorkshift.setText("Inicio Turno: " + utili.friendlyDate(workshiftNow.getWsOpen()));
                             butInitWorkshift.setText("CERRAR TURNO");
                         }
                     } else {
-                        if (ss.openJBTButtonsTester(tableButtons) == true) {
-                            int id = daoW.findId(workshiftActual.getOpenShift());
-                            workshiftActual.setId(id);
-                            workshiftActual.setCloseShift(new Timestamp(new Date().getTime()));
-                            workshiftActual.setStateWorkshift(false);
-                            daoW.updateWorkshiftClose(workshiftActual);
-                            daoW.updateWorkshiftState(workshiftActual);
-                            boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(user.getNombre(), user.getApellido());
-                            if (confirm2 == true) {
-                                endWorkshift();
-                                butInitWorkshift.setText("Iniciar Turno");
-                            } else {
-                                boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(user);
-                                if (confirm3 == true) {
-                                    //Cerrar Turno actual para que uno nuevo se abierto
-                                }
-                            }
-                        }
+                        endWorkshift();
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
         });
         panelActual.add(butInitWorkshift);
+
+//PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
+//PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
+//PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
+//PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------      
+//BARR / DELI
+        JPanel panelBarrDeli = new JPanel();
+        panelBarrDeli.setBounds(anchoUnit * 50, altoUnit * 3, anchoUnit * 27, altoUnit * 14);
+        panelBarrDeli.setBackground(narLg);
+        panelBarrDeli.setLayout(null);
+        panelPpal.add(panelBarrDeli);
+
+        butBarrDeli = new JButton();
+        butBarrDeli.setBackground(narUlg);
+        butBarrDeli.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 25, altoUnit * 10);
+        butBarrDeli.setBorder(null);
+        butBarrDeli.setFont(font);
+        butBarrDeli.setText("Barra - Delivery");
+        butBarrDeli.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    butPanelTurn();
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelBarrDeli.add(butBarrDeli);
+
+        panelBDButtons = new JPanel();
+        panelBDButtons.setLayout(null);
+        panelBDButtons.setBackground(narLg);
+        panelBDButtons.setBounds(anchoUnit, anchoUnit, anchoPane, (alturaPane + altoUnit * 3));
+        panelBDButtons.setVisible(false);
+        panelA.add(panelBDButtons);
+
+//Panel Barra-----------------------------------------------------------        
+        JPanel panelBarr = returnPanelBarr();
+        panelBDButtons.add(panelBarr);
+
+//Panel Delivery--------------------------------------------------------        
+        JPanel panelDeli = new JPanel();
+        panelDeli.setLayout(null);
+        panelDeli.setBackground(bluLg);
+        panelDeli.setBounds(anchoPane / 2 + anchoUnit, altoUnit, (anchoPane / 2) - anchoUnit * 3, (alturaPane - altoUnit * 5));
+        panelBDButtons.add(panelDeli);
+
+        JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
+        labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 3);
+        panelDeli.add(labelDP);
+
+//Delivery        
+//        JPanel panelDelivery = new JPanel();
+//        panelDelivery.setBounds(anchoUnit * 42, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
+//        panelDelivery.setBackground(narLg);
+//        panelDelivery.setLayout(null);
+//        panelPpal.add(panelDelivery);
+//        
+//        butDelivery = new JButton();
+//        butDelivery.setBackground(narUlg);
+//        butDelivery.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 15, altoUnit * 10);
+//        butDelivery.setBorder(null);
+//        butDelivery.setFont(font);
+//        butDelivery.setText("Delivery");
+//        panelDelivery.add(butDelivery);
+        JButton butClosePanelBarrDeli = utiliGraf.button2("Cerrar", anchoUnit * 26, alturaPane - altoUnit * 2, anchoUnit * 20);
+        butClosePanelBarrDeli.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    closePanelBarrDeli();
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelBDButtons.add(butClosePanelBarrDeli);
 
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
@@ -257,7 +338,7 @@ public class Salon extends FrameFullManager {
             for (int y = 0; y < rowsButtons; y++) {
                 for (int z = 0; z < colButtons; z++) {
                     JButtonTable jbt = new JButtonTable(tablePanCh.get(i), numBut, wUnit * (5 * z + 1), hUnit * (5 * y + 1), (wUnit * 4), (hUnit * 4));
-                    Font font = new Font("Arial", Font.BOLD, fontSizeTable);
+                    font = new Font("Arial", Font.BOLD, fontSizeTable);
                     jbt.setFont(font);
                     jbt.setText(jbt.getText());
                     jbt.setBackground(narUlg);
@@ -282,7 +363,7 @@ public class Salon extends FrameFullManager {
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (workshiftActual != null) {
+                if (workshiftNow != null) {
                     jbtAux.setBorder(null);
                     if (jbtAux.isOpenJBT() == true) {
                         try {
@@ -314,7 +395,7 @@ public class Salon extends FrameFullManager {
                         tableAux.setOpen(true);
                         String nameT = tableAux.getPos() + tableAux.getNum();
                         labelMesa.setText("Mesa:" + nameT);
-                        tableAux.setOrder(new ArrayList<ItemCarta>());
+                        tableAux.setOrder(new ArrayList<Itemcard>());
                         try {
                             jbtSetter();
                         } catch (Exception ex) {
@@ -439,7 +520,12 @@ public class Salon extends FrameFullManager {
                         utiliMsg.errorWaiterNull();
                     } else {
                         if (tableAux.isBill() == false) {
-                            butSelItemActionPerformed();
+                            String item = (String) comboItems.getSelectedItem();
+                            if (!item.equals("")) {
+                                butSelItemActionPerformed(item);
+                            } else {
+                                utiliMsg.errorSeleccion();
+                            }
                         } else {
                             utiliMsg.errorBillSend();
                         }
@@ -525,14 +611,13 @@ public class Salon extends FrameFullManager {
         });
         panelTable.add(butDiscount);
 
-        JPanel panelPartial = new JPanel();
+//Boton Pago Parcial
         panelPartial.setLayout(null);
         panelPartial.setBounds(altoUnit, altoUnit * 64, anchoUnit * 21 + altoUnit, altoUnit * 5);
         panelPartial.setBackground(bluLg);
         panelTable.add(panelPartial);
 
-//Boton Pago Parcial
-        JButton butPartialPay = utiliGraf.button3("PAGO PARCIAL", altoUnit, altoUnit * 1, anchoUnit * 8);
+        butPartialPay = utiliGraf.button3("PAGO PARCIAL", altoUnit, altoUnit * 1, anchoUnit * 8);
         butPartialPay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -572,7 +657,7 @@ public class Salon extends FrameFullManager {
                                     tableClose();
                                 }
                             } else {
-                                moneyKind(sal, true, null);
+                                moneyKind(sal, true, null, false, total);
                             }
                         }
                     }
@@ -640,7 +725,8 @@ public class Salon extends FrameFullManager {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new Salon();
+//                    ArrayList<Table> tabs = new ArrayList<Table>();
+                    new Salon(null);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -663,7 +749,7 @@ public class Salon extends FrameFullManager {
 
     void waiterBacker(User waiter) {
         waiterAux = waiter;
-        labelWaiter.setText("Mozo: " + waiterAux.getNombre() + " " + utili.strShorter(waiterAux.getApellido(), 2).toUpperCase());
+        labelWaiter.setText("Mozo: " + waiterAux.getName() + " " + utili.strShorter(waiterAux.getLastName(), 2).toUpperCase());
         tableAux.setWaiter(waiterAux);
         setEnabled(true);
     }
@@ -671,8 +757,8 @@ public class Salon extends FrameFullManager {
 //------------------------------------------------------------------------------------------------------------------
 //Listar Items por etiqueta
     private void itemCaptionBack(String capt) {
-        ArrayList<ItemCarta> aic = new ArrayList<ItemCarta>();
-        for (ItemCarta ic : itemsDB) {
+        ArrayList<Itemcard> aic = new ArrayList<Itemcard>();
+        for (Itemcard ic : itemsDB) {
             if (ic.getCaption().toLowerCase().equals(capt.toLowerCase())) {
                 aic.add(ic);
             }
@@ -682,39 +768,35 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------
 //Ingreso de items
-    private void butSelItemActionPerformed() throws Exception {
+    private void butSelItemActionPerformed(String item) throws Exception {
         if (itemsTableAux.size() < 1) {
             ss.createTable(tableAux);
             jbtAux.setOpenJBT(true);
             jbtAux.setBackground(green);
         }
 
-        ItemCarta ic = null;
-        String item = (String) comboItems.getSelectedItem();
+        Itemcard ic = null;
         int u = (int) spinnerUnitsItem.getValue();
-        if (!item.equals("")) {
-            ic = utili.itemCartaBacker(item, itemsDB);
-            butCloseTable.setText("CERRAR CUENTA");
-            int counter = 0;
-            while (counter < u) {
-                itemsTableAux.add(ic);
-                counter += 1;
-            }
-            tableAux.setOrder(itemsTableAux);
-            spinnerUnitsItem.setValue(1);
-            total = ss.countBill(tableAux);
-            tableAux.setTotal(total);
-            daoT.updateTableTotal(tableAux);
-            ArrayList<ItemCarta> arrayAux = ss.itemDeployer(ic, u);
-            ss.addItemOrder(tableAux, arrayAux);
-            jbtSetter();
-            labelCuenta.setText("$ " + total);
-            comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
-            comboItems.setSelectedIndex(itemsDB.size());
-            setTableItems();
-        } else {
-            utiliMsg.errorSeleccion();
+
+        ic = utili.ItemcardBacker(item, itemsDB);
+        butCloseTable.setText("CERRAR CUENTA");
+        int counter = 0;
+        while (counter < u) {
+            itemsTableAux.add(ic);
+            counter += 1;
         }
+        tableAux.setOrder(itemsTableAux);
+        spinnerUnitsItem.setValue(1);
+        total = ss.countBill(tableAux);
+        tableAux.setTotal(total);
+        daoT.updateTableTotal(tableAux);
+        ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
+        ss.addItemOrder(tableAux, arrayAux);
+        jbtSetter();
+        labelCuenta.setText("$ " + total);
+        comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
+        comboItems.setSelectedIndex(itemsDB.size());
+        setTableItems();
     }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -731,20 +813,20 @@ public class Salon extends FrameFullManager {
 //------------------------------------------------------------------------------------------------------------------
 //Tabla de Items
     private void setTableItems() {
-        HashSet<ItemCarta> itemsSet = new HashSet<ItemCarta>(itemsTableAux);
-        ArrayList<ItemCarta> itemsAux = new ArrayList<ItemCarta>(itemsSet);
+        HashSet<Itemcard> itemsSet = new HashSet<Itemcard>(itemsTableAux);
+        ArrayList<Itemcard> itemsAux = new ArrayList<Itemcard>(itemsSet);
 
-        HashSet<ItemCarta> partialSet = new HashSet<ItemCarta>(itemsPartialPaid);
-        ArrayList<ItemCarta> partials = new ArrayList<ItemCarta>(partialSet);
+        HashSet<Itemcard> partialSet = new HashSet<Itemcard>(itemsPartialPaid);
+        ArrayList<Itemcard> partials = new ArrayList<Itemcard>(partialSet);
 
-        HashSet<ItemCarta> partialSetND = new HashSet<ItemCarta>(itemsPartialPaidNoDiscount);
-        ArrayList<ItemCarta> partialsND = new ArrayList<ItemCarta>(partialSetND);
+        HashSet<Itemcard> partialSetND = new HashSet<Itemcard>(itemsPartialPaidNoDiscount);
+        ArrayList<Itemcard> partialsND = new ArrayList<Itemcard>(partialSetND);
 
-        HashSet<ItemCarta> giftSet = new HashSet<ItemCarta>(itemsGift);
-        ArrayList<ItemCarta> gifts = new ArrayList<ItemCarta>(giftSet);
+        HashSet<Itemcard> giftSet = new HashSet<Itemcard>(itemsGift);
+        ArrayList<Itemcard> gifts = new ArrayList<Itemcard>(giftSet);
 
-        HashSet<ItemCarta> totalSet = new HashSet<ItemCarta>(itemsAux);
-        ArrayList<ItemCarta> totalItems = new ArrayList<ItemCarta>(totalSet);
+        HashSet<Itemcard> totalSet = new HashSet<Itemcard>(itemsAux);
+        ArrayList<Itemcard> totalItems = new ArrayList<Itemcard>(totalSet);
 
         totalItems.addAll(partials);
         totalItems.addAll(partialsND);
@@ -770,7 +852,7 @@ public class Salon extends FrameFullManager {
         double disc = (double) discount / 100;
 
         for (int i = 0; i < rowsItems; i++) {
-            ItemCarta ic = totalItems.get(i);
+            Itemcard ic = totalItems.get(i);
 
             if (i < intAux) {
                 int u = st.itemUnitsBacker(itemsTableAux, ic);
@@ -848,7 +930,7 @@ public class Salon extends FrameFullManager {
     }
 
 //------------------------------------------------------------------------------------------------------------------
-    public void giftBacker(ItemCarta ic) throws Exception {
+    public void giftBacker(Itemcard ic) throws Exception {
         itemsGift.add(ic);
         tableAux.setGifts(itemsGift);
         itemsTableAux = ss.itemTableLesser(tableAux.getOrder(), ic);
@@ -857,13 +939,12 @@ public class Salon extends FrameFullManager {
         setTableItems();
         total = ss.countBill(tableAux);
         tableAux.setTotal(total);
-        daoI.eliminarItemOrderTable(ic, tableAux);
-        daoI.guardarItemGiftTable(ic, tableAux);
+        daoI.downActiveItemOrderTable(ic, tableAux);
+        daoI.saveItemGiftTable(ic, tableAux);
         daoT.updateTableTotal(tableAux);
         jbtSetter();
         labelCuenta.setText(total + "");
         setEnabled(true);
-
     }
 
 //-------------------------------------------------PAGO DESCUENTO---------------------------------------------------    
@@ -871,8 +952,8 @@ public class Salon extends FrameFullManager {
     private void discounter() {
         if (itemsPartialPaid.size() > 0) {
             itemsPartialPaidNoDiscount = itemsPartialPaid;
-            itemsPartialPaid = new ArrayList<ItemCarta>();
-            tableAux.setAuxiliarPartialPayedNoDiscount(itemsPartialPaidNoDiscount);
+            itemsPartialPaid = new ArrayList<Itemcard>();
+            tableAux.setPartialPayedND(itemsPartialPaidNoDiscount);
             tableAux.setPartialPayed(itemsPartialPaid);
         }
         BillDiscounter bd = new BillDiscounter(this);
@@ -893,7 +974,6 @@ public class Salon extends FrameFullManager {
         labelCuenta.setText(total + "");
         setTableItems();
         setEnabled(true);
-
     }
 
 //-------------------------------------------------PAGO PARCIAL-----------------------------------------------------    
@@ -908,7 +988,7 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------
 //pago parcial de cuenta fraccionada
-    void partialPayTaker(ArrayList<ItemCarta> itemsPayed) throws Exception {
+    void partialPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
         jbtAux.setBackground(viol);
         for (int i = 0; i < itemsPayed.size(); i++) {
             itemsTableAux = ss.itemTableLesser(itemsTableAux, itemsPayed.get(i));
@@ -919,9 +999,11 @@ public class Salon extends FrameFullManager {
         total = ss.countBill(tableAux);
         tableAux.setTotal(total);
         daoT.updateTableTotal(tableAux);
-        for (ItemCarta ic : itemsPayed) {
-            daoI.guardarItemPayedTable(ic, tableAux);
-            daoI.eliminarItemOrderTable(ic, tableAux);
+        tableAux.setToPay(true);
+        daoT.updateToPay(tableAux);
+        for (Itemcard ic : itemsPayed) {
+            daoI.saveItemPayedTable(ic, tableAux);
+            daoI.downActiveItemOrderTable(ic, tableAux);
         }
         labelCuenta.setText(total + "");
         double payed = ss.partialBillPayed(tableAux);
@@ -934,27 +1016,25 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------ 
 //pago completo de cuenta fraccionada
-    void totalPayTaker(ArrayList<ItemCarta> itemsPayed) throws Exception {
+    void totalPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
+
         itemsPartialPaid.addAll(itemsPayed);
         tableAux.setPartialPayed(itemsPartialPaid);
         itemsTableAux = itemsPartialPaid;
-        itemsPartialPaid = new ArrayList<ItemCarta>();
+        itemsPartialPaid = new ArrayList<Itemcard>();
         tableAux.setOrder(itemsTableAux);
         total = ss.countBill(tableAux);
         tableAux.setTotal(total);
+        tableAux.setOpen(false);
         daoT.updateTableTotal(tableAux);
-        for (ItemCarta ic : itemsPayed) {
-            daoI.guardarItemPayedTable(ic, tableAux);
-            daoI.eliminarItemOrderTable(ic, tableAux);
+        tableAux.setToPay(false);
+        daoT.updateToPay(tableAux);
+        for (Itemcard ic : itemsPayed) {
+            daoI.saveItemPayedTable(ic, tableAux);
+            daoI.downActiveItemOrderTable(ic, tableAux);
         }
         labelCuenta.setText(total + "");
         setEnabled(true);
-
-//        double payed = ss.partialBillPayed(tableAux);
-//        labelPartialPay.setText("Pagado: $" + payed);
-//        tablePaid();
-//        jbtSetter();
-//        setTableItems();
     }
 
 //----------------------------------------------CIERRE Y PAGO DE CUENTA---------------------------------------------    
@@ -975,13 +1055,13 @@ public class Salon extends FrameFullManager {
         jbtAux.setBackground(red);
         butCloseTable.setText("CONFIRMAR PAGO");
         setEnabled(true);
-
     }
 
 //------------------------------------------------------------------------------------------------------------------
 //Forma de pago
-    public void moneyKind(Salon sal, boolean end, ArrayList<ItemCarta> itemsPayed) {
-        MoneyType mt = new MoneyType(sal, end, itemsPayed);
+    public void moneyKind(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed, boolean toPay, double amountToPay) {
+        tableAux.setToPay(toPay);
+        MoneyType mt = new MoneyType(sal, end, itemsPayed, amountToPay);
         mt.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         mt.setAlwaysOnTop(true);
         setEnabled(false);
@@ -990,8 +1070,6 @@ public class Salon extends FrameFullManager {
 //------------------------------------------------------------------------------------------------------------------
 //Pago de cuenta y cierre de mesa
     private void tablePaid() throws Exception {
-        tableAux.setOpen(false);
-        daoT.updateTableOpen(tableAux);
         jbtSetter();
         resetTableFull();
         setTableItems();
@@ -1000,7 +1078,7 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------
 //Forma de pago
-    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<ItemCarta> itemsPayed) throws Exception {
+    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
         tableAux.setAmountCash(amountC);
@@ -1008,8 +1086,14 @@ public class Salon extends FrameFullManager {
         tableAux.setTotal(total);
         total = ss.countBill(tableAux);
         tableAux.setTotal(total);
+        tableAux.setComments(comments);
+        if (tableAux.isToPay() == false) {
+            tableAux.setOpen(false);
+        }
         daoT.updateTableMountCash(tableAux);
         daoT.updateTableMountElectronic(tableAux);
+        daoT.updateTableOpen(tableAux);
+        daoT.updateComments(tableAux);
         if (itemsPayed != null) {
             if (endex == true) {
                 totalPayTaker(itemsPayed);
@@ -1017,6 +1101,7 @@ public class Salon extends FrameFullManager {
                 partialPayTaker(itemsPayed);
             }
         }
+
         if (endex == true) {
             tablePaid();
         }
@@ -1035,14 +1120,17 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------
 //Monto faltante por cash
-    public void errorMountBacker(double errorBack) throws Exception {
+    public void errorMountBacker(double errorBack, String cause) throws Exception {
         error = errorBack;
         tableAux.setError(error);
+        daoT.updateError(tableAux);
+        tableAux.setComments(cause);
+        daoT.updateComments(tableAux);
         utiliMsg.cargaError();
         if (itemsPartialPaid.size() > 0) {
             itemsTableAux = itemsPartialPaid;
             tableAux.setOrder(itemsTableAux);
-            itemsPartialPaid = new ArrayList<ItemCarta>();
+            itemsPartialPaid = new ArrayList<Itemcard>();
             tableAux.setPartialPayed(itemsPartialPaid);
             total = ss.countBill(tableAux);
             tableAux.setTotal(total);
@@ -1051,42 +1139,8 @@ public class Salon extends FrameFullManager {
             total = total - error;
         }
         tableAux.setTotal(total);
-        if (total == 0) {
-            itemsError = itemsTableAux;
-        }
         tablePaid();
         setEnabled(true);
-    }
-
-//------------------------------------------------------------------------------------------------------------------
-//Monto faltante por items
-    public void errorItemsBacker(ArrayList<ItemCarta> iE) throws Exception {
-        itemsError = iE;
-        tableAux.setErrorItems(itemsError);
-        double error = 0;
-        for (ItemCarta ic : itemsError) {
-            error += ic.getPrice();
-        }
-        tableAux.setError(error);
-
-        if (itemsPartialPaid.size() > 0) {
-            itemsTableAux = itemsPartialPaid;
-            itemsPartialPaid = new ArrayList<ItemCarta>();
-            tableAux.setPartialPayed(itemsPartialPaid);
-            total = ss.countBill(tableAux);
-        } else {
-            for (ItemCarta ic : iE) {
-                itemsTableAux = ss.itemTableLesser(itemsTableAux, ic);
-            }
-            total = total - error;
-        }
-        tableAux.setOrder(itemsTableAux);
-        tableAux.setTotal(total);
-        daoT.updateTableTotal(tableAux);
-        utiliMsg.cargaError();
-        tablePaid();
-        setEnabled(true);
-
     }
 
 //------------------------------------------------Corrector deItems-------------------------------------------------    
@@ -1100,48 +1154,122 @@ public class Salon extends FrameFullManager {
     }
 
 //Corregir
-    public void correctItems(ItemCarta ic, int num) throws Exception {
+    public void correctItems(Itemcard ic, int num) throws Exception {
         switch (num) {
             case 1:
                 itemsTableAux = ss.itemTableLesser(itemsTableAux, ic);
                 tableAux.setOrder(itemsTableAux);
-                daoI.eliminarItemOrderTable(ic, tableAux);
+                daoI.downActiveItemOrderTable(ic, tableAux);
                 break;
             case 2:
                 itemsGift = ss.itemTableLesser(itemsGift, ic);
                 tableAux.setGifts(itemsGift);
                 itemsTableAux.add(ic);
                 tableAux.setOrder(itemsTableAux);
-                daoI.eliminarItemGiftTable(ic, tableAux);
-                daoI.guardarItemOrderTable(ic, tableAux);
+                daoI.downActiveItemGiftTable(ic, tableAux);
+                daoI.upActiveItemOrderTable(ic, tableAux);
                 break;
             case 3:
                 itemsPartialPaid = ss.itemTableLesser(itemsPartialPaid, ic);
                 tableAux.setPartialPayed(itemsPartialPaid);
                 itemsTableAux.add(ic);
                 tableAux.setOrder(itemsTableAux);
-                daoI.eliminarItemPayedTable(ic, tableAux);
-                daoI.guardarItemOrderTable(ic, tableAux);
-                break;
-            case 4:
-                itemsPartialPaidNoDiscount = ss.itemTableLesser(itemsPartialPaidNoDiscount, ic);
-                tableAux.setPartialPayed(itemsPartialPaidNoDiscount);
-                itemsTableAux.add(ic);
-                tableAux.setOrder(itemsTableAux);
-                daoI.eliminarItemPayedNDTable(ic, tableAux);
-                daoI.guardarItemOrderTable(ic, tableAux);
+                daoI.downActiveItemPayedTable(ic, tableAux);
+                daoI.upActiveItemOrderTable(ic, tableAux);
                 break;
         }
         jbtSetter();
         setTableItems();
         setEnabled(true);
-
     }
 
 //----------------------------------------------Finalización Turno--------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
     private void endWorkshift() throws Exception {
-        sw.closeWorkshift(workshiftActual, sal);
+        setEnabled(true);
+        if (ss.openJBTButtonsTester(tableButtons) == true) {
+            boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(user.getName(), user.getLastName());
+            if (confirm2 == true) {
+                sw.closeWorkshift(sal, workshiftNow, null, null, null, null, null);
+                setEnabled(false);
+            }
+        } else {
+            boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(user);
+            if (confirm3 == true) {
+                sw.inconcludeWsCutter(sal, workshiftNow);
+                setEnabled(false);
+            }
+        }
+    }
+
+    public void saveWorkshift(Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> eraseTabs, ArrayList<Table> updTabs) throws Exception {
+        boolean isTabs = false;
+        if (actTabs.size() > 0 || nTabs.size() > 0 || updTabs.size() > 0) {
+            isTabs = true;
+        }
+
+        daoW.updateWorkshiftCash(actWs);
+        daoW.updateWorkshiftClose(actWs, isTabs);
+        daoW.updateWorkshiftElectronic(actWs);
+        daoW.updateWorkshiftError(actWs);
+        daoW.updateWorkshiftErrorReal(actWs);
+        daoW.updateWorkshiftMountReal(actWs);
+        daoW.updateWorkshiftState(actWs);
+        daoW.updateWorkshiftTotal(actWs);
+        if (nWs != null) {
+            daoW.saveWorkshift(nWs);
+            for (Table t : eraseTabs) {
+
+                if (t.getOrder().size() > 0) {
+                    daoI.downActiveItemOrderTableAll(t);
+                }
+
+                if (t.getGifts().size() > 0) {
+                    daoI.downActiveItemGiftTableAll(t);
+                }
+
+                if (t.getPartialPayed().size() > 0) {
+                    daoI.downActiveItemPayedTableAll(t);
+                }
+
+                if (t.getPartialPayedND().size() > 0) {
+                    daoI.downActiveItemPayedNDTableAll(t);
+                }
+                daoT.downActiveTable(t);
+            }
+
+            if (updTabs.size() > 0) {
+                for (int i = 0; i < updTabs.size(); i++) {
+                    Table t = updTabs.get(i);
+                    daoI.downActiveItemOrderTableAll(t);
+                    daoI.downActiveItemGiftTableAll(t);
+                    daoI.downActiveItemPayedTableAll(t);
+                    daoI.downActiveItemPayedNDTableAll(t);
+                    daoT.updateComments(t);
+                    daoT.updateTableTotal(t);
+                    if (t.getOrder().size() > 0) {
+                        for (Itemcard ic : t.getOrder()) {
+                            daoI.upActiveItemOrderTable(ic, t);
+                        }
+                    }
+
+                    if (t.getGifts().size() > 0) {
+                        for (Itemcard ic : t.getGifts()) {
+                            daoI.upActiveItemGiftTable(t, ic);
+                        }
+                    }
+
+                    daoT.updateTableOpen(t);
+                    daoT.updateToPay(t);
+                }
+            }
+
+            for (Table t : nTabs) {
+                st.saveTableCompleteChangeWs(t);
+            }
+        }
+        dispose();
     }
 
 //--------------------------------------------------FUNCIONES-------------------------------------------------------
@@ -1166,7 +1294,7 @@ public class Salon extends FrameFullManager {
     }
 
 //------------------------------------------------------------------------------------------------------------------
-    public ArrayList<ItemCarta> getItemsTableAux() {
+    public ArrayList<Itemcard> getItemsTableAux() {
         return itemsTableAux;
     }
 
@@ -1185,8 +1313,8 @@ public class Salon extends FrameFullManager {
         itemsTableAux = tableAux.getOrder();
         itemsGift = tableAux.getGifts();
         itemsPartialPaid = tableAux.getPartialPayed();
-        itemsPartialPaidNoDiscount = tableAux.getAuxiliarPartialPayedNoDiscount();
-        itemsError = tableAux.getErrorItems();
+        itemsPartialPaidNoDiscount = tableAux.getPartialPayedND();
+//        itemsError = tableAux.getErrorItems();
         waiterAux = tableAux.getWaiter();
         discount = tableAux.getDiscount();
         priceCorrection = tableAux.getPriceCorrection();
@@ -1205,7 +1333,7 @@ public class Salon extends FrameFullManager {
         } else {
             labelTotalParcial.setText("Parcial $:");
         }
-        labelWaiter.setText("Mozo: " + waiterAux.getNombre() + " " + utili.strShorter(waiterAux.getApellido(), 2).toUpperCase());
+        labelWaiter.setText("Mozo: " + waiterAux.getName() + " " + utili.strShorter(waiterAux.getLastName(), 2).toUpperCase());
         String nameT = tableAux.getPos() + tableAux.getNum();
         labelMesa.setText("Mesa:" + nameT);
         labelCuenta.setText(total + "");
@@ -1232,10 +1360,10 @@ public class Salon extends FrameFullManager {
     }
 
     private void resetTableValues() throws Exception {
-        itemsTableAux = new ArrayList<ItemCarta>();//items a cobrar de la mesa
-        itemsGift = new ArrayList<ItemCarta>(); //items obsequiados
-        itemsPartialPaid = new ArrayList<ItemCarta>(); // items cobrados por pago parcial
-        itemsPartialPaidNoDiscount = new ArrayList<ItemCarta>(); // items cobrados anted de aplicar descuento
+        itemsTableAux = new ArrayList<Itemcard>();//items a cobrar de la mesa
+        itemsGift = new ArrayList<Itemcard>(); //items obsequiados
+        itemsPartialPaid = new ArrayList<Itemcard>(); // items cobrados por pago parcial
+        itemsPartialPaidNoDiscount = new ArrayList<Itemcard>(); // items cobrados anted de aplicar descuento
         waiterAux = null;
         tableAux = null;
         total = 0;
@@ -1263,8 +1391,99 @@ public class Salon extends FrameFullManager {
         }
     }
 
-    public void workshiftConclude(Workshift actualWs, ArrayList<Table> tabs, boolean partialEnd) throws Exception {  //new WorkshiftEndPanel(sal, tabs, partialEnd);
-        workshiftActual = actualWs;
-//        new WorkshiftEndPanel(sal, workshiftActual, tabs, partialEnd);
+    private void butPanelTurn() {
+        tabbedPane.setVisible(false);
+        panelBDButtons.setVisible(true);
+        panelPartial.setBackground(narLg);
+        butPartialPay.setEnabled(false);
+        labelPartialPay.setText("DESHABITADO");
     }
+
+    private void closePanelBarrDeli() {
+        tabbedPane.setVisible(true);
+        panelBDButtons.setVisible(false);
+        panelPartial.setBackground(bluLg);
+        butPartialPay.setEnabled(true);
+        labelPartialPay.setText("Pagado: $0.0");
+
+    }
+
+    private JPanel returnPanelBarr() {
+        JPanel panelBarr = new JPanel();
+        panelBarr.setLayout(null);
+        panelBarr.setBackground(bluLg);
+        panelBarr.setBounds(anchoUnit * 2, altoUnit, (anchoPane / 2) - anchoUnit * 3, (alturaPane - altoUnit * 5));
+
+        JLabel labelBP = utiliGraf.labelTitleBackerA4("Barra");
+        labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 3);
+        panelBarr.add(labelBP);
+
+        JButton butCreateBarr = utiliGraf.button1("Crear pedido Barra", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
+        butCreateBarr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    createBarr();
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelBarr.add(butCreateBarr);
+
+        panelBarrBut.setBackground(narLg);
+        panelBarrBut.setLayout(new GridLayout(0, 1, anchoUnit * 5, altoUnit * 5));
+
+        scrPaneBarr = new JScrollPane(panelBarrBut);
+//                scrPaneBarr.setPreferredSize(new Dimension(anchoPane, alturaPane));
+        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//        scrPaneBarr.setLayout(null);
+//        scrPaneBarr.setBackground(narLg);
+        scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 50);
+        panelBarr.add(scrPaneBarr);
+        barrButAdder();
+
+        return panelBarr;
+    }
+
+    private void barrButAdder() {
+        for (int i = 0; i < barrButtons.size(); i++) {
+            JButtonBarr butSelBarr = barrButtons.get(i);
+            butSelBarr.setBackground(narUlg);
+            butSelBarr.setBorder(new LineBorder(narLg, 8));
+             
+            butSelBarr.setFont(font);
+            butSelBarr.setText("Barra " + butSelBarr.getNum());
+            butSelBarr.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        selectBarr();
+                    } catch (Exception ex) {
+                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            panelBarrBut.add(butSelBarr);
+        }
+        revalidate();
+        repaint();
+    }
+
+    private void createBarr() {
+        int num = 1;
+        if (barrButtons.size() > 1) {
+            num = barrButtons.size();
+        }
+        JButtonBarr newJBB = new JButtonBarr(num);
+        Table newTable = new Table(newJBB.getNum(), newJBB.getPos(), user);
+        newJBB.setTable(newTable);
+        barrButtons.add(newJBB);
+        barrButAdder();
+    }
+
+    private void selectBarr() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

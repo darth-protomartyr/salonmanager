@@ -1,22 +1,20 @@
 package salonmanager.servicios;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.Table;
 import salonmanager.entidades.Workshift;
-import salonmanager.persistencia.DAOItemCarta;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 
 public class ServicioTable {
 
     DAOTable daoT = new DAOTable();
-    DAOItemCarta daoI = new DAOItemCarta();
+    DAOItemcard daoI = new DAOItemcard();
     DAOUser daoU = new DAOUser();
 
-
-    public int giftCounter(ArrayList<ItemCarta> gifts, ItemCarta ic) {
+    public int giftCounter(ArrayList<Itemcard> gifts, Itemcard ic) {
         int units = 0;
         for (int i = 0; i < gifts.size(); i++) {
             if (gifts.get(i).getId() == ic.getId()) {
@@ -26,21 +24,19 @@ public class ServicioTable {
         return units;
     }
 
-    
-    public String listarGifts(ArrayList<ItemCarta> gifts) {
+    public String listarGifts(ArrayList<Itemcard> gifts) {
         String txt = "";
         txt = txt + "Obsequios:\n";
         if (gifts.size() > 0) {
             for (int i = 0; i < gifts.size(); i++) {
-                ItemCarta ic = gifts.get(i);
+                Itemcard ic = gifts.get(i);
                 txt += ic.getName() + "\n";
             }
         }
         return txt;
     }
 
-
-    public int itemUnitsBacker(ArrayList<ItemCarta> items, ItemCarta ic) {
+    public int itemUnitsBacker(ArrayList<Itemcard> items, Itemcard ic) {
         int units = 0;
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getId() == ic.getId()) {
@@ -50,21 +46,54 @@ public class ServicioTable {
         return units;
     }
 
-    ArrayList<Table> workshiftTableslistComplete(Workshift ws) throws Exception {
+    public ArrayList<Table> workshiftTableslistComplete(Workshift ws) throws Exception {
         ArrayList<Table> wsTabs = new ArrayList<Table>();
         ArrayList<Table> workshiftTabs = daoT.listarTablesByTimestamp(ws);
         for (Table tab : workshiftTabs) {
-            tab.setOrder(daoI.listarItemCartaOrder(tab.getId()));
-            tab.setGifts(daoI.listarItemCartaGifts(tab.getId()));
-            tab.setPartialPayed(daoI.listarItemCartaPartialPayed(tab.getId()));
-            tab.setAuxiliarPartialPayedNoDiscount(daoI.listarItemCartaPartialPayedND(tab.getId()));
-            tab.setErrorItems(daoI.listarItemCartaError(tab.getId()));
+            tab.setOrder(daoI.listarItemcardOrder(tab.getId()));
+            tab.setGifts(daoI.listarItemcardGifts(tab.getId()));
+            tab.setPartialPayed(daoI.listarItemcardPartialPayed(tab.getId()));
+            tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(tab.getId()));
+//            tab.setErrorItems(daoI.listarItemcardError(tab.getId()));
             tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
             wsTabs.add(tab);
-//            tab.setAuxiliarPartialPayedNoDiscount(daoI.listarItemCartaPartialPayedNoDiscount(tab.getId()));
-//            tab.setErrorItems(daoI.listarItemCartaErrorItems(tab.getId()));
-//            tab.setWaiter(tab.getWaiter());
         }
         return wsTabs;
     }
+
+    public Table tableItemsByTab(Table table) throws Exception {
+        Table tab = table;
+        tab.setOrder(daoI.listarItemcardOrder(tab.getId()));
+        tab.setGifts(daoI.listarItemcardGifts(tab.getId()));
+//        tab.setPartialPayed(daoI.listarItemcardPartialPayed(tab.getId()));
+//        tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(tab.getId()));
+//        tab.setErrorItems(daoI.listarItemcardError(tab.getId()));
+        tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
+        return tab;
+    }
+    
+    public void saveTableCompleteChangeWs (Table tab) throws Exception {
+        daoT.saveTable(tab);
+        daoU.saveWaiterTable(tab);
+        
+        for (int i = 0; i < tab.getOrder().size(); i++) {
+            daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
+        }
+        
+        for (int i = 0; i < tab.getGifts().size(); i++) {
+            daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
+        }
+    }
+    
+    
+//    public Table tableItemsByIdTab(String st) throws Exception {
+//        Table tab = new Table();
+//        tab.setOrder(daoI.listarItemcardOrder(st));
+//        tab.setGifts(daoI.listarItemcardGifts(st));
+//        tab.setPartialPayed(daoI.listarItemcardPartialPayed(st));
+//        tab.setAuxiliarPartialPayedNoDiscount(daoI.listarItemcardPartialPayedND(st));
+//        tab.setErrorItems(daoI.listarItemcardError(st));
+//        tab.setWaiter(daoU.getWaiterByTable(st));
+//        return tab;
+//    }
 }

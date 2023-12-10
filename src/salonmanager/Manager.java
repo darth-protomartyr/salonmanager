@@ -52,7 +52,7 @@ public class Manager extends FrameFullManager {
         labelImage.setBounds(altoUnit, altoUnit , anchoUnit *8, anchoUnit * 8);
         panelUser.add(labelImage);
 
-        JLabel labelName = utiliGraf.labelTitleBacker2(userIn.getNombre());
+        JLabel labelName = utiliGraf.labelTitleBacker2(userIn.getName());
         labelName.setBounds(130, 20, 120, 40);
         panelUser.add(labelName);
 

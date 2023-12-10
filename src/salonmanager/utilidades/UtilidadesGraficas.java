@@ -1,5 +1,6 @@
 package salonmanager.utilidades;
 
+import java.awt.BorderLayout;
 import salonmanager.entidades.User;
 import java.awt.Color;
 import java.awt.Font;
@@ -30,14 +31,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import salonmanager.ItemCartaIngreso;
+import salonmanager.ItemcardIngreso;
 import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
 import salonmanager.Manager;
-import salonmanager.Salon;
 import salonmanager.WorkshiftSession;
-import salonmanager.entidades.Administrador;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Admin;
+import salonmanager.entidades.Config;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.Register;
 
 public class UtilidadesGraficas extends JFrame {
@@ -48,6 +49,7 @@ public class UtilidadesGraficas extends JFrame {
     Color narLg = new Color(252, 203, 5);
     Color viol = new Color(242, 29, 41);
     Utilidades utili = new Utilidades();
+    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
 
@@ -55,14 +57,14 @@ public class UtilidadesGraficas extends JFrame {
         manager = man;
         JMenuBar menuBar = new JMenuBar();
         JMenu menuInicio = new JMenu("Inicio");
-        JMenu menuCarta = new JMenu("Carta");
+        JMenu menuCard = new JMenu("Carta");
         JMenu menuFacturacion = new JMenu("Facturación");
         JMenu menuSalon = new JMenu("Salón");
         JMenuItem itemAdministrador = new JMenuItem("Administrador");
         JMenuItem itemSalir = new JMenuItem("Salir");
-        JMenuItem itemIngresoItemCarta = new JMenuItem("Ingreso Item Carta");
-        JMenuItem itemModificacionItemCarta = new JMenuItem("Modificación Item Carta");
-        JMenuItem itemConsultaItemCarta = new JMenuItem("Consulta Item Carta");
+        JMenuItem itemIngresoItemcard = new JMenuItem("Ingreso Itemcarta");
+        JMenuItem itemModificacionItemcard = new JMenuItem("Modificación Itemcarta");
+        JMenuItem itemConsultaItemcard = new JMenuItem("Consulta Itemcarta");
         JMenuItem itemSesion = new JMenuItem("Sesiones");
         JMenuItem itemTurno = new JMenuItem("Turnos");
         JMenuItem itemSalon = new JMenuItem("Salón");
@@ -71,16 +73,16 @@ public class UtilidadesGraficas extends JFrame {
             menuInicio.add(itemAdministrador);
         }
         menuInicio.add(itemSalir);
-        menuCarta.add(itemIngresoItemCarta);
-        menuCarta.add(itemModificacionItemCarta);
-        menuCarta.add(itemConsultaItemCarta);
+        menuCard.add(itemIngresoItemcard);
+        menuCard.add(itemModificacionItemcard);
+        menuCard.add(itemConsultaItemcard);
         menuFacturacion.add(itemSesion);
         menuFacturacion.add(itemTurno);
         menuSalon.add(itemSalon);
 
         menuBar.add(menuInicio);
         if (sm.rolPermission(2)) {
-            menuBar.add(menuCarta);
+            menuBar.add(menuCard);
         }
         menuBar.add(menuFacturacion);
         menuBar.add(menuSalon);
@@ -91,7 +93,7 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            new Administrador(user);
+                            new Admin(user);
                         } else {
                             sm.salir();
                         }
@@ -114,11 +116,11 @@ public class UtilidadesGraficas extends JFrame {
         );
 
 //----------------------------------------------------------------------------------------------------------
-        itemIngresoItemCarta.addActionListener(new java.awt.event.ActionListener() {
+        itemIngresoItemcard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
-                        new ItemCartaIngreso();
+                        new ItemcardIngreso();
                     } else {
                         sm.salir();
                     }
@@ -129,7 +131,7 @@ public class UtilidadesGraficas extends JFrame {
         }
         );
 
-        itemModificacionItemCarta.addActionListener(new java.awt.event.ActionListener() {
+        itemModificacionItemcard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
@@ -144,7 +146,7 @@ public class UtilidadesGraficas extends JFrame {
         }
         );
 
-        itemConsultaItemCarta.addActionListener(new java.awt.event.ActionListener() {
+        itemConsultaItemcard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
@@ -164,8 +166,12 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            new WorkshiftSession(manager);
-//                            new Salon();
+                            Config cfg = sm.getConfig();
+                            if (cfg.isActiveConfig()) {
+                                new WorkshiftSession(manager);
+                            } else {
+                                utiliMsg.configNull();
+                            }
                         } else {
                             sm.salir();
                         }
@@ -185,10 +191,10 @@ public class UtilidadesGraficas extends JFrame {
         panelData.setLayout(new BoxLayout(panelData, BoxLayout.X_AXIS));
         panelData.setBackground(bluLg);
         panelData.setBorder(bordeInterior);
-        JLabel nombreData = new JLabel(labelData);
+        JLabel nameData = new JLabel(labelData);
         Font fuente = new Font("Arial", Font.BOLD, font);
-        nombreData.setFont(fuente);
-        panelData.add(nombreData);
+        nameData.setFont(fuente);
+        panelData.add(nameData);
         panelData.add(Box.createHorizontalStrut(40)); // Espacio 
         return panelData;
     }
@@ -200,57 +206,7 @@ public class UtilidadesGraficas extends JFrame {
         return scrollPane;
     }
 
-//    public JPanel fieldIngrePanel(int mWidth, int mHeight, int width, int height, JTextField fieldCantidad, JTextField fieldMerma, JTextField fieldDesperdicio, int type) {
-//        JPanel panelFieldIngre = new JPanel();
-//        panelFieldIngre.setLayout(null);
-//        panelFieldIngre.setBackground(narSt);
-//        panelFieldIngre.setBounds(mWidth, mHeight, width, height);
-//
-//        JLabel labelPanelA = new JLabel();
-//        if (type == 1) {
-//            labelPanelA = labelTitleBacker2("Ingrese los valores");
-//        } else {
-//            labelPanelA = labelTitleBacker2("Modifique los valores");
-//        }
-//        labelPanelA.setBounds(10, 5, width / 4 * 3, 30);
-//        panelFieldIngre.add(labelPanelA);
-//
-//        String medi = "Cantidad:";
-//
-//        JPanel panelData1 = dataPanelBacker(medi, 12);
-//        panelData1.setBounds(10, 40, width - 20, 40);
-//        panelData1.add(fieldCantidad);
-//        panelFieldIngre.add(panelData1);
-//
-//        JPanel panelData2 = dataPanelBacker("Merma %;", 12);
-//        panelData2.setBounds(10, 85, width - 20, 40);
-//        panelData2.add(fieldMerma);
-//        panelFieldIngre.add(panelData2);
-//
-//        JPanel panelData3 = dataPanelBacker("Desperdicio %:", 12);
-//        panelData3.setBounds(10, 130, width - 20, 40);
-//        panelData3.add(fieldDesperdicio);
-//        panelFieldIngre.add(panelData3);
-//
-//        return panelFieldIngre;
-//    }
-//    public JPanel selectIngrePanel(int mWidth, int mHeight, int width, int height, JList listaIngreDB, ArrayList<Ingrediente> ingredientesDB, ArrayList<Ingrediente> ingredientesSbr) {
-//        JPanel panelListIngreDB = new JPanel();
-//        panelListIngreDB.setLayout(null);
-//        panelListIngreDB.setBackground(narSt);
-//        panelListIngreDB.setBounds(mWidth, mHeight, width, height);
-//
-//        JLabel labelPanelA = labelTitleBacker2("Seleccione un ingrediente");
-//        labelPanelA.setBounds(10, 5, width / 4 * 3, 30);
-//        panelListIngreDB.add(labelPanelA);
-//
-//        if (listaIngreDB != null) {
-//            listaIngreDB.setModel(utili.ingreListModelReturn(ingredientesDB, ingredientesSbr));
-//            JScrollPane scrollPane = scrollBackPane(listaIngreDB, width / 8, height / 3, width / 2, height / 2);
-//            panelListIngreDB.add(scrollPane);
-//        }
-//        return panelListIngreDB;
-//    }
+    
     public JPanel selectUserPanel(int mWidth, int mHeight, int width, int height, JList listaUserDB, ArrayList<User> usersDB, ArrayList<User> usersNull, boolean mail) {
         JPanel panelListRctDB = new JPanel();
         panelListRctDB.setLayout(null);
@@ -330,172 +286,6 @@ public class UtilidadesGraficas extends JFrame {
         return title;
     }
 
-//    public JPanel panelPorcSpinner(int mWidth, int mHeight, int width, int height, JSpinner spinnerPorcR) {
-//        JPanel panelPorciones = new JPanel();
-//        panelPorciones.setBounds(mWidth, mHeight, width, height);
-//        panelPorciones.setBackground(narSt);
-//        panelPorciones.setLayout(null);
-//        javax.swing.border.Border bordeInterior = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-//        panelPorciones.setBorder(bordeInterior);
-//
-//        JLabel labelPorc = new JLabel(" Ingrese Porciones de Receta");
-//        Font fuente = new Font("Arial", Font.BOLD, 16);
-//        labelPorc.setFont(fuente);
-//        labelPorc.setBounds(10, 10, 250, 20);
-//        panelPorciones.add(labelPorc);
-//
-//        SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
-//        spinnerPorcR.setModel(model);
-//        spinnerPorcR.setBounds(60, 35, 35, 30);
-//        panelPorciones.add(spinnerPorcR);
-//
-//        return panelPorciones;
-//    }
-//    public JPanel panelIngredienteForm(JTextField fieldName, JTextField fieldPresentation, JTextField fieldCosto, JComboBox comboRubro, JComboBox comboMedida, ArrayList<Rubro> rubrosDB, Ingrediente ingreAux) {
-//
-//        JPanel panelB = new JPanel();
-//        panelB.setLayout(null);
-//        panelB.setBounds(134, 70, 416, 490);
-//        panelB.setBackground(narYellow);
-//
-//        JPanel panelData1 = dataPanelBacker("Rubro", 16);
-//        panelData1.setBounds(20, 20, 375, 50);
-//        comboRubro.setModel(utili.rubComboModelReturn(rubrosDB));
-//        panelData1.add(comboRubro);
-//        panelB.add(panelData1);
-//
-//        JPanel panelData2 = dataPanelBacker("Nombre", 16);
-//        panelData2.setBounds(20, 120, 375, 50);
-//        panelData2.add(fieldName);
-//        panelB.add(panelData2);
-//
-//        JPanel panelData3 = dataPanelBacker("Unidad de Medición", 16);
-//        panelData3.setBounds(20, 220, 375, 50);
-//        comboMedida.setPreferredSize(new Dimension(0, 40));
-//        ArrayList<String> unidadesDB = utili.listarUnidades();
-//        DefaultComboBoxModel<String> modeloLista2 = new DefaultComboBoxModel<String>();
-//        for (String u : unidadesDB) {
-//            modeloLista2.addElement(u);
-//        }
-//        comboMedida.setModel(modeloLista2);
-//        panelData3.add(comboMedida);
-//        panelB.add(panelData3);
-//
-//        JPanel panelData4 = dataPanelBacker("Presentación", 16);
-//        panelData4.setBounds(20, 320, 375, 50);
-//        panelData4.add(fieldPresentation);
-//        panelB.add(panelData4);
-//
-//        JPanel panelData5 = dataPanelBacker("Costo", 16);
-//        panelData5.setBounds(20, 420, 375, 50);
-//        panelData5.add(fieldCosto);
-//        panelB.add(panelData5);
-//
-//        if (ingreAux == null) {
-//
-//        } else {
-//            fieldName.setText(ingreAux.getNombre());
-//            fieldPresentation.setText(ingreAux.getPresentacion() + "");
-//            fieldCosto.setText(ingreAux.getCosto() + "");
-//            String rub = ingreAux.getRubro();
-//            comboRubro.setSelectedItem(rub);
-//            String med = ingreAux.getUnidadMedicion();
-//            comboMedida.setSelectedItem(med);
-//        }
-//        return panelB;
-//    }
-//    public JScrollPane scrollBacker(int anchoPanel, int alturaPanel, ArrayList<Ingrediente> ingredientes, ArrayList<Subreceta> subrecetas, ArrayList<Receta> recetas) {
-//        int xPan = 0;
-//        int yPan = alturaPanel / 4;
-//        int rows = 0;
-//        int col = 2;
-//        String col1 = "";
-//        String col2 = "Costo";
-//
-//        if (ingredientes != null) {
-//            xPan = 15;
-//            rows = ingredientes.size();
-//            col1 = "Ingrediente";
-//        }
-//
-//        if (subrecetas != null) {
-//            xPan = 30 + anchoPanel;
-//            rows = subrecetas.size();
-//            col1 = "Subrecetas";
-//        }
-//
-//        if (recetas != null) {
-//            xPan = 45 + anchoPanel * 2;
-//            rows = recetas.size();
-//            col1 = "Recetas";
-//        }
-//
-//        String[] colNames = {col1, col2};
-//        String[][] data = new String[rows][col];
-//
-//        if (ingredientes != null) {
-//            xPan = 15;
-//            rows = ingredientes.size();
-//            col1 = "Ingrediente";
-//            for (int i = 0; i < rows; i++) {
-//                Ingrediente ingre = ingredientes.get(i);
-//                data[i][0] = "  " + ingre.getNombre();
-//                data[i][1] = ingre.getCosto() + "  ";
-//            }
-//        }
-//
-//        if (subrecetas != null) {
-//            xPan = 30 + anchoPanel;
-//            rows = subrecetas.size();
-//            col1 = "Subrecetas";
-//            for (int i = 0; i < rows; i++) {
-//                data[i][0] = "  " + subrecetas.get(i).getNombre();
-//                data[i][1] = subrecetas.get(i).getCosto() + "  ";
-//            }
-//        }
-//
-//        if (recetas != null) {
-//            xPan = 45 + anchoPanel * 2;
-//            rows = recetas.size();
-//            col1 = "Recetas";
-//            for (int i = 0; i < rows; i++) {
-//                data[i][0] = "  " + recetas.get(i).getNombre();
-//                data[i][1] = recetas.get(i).getCosto() + "  ";
-//            }
-//        }
-//
-//        DefaultTableModel tableModel = new DefaultTableModel(data, colNames);
-//
-//        JTable table = new JTable(tableModel);
-//        table.setBounds(10, 10, anchoPanel - 50, alturaPanel - 50);
-//        JTableHeader header = table.getTableHeader();
-//        header.setFont(new Font("Arial", Font.BOLD, 16));
-//        header.setBackground(narSt);
-//
-//        Font cellFont = new Font("Arial", Font.BOLD, 14);
-//        table.setFont(cellFont);
-//        table.setRowHeight(25);
-//
-//        table.setBackground(narYellow);
-//        table.setForeground(narSt);
-//
-//        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-//        centerRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-//        table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-//        
-//        int c = (anchoPanel -50)/4;
-//        TableColumn column1 = table.getColumnModel().getColumn(0);
-//        column1.setPreferredWidth(c*3);
-//        TableColumn column2 = table.getColumnModel().getColumn(1);
-//        column2.setPreferredWidth(c); 
-//
-//        JScrollPane scrollPane = new JScrollPane(table);
-//        scrollPane.setBackground(narYellow);
-//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrollPane.setBounds(xPan, yPan, anchoPanel, alturaPanel);
-//
-//        return scrollPane;
-//    }
     public JButton button1(String text, int mWidth, int mHeight, int width) {
         JButton bot = new JButton();
         text = text.toUpperCase();
@@ -579,7 +369,7 @@ public class UtilidadesGraficas extends JFrame {
             col = 6;
             col1 = "Id";
             col2 = "Nombre";
-            col3 = "Apellido";
+            col3 = "LastName";
             col4 = "E-Mail";
             col5 = "Rol";
             col6 = "Estado";
@@ -592,11 +382,11 @@ public class UtilidadesGraficas extends JFrame {
             for (int i = 0; i < rows; i++) {
                 User u = listUsers.get(i);
                 data[i][0] = "  " + u.getId();
-                data[i][1] = "  " + u.getNombre();
-                data[i][2] = "  " + u.getApellido();
+                data[i][1] = "  " + u.getName();
+                data[i][2] = "  " + u.getLastName();
                 data[i][3] = "  " + u.getMail();
                 data[i][4] = "  " + u.getRol();
-                data[i][5] = "  " + u.isAlta();
+                data[i][5] = "  " + u.isActiveUser();
             }
         }
 
@@ -647,13 +437,13 @@ public class UtilidadesGraficas extends JFrame {
         return scrollPane;
     }
 
-    public JPanel panelItemCartaForm(JTextField fieldName, JComboBox comboCaption, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> captionsDB, ItemCarta item) {
+    public JPanel panelItemcardForm(JTextField fieldName, JComboBox comboCaption, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> captionsDB, Itemcard item) {
         JPanel panelA = new JPanel();
         panelA.setLayout(null);
         panelA.setBounds(135, 50, 416, 545);
         panelA.setBackground(viol);
 
-        JPanel panelData1 = dataPanelBacker("Nombre", 14);
+        JPanel panelData1 = dataPanelBacker("Name", 14);
         panelData1.setBounds(20, 20, 375, 50);
         panelData1.add(fieldName);
         panelA.add(panelData1);
@@ -702,12 +492,12 @@ public class UtilidadesGraficas extends JFrame {
             fieldCost.setText(item.getCost() + "");
             fieldPrice.setText(item.getPrice() + "");
             fieldStock.setText(item.getStock() + "");
-            checkTip.setSelected(item.isAltaTip());
+            checkTip.setSelected(item.isActiveTip());
         }
         return panelA;
     }
 
-    public JPanel panelListItemBack(int mWidth, int mHeight, int width, int height, JList listaItems, ArrayList<ItemCarta> itemsDB, ArrayList<ItemCarta> itemsMesa) {
+    public JPanel panelListItemBack(int mWidth, int mHeight, int width, int height, JList listaItems, ArrayList<Itemcard> itemsDB, ArrayList<Itemcard> itemsMesa) {
         JPanel panelListIngreDB = new JPanel();
         panelListIngreDB.setLayout(null);
         panelListIngreDB.setBackground(narSt);
@@ -727,6 +517,36 @@ public class UtilidadesGraficas extends JFrame {
         spin.setModel(model);
         spin.setBounds(mw, mh, w, h);
         return spin;
+    }
+
+    public JPanel panelInfoBacker(int a, int b, int c, int d, Color col, int f, String stL, String stR) {
+        JPanel panelBack = new JPanel();
+        panelBack.setLayout(new BorderLayout());
+        panelBack.setBackground(col);
+        panelBack.setBounds(a, b, c, d);
+
+        JLabel left = new JLabel(stL);
+        JLabel right = new JLabel(stR);
+        int tamañoFuenteInt = f;
+        float tamañoFuenteFloat = (float) tamañoFuenteInt;
+        Font font = left.getFont();
+        Font newFont = font.deriveFont(tamañoFuenteFloat);
+        left.setFont(newFont);
+        right.setFont(newFont);
+
+        JPanel panelLeft = new JPanel();
+        panelLeft.setSize(c - 4, (c / 2) - 4);
+        panelLeft.setBackground(col);
+        panelLeft.add(left);
+        panelBack.add(panelLeft, BorderLayout.WEST);
+
+        JPanel panelRight = new JPanel();
+        panelRight.setSize(c - 4, (c / 2) - 4);
+        panelRight.setBackground(col);
+        panelRight.add(right);
+        panelBack.add(panelRight, BorderLayout.EAST);
+
+        return panelBack;
     }
 
 }

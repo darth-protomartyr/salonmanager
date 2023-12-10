@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.entidades;
 
 import java.awt.Color;
@@ -22,13 +17,10 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import salonmanager.Salon;
-import static salonmanager.entidades.FrameGeneral.anchoFrame;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
@@ -76,8 +68,8 @@ public class CustomDialog extends JDialog {
 
         panelText.setLayout(new GridBagLayout());
         JLabel labelText = new JLabel();
-        labelText.setText(utili.stringMsgFrd(message));
-        Font nuevaFuente = new Font("Arial", Font.BOLD, 20);
+        labelText.setText(utili.stringMsgFrd(message, 25, 2));
+        Font nuevaFuente = new Font("Arial", Font.BOLD, 18);
         labelText.setFont(nuevaFuente);
         labelText.setHorizontalAlignment(SwingConstants.CENTER); // Alinea el texto al centro
         GridBagConstraints constraints = new GridBagConstraints();
@@ -104,10 +96,14 @@ public class CustomDialog extends JDialog {
             setTitle("ACCION EXITOSA");
             contentPane.setBackground(narLg);
             panelText.setBackground(narLg);
-        } else {
+        } else if( type == 2) {
             setTitle("ERROR");
             contentPane.setBackground(redLg);
             panelText.setBackground(redLg);
+        } else {
+            setTitle("ADVERTENCIA");
+            contentPane.setBackground(narLg);
+            panelText.setBackground(narLg);            
         }
 
         addWindowListener(new WindowAdapter() {

@@ -1,18 +1,19 @@
 package salonmanager.servicios;
 
 import java.util.ArrayList;
-import salonmanager.entidades.ItemCarta;
-import salonmanager.persistencia.DAOItemCarta;
+import salonmanager.entidades.Itemcard;
+import salonmanager.persistencia.DAOItemcard;
 
-public class ServicioItemCarta {
-    DAOItemCarta daoIC = new DAOItemCarta();
+public class ServicioItemcard {
+    DAOItemcard daoIC = new DAOItemcard();
+
     public String codeCreator(String caption) throws Exception {
-        DAOItemCarta daoIC = new DAOItemCarta();
+        DAOItemcard daoIC = new DAOItemcard();
         String code = "";
-        ArrayList<ItemCarta> items = daoIC.listItemsByCaption(caption);
+        ArrayList<Itemcard> items = daoIC.listItemsByCaption(caption);
         int num1 = 0;
         if (items.size() > 0) {
-            for (ItemCarta ic : items) {
+            for (Itemcard ic : items) {
                 String s = ic.getCode();
                 s = s.substring(1);
                 int num2 = Integer.parseInt(s);
@@ -34,11 +35,11 @@ public class ServicioItemCarta {
         return code;
     }
 
-//    public void ingresarItem(ItemCarta itemAux) throws Exception {
-//        daoIC.guardarItemCarta(itemAux);
+//    public void ingresarItem(Itemcard itemAux) throws Exception {
+//        daoIC.saveItemcard(itemAux);
 //    }
 //
-//    public void modificarItem(ItemCarta itemAux, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
+//    public void modificarItem(Itemcard itemAux, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
 //        daoIC.modificarItem(itemAux, name, caption, description, cost, price, stock, tipAlta);
 //    }
 }

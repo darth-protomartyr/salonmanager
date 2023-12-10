@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +15,8 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
+import salonmanager.entidades.Table;
 
 public class Utilidades {
 
@@ -55,17 +57,27 @@ public class Utilidades {
     public User userSelReturn(String usr, ArrayList<User> userDB) {
         User user = new User();
         for (User u : userDB) {
-            if (usr.equals(u.getNombre() + " " + u.getApellido())) {
+            if (usr.equals(u.getName() + " " + u.getLastName())) {
                 user = u;
             }
         }
         return user;
     }
 
+    public Table tabSelReturn(String tabStr, ArrayList<Table> tabs) {
+        Table tab = new Table();
+        for (Table t : tabs) {
+            if (tabStr.equals(t.getId())) {
+                tab = t;
+            }
+        }
+        return tab;
+    }
+
     public User userSelReturnAlta(String usr, ArrayList<User> userDB) {
         User user = new User();
         for (User u : userDB) {
-            if (usr.equals(u.getNombre() + "(" + u.isAlta() + ")")) {
+            if (usr.equals(u.getName() + "(" + u.isActiveUser() + ")")) {
                 user = u;
             }
         }
@@ -183,7 +195,7 @@ public class Utilidades {
             }
         } else {
             for (User u : lma) {
-                modeloLista.addElement(u.getNombre() + "(" + u.isAlta() + ")");
+                modeloLista.addElement(u.getName() + "(" + u.isActiveUser() + ")");
             }
         }
         return modeloLista;
@@ -210,18 +222,18 @@ public class Utilidades {
         return modeloCombo;
     }
 
-    public ComboBoxModel itemsComboModelReturnWNull(ArrayList<ItemCarta> itemsDB) {
+    public ComboBoxModel itemsComboModelReturnWNull(ArrayList<Itemcard> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
-        for (ItemCarta ic : itemsDB) {
+        for (Itemcard ic : itemsDB) {
             modeloCombo.addElement(ic.getName());
         }
         modeloCombo.addElement("");
         return modeloCombo;
     }
 
-    public ComboBoxModel itemsComboModelReturn(ArrayList<ItemCarta> itemsDB) {
+    public ComboBoxModel itemsComboModelReturn(ArrayList<Itemcard> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
-        for (ItemCarta ic : itemsDB) {
+        for (Itemcard ic : itemsDB) {
             modeloCombo.addElement(ic.getName());
         }
         modeloCombo.addElement("");
@@ -231,7 +243,15 @@ public class Utilidades {
     public ComboBoxModel userComboModelReturn(ArrayList<User> users) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (User user : users) {
-            modeloCombo.addElement(user.getNombre() + " " + user.getApellido());
+            modeloCombo.addElement(user.getName() + " " + user.getLastName());
+        }
+        return modeloCombo;
+    }
+
+    public ComboBoxModel tableComboModelReturn(ArrayList<Table> tabs) {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (Table tab : tabs) {
+            modeloCombo.addElement(tab.getId());
         }
         return modeloCombo;
     }
@@ -255,11 +275,11 @@ public class Utilidades {
         return caption;
     }
 
-    public boolean itemCartaRepeat(String ic, ArrayList<ItemCarta> items, ItemCarta itemCarta) {
+    public boolean ItemcardRepeat(String ic, ArrayList<Itemcard> items, Itemcard Itemcard) {
         boolean bool = false;
         ic = stringPlain(ic);
-        for (ItemCarta i : items) {
-            if (itemCarta == null) {
+        for (Itemcard i : items) {
+            if (Itemcard == null) {
                 if (ic.equals(stringPlain(i.getName()))) {
                     bool = true;
                 }
@@ -268,14 +288,14 @@ public class Utilidades {
         return bool;
     }
 
-    ListModel itemsListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) {
+    ListModel itemsListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-        ArrayList<ItemCarta> lma = listMayor;
-        ArrayList<ItemCarta> lme = listMenor;
+        ArrayList<Itemcard> lma = listMayor;
+        ArrayList<Itemcard> lme = listMenor;
         if (lme != null) {
-            Iterator<ItemCarta> iterator = lma.iterator();
+            Iterator<Itemcard> iterator = lma.iterator();
             while (iterator.hasNext()) {
-                ItemCarta ic = iterator.next();
+                Itemcard ic = iterator.next();
                 for (int i = 0; i < lme.size(); i++) {
                     if (ic.getId() == lme.get(i).getId()) {
                         iterator.remove();
@@ -284,15 +304,15 @@ public class Utilidades {
             }
         }
 
-        for (ItemCarta i : lma) {
+        for (Itemcard i : lma) {
             modeloLista.addElement(i.getName());
         }
         return modeloLista;
     }
 
-    public ItemCarta itemSelReturn(String item, ArrayList<ItemCarta> itemsDB) {
-        ItemCarta ic = null;
-        for (ItemCarta i : itemsDB) {
+    public Itemcard itemSelReturn(String item, ArrayList<Itemcard> itemsDB) {
+        Itemcard ic = null;
+        for (Itemcard i : itemsDB) {
             if (item.equals(i.getName())) {
                 ic = i;
             }
@@ -300,9 +320,9 @@ public class Utilidades {
         return ic;
     }
 
-    public String booleanStringBack(boolean altaTip) {
+    public String booleanStringBack(boolean activeTip) {
         String yn = "NO";
-        if (altaTip) {
+        if (activeTip) {
             yn = "SÍ";
         }
         return yn;
@@ -355,24 +375,24 @@ public class Utilidades {
         return arrayStr;
     }
 
-    public ItemCarta itemCartaBacker(String carta, ArrayList<ItemCarta> itemsDB) {
-        ItemCarta ic = null;
-        for (ItemCarta i : itemsDB) {
-            if (i.getName().equals(carta)) {
+    public Itemcard ItemcardBacker(String Card, ArrayList<Itemcard> itemsDB) {
+        Itemcard ic = null;
+        for (Itemcard i : itemsDB) {
+            if (i.getName().equals(Card)) {
                 ic = i;
             }
         }
         return ic;
     }
 
-    public ListModel itemListModelReturn(ArrayList<ItemCarta> listMayor, ArrayList<ItemCarta> listMenor) {
+    public ListModel itemListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-        ArrayList<ItemCarta> lma = listMayor;
-        ArrayList<ItemCarta> lme = listMenor;
+        ArrayList<Itemcard> lma = listMayor;
+        ArrayList<Itemcard> lme = listMenor;
         if (lme != null) {
-            Iterator<ItemCarta> iterator = lma.iterator();
+            Iterator<Itemcard> iterator = lma.iterator();
             while (iterator.hasNext()) {
-                ItemCarta ingre = iterator.next();
+                Itemcard ingre = iterator.next();
                 for (int i = 0; i < lme.size(); i++) {
                     if (ingre.getId() == lme.get(i).getId()) {
                         iterator.remove();
@@ -381,16 +401,16 @@ public class Utilidades {
             }
         }
 
-        for (ItemCarta ic : lma) {
+        for (Itemcard ic : lma) {
             modeloLista.addElement(ic.getName());
         }
         return modeloLista;
     }
 
-    public ListModel itemListModelReturnMono(ArrayList<ItemCarta> listMayor) {
+    public ListModel itemListModelReturnMono(ArrayList<Itemcard> listMayor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-        ArrayList<ItemCarta> lma = listMayor;
-        for (ItemCarta ic : lma) {
+        ArrayList<Itemcard> lma = listMayor;
+        for (Itemcard ic : lma) {
             modeloLista.addElement(ic.getName());
         }
         return modeloLista;
@@ -419,35 +439,105 @@ public class Utilidades {
         return time;
     }
 
-    public String stringMsgFrd(String st) {
+    public String stringMsgFrd(String st, int lim, int j) {
         String stFrd = "";
-        String jump = "<br><br>";
-        int limit = 0;
-        
-        if (st.length() <= 25) {
-            limit = 25; 
-        } else if (st.length() >= 25)  {
-            limit = 15;
-        }
-        
-        if (st.length() > 60) {
+        String jump = "";
+        if (j == 1) {
             jump = "<br>";
+        } else {
+            jump = "<br><br>";
         }
-        
+        int limit = lim;
         int counter = 0;
+        int counterEmpty = 0;
+
         for (int i = 0; i < st.length(); i++) {
             String letra = st.substring(i, i + 1);
-            stFrd = stFrd + letra;
-            counter += 1;
-            if (counter >= limit) {
+            if (letra.equals(" ")) {
+                counterEmpty = i;
+            }
+
+            if (counter >= limit && counter <= limit + 10) {
                 if (letra.equals(" ")) {
-                    stFrd += jump;
+                    letra = letra.replace(letra, jump);
                     counter = 0;
                 }
             }
+
+            if (counter >= limit + 10) {
+                String trash = stFrd.substring(counterEmpty, stFrd.length());
+                letra = letra.replace(trash, jump);
+                counter = 0;
+            }
+            stFrd = stFrd + letra;
+            counter++;
         }
-        
+
         stFrd = "<html>" + stFrd + "</html>";
         return stFrd;
+    }
+
+    public String labelStOposite(String left, String right) {
+        String labelText = "<html><div style='display: inline-block; text-align: left;'>" + left + "</div><div style=' display: inline-block; text-align: right;'>" + right + "</div></html>";
+        return labelText;
+    }
+
+    public String listarItems(Table ta) {
+        String st = "";
+        st += "LISTA TOTAL DE ITEMS PEDIDOS";
+        ArrayList<Itemcard> listOr = ta.getOrder();
+        if (listOr.size() > 0) {
+            st += listarItemsQuant(listOr);
+        }
+
+        st += "<br>LISTA DE ITEMS OBSEQUIADOS";        
+        if (ta.getGifts().size() > 0) {
+            st += listarItemsQuant(ta.getGifts());
+        }  else {
+            st += "<br>No se registraron items obsequiados.<br>";
+        }
+
+        if (ta.getComments().equals("")) {
+            st += "<br>COMENTARIOS:<br>" + "No se registraron.";
+        } else {
+            st += "<br>COMENTARIOS:" + stringMsgFrd(ta.getComments(),30,1);
+        }
+        
+        st = "<html>" + st + "</html>";
+        return st;
+    }
+    
+    
+    public String listarItemsQuant(ArrayList<Itemcard> ali) {
+        String st = "<br>";
+        int counter = 0;
+        String ref = "";
+        ArrayList<String> iSt = new ArrayList<String>();
+        for (Itemcard ic : ali) {
+            iSt.add(ic.getName());
+        }
+ 
+        iSt.sort((s1, s2) -> s1.compareTo(s2));
+        
+        HashSet<String> itemsSt = new HashSet<String>(iSt);
+        
+        iSt = new ArrayList<String>(itemsSt);
+        ArrayList<Integer> cant = new ArrayList<Integer>();
+
+        counter = 0;
+        for (String icSt : iSt) {            
+            for (int i = 0; i < ali.size(); i++) {
+                if (icSt.equals(ali.get(i).getName())) {
+                    counter ++;
+                }
+            }
+            cant.add(counter);
+            counter = 0;
+        }
+
+        for (int i = 0; i < itemsSt.size(); i++) {
+            st+= iSt.get(i) + " - cant: " + cant.get(i) + "<br>";
+        }
+        return st;
     }
 }

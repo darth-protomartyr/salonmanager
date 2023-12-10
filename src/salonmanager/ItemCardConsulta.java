@@ -7,36 +7,36 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import salonmanager.entidades.FrameThird;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
-import salonmanager.servicios.ServicioItemCarta;
+import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class ItemCartaConsulta extends FrameThird {
+public class ItemcardConsulta extends FrameThird {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    ServicioItemCarta sic = new ServicioItemCarta();
+    ServicioItemcard sic = new ServicioItemcard();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
     User userIn = null;
-    ItemCarta itemAux = null;
+    Itemcard itemAux = null;
 
-    public ItemCartaConsulta(ItemCarta ic) {
+    public ItemcardConsulta(Itemcard ic) {
         sm.addFrame(this);
         itemAux = ic;
-        setTitle("Consulta Item Carta");
+        setTitle("Consulta Item Card");
         PanelPpal panelPpal = new PanelPpal(anchoFrameThird, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Consulta Item de la carta");
+        JLabel labelTit = utiliGraf.labelTitleBacker1("Consulta Item de la Card");
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 
@@ -46,9 +46,9 @@ public class ItemCartaConsulta extends FrameThird {
         panelB.setBackground(bluLg);
         panelPpal.add(panelB);
 
-        JLabel labelNombreItem = utiliGraf.labelTitleBacker2("Nombre: " + itemAux.getName());
-        labelNombreItem.setBounds(10, 10, 345, 40);
-        panelB.add(labelNombreItem);
+        JLabel labelNameItem = utiliGraf.labelTitleBacker2("Nombre: " + itemAux.getName());
+        labelNameItem.setBounds(10, 10, 345, 40);
+        panelB.add(labelNameItem);
 
         JLabel labelCaptionItem = utiliGraf.labelTitleBacker2("Rubro: " + itemAux.getCaption());
         labelCaptionItem.setBounds(10, 60, 345, 40);
@@ -80,7 +80,7 @@ public class ItemCartaConsulta extends FrameThird {
         labelStockItem.setBounds(10, 380, 345, 40);
         panelB.add(labelStockItem);
 
-        String tip = utili.booleanStringBack(itemAux.isAltaTip());
+        String tip = utili.booleanStringBack(itemAux.isActiveTip());
         JLabel labelTipItem = utiliGraf.labelTitleBacker2("Con propina deducible: " + tip);
         labelTipItem.setBounds(10, 430, 345, 40);
         panelB.add(labelTipItem);

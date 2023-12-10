@@ -12,12 +12,12 @@ public class Table {
     String id;
     boolean open;
     boolean bill;
-    ArrayList<ItemCarta> order;
-    ArrayList<ItemCarta> gifts;
-    ArrayList<ItemCarta> toPay;
-    ArrayList<ItemCarta> partialPayed;
-    ArrayList<ItemCarta> auxiliarPartialPayedNoDiscount;
-    ArrayList<ItemCarta> errorItems;
+    boolean toPay;
+    ArrayList<Itemcard> order;
+    ArrayList<Itemcard> gifts;
+    ArrayList<Itemcard> partialPayed;
+    ArrayList<Itemcard> partialPayedND;
+//    ArrayList<Itemcard> errorItems;
     User waiter;
     int discount;
     double error;
@@ -25,6 +25,8 @@ public class Table {
     double amountCash;
     double amountElectronic;
     double total;
+    String comments;
+    boolean activeTable;
 
     public Table() {
     }
@@ -37,33 +39,36 @@ public class Table {
         this.id = emptyEraser(num + pos + "_" + openTime);
         this.open = true;
         this.bill = false;
-        this.order = new ArrayList<ItemCarta>();
-        this.gifts = new ArrayList<ItemCarta>();
-        this.toPay = new ArrayList<ItemCarta>();
-        this.partialPayed = new ArrayList<ItemCarta>();
-        this.auxiliarPartialPayedNoDiscount = new ArrayList<ItemCarta>();
-        this.errorItems = new ArrayList<ItemCarta>();
+        this.toPay = false;
+        this.order = new ArrayList<Itemcard>();
+        this.gifts = new ArrayList<Itemcard>();
+        this.toPay = false;
+        this.partialPayed = new ArrayList<Itemcard>();
+        this.partialPayedND = new ArrayList<Itemcard>();
+//        this.errorItems = new ArrayList<Itemcard>();
         this.waiter = waiter;
         this.discount = 0;
         this.error = 0;
         this.priceCorrection = 0;
         this.total = 0;
+        this.comments = "";
+        this.activeTable = true;
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, ArrayList<ItemCarta> order, ArrayList<ItemCarta> gifts, ArrayList<ItemCarta> toPay, ArrayList<ItemCarta> partialPayed, ArrayList<ItemCarta> partialPayedNoDiscount, ArrayList<ItemCarta> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total) {
+    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, boolean toPay,  boolean activeTable, ArrayList<Itemcard> order, ArrayList<Itemcard> gifts, ArrayList<Itemcard> partialPayed, ArrayList<Itemcard> partialPayedNoDiscount, ArrayList<Itemcard> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total, String comments) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
         this.id = id;
         this.open = open;
         this.bill = bill;
+        this.toPay = toPay;
         this.order = order;
         this.gifts = gifts;
-        this.toPay = toPay;
         this.partialPayed = partialPayed;
-        this.auxiliarPartialPayedNoDiscount = partialPayedNoDiscount;
-        this.errorItems = errorItems;
+        this.partialPayedND = partialPayedNoDiscount;
+//        this.errorItems = errorItems;
         this.waiter = waiter;
         this.discount = discount;
         this.error = error;
@@ -71,29 +76,32 @@ public class Table {
         this.amountCash = amountCash;
         this.amountElectronic = amountElectronic;
         this.total = total;
+        this.comments = comments;
+        this.activeTable = activeTable;
     }
     
     //crear table pendiente para cambio de turno
-    public Table(int num, String pos, boolean bill, ArrayList<ItemCarta> order, User waiter, int discount, double total) {
+    public Table(int num, String pos, boolean bill, boolean activeTable, ArrayList<Itemcard> order, User waiter, int discount, double total, String comments) {
         this.num = num;
         this.pos = pos;
         this.openTime = new Timestamp(new Date().getTime());
         this.id = emptyEraser(num + pos + "_" + openTime);
         this.open = true;
         this.bill = bill;
+        this.toPay = false;
         this.order = order;
         this.gifts = new ArrayList();    
-        this.toPay = new ArrayList<ItemCarta>();
-        this.partialPayed = new ArrayList<ItemCarta>();
-        this.auxiliarPartialPayedNoDiscount = new ArrayList<ItemCarta>();
-        this.errorItems = new ArrayList<ItemCarta>();
+        this.partialPayed = new ArrayList<Itemcard>();
+        this.partialPayedND = new ArrayList<Itemcard>();
+//        this.errorItems = new ArrayList<Itemcard>();
         this.waiter = waiter;
         this.discount = discount;
         this.error = 0;
         this.priceCorrection = 0;
         this.total = total;
+        this.comments = comments;
+        this.activeTable = activeTable;
     }
-    
 
     //Clonar
     public Table(Table tab) {
@@ -102,21 +110,25 @@ public class Table {
         this.openTime = tab.getOpenTime();
         this.id = tab.getId();
         this.open = tab.isOpen();
+        this.toPay = tab.isToPay();
         this.bill = tab.isBill();
         this.order = tab.getOrder();
         this.gifts = tab.getGifts();
-        this.toPay = tab.getToPay();
         this.partialPayed = tab.getPartialPayed();
-        this.auxiliarPartialPayedNoDiscount = tab.getAuxiliarPartialPayedNoDiscount();
+        this.partialPayedND = tab.getPartialPayedND();
         this.waiter = tab.getWaiter();
         this.discount = tab.getDiscount();
         this.error = tab.getError();
-        this.errorItems = tab.getErrorItems();
+//        this.errorItems = tab.getErrorItems();
         this.priceCorrection = tab.getPriceCorrection();
         this.amountCash = tab.getAmountCash();
         this.amountElectronic = tab.getAmountElectronic();
         this.total = tab.getTotal();
+        this.comments = tab.getComments();
+        this.activeTable = tab.isActiveTable();
     }
+
+
 
     public int getNum() {
         return num;
@@ -166,53 +178,62 @@ public class Table {
         this.bill = bill;
     }
 
-    public ArrayList<ItemCarta> getOrder() {
+    public ArrayList<Itemcard> getOrder() {
         return order;
     }
 
-    public void setOrder(ArrayList<ItemCarta> order) {
+    public void setOrder(ArrayList<Itemcard> order) {
         this.order = order;
     }
 
-    public void setGifts(ArrayList<ItemCarta> gifts) {
+    public void setGifts(ArrayList<Itemcard> gifts) {
         this.gifts = gifts;
     }
 
-    public ArrayList<ItemCarta> getGifts() {
+    public ArrayList<Itemcard> getGifts() {
         return gifts;
     }
 
-    public void setToPay(ArrayList<ItemCarta> toPay) {
+    public void setToPay(boolean toPay) {
         this.toPay = toPay;
     }
 
-    public ArrayList<ItemCarta> getToPay() {
-        return gifts;
+    public boolean isToPay() {
+        return toPay;
+    }
+    
+    public void setActiveTable(boolean activeTable) {
+        this.activeTable = activeTable;
     }
 
-    public void setPartialPayed(ArrayList<ItemCarta> partialPayed) {
+    public boolean isActiveTable() {
+        return activeTable;
+    }
+    
+
+    public void setPartialPayed(ArrayList<Itemcard> partialPayed) {
         this.partialPayed = partialPayed;
     }
 
-    public ArrayList<ItemCarta> getPartialPayed() {
+    public ArrayList<Itemcard> getPartialPayed() {
         return partialPayed;
     }
 
-    public void setAuxiliarPartialPayedNoDiscount(ArrayList<ItemCarta> partialPayedNoDiscount) {
-        this.auxiliarPartialPayedNoDiscount = partialPayedNoDiscount;
+    public void setPartialPayedND(ArrayList<Itemcard> partialPayedNoDiscount) {
+        this.partialPayedND = partialPayedNoDiscount;
     }
 
-    public ArrayList<ItemCarta> getAuxiliarPartialPayedNoDiscount() {
-        return auxiliarPartialPayedNoDiscount;
+    public ArrayList<Itemcard> getPartialPayedND() {
+        return partialPayedND;
     }
 
-    public void setErrorItems(ArrayList<ItemCarta> errorItems) {
-        this.errorItems = errorItems;
-    }
-
-    public ArrayList<ItemCarta> getErrorItems() {
-        return errorItems;
-    }
+//    public void setErrorItems(ArrayList<Itemcard> errorItems) {
+//        this.errorItems = errorItems;
+//    }
+//
+//    public ArrayList<Itemcard> getErrorItems() {
+//        return errorItems;
+//    }
 
     public User getWaiter() {
         return waiter;
@@ -274,9 +295,21 @@ public class Table {
         s = s.replace(" ", "_");
         return s;
     }
+    
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
     @Override
     public String toString() {
-        return "Table{" + "num=" + num + ", pos=" + pos + ", openTime=" + openTime + ", id=" + id + ", open=" + open + ", bill=" + bill + ", order=" + order + ", gifts=" + gifts + ", toPay=" + toPay + ", partialPayed=" + partialPayed + ", auxiliarPartialPayedNoDiscount=" + auxiliarPartialPayedNoDiscount + ", errorItems=" + errorItems + ", waiter=" + waiter + ", discount=" + discount + ", error=" + error + ", priceCorrection=" + priceCorrection + ", amountCash=" + amountCash + ", amountElectronic=" + amountElectronic + ", total=" + total + '}';
+        return "Table{" + "num=" + num + ", pos=" + pos + ", openTime=" + openTime + ", id=" + id + ", open=" + open + ", bill=" + bill + ", toPay=" + toPay + ", discount=" + discount + ", error=" + error + ", priceCorrection=" + priceCorrection + ", amountCash=" + amountCash + ", amountElectronic=" + amountElectronic + ", total=" + total + ", comments=" + comments + ", activeTable=" + activeTable + '}';
     }
+
+
+
+
 }

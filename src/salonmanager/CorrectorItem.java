@@ -16,7 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.servicios.ServicioSalon;
@@ -46,11 +46,11 @@ public class CorrectorItem extends FrameWindow {
     Table tab = new Table();
     JButton butInGift = new JButton();
     Salon salon = null;
-    ArrayList<ItemCarta> itemsOrder = new ArrayList<ItemCarta>();
-    ArrayList<ItemCarta> itemsGift = new ArrayList<ItemCarta>();
-    ArrayList<ItemCarta> itemsPayed = new ArrayList<ItemCarta>();
-    ArrayList<ItemCarta> itemsPayedNoDiscount = new ArrayList<ItemCarta>();
-    ArrayList<ItemCarta> itemsCombo = new ArrayList<ItemCarta>();
+    ArrayList<Itemcard> itemsOrder = new ArrayList<Itemcard>();
+    ArrayList<Itemcard> itemsGift = new ArrayList<Itemcard>();
+    ArrayList<Itemcard> itemsPayed = new ArrayList<Itemcard>();
+    ArrayList<Itemcard> itemsPayedNoDiscount = new ArrayList<Itemcard>();
+    ArrayList<Itemcard> itemsCombo = new ArrayList<Itemcard>();
 
     int numArray = 1;
     String itemCategory = "a Pagar";
@@ -74,8 +74,8 @@ public class CorrectorItem extends FrameWindow {
         itemsOrder = tab.getOrder();
         itemsGift = tab.getGifts();
         itemsPayed = tab.getPartialPayed();
-        itemsPayedNoDiscount = tab.getAuxiliarPartialPayedNoDiscount();
-        itemsCombo = new ArrayList<ItemCarta>();
+        itemsPayedNoDiscount = tab.getPartialPayedND();
+        itemsCombo = new ArrayList<Itemcard>();
 
         JButton butItemsOrder = utiliGraf.button3("Items A Pagar", 30, 75, 150);
         butItemsOrder.addActionListener(new ActionListener() {
@@ -119,25 +119,25 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsPayed);
 
-        JButton butItemsPayedNoDiscount = utiliGraf.button3("Items pag. s/descuento", 30, 165, 150);
-        butItemsPayedNoDiscount.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    itemsComboChanger(itemsPayedNoDiscount, 4);
-//                    labelComboItems.setText("lista de pagados s/DTO:");
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelPpal.add(butItemsPayedNoDiscount);
+//        JButton butItemsPayedNoDiscount = utiliGraf.button3("Items pag. s/descuento", 30, 165, 150);
+//        butItemsPayedNoDiscount.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                try {
+//                    itemsComboChanger(itemsPayedNoDiscount, 4);
+////                    labelComboItems.setText("lista de pagados s/DTO:");
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        panelPpal.add(butItemsPayedNoDiscount);
 
         JLabel labelComboItems1 = utiliGraf.labelTitleBacker2("Seleccione un item");
         labelComboItems1.setBounds(200, 70, 170, 20);
         panelPpal.add(labelComboItems1);
 
-        JLabel labelComboItems2 = utiliGraf.labelTitleBacker2("para quetar de la");
+        JLabel labelComboItems2 = utiliGraf.labelTitleBacker2("para quitar de la");
         labelComboItems2.setBounds(200, 90, 170, 20);
         panelPpal.add(labelComboItems2);
 
@@ -154,7 +154,7 @@ public class CorrectorItem extends FrameWindow {
         panelBut.setBounds(0, 210, 390, 40);
         panelPpal.add(panelBut);
 
-        butInGift = utiliGraf.button1("Obsequiar", 206, 580, 270);
+        butInGift = utiliGraf.button1("Eliminar", 206, 580, 270);
         butInGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -175,7 +175,7 @@ public class CorrectorItem extends FrameWindow {
         });
     }
 
-    private void itemsComboChanger(ArrayList<ItemCarta> items, int num) {
+    private void itemsComboChanger(ArrayList<Itemcard> items, int num) {
         comboItems.setModel(utili.itemsComboModelReturn(items));
         numArray = num;
         switch (num) {
@@ -188,15 +188,12 @@ public class CorrectorItem extends FrameWindow {
             case 3:
                 labelComboItems.setText("lista de pagados:");
                 break;
-            case 4:
-                labelComboItems.setText("lista de pagados s/dto:");
-                break;
         }
     }
 
     private void butCorrectionActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
-        ItemCarta ic = new ItemCarta();
+        Itemcard ic = new Itemcard();
         switch (numArray) {
             case 1:
                 ic = itemsOrder.get(i);
@@ -210,12 +207,7 @@ public class CorrectorItem extends FrameWindow {
                 ic = itemsPayed.get(i);
                 salon.correctItems(ic, numArray);
                 break;
-            case 4:
-                ic = itemsPayed.get(i);
-                salon.correctItems(ic, numArray);
-                break;
         }
-        salon.giftBacker(ic);
         dispose();
 
     }

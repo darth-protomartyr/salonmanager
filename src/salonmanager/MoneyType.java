@@ -17,8 +17,10 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.servicios.ServicioSalon;
@@ -50,24 +52,25 @@ public class MoneyType extends FrameWindow {
     double electronic = 0;
     boolean mixedPay = false;
     ArrayList<Double> amounts = new ArrayList<Double>();
-    ArrayList<ItemCarta> itemsPayed = null;
+    ArrayList<Itemcard> itemsPayed = null;
 
     JLabel labelSubTotal = new JLabel();
     JLabel labelMixed = new JLabel();
     JTextField fieldAmountCash = new JTextField();
+    JTextArea textAreaCause = new JTextArea();
     JButton butInPartialCash = new JButton();
     JButton butCashIn = new JButton();
     JButton butElectronicIn = new JButton();
     JButton butMixedIn = new JButton();
+    JButton butBack = new JButton();
 
-    public MoneyType(Salon sal, boolean end, ArrayList<ItemCarta> itemsPayed1) {
+    public MoneyType(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed1, double amountToPay) {
         salon = sal;
         sm.addFrame(this);
-        Table table = salon.getTable();
+        tab = salon.getTable();
         itemsPayed = itemsPayed1;
-        tab = new Table(table);
         endex = end;
-        total = tab.getTotal();
+        total = amountToPay;
         amounts.add(cash);
         amounts.add(electronic);
         setTitle("Modos de Pago");
@@ -83,10 +86,22 @@ public class MoneyType extends FrameWindow {
         panelLabel.add(labelTit);
 
         JLabel labelMount = utiliGraf.labelTitleBacker2("Monto a pagar: $" + total);
-        labelMount.setBounds(100, 40, 190, 25);
+        labelMount.setBounds(100, 35, 190, 25);
         panelPpal.add(labelMount);
 
-        butCashIn = utiliGraf.button2("Pago Total Efectivo", 85, 65, 220);
+        JLabel labelComment = utiliGraf.labelTitleBacker3("Ingrese un comentario(opcional): ");
+        labelComment.setBounds(70, 65, 250, 20);
+        panelPpal.add(labelComment);
+
+        textAreaCause.setRows(3);
+        textAreaCause.setColumns(5);
+        textAreaCause.setLineWrap(true);
+        textAreaCause.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(textAreaCause);
+        scrollPane.setBounds(70, 85, 250, 55);
+        panelPpal.add(scrollPane);
+
+        butCashIn = utiliGraf.button2("Pago Total Efectivo", 85, 150, 220);
         butCashIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -104,7 +119,7 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butCashIn);
 
-        butElectronicIn = utiliGraf.button2("Pago Total Electronico", 85, 105, 220);
+        butElectronicIn = utiliGraf.button2("Pago Total Electronico", 85, 190, 220);
         butElectronicIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -121,11 +136,14 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butElectronicIn);
 
-        butMixedIn = utiliGraf.button2("Pago Mixto", 85, 145, 220);
+        butMixedIn = utiliGraf.button2("Pago Mixto", 85, 230, 220);
         butMixedIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
+                    butMixedIn.setVisible(false);
+                    butCashIn.setVisible(false);
+                    butElectronicIn.setVisible(false);
                     mixedPay = true;
                     butMoneyTypeActionPerformed(3);
                 } catch (Exception ex) {
@@ -136,16 +154,16 @@ public class MoneyType extends FrameWindow {
         panelPpal.add(butMixedIn);
 
         labelMixed = utiliGraf.labelTitleBacker2("Ingrese el monto que recibió en efectivo:");
-        labelMixed.setBounds(40, 180, 340, 25);
+        labelMixed.setBounds(40, 150, 340, 25);
         labelMixed.setVisible(false);
         panelPpal.add(labelMixed);
 
-        fieldAmountCash.setBounds(75, 210, 100, 30);
+        fieldAmountCash.setBounds(75, 180, 100, 30);
         fieldAmountCash.setFont(new Font("Arial", Font.PLAIN, 20));
         fieldAmountCash.setVisible(false);
         panelPpal.add(fieldAmountCash);
 
-        butInPartialCash = utiliGraf.button2("Confirmar", 185, 210, 130);
+        butInPartialCash = utiliGraf.button2("Confirmar", 185, 180, 130);
         butInPartialCash.setVisible(false);
         butInPartialCash.addActionListener(new ActionListener() {
             @Override
@@ -159,6 +177,26 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butInPartialCash);
 
+        butBack = utiliGraf.button2("Volver", 140, 220, 100);
+        butBack.setVisible(false);
+        butBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    butMixedIn.setVisible(true);
+                    butCashIn.setVisible(true);
+                    butElectronicIn.setVisible(true);
+                    labelMixed.setVisible(false);
+                    fieldAmountCash.setVisible(false);
+                    butInPartialCash.setVisible(false);
+                    butBack.setVisible(false);
+                } catch (Exception ex) {
+                    Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelPpal.add(butBack);
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 sal.enableSalon();
@@ -171,28 +209,42 @@ public class MoneyType extends FrameWindow {
         switch (type) {
             case 1:
                 amounts.set(0, total);
-                salon.amountsTypes(amounts, endex, itemsPayed);
+                salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
                 dispose();
                 break;
             case 2:
                 amounts.set(1, total);
-                salon.amountsTypes(amounts, endex, itemsPayed);
+                salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
                 dispose();
                 break;
             case 3:
                 labelMixed.setVisible(true);
                 fieldAmountCash.setVisible(true);
                 butInPartialCash.setVisible(true);
+                butBack.setVisible(true);
                 break;
         }
+        System.out.println(tab);
+
     }
 
     private void butMoneyCashActionPerformed() throws Exception {
         String amountCash = fieldAmountCash.getText();
-        double cash = parseDouble(amountCash);
-        amounts.set(0, cash);
-        amounts.set(1, total - cash);
-        salon.amountsTypes(amounts, endex, itemsPayed);
-        dispose();
+        double cash = 0;
+        try {
+            cash = parseDouble(amountCash);
+            amounts.set(0, cash);
+            amounts.set(1, total - cash);
+            salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
+            dispose();
+        } catch (NumberFormatException e) {
+            utiliMsg.errorNumerico();
+            fieldAmountCash.setText("");
+        }
+    }
+
+    private String getCommentIn() {
+        String comment = textAreaCause.getText();
+        return comment;
     }
 }

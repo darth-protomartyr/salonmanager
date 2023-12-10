@@ -21,7 +21,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.servicios.ServicioSalon;
@@ -47,10 +47,10 @@ public class PartialPayer extends FrameWindow {
 
     Table tab = new Table();
     Salon salon = null;
-    ArrayList<ItemCarta> itemsToPay = null;
-    ArrayList<ItemCarta> itemsPartialToPay = new ArrayList<ItemCarta>();
-//    ArrayList<ItemCarta> itemsPartialPayed = new ArrayList<ItemCarta>();
-    ItemCarta itemAux = new ItemCarta();
+    ArrayList<Itemcard> itemsToPay = null;
+    ArrayList<Itemcard> itemsPartialToPay = new ArrayList<Itemcard>();
+//    ArrayList<Itemcard> itemsPartialPayed = new ArrayList<Itemcard>();
+    Itemcard itemAux = new Itemcard();
     double subTotal = 0;
     double total = 0;
     int discount = 0;
@@ -70,8 +70,8 @@ public class PartialPayer extends FrameWindow {
         tab = new Table(table);
         total = tab.getTotal();
         discount = tab.getDiscount();
-        ArrayList<ItemCarta> itemsAux = tab.getOrder();
-        itemsToPay = new ArrayList<ItemCarta>(itemsAux);
+        ArrayList<Itemcard> itemsAux = tab.getOrder();
+        itemsToPay = new ArrayList<Itemcard>(itemsAux);
         setTitle("Pago Parcial");
         PanelPpal panelPpal = new PanelPpal(390, 300);
         add(panelPpal);
@@ -168,15 +168,15 @@ public class PartialPayer extends FrameWindow {
 
     private void selItemToPay() {
         String selectedValue = (String) listToPay.getSelectedValue();
-        ItemCarta itemAux = utili.itemCartaBacker(selectedValue, itemsToPay);
+        Itemcard itemAux = utili.ItemcardBacker(selectedValue, itemsToPay);
         itemsPartialToPay.add(itemAux);
         ListModel modeloLista1 = utili.itemListModelReturnMono(itemsPartialToPay);
         listPartialToPay.setModel(modeloLista1);
 
-        Iterator<ItemCarta> iterador = itemsToPay.iterator();
+        Iterator<Itemcard> iterador = itemsToPay.iterator();
         int counter = 0;
         while (iterador.hasNext()) {
-            ItemCarta ic = iterador.next();
+            Itemcard ic = iterador.next();
             if (ic.getId() == itemAux.getId()) {
                 while (counter < 1) {
                     iterador.remove();
@@ -198,14 +198,14 @@ public class PartialPayer extends FrameWindow {
 
     private void unSelItemToPay() {
         String selectedValue = (String) listPartialToPay.getSelectedValue();
-        ItemCarta itemAux = utili.itemCartaBacker(selectedValue, itemsPartialToPay);
+        Itemcard itemAux = utili.ItemcardBacker(selectedValue, itemsPartialToPay);
         itemsToPay.add(itemAux);
         ListModel modeloLista1 = utili.itemListModelReturnMono(itemsToPay);
         listToPay.setModel(modeloLista1);
         int counter = 0;
-        Iterator<ItemCarta> iterador = itemsPartialToPay.iterator();
+        Iterator<Itemcard> iterador = itemsPartialToPay.iterator();
         while (iterador.hasNext()) {
-            ItemCarta ic = iterador.next();
+            Itemcard ic = iterador.next();
             if (ic.getId() == itemAux.getId()) {
                 while (counter < 1) {
                     iterador.remove();
@@ -227,16 +227,27 @@ public class PartialPayer extends FrameWindow {
     }
 
     private void butPartialInActionPerformed() throws Exception {
+        double amountToPay = pricer(itemsPartialToPay);
         if (itemsPartialToPay.size() > 0) {
             if ((total - subTotal == 0)) {
-                salon.moneyKind(salon, true, itemsPartialToPay);
+                boolean toPay = false;
+                salon.moneyKind(salon, true, itemsPartialToPay, toPay, amountToPay);
                 dispose();
             } else {
-                salon.moneyKind(salon, false, itemsPartialToPay);
+                boolean toPay = true;
+                salon.moneyKind(salon, false, itemsPartialToPay, toPay, amountToPay);
                 dispose();
             }
         } else {
             utiliMsg.errorItemNull();
         }
+    }
+
+    private double pricer(ArrayList<Itemcard> iPTP) {
+        double toPay = 0;
+        for (int i = 0; i < iPTP.size(); i++) {
+            toPay += iPTP.get(i).getPrice();
+        }
+        return toPay;
     }
 }

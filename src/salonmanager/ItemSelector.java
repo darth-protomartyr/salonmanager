@@ -16,9 +16,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
-import salonmanager.persistencia.DAOItemCarta;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ItemSelector extends FrameWindow {
@@ -26,7 +26,7 @@ public class ItemSelector extends FrameWindow {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAOItemCarta daoIC = new DAOItemCarta();
+    DAOItemcard daoIC = new DAOItemcard();
     ServicioUser si = new ServicioUser();
     SalonManager sm = new SalonManager();
     Color narSt = new Color(217, 103, 4);
@@ -34,8 +34,8 @@ public class ItemSelector extends FrameWindow {
     Color narMed = new Color(255, 172, 13);
     Color bluLg = new Color(3, 166, 136);
 
-    ArrayList<ItemCarta> itemsDB = new ArrayList<ItemCarta>();
-    ItemCarta itemAux = null;
+    ArrayList<Itemcard> itemsDB = new ArrayList<Itemcard>();
+    Itemcard itemAux = null;
     JLabel labelIngreso = null;
     JList listItem = new JList();
     JButton butSelItem = new JButton();
@@ -44,7 +44,7 @@ public class ItemSelector extends FrameWindow {
     public ItemSelector(String s) throws Exception {
         sel = s;
         sm.addFrame(this);
-        itemsDB = daoIC.listarItemsCarta();
+        itemsDB = daoIC.listarItemsCard();
         if (s.equals("m")) {
             setTitle("Modificar Item");
         } else {
@@ -97,9 +97,9 @@ public class ItemSelector extends FrameWindow {
             itemAux = utili.itemSelReturn(selectedItem, itemsDB);
             if (itemAux != null) {
                 if (sel.equals("m")) {
-                    new ItemCartaModificacion(itemAux);
+                    new ItemcardModificacion(itemAux);
                 } else {
-                    new ItemCartaConsulta(itemAux);
+                    new ItemcardConsulta(itemAux);
                 }
 
             }

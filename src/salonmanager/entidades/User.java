@@ -6,50 +6,49 @@ public class User {
 
     Utilidades utili = new Utilidades();
     String id;
-    String nombre;
-    String apellido;
+    String name;
+    String lastName;
     String mail;
     String rol;
     String routeImage;
     String nameImage;
     String password;
-    boolean alta;
+    boolean activeUser;
 
     public User() {
-
     }
 
-    public User(String nombre, String apellido, String mail, String routeImage, String nameImage, String password) {
+    public User(String name, String lastName, String mail, String routeImage, String nameImage, String password) {
         this.id = utili.idRandom();
-        this.nombre = nombre;
-        this.apellido = apellido;
+        this.name = name;
+        this.lastName = lastName;
         this.mail = mail;
         this.rol = "CAJERO";
         this.routeImage = routeImage;
         this.nameImage = nameImage;
         this.password = password;
-        this.alta = true;
+        this.activeUser = true;
     }
 
-    public User(String id, String nombre, String apellido, String mail, String rol, String routeImage, String nameImage, String password, boolean alta) {
+    public User(String id, String name, String lastName, String mail, String rol, String routeImage, String nameImage, String password, boolean activeUser) {
         this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
+        this.name = name;
+        this.lastName = lastName;
         this.mail = mail;
         this.rol = rol;
         this.routeImage = routeImage;
         this.nameImage = nameImage;
         this.password = password;
-        this.alta = true;
+        this.activeUser = true;
     }
 
-    public User(String id, String nombre, String apellido, String mail, boolean alta) {
+    public User(String id, String name, String lastName, String mail, boolean activeUser) {
         this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
+        this.name = name;
+        this.lastName = lastName;
         this.mail = mail;
         this.rol = "MOZO";
-        this.alta = alta;
+        this.activeUser = activeUser;
     }
 
     public String getId() {
@@ -60,20 +59,20 @@ public class User {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMail() {
@@ -116,11 +115,11 @@ public class User {
         this.password = password;
     }
 
-    public boolean isAlta() {
-        return alta;
+    public boolean isActiveUser() {
+        return activeUser;
     }
 
-    public void setAlta(boolean alta) {
-        this.alta = alta;
+    public void setActiveUser(boolean activeUser) {
+        this.activeUser = activeUser;
     }
 }

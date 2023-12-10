@@ -62,11 +62,13 @@ public class Ingresar extends FrameWindow {
         JPanel panelData1 = utiliGraf.dataPanelBacker("Mail:", 16);
         panelData1.setBounds(12, 70, 360, 40);
         panelData1.add(fieldMail);
+        fieldMail.setText("gon@gmail.com");
         panelPpal.add(panelData1);
 
         JPanel panelData2 = utiliGraf.dataPanelBacker("Password:", 16);
         panelData2.setBounds(12, 140, 360, 40);
         panelData2.add(fieldPass);
+        fieldPass.setText("27949874");
         panelPpal.add(panelData2);
 
         JPanel panelBut = new JPanel();
@@ -95,28 +97,28 @@ public class Ingresar extends FrameWindow {
     }
 
     private void butInUserActionPerformed() throws Exception {
-//        mail = fieldMail.getText();
-//        pass = fieldPass.getText();        
-        mail = "gon@gmail.com";
-        pass = "27949874";
+        mail = fieldMail.getText();
+        pass = fieldPass.getText();
         boolean error = false;
-        userAux = daoU.consultaUser(mail);
 
-        if (mail == "" || pass == "") {
+        if (mail.equals("") || pass.equals("")) {
             utiliMsg.errorDataNull();
             error = true;
         }
 
-        if (!userAux.getPassword().equals(pass)) {
-            utiliMsg.errorUserNull();
+        userAux = daoU.consultaUser(mail);
+        String id = userAux.getId();
+        
+        if (id == null) {
             error = true;
+            utiliMsg.errorUserNull();
         }
-
-        if (error == false) {
+        
+        if (error == false && id != null) {
             if (userAux.getPassword().equals(pass)) {
                 try {
-//                    sm.setUserIn(userAux);
-//                    sm.setPassIn(pass);
+                    sm.setUserIn(userAux);
+                    sm.setPassIn(pass);
                     landing.dispose();
                     dispose();
                     new Manager(userAux, pass);

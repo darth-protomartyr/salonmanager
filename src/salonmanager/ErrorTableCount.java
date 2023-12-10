@@ -18,22 +18,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import salonmanager.entidades.ItemCarta;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
@@ -59,16 +54,10 @@ public class ErrorTableCount extends FrameWindow {
 
     double errorMount = 0;
     double total = 0;
-    ArrayList<ItemCarta> itemsToPay = new ArrayList<ItemCarta>();
-    ArrayList<ItemCarta> itemsError = new ArrayList<ItemCarta>();
-
-    JTabbedPane tabbedPane = new JTabbedPane();
     JLabel labelLoss = new JLabel();
     JTextField fieldAmount = new JTextField();
     JCheckBox checkTotalLossMount = new JCheckBox("");
-    JCheckBox checkTotalLossItems = new JCheckBox("");
-    JList listToPay = new JList();
-    JList listError = new JList();
+    JTextArea textAreaCause = new JTextArea();
     Salon salon = null;
     JLabel labelTotalMount = null;
 
@@ -79,7 +68,7 @@ public class ErrorTableCount extends FrameWindow {
         setTitle("Error Mesa");
         PanelPpal panelPpal = new PanelPpal(390, 300);
         add(panelPpal);
-        itemsToPay = new ArrayList<ItemCarta>(salon.getItemsTableAux());
+//        itemsToPay = new ArrayList<Itemcard>(salon.getItemsTableAux());
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
         panelLabel.setBounds(0, 0, 390, 40);
@@ -87,23 +76,21 @@ public class ErrorTableCount extends FrameWindow {
         JLabel labelTit = utiliGraf.labelTitleBacker1("ERROR");
         panelLabel.add(labelTit);
 
-//----------------------------------------------------------------------------------------------------------------------
-//PanelMount
         JPanel panelAmount = new JPanel();
         panelAmount.setLayout(null);
         panelAmount.setBackground(bluLg);
-        panelAmount.setSize(280, 200);
+        panelAmount.setBounds(15, 40, 350, 220);
 
         JLabel labelAmount = utiliGraf.labelTitleBacker1("Ingrese el monto recibido");
         labelAmount.setBounds(60, 5, 240, 30);
         panelAmount.add(labelAmount);
 
-        JLabel label$ = utiliGraf.labelTitleBackerA2("$");
-        label$.setBounds(10, 40, 45, 60);
+        JLabel label$ = utiliGraf.labelTitleBackerA4("$");
+        label$.setBounds(15, 37, 45, 40);
         panelAmount.add(label$);
 
-        fieldAmount.setBounds(45, 40, 190, 50);
-        fieldAmount.setFont(new Font("Arial", Font.PLAIN, 40));
+        fieldAmount.setBounds(40, 40, 170, 35);
+        fieldAmount.setFont(new Font("Arial", Font.PLAIN, 30));
         fieldAmount.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -146,10 +133,10 @@ public class ErrorTableCount extends FrameWindow {
         panelAmount.add(fieldAmount);
 
         JLabel labelLossCheck = utiliGraf.labelTitleBacker3("Pérdida Total");
-        labelLossCheck.setBounds(245, 70, 120, 20);
+        labelLossCheck.setBounds(220, 50, 120, 20);
         panelAmount.add(labelLossCheck);
 
-        checkTotalLossMount.setBounds(335, 70, 20, 20);
+        checkTotalLossMount.setBounds(310, 50, 20, 20);
         checkTotalLossMount.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -162,108 +149,42 @@ public class ErrorTableCount extends FrameWindow {
         });
         panelAmount.add(checkTotalLossMount);
 
-        labelLoss = utiliGraf.labelTitleBacker2("");
-        labelLoss.setBounds(80, 100, 230, 25);
+        labelLoss = utiliGraf.labelTitleBacker3("");
+        labelLoss.setBounds(100, 70, 230, 25);
         panelAmount.add(labelLoss);
+        
+        JLabel labelComment = utiliGraf.labelTitleBacker3("Causa del Error (obligatorio):");
+        labelComment.setBounds(70, 65, 250, 20);
+        panelPpal.add(labelComment);
+        
+        textAreaCause.setRows(3);
+        textAreaCause.setColumns(5);
+        textAreaCause.setLineWrap(true);
+        textAreaCause.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(textAreaCause);
+        scrollPane.setBounds(70, 160, 250, 55);
+        panelPpal.add(scrollPane);
 
-        JButton butErrorMount = utiliGraf.button2("Confirmar Error", 90, 135, 160);
+
+        JButton butErrorMount = utiliGraf.button2("Confirmar Error", 90, 185, 160);
         butErrorMount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    butErrorMountActionPerformed();
+                    String cause = textAreaCause.getText();
+                    if (cause.equals("")) {
+                        utiliMsg.errorEmptyCause();
+                    } else {
+                        butErrorMountActionPerformed(cause);
+                    }
+                    
                 } catch (Exception ex) {
                     Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
         panelAmount.add(butErrorMount);
-
-//----------------------------------------------------------------------------------------------------------------------
-//PanelItem
-        JPanel panelItem = new JPanel();
-        panelItem.setLayout(null);
-        panelItem.setBackground(bluLg);
-        panelItem.setSize(280, 150);
-
-        JLabel labelItemsTP = utiliGraf.labelTitleBacker3("Items Pendientes");
-        labelItemsTP.setBounds(10, 5, 160, 15);
-        panelItem.add(labelItemsTP);
-
-        JLabel labelItemsSel = utiliGraf.labelTitleBacker3("Items No Abonados");
-        labelItemsSel.setBounds(185, 5, 160, 15);
-        panelItem.add(labelItemsSel);
-
-        listToPay.setModel(utili.itemListModelReturnMono(itemsToPay));
-        listToPay.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    selItemToPay();
-                }
-            }
-        });
-
-        JScrollPane jSPtoPay = new JScrollPane(listToPay);
-        jSPtoPay.setBounds(10, 25, 165, 80);
-        panelItem.add(jSPtoPay);
-
-        listError.setModel(utili.itemListModelReturnMono(itemsError));
-        listError.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    unSelItemToPay();
-                }
-            }
-        });
-
-        JScrollPane jSPPayed = new JScrollPane(listError);
-        jSPPayed.setBounds(185, 25, 165, 80);
-        panelItem.add(jSPPayed);
-
-        labelTotalMount = utiliGraf.labelTitleBacker2("Faltante: $0.0");
-        labelTotalMount.setBounds(20, 110, 180, 20);
-        panelItem.add(labelTotalMount);
-
-        JLabel labelLossCheck2 = utiliGraf.labelTitleBacker3("Pérdida Total");
-        labelLossCheck2.setBounds(210, 110, 120, 20);
-        panelItem.add(labelLossCheck2);
-
-        checkTotalLossItems.setBounds(300, 110, 20, 20);
-        checkTotalLossItems.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    updateItems();
-                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    updateItems();
-                }
-            }
-        });
-        panelItem.add(checkTotalLossItems);
-
-        JButton butErrorItem = utiliGraf.button2("Confirmar Error", 90, 135, 160);
-        butErrorItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    butErrorItemActionPerformed();
-                } catch (Exception ex) {
-                    Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelItem.add(butErrorItem);
-
-//----------------------------------------------------------------------------------------------------------------------
-//Pestañas
-        tabbedPane.addTab("Error por Monto", panelAmount);
-        tabbedPane.addTab("Error por Item", panelItem);
-
-        tabbedPane.setBounds(10, 40, 365, 200);
-        panelPpal.add(tabbedPane);
-
+        panelPpal.add(panelAmount);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 sal.enableSalon();
@@ -312,15 +233,9 @@ public class ErrorTableCount extends FrameWindow {
                 labelLoss.setText("Monto Faltante: $" + wrong);
             }
         }
-
-//        if (totalLoss == true) {
-//            fieldAmount.setEditable(false);
-//        } else {
-//            fieldAmount.setEditable(true);
-//        }
     }
 
-    private void butErrorMountActionPerformed() throws Exception {
+    private void butErrorMountActionPerformed(String cause) throws Exception {
         boolean error = false;
         String err = fieldAmount.getText();
         boolean totalLoss = checkTotalLossMount.isSelected();
@@ -352,7 +267,7 @@ public class ErrorTableCount extends FrameWindow {
         if (error == false) {
             boolean confirm = utiliMsg.cargaConfirmarMontoError(total - errorMount, errorMount);
             if (confirm) {
-                salon.errorMountBacker(errorMount);
+                salon.errorMountBacker(errorMount, cause);
                 dispose();
             }
         } else {
@@ -366,88 +281,85 @@ public class ErrorTableCount extends FrameWindow {
     }
 
 //Funciones por Item--------------------------------------------------------------------------------------------------
-    private void updateItems() {
-        boolean totalLoss = checkTotalLossItems.isSelected();
-        if (totalLoss == true) {
-            for (ItemCarta ic : itemsToPay) {
-                itemsError.add(ic);
-            }
-            itemsToPay = new ArrayList<ItemCarta>();
-        } else {
-            for (ItemCarta ic : itemsError) {
-                itemsToPay.add(ic);
-            }
-            itemsError = new ArrayList<ItemCarta>();
-        }
-
-        listToPay.setModel(utili.itemListModelReturnMono(itemsToPay));
-        listError.setModel(utili.itemListModelReturnMono(itemsError));
-
-        double error = 0;
-        for (ItemCarta ic : itemsError) {
-            error += ic.getPrice();
-        }
-        labelTotalMount.setText("Faltante: $" + error);
-    }
-
-    private void selItemToPay() {
-        checkTotalLossItems.setSelected(false);
-        String selectedValue = (String) listToPay.getSelectedValue();
-        ItemCarta itemAux = utili.itemCartaBacker(selectedValue, itemsToPay);
-        itemsError.add(itemAux);
-        ListModel modeloLista1 = utili.itemListModelReturnMono(itemsError);
-        listError.setModel(modeloLista1);
-
-        Iterator<ItemCarta> iterador = itemsToPay.iterator();
-        int counter = 0;
-        while (iterador.hasNext()) {
-            ItemCarta ic = iterador.next();
-            if (ic.getId() == itemAux.getId()) {
-                while (counter < 1) {
-                    iterador.remove();
-                    counter += 1;
-                }
-            }
-        }
-        ListModel modeloLista2 = utili.itemListModelReturnMono(itemsToPay);
-        listToPay.setModel(modeloLista2);
-        double error = 0;
-        for (ItemCarta ic : itemsError) {
-            error += ic.getPrice();
-        }
-        labelTotalMount.setText("Faltante: $" + error);
-    }
-
-    private void unSelItemToPay() {
-        checkTotalLossItems.setSelected(false);
-        String selectedValue = (String) listError.getSelectedValue();
-        ItemCarta itemAux = utili.itemCartaBacker(selectedValue, itemsError);
-        itemsToPay.add(itemAux);
-        ListModel modeloLista1 = utili.itemListModelReturnMono(itemsToPay);
-        listToPay.setModel(modeloLista1);
-        int counter = 0;
-        Iterator<ItemCarta> iterador = itemsError.iterator();
-        while (iterador.hasNext()) {
-            ItemCarta ic = iterador.next();
-            if (ic.getId() == itemAux.getId()) {
-                while (counter < 1) {
-                    iterador.remove();
-                    counter += 1;
-                }
-            }
-        }
-        ListModel modeloLista2 = utili.itemListModelReturnMono(itemsError);
-        listError.setModel(modeloLista2);
-
-        double error = 0;
-        for (ItemCarta ic : itemsError) {
-            error += ic.getPrice();
-        }
-        labelTotalMount.setText("Faltante: $" + error);
-
-    }
-
-    private void butErrorItemActionPerformed() throws Exception {
-        salon.errorItemsBacker(itemsError);
-    }
+//    private void updateItems() {
+//        boolean totalLoss = checkTotalLossItems.isSelected();
+//        if (totalLoss == true) {
+//            for (Itemcard ic : itemsToPay) {
+//                itemsError.add(ic);
+//            }
+//            itemsToPay = new ArrayList<Itemcard>();
+//        } else {
+//            for (Itemcard ic : itemsError) {
+//                itemsToPay.add(ic);
+//            }
+//            itemsError = new ArrayList<Itemcard>();
+//        }
+//
+//        listToPay.setModel(utili.itemListModelReturnMono(itemsToPay));
+//        listError.setModel(utili.itemListModelReturnMono(itemsError));
+//
+//        double error = 0;
+//        for (Itemcard ic : itemsError) {
+//            error += ic.getPrice();
+//        }
+//        labelTotalMount.setText("Faltante: $" + error);
+//    }
+//    private void selItemToPay() {
+//        checkTotalLossItems.setSelected(false);
+//        String selectedValue = (String) listToPay.getSelectedValue();
+//        Itemcard itemAux = utili.ItemcardBacker(selectedValue, itemsToPay);
+//        itemsError.add(itemAux);
+//        ListModel modeloLista1 = utili.itemListModelReturnMono(itemsError);
+//        listError.setModel(modeloLista1);
+//
+//        Iterator<Itemcard> iterador = itemsToPay.iterator();
+//        int counter = 0;
+//        while (iterador.hasNext()) {
+//            Itemcard ic = iterador.next();
+//            if (ic.getId() == itemAux.getId()) {
+//                while (counter < 1) {
+//                    iterador.remove();
+//                    counter += 1;
+//                }
+//            }
+//        }
+//        ListModel modeloLista2 = utili.itemListModelReturnMono(itemsToPay);
+//        listToPay.setModel(modeloLista2);
+//        double error = 0;
+//        for (Itemcard ic : itemsError) {
+//            error += ic.getPrice();
+//        }
+//        labelTotalMount.setText("Faltante: $" + error);
+//    }
+//    private void unSelItemToPay() {
+//        checkTotalLossItems.setSelected(false);
+//        String selectedValue = (String) listError.getSelectedValue();
+//        Itemcard itemAux = utili.ItemcardBacker(selectedValue, itemsError);
+//        itemsToPay.add(itemAux);
+//        ListModel modeloLista1 = utili.itemListModelReturnMono(itemsToPay);
+//        listToPay.setModel(modeloLista1);
+//        int counter = 0;
+//        Iterator<Itemcard> iterador = itemsError.iterator();
+//        while (iterador.hasNext()) {
+//            Itemcard ic = iterador.next();
+//            if (ic.getId() == itemAux.getId()) {
+//                while (counter < 1) {
+//                    iterador.remove();
+//                    counter += 1;
+//                }
+//            }
+//        }
+//        ListModel modeloLista2 = utili.itemListModelReturnMono(itemsError);
+//        listError.setModel(modeloLista2);
+//
+//        double error = 0;
+//        for (Itemcard ic : itemsError) {
+//            error += ic.getPrice();
+//        }
+//        labelTotalMount.setText("Faltante: $" + error);
+//
+//    }
+//    private void butErrorItemActionPerformed() throws Exception {
+//        salon.errorItemsBacker(itemsError);
+//    }
 }

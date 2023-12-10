@@ -80,8 +80,8 @@ public class CustomDialogConfirm extends JDialog {
         
         panelText.setLayout(new GridBagLayout());
         JLabel labelText = new JLabel();
-        labelText.setText(utili.stringMsgFrd(message));
-        Font nuevaFuente = new Font("Arial", Font.BOLD, 20);
+        labelText.setText(utili.stringMsgFrd(message, 25, 2));
+        Font nuevaFuente = new Font("Arial", Font.BOLD, 18);
         labelText.setFont(nuevaFuente);
         labelText.setHorizontalAlignment(SwingConstants.CENTER); // Alinea el texto al centro
         GridBagConstraints constraints = new GridBagConstraints();

@@ -17,6 +17,6 @@ public class ServicioRegister {
 
     public void crearRegistro(String operation, String object, String modification) throws Exception {
         Register rgo = new Register(sm.getUserIn().getMail(), operation, object, modification);
-        daoR.guardarTablaRegistros(rgo);
+        daoR.saveTablaRegistros(rgo);
     }
 }

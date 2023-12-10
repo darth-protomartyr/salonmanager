@@ -2,12 +2,11 @@ package salonmanager.entidades;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import salonmanager.servicios.ServicioItemCarta;
+import salonmanager.servicios.ServicioItemcard;
 
-public class ItemCarta {
+public class Itemcard {
 
-    ServicioItemCarta sic = new ServicioItemCarta();
-
+    ServicioItemcard sic = new ServicioItemcard();
     int id;
     String code;
     String name;
@@ -18,14 +17,14 @@ public class ItemCarta {
     int stock;
     Timestamp dateCreation;
     Timestamp dateUpdate;
-    boolean altaTip;
-    boolean altaItem;
+    boolean activeTip;
+    boolean activeItem;
 
-    public ItemCarta() {
+    public Itemcard() {
         
     }
 
-    public ItemCarta(String name, String caption, String description, double cost, double price, int stock, boolean altaTip) throws Exception {
+    public Itemcard(String name, String caption, String description, double cost, double price, int stock, boolean activeTip) throws Exception {
         this.code = sic.codeCreator(caption);
         this.name = name;
         this.caption = caption;
@@ -33,12 +32,12 @@ public class ItemCarta {
         this.cost = cost;
         this.price = price;
         this.stock = stock;
-        this.altaTip = altaTip;
+        this.activeTip = activeTip;
         this.dateCreation = new Timestamp(new Date().getTime());
-        this.altaItem = true;
+        this.activeItem = true;
     }
 
-    public ItemCarta(int id, String code, String name, String caption, String description, double cost, double price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean altaTip, boolean altaItem) {
+    public Itemcard(int id, String code, String name, String caption, String description, double cost, double price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -49,8 +48,8 @@ public class ItemCarta {
         this.stock = stock;
         this.dateCreation = dateCreation;
         this.dateUpdate = dateUpdate;
-        this.altaTip = altaTip;
-        this.altaItem = altaItem;
+        this.activeTip = activeTip;
+        this.activeItem = activeItem;
     }
 
     public int getId() {
@@ -133,21 +132,32 @@ public class ItemCarta {
         this.dateUpdate = dateUpdate;
     }
 
-    public boolean isAltaTip() {
-        return altaTip;
+    public boolean isActiveTip() {
+        return activeTip;
     }
 
-    public void setAltaTip(boolean altaTip) {
-        this.altaTip = altaTip;
+    public void setActiveTip(boolean activeTip) {
+        this.activeTip = activeTip;
     }
     
     
 
-    public boolean isAltaItem() {
-        return altaItem;
+    public boolean isActiveItem() {
+        return activeItem;
     }
 
-    public void setAltaItem(boolean altaItem) {
-        this.altaItem = altaItem;
+    public void setActiveItem(boolean activeItem) {
+        this.activeItem = activeItem;
     }
+
+    @Override
+    public String toString() {
+        return "Itemcard{" + ", name=" + name + '}';
+    }
+    
+    
+    
+    
+    
+    
 }

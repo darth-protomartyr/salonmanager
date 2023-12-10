@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -53,13 +54,12 @@ public class CustomDialogPass extends JDialog {
     Color narLg = new Color(252, 203, 5);
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
-
-    JTextField fieldPass = new JTextField();
+    JPasswordField fieldPass = new JPasswordField();
     
     public CustomDialogPass(String message) {
         setIconImage(icono.getImage());
         setModal(true);
-        setTitle("INGERSE PASSWORD");
+        setTitle("INGRESE PASSWORD");
 
         setSize(anchoUnit * 30, altoUnit * 40);
         setLocationRelativeTo(null); // Centrar en la pantalla
@@ -78,8 +78,8 @@ public class CustomDialogPass extends JDialog {
         
         panelText.setLayout(new GridBagLayout());
         JLabel labelText = new JLabel();
-        labelText.setText(utili.stringMsgFrd(message));
-        Font nuevaFuente = new Font("Arial", Font.BOLD, 20);
+        labelText.setText(utili.stringMsgFrd(message, 25, 2));
+        Font nuevaFuente = new Font("Arial", Font.BOLD, 18);
         labelText.setFont(nuevaFuente);
         labelText.setHorizontalAlignment(SwingConstants.CENTER); // Alinea el texto al centro
         GridBagConstraints constraints = new GridBagConstraints();

@@ -7,10 +7,10 @@ package salonmanager.servicios;
 
 import java.util.ArrayList;
 import salonmanager.Salon;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.JButtonTable;
 import salonmanager.entidades.Table;
-import salonmanager.persistencia.DAOItemCarta;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
@@ -23,7 +23,7 @@ public class ServicioSalon {
 
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
-    DAOItemCarta daoIC = new DAOItemCarta();
+    DAOItemcard daoIC = new DAOItemcard();
     Utilidades utili = new Utilidades();
     Salon salon = null;
 
@@ -70,7 +70,7 @@ public class ServicioSalon {
         return configValues;
     }
 
-    public int itemRepeat(ItemCarta ic, ArrayList<ItemCarta> itemsTableAux) {
+    public int itemRepeat(Itemcard ic, ArrayList<Itemcard> itemsTableAux) {
         int rep = -1;
         for (int i = 0; i < itemsTableAux.size(); i++) {
             if (ic.equals(itemsTableAux.get(i))) {
@@ -80,8 +80,8 @@ public class ServicioSalon {
         return rep;
     }
 
-    public ArrayList<ItemCarta> itemTableLesser(ArrayList<ItemCarta> items, ItemCarta ic) {
-        ArrayList<ItemCarta> itemsLesser = new ArrayList<ItemCarta>(items);
+    public ArrayList<Itemcard> itemTableLesser(ArrayList<Itemcard> items, Itemcard ic) {
+        ArrayList<Itemcard> itemsLesser = new ArrayList<Itemcard>(items);
         int index = -1;
 
         for (int i = 0; i < items.size(); i++) {
@@ -97,10 +97,12 @@ public class ServicioSalon {
     public double countBill(Table tableAux) {
         double bill = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<ItemCarta> itemsTable = tableAux.getOrder();
+        ArrayList<Itemcard> itemsTable = tableAux.getOrder();
 
         for (int i = 0; i < itemsTable.size(); i++) {
-            bill = bill + (itemsTable.get(i).getPrice());
+            if (itemsTable.get(i).isActiveItem()) {
+                bill = bill + (itemsTable.get(i).getPrice());
+            }
         }
 
         if (discount > 0) {
@@ -115,7 +117,7 @@ public class ServicioSalon {
     public double partialBillPayed(Table tableAux) {
         double partial = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<ItemCarta> itemsPartial = new ArrayList<ItemCarta>(tableAux.getPartialPayed());
+        ArrayList<Itemcard> itemsPartial = new ArrayList<Itemcard>(tableAux.getPartialPayed());
         for (int i = 0; i < itemsPartial.size(); i++) {
             partial += itemsPartial.get(i).getPrice();
         }
@@ -123,7 +125,7 @@ public class ServicioSalon {
         double disc = (double) discount;
         partial = partial * (1 - disc / 100);
 
-        ArrayList<ItemCarta> itemsPartialAux = new ArrayList<ItemCarta>(tableAux.getAuxiliarPartialPayedNoDiscount());
+        ArrayList<Itemcard> itemsPartialAux = new ArrayList<Itemcard>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
             partialND += itemsPartialAux.get(i).getPrice();
@@ -134,9 +136,9 @@ public class ServicioSalon {
     }
 
 //Resumen de cuenta aplicada a ventana de pago parcial
-    public double billPartial(ArrayList<ItemCarta> items, int discount) {
+    public double billPartial(ArrayList<Itemcard> items, int discount) {
         double bill = 0;
-        for (ItemCarta ic : items) {
+        for (Itemcard ic : items) {
             bill += ic.getPrice();
         }
         double disc = discount;
@@ -145,12 +147,12 @@ public class ServicioSalon {
     }
 
     public void createTable(Table tableAux) throws Exception {
-        daoT.guardarTable(tableAux);
-        daoU.guardarWaiterTable(tableAux);
+        daoT.saveTable(tableAux);
+        daoU.saveWaiterTable(tableAux);
     }
 
-    public ArrayList<ItemCarta> itemDeployer(ItemCarta ic, int num) {
-        ArrayList<ItemCarta> al = new ArrayList<ItemCarta>();
+    public ArrayList<Itemcard> itemDeployer(Itemcard ic, int num) {
+        ArrayList<Itemcard> al = new ArrayList<Itemcard>();
         int count = 0;
         while (count < num) {
             al.add(ic);
@@ -159,9 +161,9 @@ public class ServicioSalon {
         return al;
     }
 
-    public void addItemOrder(Table tableAux, ArrayList<ItemCarta> arrayAux) throws Exception {
+    public void addItemOrder(Table tableAux, ArrayList<Itemcard> arrayAux) throws Exception {
         for (int i = 0; i < arrayAux.size(); i++) {
-            daoIC.guardarItemOrderTable(arrayAux.get(i), tableAux);
+            daoIC.saveItemOrderTable(arrayAux.get(i), tableAux);
         }
     }
 

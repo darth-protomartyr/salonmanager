@@ -12,7 +12,7 @@ import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import salonmanager.utilidades.UtilidadesUpdate;
 
-public class Administrador extends FrameGeneral {
+public class Admin extends FrameGeneral {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -24,7 +24,7 @@ public class Administrador extends FrameGeneral {
     SalonManager sm = new SalonManager();
     User userIn = null;
     
-    public Administrador(User user) {
+    public Admin(User user) {
         setTitle("Administrador");
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);         

@@ -14,31 +14,31 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salonmanager.entidades.FrameHalf;
-import salonmanager.entidades.ItemCarta;
+import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
-import salonmanager.persistencia.DAOItemCarta;
-import salonmanager.servicios.ServicioItemCarta;
+import salonmanager.persistencia.DAOItemcard;
+import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class ItemCartaModificacion extends FrameHalf {
+public class ItemcardModificacion extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAOItemCarta daoIC = new DAOItemCarta();
-    ServicioItemCarta sic = new ServicioItemCarta();
+    DAOItemcard daoIC = new DAOItemcard();
+    ServicioItemcard sic = new ServicioItemcard();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
     User userIn = null;
-    ItemCarta item = null;
+    Itemcard item = null;
 
-    ArrayList<ItemCarta> itemsCartaDB = null;
+    ArrayList<Itemcard> itemsCardDB = null;
     String name = "";
     String caption = "";
     String description = "";
@@ -46,7 +46,7 @@ public class ItemCartaModificacion extends FrameHalf {
     double price = 0;
     int stock = 0;
     boolean tipAlta = false;
-    ItemCarta itemAux = new ItemCarta();
+    Itemcard itemAux = new Itemcard();
     ArrayList<String> captionsDB = utili.captionList();
 
     JTextField fieldName = new JTextField();
@@ -58,20 +58,20 @@ public class ItemCartaModificacion extends FrameHalf {
     JCheckBox checkTip = new JCheckBox("");
     JButton butModificarItem = null;
 
-    public ItemCartaModificacion(ItemCarta ic) throws Exception {
+    public ItemcardModificacion(Itemcard ic) throws Exception {
         itemAux= ic;
         sm.addFrame(this);
         item = ic;
-        setTitle("Modificación Item de Carta");
-        itemsCartaDB = daoIC.listarItemsCarta();
+        setTitle("Modificación Item de Card");
+        itemsCardDB = daoIC.listarItemsCard();
         PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Ingresar Items a la Carta");
+        JLabel labelTit = utiliGraf.labelTitleBacker1("Ingresar Items a la Card");
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 
-        JPanel panelForm = utiliGraf.panelItemCartaForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, captionsDB, itemAux);
+        JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, captionsDB, itemAux);
         panelPpal.add(panelForm);
 
         butModificarItem = utiliGraf.button1("Crear Item", 206, 600, 270);
@@ -81,7 +81,7 @@ public class ItemCartaModificacion extends FrameHalf {
                 try {
                     butModificarItemActionPerformed();
                 } catch (Exception ex) {
-                    Logger.getLogger(ItemCartaIngreso.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ItemcardIngreso.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -108,7 +108,7 @@ public class ItemCartaModificacion extends FrameHalf {
             utiliMsg.errorCantCharName();
         }
 
-        if (utili.itemCartaRepeat(name, itemsCartaDB, null)) {
+        if (utili.ItemcardRepeat(name, itemsCardDB, null)) {
             error = true;
             utiliMsg.errorNameRepeat();
         }
@@ -138,7 +138,7 @@ public class ItemCartaModificacion extends FrameHalf {
             }
 
             if (pric.equals("")) {
-                boolean confirm = utiliMsg.errorPriceNull();
+                boolean confirm = utiliMsg.cargaConfirmErrorPriceNull();
                 if (confirm) {
                     pric = "0";
                     price = utili.toNumberD(pric);
@@ -164,9 +164,9 @@ public class ItemCartaModificacion extends FrameHalf {
         } catch (NumberFormatException e) {
             utiliMsg.errorNumerico();
             error = true;
-            resetItemCarta();
+            resetItemcard();
         } catch (Exception ex) {
-            Logger.getLogger(ItemCartaIngreso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ItemcardIngreso.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (cost > price) {
@@ -177,14 +177,14 @@ public class ItemCartaModificacion extends FrameHalf {
         tipAlta = checkTip.isSelected();
 
         if (error == false) {
-            itemAux = new ItemCarta(name, caption, description, cost, price, stock, tipAlta);
+            itemAux = new Itemcard(name, caption, description, cost, price, stock, tipAlta);
             daoIC.modificarItem(itemAux, name, caption, description, cost, price, stock, tipAlta);
-            resetItemCarta();
+            resetItemcard();
         }
     }
 
-    private void resetItemCarta() throws Exception {
-        itemsCartaDB = daoIC.listarItemsCarta();
+    private void resetItemcard() throws Exception {
+        itemsCardDB = daoIC.listarItemsCard();
         name = "";
         caption = "";
         description = "";
@@ -192,7 +192,7 @@ public class ItemCartaModificacion extends FrameHalf {
         price = 0;
         stock = 0;
         tipAlta = false;
-        itemAux = new ItemCarta();
+        itemAux = new Itemcard();
 
         fieldName.setText("");
         areaDescription.setText("");
