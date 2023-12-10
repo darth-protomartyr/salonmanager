@@ -122,6 +122,7 @@ public class Salon extends FrameFullManager {
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
     ArrayList<JButtonBarr> barrButtons = new ArrayList<JButtonBarr>();
+    ArrayList<JButtonDelivery> deliButtons = new ArrayList<JButtonDelivery>();
     JButton butBarrDeli = null;
     JPanel panelBDButtons = new JPanel();
 
@@ -258,7 +259,11 @@ public class Salon extends FrameFullManager {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    butPanelTurn();
+                    if (workshiftNow != null) {
+                        butPanelTurn();
+                    } else {
+                        utiliMsg.errorWorkshift();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -278,15 +283,8 @@ public class Salon extends FrameFullManager {
         panelBDButtons.add(panelBarr);
 
 //Panel Delivery--------------------------------------------------------        
-        JPanel panelDeli = new JPanel();
-        panelDeli.setLayout(null);
-        panelDeli.setBackground(bluLg);
-        panelDeli.setBounds(anchoPane / 2 + anchoUnit, altoUnit, (anchoPane / 2) - anchoUnit * 3, (alturaPane - altoUnit * 5));
+        JPanel panelDeli = returnPanelDeli();
         panelBDButtons.add(panelDeli);
-
-        JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
-        labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 3);
-        panelDeli.add(labelDP);
 
 //Delivery        
 //        JPanel panelDelivery = new JPanel();
@@ -1391,6 +1389,10 @@ public class Salon extends FrameFullManager {
         }
     }
 
+//Panel BARR-DELI---------------------------------------------------------------
+//Panel BARR-DELI---------------------------------------------------------------
+//Panel BARR-DELI---------------------------------------------------------------
+//Panel BARR-DELI---------------------------------------------------------------
     private void butPanelTurn() {
         tabbedPane.setVisible(false);
         panelBDButtons.setVisible(true);
@@ -1415,7 +1417,7 @@ public class Salon extends FrameFullManager {
         panelBarr.setBounds(anchoUnit * 2, altoUnit, (anchoPane / 2) - anchoUnit * 3, (alturaPane - altoUnit * 5));
 
         JLabel labelBP = utiliGraf.labelTitleBackerA4("Barra");
-        labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 3);
+        labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
         panelBarr.add(labelBP);
 
         JButton butCreateBarr = utiliGraf.button1("Crear pedido Barra", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
@@ -1435,10 +1437,7 @@ public class Salon extends FrameFullManager {
         panelBarrBut.setLayout(new GridLayout(0, 1, anchoUnit * 5, altoUnit * 5));
 
         scrPaneBarr = new JScrollPane(panelBarrBut);
-//                scrPaneBarr.setPreferredSize(new Dimension(anchoPane, alturaPane));
         scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrPaneBarr.setLayout(null);
-//        scrPaneBarr.setBackground(narLg);
         scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 50);
         panelBarr.add(scrPaneBarr);
         barrButAdder();
@@ -1446,12 +1445,21 @@ public class Salon extends FrameFullManager {
         return panelBarr;
     }
 
+    private void createBarr() {
+        int num = barrButtons.size() + 1;
+        JButtonBarr newJBB = new JButtonBarr(num);
+        Table newTable = new Table(newJBB.getNum(), newJBB.getPos(), user);
+        newJBB.setTable(newTable);
+        barrButtons.add(newJBB);
+        barrButAdder();
+    }
+
     private void barrButAdder() {
         for (int i = 0; i < barrButtons.size(); i++) {
             JButtonBarr butSelBarr = barrButtons.get(i);
             butSelBarr.setBackground(narUlg);
             butSelBarr.setBorder(new LineBorder(narLg, 8));
-             
+
             butSelBarr.setFont(font);
             butSelBarr.setText("Barra " + butSelBarr.getNum());
             butSelBarr.addActionListener(new ActionListener() {
@@ -1470,20 +1478,79 @@ public class Salon extends FrameFullManager {
         repaint();
     }
 
-    private void createBarr() {
-        int num = 1;
-        if (barrButtons.size() > 1) {
-            num = barrButtons.size();
-        }
-        JButtonBarr newJBB = new JButtonBarr(num);
-        Table newTable = new Table(newJBB.getNum(), newJBB.getPos(), user);
-        newJBB.setTable(newTable);
-        barrButtons.add(newJBB);
-        barrButAdder();
+    private void selectBarr() {
+
     }
 
-    private void selectBarr() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private JPanel returnPanelDeli() {
+        JPanel panelDeli = new JPanel();
+        panelDeli.setLayout(null);
+        panelDeli.setBackground(bluLg);
+        panelDeli.setBounds(anchoPane / 2 + anchoUnit, altoUnit, (anchoPane / 2) - anchoUnit * 3, (alturaPane - altoUnit * 5));
+
+        JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
+        labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
+        panelDeli.add(labelDP);
+
+        JButton butCreateBarr = utiliGraf.button1("Crear pedido delivery", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
+        butCreateBarr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    createDelivery();
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
+        panelDeli.add(butCreateBarr);
+        panelDeliBut.setBackground(narLg);
+        panelDeliBut.setLayout(new GridLayout(0, 1, anchoUnit * 5, altoUnit * 5));
+        scrPaneBarr = new JScrollPane(panelDeliBut);
+        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 50);
+        panelDeli.add(scrPaneBarr);
+        barrButAdder();
+        return panelDeli;
+    }
+
+    private void createDelivery() {
+
+        int num = deliButtons.size() + 1;
+        JButtonDelivery newJBD = new JButtonDelivery(num);
+        Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
+        newJBD.setTable(newTable);
+        deliButtons.add(newJBD);
+        deliButAdder();
+    }
+
+    private void deliButAdder() {
+        for (int i = 0; i < deliButtons.size(); i++) {
+            JButtonDelivery butSelDelivery = deliButtons.get(i);
+            butSelDelivery.setBackground(narUlg);
+            butSelDelivery.setBorder(new LineBorder(narLg, 8));
+
+            butSelDelivery.setFont(font);
+            butSelDelivery.setText("Delivery " + butSelDelivery.getNum());
+            butSelDelivery.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        selectDeli();
+                    } catch (Exception ex) {
+                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            panelDeliBut.add(butSelDelivery);
+        }
+        revalidate();
+        repaint();
+    }
+
+    private void selectDeli() {
+
     }
 
 }

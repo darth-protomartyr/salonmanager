@@ -11,7 +11,7 @@ public class UtilidadesMensajes extends JFrame {
     private javax.swing.JOptionPane optionPaneOk;
 
     public void errorRegistroFallido() {
-        CustomDialog cm = new CustomDialog("Error: Debe iniciar un turno antes de cargar mesas.", 2);
+        CustomDialog cm = new CustomDialog("Error: No pudo realizarse el registro.", 2);
         cm.setVisible(true);
 
     }

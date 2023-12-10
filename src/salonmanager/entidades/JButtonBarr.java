@@ -13,7 +13,7 @@ public class JButtonBarr extends JButton {
     }
 
     public JButtonBarr(int num) {
-        this.pos = "BARRA";
+        this.pos = "barra";
         this.num = num;
         this.table = null;
         this.text = pos + " " + num;
