@@ -88,8 +88,10 @@ public class Salon extends FrameFullManager {
     int wUnit = 0;
     int hUnit = 0;
 
-    int f = anchoUnit * 3;
-    Font font = new Font("Arial", Font.BOLD, f);
+    int f1 = anchoUnit * 3;
+    Font font1 = new Font("Arial", Font.BOLD, f1);
+    int f2 = (int) Math.round(anchoUnit * 2.8);
+    Font font2 = new Font("Arial", Font.BOLD, f2);
     JScrollPane scrPaneBarr = new JScrollPane();
     JPanel panelBarrBut = new JPanel();
     JScrollPane scrPaneDeli = new JScrollPane();
@@ -125,6 +127,8 @@ public class Salon extends FrameFullManager {
     ArrayList<JButtonDelivery> deliButtons = new ArrayList<JButtonDelivery>();
     JButton butBarrDeli = null;
     JPanel panelBDButtons = new JPanel();
+    JButtonBarr jbbAux = new JButtonBarr();
+    JButtonDelivery jbdAux = new JButtonDelivery();
 
     JPanel panelA = new JPanel();
     JTabbedPane tabbedPane = new JTabbedPane();
@@ -253,7 +257,7 @@ public class Salon extends FrameFullManager {
         butBarrDeli.setBackground(narUlg);
         butBarrDeli.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 25, altoUnit * 10);
         butBarrDeli.setBorder(null);
-        butBarrDeli.setFont(font);
+        butBarrDeli.setFont(font1);
         butBarrDeli.setText("Barra - Delivery");
         butBarrDeli.addActionListener(new ActionListener() {
             @Override
@@ -336,8 +340,8 @@ public class Salon extends FrameFullManager {
             for (int y = 0; y < rowsButtons; y++) {
                 for (int z = 0; z < colButtons; z++) {
                     JButtonTable jbt = new JButtonTable(tablePanCh.get(i), numBut, wUnit * (5 * z + 1), hUnit * (5 * y + 1), (wUnit * 4), (hUnit * 4));
-                    font = new Font("Arial", Font.BOLD, fontSizeTable);
-                    jbt.setFont(font);
+                    font1 = new Font("Arial", Font.BOLD, fontSizeTable);
+                    jbt.setFont(font1);
                     jbt.setText(jbt.getText());
                     jbt.setBackground(narUlg);
                     jbt.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -395,7 +399,7 @@ public class Salon extends FrameFullManager {
                         labelMesa.setText("Mesa:" + nameT);
                         tableAux.setOrder(new ArrayList<Itemcard>());
                         try {
-                            jbtSetter();
+                            jButExtSetter();
                         } catch (Exception ex) {
                             Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -430,7 +434,7 @@ public class Salon extends FrameFullManager {
         panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (anchoPane + anchoUnit * 9), altoUnit * 89);
         panelLateral.add(panelTable);
         labelMesa = utiliGraf.labelTitleBackerA2("Mesa:--");
-        labelMesa.setBounds(altoUnit, altoUnit, anchoUnit * 20, 40);
+        labelMesa.setBounds(altoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
         panelTable.add(labelMesa);
 
         labelWaiter = utiliGraf.labelTitleBackerA4("Mozo: --");
@@ -769,8 +773,20 @@ public class Salon extends FrameFullManager {
     private void butSelItemActionPerformed(String item) throws Exception {
         if (itemsTableAux.size() < 1) {
             ss.createTable(tableAux);
-            jbtAux.setOpenJBT(true);
-            jbtAux.setBackground(green);
+            if (jbtAux != null) {
+                jbtAux.setOpenJBT(true);
+                jbtAux.setBackground(green);
+            }
+
+            if (jbbAux != null) {
+                jbbAux.setOpenJBB(true);
+                jbbAux.setBackground(green);
+            }
+
+            if (jbdAux != null) {
+                jbdAux.setOpenJBD(true);
+                jbdAux.setBackground(green);
+            }
         }
 
         Itemcard ic = null;
@@ -790,7 +806,7 @@ public class Salon extends FrameFullManager {
         daoT.updateTableTotal(tableAux);
         ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
         ss.addItemOrder(tableAux, arrayAux);
-        jbtSetter();
+        jButExtSetter();
         labelCuenta.setText("$ " + total);
         comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
         comboItems.setSelectedIndex(itemsDB.size());
@@ -940,7 +956,7 @@ public class Salon extends FrameFullManager {
         daoI.downActiveItemOrderTable(ic, tableAux);
         daoI.saveItemGiftTable(ic, tableAux);
         daoT.updateTableTotal(tableAux);
-        jbtSetter();
+        jButExtSetter();
         labelCuenta.setText(total + "");
         setEnabled(true);
     }
@@ -968,7 +984,7 @@ public class Salon extends FrameFullManager {
         tableAux.setTotal(total);
         daoT.updateTableTotal(tableAux);
         daoT.updateTableDiscount(tableAux);
-        jbtSetter();
+        jButExtSetter();
         labelCuenta.setText(total + "");
         setTableItems();
         setEnabled(true);
@@ -1006,7 +1022,7 @@ public class Salon extends FrameFullManager {
         labelCuenta.setText(total + "");
         double payed = ss.partialBillPayed(tableAux);
         labelPartialPay.setText("Pagado: $" + (payed));
-        jbtSetter();
+        jButExtSetter();
         setTableItems();
         setEnabled(true);
 
@@ -1044,7 +1060,7 @@ public class Salon extends FrameFullManager {
         daoT.updateTableTotal(tableAux);
         tableAux.setBill(true);
         daoT.updateTableBill(tableAux);
-        jbtSetter();
+        jButExtSetter();
         labelTotalParcial.setText("Total $:");
         labelCuenta.setText("" + total);
         labelTip.setText("Prop.: " + Math.round(total * 0.1));
@@ -1068,7 +1084,7 @@ public class Salon extends FrameFullManager {
 //------------------------------------------------------------------------------------------------------------------
 //Pago de cuenta y cierre de mesa
     private void tablePaid() throws Exception {
-        jbtSetter();
+        jButExtSetter();
         resetTableFull();
         setTableItems();
         setEnabled(true);
@@ -1176,7 +1192,7 @@ public class Salon extends FrameFullManager {
                 daoI.upActiveItemOrderTable(ic, tableAux);
                 break;
         }
-        jbtSetter();
+        jButExtSetter();
         setTableItems();
         setEnabled(true);
     }
@@ -1297,11 +1313,31 @@ public class Salon extends FrameFullManager {
     }
 
 //------------------------------------------------------------------------------------------------------------------
-    private void jbtSetter() throws Exception {
-        jbtAux.setTable(tableAux);
-        for (int i = 0; i < tableButtons.size(); i++) {
-            if (tableButtons.get(i).getNum() == jbtAux.getNum()) {
-                tableButtons.set(i, jbtAux);
+    private void jButExtSetter() throws Exception {
+        if (jbtAux != null) {
+            jbtAux.setTable(tableAux);
+            for (int i = 0; i < tableButtons.size(); i++) {
+                if (tableButtons.get(i).getNum() == jbtAux.getNum()) {
+                    tableButtons.set(i, jbtAux);
+                }
+            }
+        }
+
+        if (jbbAux != null) {
+            jbbAux.setTable(tableAux);
+            for (int i = 0; i < barrButtons.size(); i++) {
+                if (barrButtons.get(i).getNum() == jbbAux.getNum()) {
+                    barrButtons.set(i, jbbAux);
+                }
+            }
+        }
+
+        if (jbdAux != null) {
+            jbdAux.setTable(tableAux);
+            for (int i = 0; i < deliButtons.size(); i++) {
+                if (deliButtons.get(i).getNum() == jbdAux.getNum()) {
+                    deliButtons.set(i, jbdAux);
+                }
             }
         }
     }
@@ -1331,9 +1367,25 @@ public class Salon extends FrameFullManager {
         } else {
             labelTotalParcial.setText("Parcial $:");
         }
-        labelWaiter.setText("Mozo: " + waiterAux.getName() + " " + utili.strShorter(waiterAux.getLastName(), 2).toUpperCase());
-        String nameT = tableAux.getPos() + tableAux.getNum();
-        labelMesa.setText("Mesa:" + nameT);
+
+        if (jbtAux != null) {
+            labelWaiter.setText("Mozo: " + waiterAux.getName() + " " + utili.strShorter(waiterAux.getLastName(), 2).toUpperCase());
+            String nameT = tableAux.getPos() + tableAux.getNum();
+            labelMesa.setText("Mesa:" + nameT);
+        }
+
+        if (jbbAux != null) {
+            labelWaiter.setText("Cajero: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
+//            String nameT = tableAux.getPos() + tableAux.getNum();
+            labelMesa.setText("Barra: P. " + tableAux.getNum());
+        }
+
+        if (jbdAux != null) {
+            labelWaiter.setText("Delivery: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
+//            String nameT = tableAux.getPos() + tableAux.getNum();
+            labelMesa.setText("Delivery: Pedido " + tableAux.getNum());
+        }
+
         labelCuenta.setText(total + "");
 
         if (jbtAux.isOpenJBT() == false) {
@@ -1352,7 +1404,7 @@ public class Salon extends FrameFullManager {
         jbtAux.setBackground(narUlg);
         jbtAux.setTable(null);
         jbtAux.setOpenJBT(false);
-        jbtSetter();
+        jButExtSetter();
         resetTableValues();
         utiliMsg.cargaTableErase();
     }
@@ -1460,13 +1512,13 @@ public class Salon extends FrameFullManager {
             butSelBarr.setBackground(narUlg);
             butSelBarr.setBorder(new LineBorder(narLg, 8));
 
-            butSelBarr.setFont(font);
-            butSelBarr.setText("Barra " + butSelBarr.getNum());
+            butSelBarr.setFont(font2);
+            butSelBarr.setText("Barra pedido " + butSelBarr.getNum());
             butSelBarr.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        selectBarr();
+                        selectBarr(ae);
                     } catch (Exception ex) {
                         Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -1478,9 +1530,59 @@ public class Salon extends FrameFullManager {
         repaint();
     }
 
-    private void selectBarr() {
+    private void selectBarr(ActionEvent e) {
+        if (jbtAux != null) {
+            jbtAux.setBorder(null);
+        }
+        if (jbdAux != null) {
+            jbdAux.setBorder(new LineBorder(narLg, 8));
+        }
 
+        if (jbbAux != null) {
+            jbbAux.setBorder(new LineBorder(narLg, 8));
+        }
+
+        JButtonBarr botonClicado = (JButtonBarr) e.getSource();
+        for (int i = 0; i < barrButtons.size(); i++) {
+            if (barrButtons.get(i).getNum() == botonClicado.getNum()) {
+                jbbAux = barrButtons.get(i);
+            }
+        }
+        try {
+            resetTableValues();
+        } catch (Exception ex) {
+            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        jbbAux.setBorder(new LineBorder(bluSt, 8));
+
+        if (jbbAux.isOpenJBB() == false) {
+            tableAux = jbbAux.getTable();
+            waiterAux = user;
+            tableAux.setWaiter(user);
+            tableAux.setOpen(true);
+//            String nameT = tableAux.getPos() + tableAux.getNum();
+            labelMesa.setText("Barra: P " + tableAux.getNum());
+            labelWaiter.setText("Cajero: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
+            tableAux.setOrder(new ArrayList<Itemcard>());
+            try {
+                jButExtSetter();
+            } catch (Exception ex) {
+                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            tableAux = jbbAux.getTable();
+            tableFullerProp();
+        }
     }
+
+    
+    
+    
+    //DELIVERY
+    //DELIVERY
+    //DELIVERY
+    //DELIVERY
 
     private JPanel returnPanelDeli() {
         JPanel panelDeli = new JPanel();
@@ -1531,7 +1633,7 @@ public class Salon extends FrameFullManager {
             butSelDelivery.setBackground(narUlg);
             butSelDelivery.setBorder(new LineBorder(narLg, 8));
 
-            butSelDelivery.setFont(font);
+            butSelDelivery.setFont(font2);
             butSelDelivery.setText("Delivery " + butSelDelivery.getNum());
             butSelDelivery.addActionListener(new ActionListener() {
                 @Override

@@ -17,7 +17,7 @@ public class JButtonBarr extends JButton {
         this.num = num;
         this.table = null;
         this.text = pos + " " + num;
-        this.openJBB = true;
+        this.openJBB = false;
     }
 
     public JButtonBarr(String pos, int num, Table table, String text, boolean openJBB) {

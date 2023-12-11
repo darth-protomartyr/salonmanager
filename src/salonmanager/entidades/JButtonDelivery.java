@@ -8,7 +8,7 @@ public class JButtonDelivery extends JButton {
     int num;
     Table table;
     String text;
-    boolean openJBB;
+    boolean openJBD;
 
     public JButtonDelivery() {
     }
@@ -18,7 +18,7 @@ public class JButtonDelivery extends JButton {
         this.num = num;
         this.table = null;
         this.text = pos + " " + num;
-        this.openJBB = true;
+        this.openJBD = false;
     }
 
     public JButtonDelivery(String pos, int num, Table table, String text, boolean openJBB) {
@@ -26,7 +26,7 @@ public class JButtonDelivery extends JButton {
         this.num = num;
         this.table = table;
         this.text = text;
-        this.openJBB = openJBB;
+        this.openJBD = openJBB;
     }
 
     public String getPos() {
@@ -61,12 +61,12 @@ public class JButtonDelivery extends JButton {
         this.text = text;
     }
 
-    public boolean isOpenJBB() {
-        return openJBB;
+    public boolean isOpenJBD() {
+        return openJBD;
     }
 
-    public void setOpenJBB(boolean openJBB) {
-        this.openJBB = openJBB;
+    public void setOpenJBD(boolean openJBB) {
+        this.openJBD = openJBB;
     }
 
     
