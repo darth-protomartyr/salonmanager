@@ -224,8 +224,6 @@ public class MoneyType extends FrameWindow {
                 butBack.setVisible(true);
                 break;
         }
-        System.out.println(tab);
-
     }
 
     private void butMoneyCashActionPerformed() throws Exception {

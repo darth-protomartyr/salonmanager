@@ -51,7 +51,7 @@ public class ServicioCloseWorkshift {
         new WorkshiftEndPanel(sal, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs);
     }
 
-    public void inconcludeWsCutter(Salon sal, Workshift ws) throws InterruptedException, Exception {   
+    public void inconcludeWsCutter(Salon sal, Workshift ws) throws InterruptedException, Exception {
         Workshift newWs = new Workshift();
         Workshift actualWs = ws;
         ArrayList<Table> actualTabs = null;
@@ -73,7 +73,6 @@ public class ServicioCloseWorkshift {
         newWs.setWsErrorMountReal(0);
         for (int i = 0; i < actualTabs.size(); i++) {
             Table tab = actualTabs.get(i);
-            System.out.println(tab);
             if (tab.isOpen() == true) {
                 boolean bill = tab.isBill();
                 boolean activeTable = tab.isActiveTable();
@@ -102,12 +101,11 @@ public class ServicioCloseWorkshift {
                     tab.setPartialPayedND(new ArrayList<Itemcard>());
                     tab.setComments(tab.getComments() + "<br>Los elementos no pagados fueron enviados al siguiente turno");
                     tab.setActiveTable(true);
-                    
+
                     toUpdTabs.add(tab);
                     upTabs.add(tabNewWs);
-                    System.out.println(tab);
                 } else {
-                    
+
                     Thread.sleep(10);
                     Table tabNewWs = new Table(tab.getNum(), tab.getPos(), bill, activeTable, orderNew, waiter, discount, total, comments);
                     tabNewWs.setOrder(tab.getOrder());
@@ -116,11 +114,11 @@ public class ServicioCloseWorkshift {
                     tabNewWs.setTotal(total);
                     tabNewWs.setComments("La mesa fue dividida por cambio de turno");
 
-                    tab.setActiveTable(false);                    
+                    tab.setActiveTable(false);
                     upTabs.add(tabNewWs);
                     downTabs.add(tab);
                 }
-            }   
+            }
         }
         Thread.sleep(100);
         Timestamp close = new Timestamp(new Date().getTime());

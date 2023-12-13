@@ -65,9 +65,6 @@ public class ServicioTable {
         Table tab = table;
         tab.setOrder(daoI.listarItemcardOrder(tab.getId()));
         tab.setGifts(daoI.listarItemcardGifts(tab.getId()));
-//        tab.setPartialPayed(daoI.listarItemcardPartialPayed(tab.getId()));
-//        tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(tab.getId()));
-//        tab.setErrorItems(daoI.listarItemcardError(tab.getId()));
         tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
         return tab;
     }
@@ -86,14 +83,4 @@ public class ServicioTable {
     }
     
     
-//    public Table tableItemsByIdTab(String st) throws Exception {
-//        Table tab = new Table();
-//        tab.setOrder(daoI.listarItemcardOrder(st));
-//        tab.setGifts(daoI.listarItemcardGifts(st));
-//        tab.setPartialPayed(daoI.listarItemcardPartialPayed(st));
-//        tab.setAuxiliarPartialPayedNoDiscount(daoI.listarItemcardPartialPayedND(st));
-//        tab.setErrorItems(daoI.listarItemcardError(st));
-//        tab.setWaiter(daoU.getWaiterByTable(st));
-//        return tab;
-//    }
 }

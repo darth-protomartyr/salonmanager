@@ -12,8 +12,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
@@ -154,7 +152,7 @@ public class ErrorTableCount extends FrameWindow {
         panelAmount.add(labelLoss);
         
         JLabel labelComment = utiliGraf.labelTitleBacker3("Causa del Error (obligatorio):");
-        labelComment.setBounds(70, 65, 250, 20);
+        labelComment.setBounds(70, 140, 250, 20);
         panelPpal.add(labelComment);
         
         textAreaCause.setRows(3);
@@ -227,6 +225,7 @@ public class ErrorTableCount extends FrameWindow {
         if (error == false) {
             if (wrong == total) {
                 labelLoss.setText("El monto faltante es total");
+                fieldAmount.setText(total + "");
             } else if (wrong == 0) {
                 labelLoss.setText("No hay monto faltante");
             } else {

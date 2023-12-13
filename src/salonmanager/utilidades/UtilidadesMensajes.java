@@ -107,7 +107,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorWaiterNull() {
-        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un mozo del panel ubicado arriba a la derecha.", 2);
+        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar una mesa, pedido en barra o delivery del panel ubicado a la izquierda.", 2);
         cm.setVisible(true);
     }
 
@@ -302,5 +302,10 @@ public class UtilidadesMensajes extends JFrame {
     void configNull() {
         CustomDialog cm = new CustomDialog("Error: No hay una configuración habilitada para esta sesión.", 2);
         cm.setVisible(true);        
+    }
+
+    public void erroNotNewButton() {
+        CustomDialog cm = new CustomDialog("Error: Antes de crear un nuevo pedido debe dar inicio al anterior.", 2);
+        cm.setVisible(true);         
     }
 }
