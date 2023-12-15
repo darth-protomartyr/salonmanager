@@ -639,14 +639,14 @@ public class Salon extends FrameFullManager {
         panelPartial.add(labelPartialPay);
 
 //Boton Pago Final
-        butCloseTable = utiliGraf.button1("CERRAR MESA", altoUnit, altoUnit * 70, anchoUnit * 13 + altoUnit);
+        butCloseTable = utiliGraf.button1("CERRAR ORDEN", altoUnit, altoUnit * 70, anchoUnit * 13 + altoUnit);
         panelTable.add(butCloseTable);
         butCloseTable.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (waiterAux == null) {
-                        resetTableFull();
+                    if (tableAux == null) {
+                        utiliMsg.errorTableNull();
                     } else {
                         if (itemsTableAux.size() < 1) {
                             resetTableFull();
@@ -1359,7 +1359,6 @@ public class Salon extends FrameFullManager {
         itemsGift = tableAux.getGifts();
         itemsPartialPaid = tableAux.getPartialPayed();
         itemsPartialPaidNoDiscount = tableAux.getPartialPayedND();
-//        itemsError = tableAux.getErrorItems();
         waiterAux = tableAux.getWaiter();
         discount = tableAux.getDiscount();
         priceCorrection = tableAux.getPriceCorrection();
@@ -1374,7 +1373,8 @@ public class Salon extends FrameFullManager {
         if (tableAux.isBill() == true) {
             labelTotalParcial.setText("Total $:");
             labelTip.setText("Prop.: " + Math.round(total * 0.1));
-            labelTotal.setText("Total: " + Math.round(total * 0.1) + total);
+            double tot = Math.round(total * 0.1) + total;
+            labelTotal.setText("Total: " + tot);
         } else {
             labelTotalParcial.setText("Parcial $:");
         }
@@ -1384,7 +1384,7 @@ public class Salon extends FrameFullManager {
             String nameT = tableAux.getPos() + tableAux.getNum();
             labelOrder.setText("MESA:" + nameT);
             if (jbtAux.isOpenJBT() == false) {
-                butCloseTable.setText("CERRAR MESA");
+                butCloseTable.setText("CERRAR ORDEN");
             } else {
                 if (tableAux.isBill() == true) {
                     butCloseTable.setText("CONFIRMAR PAGO");
@@ -1416,21 +1416,48 @@ public class Salon extends FrameFullManager {
         }
 
         if (jbbAux != null) {
-            jbbAux.setBackground(narUlgX);
-            jbbAux.setEnabled(false);
-            jbbAux.setOpenJBB(false);
-            jbbAux.setText("Barra " + "P" + jbbAux.getTable().getNum() + " Cerrado");
+            if (jbbAux.isOpenJBB() == false && tableAux.isBill() == false) {
+                int barrBIndex = -1;
+                for (int i = 0; i < barrButtons.size(); i++) {
+                    if (jbbAux.getNum() == barrButtons.get(i).getNum()) {
+                        barrBIndex = i;
+//                        jbbAux.setVisible(false);
+                    }
+                }
+                barrButtons.remove(barrBIndex);
+                panelBarrBut.removeAll();
+                barrButUpdater();
+            } else {
+                jbbAux.setBackground(narUlgX);
+                jbbAux.setEnabled(false);
+                jbbAux.setOpenJBB(false);
+                jbbAux.setText("Barra " + "P" + jbbAux.getTable().getNum() + " Cerrado");
+            }
         }
 
         if (jbdAux != null) {
-            jbdAux.setBackground(narUlgX);
-            jbdAux.setEnabled(false);
-            jbdAux.setOpenJBD(false);
-            jbdAux.setText("Delivery " + "D" + jbdAux.getTable().getNum() + " Cerrado");
-        }
+            if (jbdAux.isOpenJBD() == false && tableAux.isBill() == false) {
+                int deliBIndex = -1;
+                for (int i = 0; i < deliButtons.size(); i++) {
+                    if (jbdAux.getNum() == deliButtons.get(i).getNum()) {
+                        deliBIndex = i;
+//                        jbdAux.setVisible(false);
+                    }
+                }
+                deliButtons.remove(deliBIndex);
+                panelDeliBut.removeAll();
+                deliButUpdater();
+            } else {
+                jbdAux.setBackground(narUlgX);
+                jbdAux.setEnabled(false);
+                jbdAux.setOpenJBD(false);
+                jbdAux.setText("Delivery " + "D" + jbdAux.getTable().getNum() + " Cerrado");
 
+            }
+        }
         jButExtSetter();
         resetTableValues();
+
         utiliMsg.cargaTableErase();
     }
 
@@ -1453,7 +1480,7 @@ public class Salon extends FrameFullManager {
         labelPartialPay.setText("Pagado: $0.00");
         labelOrder.setText("MESA:--");
         labelWaiter.setText("Mozo: --");
-        butCloseTable.setText("CERRAR MESA");
+        butCloseTable.setText("CERRAR ORDEN");
         if (jbtAux != null) {
             jbtAux.setBorder(null);
             if (jbtAux.isOpenJBT() == true) {
@@ -1538,7 +1565,6 @@ public class Salon extends FrameFullManager {
         scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 50);
         panelBarr.add(scrPaneBarr);
-        barrButAdder();
 
         return panelBarr;
     }
@@ -1564,27 +1590,12 @@ public class Salon extends FrameFullManager {
             Table newTable = new Table(newJBB.getNum(), newJBB.getPos(), user);
             newJBB.setTable(newTable);
             barrButtons.add(0, newJBB);
-            barrButAdder();
-            for (int i = 0; i < barrButtons.size(); i++) {
-                if (barrButtons.get(i).isOpenJBB()) {
-                    barrButtons.get(i).setBackground(green);
-                }
-
-                if (barrButtons.get(i).getTable().isBill() == true) {
-                    barrButtons.get(i).setBackground(red);
-                }
-
-                if (barrButtons.get(i).isOpenJBB() == false && barrButtons.get(i).getTable().isBill() == true) {
-                    barrButtons.get(i).setBackground(narLg);
-                    barrButtons.get(i).setEnabled(false);
-                    barrButtons.get(i).setText("Barra " + "P" + jbbAux.getTable().getNum() + " Cerrado");
-                }
-            }
+            barrButUpdater();
             resetTableValues();
         }
     }
 
-    private void barrButAdder() {
+    private void barrButUpdater() {
         for (int i = 0; i < barrButtons.size(); i++) {
             JButtonBarr butSelBarr = barrButtons.get(i);
             butSelBarr.setBackground(narUlg);
@@ -1602,6 +1613,21 @@ public class Salon extends FrameFullManager {
                     }
                 }
             });
+
+            if (barrButtons.get(i).isOpenJBB()) {
+                barrButtons.get(i).setBackground(green);
+            }
+
+            if (barrButtons.get(i).getTable().isBill() == true) {
+                barrButtons.get(i).setBackground(red);
+            }
+
+            if (barrButtons.get(i).isOpenJBB() == false && barrButtons.get(i).getTable().isBill() == true) {
+                barrButtons.get(i).setBackground(narUlgX);
+                barrButtons.get(i).setEnabled(false);
+                barrButtons.get(i).setText("Barra " + "P" + jbbAux.getTable().getNum() + " Cerrado");
+            }
+
             panelBarrBut.add(butSelBarr);
         }
         revalidate();
@@ -1688,7 +1714,6 @@ public class Salon extends FrameFullManager {
         scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 50);
         panelDeli.add(scrPaneBarr);
-        barrButAdder();
         return panelDeli;
     }
 
@@ -1713,28 +1738,12 @@ public class Salon extends FrameFullManager {
             Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
             newJBD.setTable(newTable);
             deliButtons.add(0, newJBD);
-            deliButAdder();
-            for (int i = 0; i < deliButtons.size(); i++) {
-                if (deliButtons.get(i).isOpenJBD()) {
-                    deliButtons.get(i).setBackground(green);
-                }
-
-                if (deliButtons.get(i).getTable().isBill() == true) {
-                    deliButtons.get(i).setBackground(red);
-                }
-
-                if (deliButtons.get(i).isOpenJBD() == false && deliButtons.get(i).getTable().isBill() == true) {
-                    deliButtons.get(i).setBackground(narLg);
-                    deliButtons.get(i).setEnabled(false);
-                    deliButtons.get(i).setText("Delivery " + "P" + jbdAux.getTable().getNum() + " Cerrado");
-                }
-            }
+            deliButUpdater();
             resetTableValues();
         }
     }
-    
 
-    private void deliButAdder() {
+    private void deliButUpdater() {
         for (int i = 0; i < deliButtons.size(); i++) {
             JButtonDelivery butSelDelivery = deliButtons.get(i);
             butSelDelivery.setBackground(narUlg);
@@ -1751,6 +1760,21 @@ public class Salon extends FrameFullManager {
                     }
                 }
             });
+
+            if (deliButtons.get(i).isOpenJBD()) {
+                deliButtons.get(i).setBackground(green);
+            }
+
+            if (deliButtons.get(i).getTable().isBill() == true) {
+                deliButtons.get(i).setBackground(red);
+            }
+
+            if (deliButtons.get(i).isOpenJBD() == false && deliButtons.get(i).getTable().isBill() == true) {
+                deliButtons.get(i).setBackground(narUlgX);
+                deliButtons.get(i).setEnabled(false);
+                deliButtons.get(i).setText("Barra " + "P" + jbdAux.getTable().getNum() + " Cerrado");
+            }
+
             panelDeliBut.add(butSelDelivery);
         }
         revalidate();

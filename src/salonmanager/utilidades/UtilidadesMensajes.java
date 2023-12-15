@@ -112,12 +112,12 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorItemsTableNull() {
-        CustomDialog cm = new CustomDialog("Error: Realizar esta acción antes debe haber items cargados en la mesa.", 2);
+        CustomDialog cm = new CustomDialog("Error: Imposible realizar esta acción antes debe haber items cargados en la orden.", 2);
         cm.setVisible(true);
     }
 
     public void errorItemGift(String item) {
-        CustomDialog cm = new CustomDialog("Error: No queda " + item + " por obsequiar en esta mesa.", 2);
+        CustomDialog cm = new CustomDialog("Error: No queda " + item + " por obsequiar en esta orden.", 2);
         cm.setVisible(true);
     }
 
@@ -137,7 +137,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorBillUnsend() {
-        CustomDialog cm = new CustomDialog("Error: La acción no puede realizarse, el cierre de mesa no ha sido iniciado.", 2);
+        CustomDialog cm = new CustomDialog("Error: La acción no puede realizarse, el cierre de la orden no ha sido iniciado.", 2);
         cm.setVisible(true);
     }
 
@@ -162,12 +162,12 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorIngresoOpenTime() {
-        CustomDialog cm = new CustomDialog("Error: El momento de apertura de la mesa no fue ingresado.", 2);
+        CustomDialog cm = new CustomDialog("Error: El momento de apertura de la oreden no fue ingresado.", 2);
         cm.setVisible(true);
     }
 
     public void errorIngresoId() {
-        CustomDialog cm = new CustomDialog("Error: La mesa no tiene identificador.", 2);
+        CustomDialog cm = new CustomDialog("Error: La orden no tiene identificador.", 2);
         cm.setVisible(true);
     }
 
@@ -177,7 +177,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorWorkshift() {
-        CustomDialog cm = new CustomDialog("Error: Debe iniciar un turno antes de cargar mesas.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe iniciar un turno antes de cargar órdenes.", 2);
         cm.setVisible(true);
     }
 
@@ -201,7 +201,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmarCambioTurno(User user) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Aún hay mesas abiertas, ¿desea iniciar el próximo turno con otro usuario?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Aún hay órdenes abiertas, ¿desea iniciar el próximo turno con otro usuario?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -231,7 +231,7 @@ public class UtilidadesMensajes extends JFrame {
     }
     
     public boolean cargaConfirmarCierre() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma el cierre de mesa, no podrá agregar obsequios ni descuentos.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma el cierre de órdenes, no podrá agregar obsequios ni descuentos.");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -268,7 +268,7 @@ public class UtilidadesMensajes extends JFrame {
     }
     
     public void cargaTableErase() {
-        CustomDialog cm = new CustomDialog("La mesa fue cerrada con éxito.", 1);
+        CustomDialog cm = new CustomDialog("La orden fue cerrada con éxito.", 1);
         cm.setVisible(true);
     }
     
@@ -280,7 +280,7 @@ public class UtilidadesMensajes extends JFrame {
     
     ////------------------------------Reubicar------------------------------------------
     public void errorTableResume() {
-        CustomDialog cm = new CustomDialog("Error: no hay mesas con esas características.", 2);
+        CustomDialog cm = new CustomDialog("Error: no hay órdenes con esas características.", 2);
         cm.setVisible(true);
     }
 
@@ -295,7 +295,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorEmptyCause() {
-        CustomDialog cm = new CustomDialog("Error: No se ingreso la causa del Error en la mesa.", 2);
+        CustomDialog cm = new CustomDialog("Error: No se ingreso la causa del Error en la orden.", 2);
         cm.setVisible(true);        
     }
 
@@ -307,5 +307,15 @@ public class UtilidadesMensajes extends JFrame {
     public void erroNotNewButton() {
         CustomDialog cm = new CustomDialog("Error: Antes de crear un nuevo pedido debe dar inicio al anterior.", 2);
         cm.setVisible(true);         
+    }
+
+    public void errorInsufficientMount() {
+        CustomDialog cm = new CustomDialog("Error: El monto ingresado no cubre el valor gastado.", 2);
+        cm.setVisible(true); 
+    }
+
+    public void errorTableNull() {
+        CustomDialog cm = new CustomDialog("Error: No se ha seleccionado una orden.", 2);
+        cm.setVisible(true); 
     }
 }

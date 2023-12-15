@@ -8,6 +8,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
@@ -20,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
@@ -50,12 +54,14 @@ public class MoneyType extends FrameWindow {
     double total = 0;
     double cash = 0;
     double electronic = 0;
-    boolean mixedPay = false;
+//    boolean mixedPay = false;
     ArrayList<Double> amounts = new ArrayList<Double>();
     ArrayList<Itemcard> itemsPayed = null;
+    int cashMix = 0;
 
     JLabel labelSubTotal = new JLabel();
     JLabel labelMixed = new JLabel();
+    JLabel labelChange = new JLabel();
     JTextField fieldAmountCash = new JTextField();
     JTextArea textAreaCause = new JTextArea();
     JButton butInPartialCash = new JButton();
@@ -106,12 +112,15 @@ public class MoneyType extends FrameWindow {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (mixedPay == false) {
-                        butMoneyTypeActionPerformed(1);
-                        dispose();
-                    } else {
-                        utiliMsg.errorMixedPayUp();
-                    }
+
+//                    if (mixedPay == false) {
+                    butMixedIn.setVisible(false);
+                    butCashIn.setVisible(false);
+                    butElectronicIn.setVisible(false);
+                    butMoneyTypeActionPerformed(1);
+//                    } else {
+//                        utiliMsg.errorMixedPayUp();
+//                    }
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -124,11 +133,11 @@ public class MoneyType extends FrameWindow {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (mixedPay == false) {
-                        butMoneyTypeActionPerformed(2);
-                    } else {
-                        utiliMsg.errorMixedPayUp();
-                    }
+//                    if (mixedPay == false) {
+                    butMoneyTypeActionPerformed(2);
+//                    } else {
+//                        utiliMsg.errorMixedPayUp();
+//                    }
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -144,7 +153,7 @@ public class MoneyType extends FrameWindow {
                     butMixedIn.setVisible(false);
                     butCashIn.setVisible(false);
                     butElectronicIn.setVisible(false);
-                    mixedPay = true;
+//                    mixedPay = true;
                     butMoneyTypeActionPerformed(3);
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,18 +167,66 @@ public class MoneyType extends FrameWindow {
         labelMixed.setVisible(false);
         panelPpal.add(labelMixed);
 
-        fieldAmountCash.setBounds(75, 180, 100, 30);
-        fieldAmountCash.setFont(new Font("Arial", Font.PLAIN, 20));
+        fieldAmountCash.setBounds(40, 180, 120, 30);
+        fieldAmountCash.setFont(new Font("Arial", Font.PLAIN, altoUnit * 3));
         fieldAmountCash.setVisible(false);
+        fieldAmountCash.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char keyChar = e.getKeyChar();
+                if (keyChar == KeyEvent.VK_DELETE || keyChar == KeyEvent.CHAR_UNDEFINED) {
+                    e.consume(); // Consume la tecla para evitar que se procese como entrada
+                }
+                
+                if (e.getKeyChar() == '-') {
+                    e.consume();
+                }
+     
+
+            }
+
+
+            
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+
+        fieldAmountCash.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent de) {
+                updateMount();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent de) {
+                updateMount();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent de) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
         panelPpal.add(fieldAmountCash);
 
-        butInPartialCash = utiliGraf.button2("Confirmar", 185, 180, 130);
+        labelChange = utiliGraf.labelTitleBacker2("");
+        labelChange.setBounds(165, 180, 200, 30);
+        labelChange.setVisible(false);
+        panelPpal.add(labelChange);
+
+        butInPartialCash = utiliGraf.button1("Confirmar Monto", 70, 220, 200);
         butInPartialCash.setVisible(false);
         butInPartialCash.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    butMoneyCashActionPerformed();
+                    butInPartialCashActionPerformed(cashMix);
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -177,7 +234,7 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butInPartialCash);
 
-        butBack = utiliGraf.button2("Volver", 140, 220, 100);
+        butBack = utiliGraf.button3("Volver", 290, 233, 70);
         butBack.setVisible(false);
         butBack.addActionListener(new ActionListener() {
             @Override
@@ -190,6 +247,7 @@ public class MoneyType extends FrameWindow {
                     fieldAmountCash.setVisible(false);
                     butInPartialCash.setVisible(false);
                     butBack.setVisible(false);
+                    labelChange.setVisible(false);
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -208,9 +266,13 @@ public class MoneyType extends FrameWindow {
     private void butMoneyTypeActionPerformed(int type) throws Exception {
         switch (type) {
             case 1:
-                amounts.set(0, total);
-                salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
-                dispose();
+                labelMixed.setVisible(true);
+                fieldAmountCash.setVisible(true);
+                butInPartialCash.setVisible(true);
+                labelChange.setText("Vuelto: $0.00");
+                labelChange.setVisible(true);
+                butBack.setVisible(true);
+                cashMix = 1;
                 break;
             case 2:
                 amounts.set(1, total);
@@ -221,20 +283,34 @@ public class MoneyType extends FrameWindow {
                 labelMixed.setVisible(true);
                 fieldAmountCash.setVisible(true);
                 butInPartialCash.setVisible(true);
+                labelChange.setText("Transferencia: $0.00");
+                labelChange.setVisible(true);
                 butBack.setVisible(true);
+                cashMix = 2;
                 break;
         }
     }
 
-    private void butMoneyCashActionPerformed() throws Exception {
+    private void butInPartialCashActionPerformed(int num) throws Exception {
         String amountCash = fieldAmountCash.getText();
         double cash = 0;
         try {
-            cash = parseDouble(amountCash);
-            amounts.set(0, cash);
-            amounts.set(1, total - cash);
-            salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
-            dispose();
+            if (num == 1) {
+                cash = parseDouble(amountCash);
+                if (cash >= total) {
+                    amounts.set(0, cash);
+                    salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
+                    dispose();
+                } else {
+                    utiliMsg.errorInsufficientMount();
+                    fieldAmountCash.setText("");
+                }
+            } else if (num == 2) {
+                amounts.set(0, cash);
+                amounts.set(1, total - cash);
+                salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
+                dispose();
+            }
         } catch (NumberFormatException e) {
             utiliMsg.errorNumerico();
             fieldAmountCash.setText("");
@@ -244,5 +320,44 @@ public class MoneyType extends FrameWindow {
     private String getCommentIn() {
         String comment = textAreaCause.getText();
         return comment;
+    }
+
+    private void updateMount() {
+        String er = fieldAmountCash.getText();
+        double paid = 0;
+        boolean error = false;
+        double change = 0;
+
+        try {
+            if (!er.equals("")) {
+                paid = parseDouble(er);
+                if (cashMix == 1) {
+                    change = paid - total;
+                } else if (cashMix == 2) {
+                    change = total - paid;
+                }
+            }
+        } catch (NumberFormatException e) {
+            labelChange.setText("El dato no es numérico.");
+            error = true;
+        } catch (Exception ex) {
+            Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (error == false) {
+            if (cashMix == 1) {
+                if (paid < total) {
+                    labelChange.setText("Pago insuficiente.");
+                } else {
+                    labelChange.setText("Vuelto = $" + change + "");
+                }
+            } else if (cashMix == 2) {
+                if (change > 0) {
+                    labelChange.setText("Transferencia = $" + change + "");
+                } else {
+                    labelChange.setText("Transferencia innecesaria");
+                }
+            }
+        }
     }
 }

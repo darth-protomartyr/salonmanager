@@ -96,6 +96,11 @@ public class ErrorTableCount extends FrameWindow {
                 if (keyChar == KeyEvent.VK_DELETE || keyChar == KeyEvent.CHAR_UNDEFINED) {
                     e.consume(); // Consume la tecla para evitar que se procese como entrada
                 }
+                
+                if (e.getKeyChar() == '-') {
+                    e.consume();
+                }
+                
             }
 
             @Override
