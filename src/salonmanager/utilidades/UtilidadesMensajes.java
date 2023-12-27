@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import salonmanager.entidades.CustomDialog;
 import salonmanager.entidades.CustomDialogConfirm;
 import salonmanager.entidades.CustomDialogPass;
+import salonmanager.entidades.CustomDialogTextIn;
 import salonmanager.entidades.User;
 
 public class UtilidadesMensajes extends JFrame {
@@ -244,13 +245,7 @@ public class UtilidadesMensajes extends JFrame {
         return confirm;
     }
   
-    public char[] solicitudMod() {
-        char[] chars = null;
-        CustomDialogPass cdp = new CustomDialogPass("Ingrese su contraseña:");
-        cdp.setVisible(true);
-        chars = cdp.getChar();
-        return chars;
-    }
+
     
     public void cargaError() {
         CustomDialog cm = new CustomDialog("El error fue ingresado al sistema.", 1);
@@ -317,5 +312,31 @@ public class UtilidadesMensajes extends JFrame {
     public void errorTableNull() {
         CustomDialog cm = new CustomDialog("Error: No se ha seleccionado una orden.", 2);
         cm.setVisible(true); 
+    }
+
+    public String requestIndication() {
+        String indications = "";
+        CustomDialogTextIn cdti = new CustomDialogTextIn("Ingrese indicaciones del cliente:");
+        cdti.setVisible(true);
+        indications = cdti.getText();
+        return indications;
+    }
+
+    public char[] requestMod() {
+        char[] chars = null;
+        CustomDialogPass cdp = new CustomDialogPass("Ingrese su contraseña:");
+        cdp.setVisible(true);
+        chars = cdp.getChar();
+        return chars;
+    }
+
+    public void errorMultipleIndications() {
+        CustomDialog cm = new CustomDialog("Error: Las indicaciones se ingresan de forma individual para cada Item.", 2);
+        cm.setVisible(true); 
+    }
+
+    public void errorIndiLenghtExcess() {
+        CustomDialog cm = new CustomDialog("Error: El texto de las indicaciones excede el límite de caracteres.", 2);
+        cm.setVisible(true);         
     }
 }

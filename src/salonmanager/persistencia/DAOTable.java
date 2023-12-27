@@ -320,10 +320,4 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
-    
-    
-    
-    
-    
 }

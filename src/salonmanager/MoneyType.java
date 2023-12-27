@@ -63,7 +63,7 @@ public class MoneyType extends FrameWindow {
     JLabel labelMixed = new JLabel();
     JLabel labelChange = new JLabel();
     JTextField fieldAmountCash = new JTextField();
-    JTextArea textAreaCause = new JTextArea();
+    JTextArea textArea = new JTextArea();
     JButton butInPartialCash = new JButton();
     JButton butCashIn = new JButton();
     JButton butElectronicIn = new JButton();
@@ -99,11 +99,14 @@ public class MoneyType extends FrameWindow {
         labelComment.setBounds(70, 65, 250, 20);
         panelPpal.add(labelComment);
 
-        textAreaCause.setRows(3);
-        textAreaCause.setColumns(5);
-        textAreaCause.setLineWrap(true);
-        textAreaCause.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(textAreaCause);
+        textArea.setRows(3);
+        textArea.setColumns(5);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        Font newFont = new Font("Arial", Font.PLAIN, 16);
+        textArea.setFont(newFont);
+        textArea.setBackground(narUlg);
+        JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setBounds(70, 85, 250, 55);
         panelPpal.add(scrollPane);
 
@@ -318,7 +321,7 @@ public class MoneyType extends FrameWindow {
     }
 
     private String getCommentIn() {
-        String comment = textAreaCause.getText();
+        String comment = textArea.getText();
         return comment;
     }
 

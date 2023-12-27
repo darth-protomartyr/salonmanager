@@ -5,6 +5,7 @@
  */
 package salonmanager.servicios;
 
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import salonmanager.Salon;
 import salonmanager.entidades.Itemcard;
@@ -24,8 +25,10 @@ public class ServicioSalon {
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
     DAOItemcard daoIC = new DAOItemcard();
+    ServicioItemMonitor sim = new ServicioItemMonitor();
     Utilidades utili = new Utilidades();
     Salon salon = null;
+    
 
     public ArrayList<Integer> salonConfigValues(Integer tab, int anchoPane, int alturaPane) {
         ArrayList<Integer> configValues = new ArrayList<Integer>();
@@ -146,7 +149,7 @@ public class ServicioSalon {
         return bill;
     }
 
-    public void createTable(Table tableAux) throws Exception {
+    public void createTable(Salon sal, Table tableAux) throws Exception {
         daoT.saveTable(tableAux);
         daoU.saveWaiterTable(tableAux);
     }
@@ -161,9 +164,10 @@ public class ServicioSalon {
         return al;
     }
 
-    public void addItemOrder(Table tableAux, ArrayList<Itemcard> arrayAux) throws Exception {
+    public void addItemOrder(Salon sal, Table tableAux, ArrayList<Itemcard> arrayAux, boolean indiBool) throws Exception {
         for (int i = 0; i < arrayAux.size(); i++) {
             daoIC.saveItemOrderTable(arrayAux.get(i), tableAux);
+            sim.createItemMonitor(sal, tableAux, arrayAux.get(i), indiBool);
         }
     }
 

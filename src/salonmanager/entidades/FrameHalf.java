@@ -14,11 +14,6 @@ public class FrameHalf extends FrameFull {
             public void windowClosing(WindowEvent e) {
                 dispose();
             }
-
-//            @Override
-//            public void windowIconified(WindowEvent e) {
-//                setState(JFrame.NORMAL);
-//            }
         });
     }
 }

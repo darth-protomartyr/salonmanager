@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
         <file>
             <url>src/salonmanager/Salon.java</url>
             <bookmark id="4">
                 <name/>
-                <line>1356</line>
+                <line>1402</line>
                 <key/>
             </bookmark>
             <bookmark id="3">
                 <name/>
-                <line>1792</line>
+                <line>1851</line>
                 <key/>
             </bookmark>
         </file>
@@ -33,9 +33,7 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/MoneyType.java</file>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/utilidades/UtilidadesMensajes.java</file>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/Salon.java</file>
+            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/Monitor.java</file>
         </group>
     </open-files>
 </project-private>

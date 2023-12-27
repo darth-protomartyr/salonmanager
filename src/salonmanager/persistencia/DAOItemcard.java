@@ -481,37 +481,33 @@ public class DAOItemcard extends DAO {
         }
     }
 
-//Tabla itemsCardError_tabs-----------------------------------------------------------------------
-//Tabla ItemcardpayedCardError_tabs-----------------------------------------------------------------------
-//Tabla ItemcardpayedCardError_tabs-----------------------------------------------------------------------
-//Tabla ItemcardpayedCardError_tabs-----------------------------------------------------------------------      
-//    public ArrayList<Itemcard> listarItemcardError(String tabId) throws Exception {
-//        ArrayList<Itemcard> Itemcardpayed = new ArrayList<Itemcard>();
-//        try {
-//            String sql = "SELECT ItemcardError_id_fkey FROM ItemcardpayedCardError_tabs WHERE table_id_fkey = '" + tabId + "';";
-//            System.out.println(sql);
-//            consultarBase(sql);
-//            ArrayList<Integer> idItems = new ArrayList<Integer>();
-//            while (resultado.next()) {
-//                int idIc = resultado.getInt(1);
-//                idItems.add(idIc);
-//            }
-//
-//            for (int i = 0; i < idItems.size(); i++) {
-//                ArrayList<Itemcard> ItemcardpayedCompleta = listarItemsCard();
-//                for (int j = 0; j < ItemcardpayedCompleta.size(); j++) {
-//                    if (idItems.get(i) == ItemcardpayedCompleta.get(j).getId()) {
-//                        Itemcard ic = ItemcardpayedCompleta.get(j);
-//                        Itemcardpayed.add(ic);
-//                        break;
-//                    }
-//                }
-//            }
-//            return Itemcardpayed;
-//        } catch (Exception e) {
-//            throw e;
-//        } finally {
-//            desconectarBase();
-//        }
-//    }
+
+    public Itemcard getItemById(int itemIMon) throws Exception {     
+        try {
+            String sql = "SELECT * FROM Itemcards WHERE Itemcard_active = true AND Itemcard_id = '" + itemIMon + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            Itemcard ic = new Itemcard();
+            while (resultado.next()) {
+                int id = resultado.getInt(1);
+                String code = resultado.getString(2);
+                String name = resultado.getString(3);
+                String caption = resultado.getString(4);
+                String description = resultado.getString(5);
+                double cost = resultado.getDouble(6);
+                double price = resultado.getDouble(7);
+                int stock = resultado.getInt(8);
+                Timestamp dateCreation = resultado.getTimestamp(9);
+                Timestamp dateCostUpdate = resultado.getTimestamp(10);
+                boolean activeTip = resultado.getBoolean(11);
+                boolean activeItem = resultado.getBoolean(12);
+                ic = new Itemcard(id, code, name, caption, description, cost, price, stock, dateCreation, dateCostUpdate, activeTip, activeItem);
+            }
+            return ic;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
 }

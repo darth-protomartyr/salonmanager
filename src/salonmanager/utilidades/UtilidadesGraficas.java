@@ -206,7 +206,6 @@ public class UtilidadesGraficas extends JFrame {
         return scrollPane;
     }
 
-    
     public JPanel selectUserPanel(int mWidth, int mHeight, int width, int height, JList listaUserDB, ArrayList<User> usersDB, ArrayList<User> usersNull, boolean mail) {
         JPanel panelListRctDB = new JPanel();
         panelListRctDB.setLayout(null);
@@ -244,7 +243,7 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBackerA2b(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
@@ -252,8 +251,6 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
-    
 
     public JLabel labelTitleBackerA3(String tit) {
         JLabel title = new JLabel(tit);
@@ -292,6 +289,14 @@ public class UtilidadesGraficas extends JFrame {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(13f);
+        title.setFont(newFont);
+        return title;
+    }
+
+    public JLabel labelTitleBacker4(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(9f);
         title.setFont(newFont);
         return title;
     }

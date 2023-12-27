@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -20,6 +22,7 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +37,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import salonmanager.entidades.Config;
 import salonmanager.entidades.FrameFullManager;
+import salonmanager.entidades.ItemMonitor;
 import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.JButtonBarr;
 import salonmanager.entidades.JButtonDelivery;
@@ -48,6 +52,7 @@ import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.servicios.ServicioCloseWorkshift;
+import salonmanager.servicios.ServicioItemMonitor;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -57,7 +62,6 @@ public class Salon extends FrameFullManager {
     Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    ServicioTable st = new ServicioTable();
 
     SalonManager sm = new SalonManager();
     DAOConfig daoC = new DAOConfig();
@@ -66,6 +70,8 @@ public class Salon extends FrameFullManager {
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioSalon ss = new ServicioSalon();
+    ServicioTable st = new ServicioTable();
+    ServicioItemMonitor sim = new ServicioItemMonitor();
 
     Color black = new Color(50, 50, 50);
     Color red = new Color(240, 82, 7);
@@ -108,6 +114,7 @@ public class Salon extends FrameFullManager {
     ArrayList<Itemcard> itemsPartialPaid = new ArrayList<Itemcard>(); // items cobrados por pago parcial
     ArrayList<Itemcard> itemsPartialPaidNoDiscount = new ArrayList<Itemcard>(); // items cobrados anted de aplicar descuento
     ArrayList<Itemcard> itemsError = new ArrayList<Itemcard>();
+    ArrayList<ItemMonitor> itemsMntr = new ArrayList<ItemMonitor>();
     User user = null;
     User waiterAux = null; // mozo actual
     Table tableAux = null; // mesa actual
@@ -142,10 +149,12 @@ public class Salon extends FrameFullManager {
     String col1 = "Uni.";
     String col2 = "Items";
     String col3 = "Total $";
+    boolean indiBool = false;
 
     String[] colNames = {col1, col2, col3};
     String[][] data = new String[rowsItems][colItems];
     JComboBox comboItems = new JComboBox();
+    JCheckBox checkBoxIndic = new JCheckBox();
     JSpinner spinnerUnitsItem = new JSpinner();
     JScrollPane scrollPaneItems = new JScrollPane();
     JTable jTableItems = new JTable();
@@ -167,8 +176,6 @@ public class Salon extends FrameFullManager {
 
     public Salon(ArrayList<Table> tables) throws Exception {
         sm.addFrame(this);
-        /*test*/
-//        user = daoU.consultaUser("gon@gmail.com");
         user = sm.getUserIn();
         setTitle("Salón Manager");
         sal = this;
@@ -184,7 +191,7 @@ public class Salon extends FrameFullManager {
         tablePanCh = cfg.getTablePanCh();
 
         JPanel panelActual = new JPanel();
-        panelActual.setBounds(anchoUnit * 24, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
+        panelActual.setBounds(anchoUnit * 11, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
         panelActual.setBackground(bluLg);
         panelActual.setLayout(null);
         panelPpal.add(panelActual);
@@ -244,14 +251,14 @@ public class Salon extends FrameFullManager {
 //PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------      
 //BARR / DELI
         JPanel panelBarrDeli = new JPanel();
-        panelBarrDeli.setBounds(anchoUnit * 50, altoUnit * 3, anchoUnit * 27, altoUnit * 14);
+        panelBarrDeli.setBounds(anchoUnit * 52, altoUnit * 3, anchoUnit * 25, altoUnit * 14);
         panelBarrDeli.setBackground(narLg);
         panelBarrDeli.setLayout(null);
         panelPpal.add(panelBarrDeli);
 
         butBarrDeli = new JButton();
         butBarrDeli.setBackground(narUlg);
-        butBarrDeli.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 25, altoUnit * 10);
+        butBarrDeli.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 23, altoUnit * 10);
         butBarrDeli.setBorder(null);
         butBarrDeli.setFont(font1);
         butBarrDeli.setText("Barra - Delivery");
@@ -271,6 +278,35 @@ public class Salon extends FrameFullManager {
         });
         panelBarrDeli.add(butBarrDeli);
 
+        JPanel panelMonitor = new JPanel();
+        panelMonitor.setBounds(anchoUnit * 29, altoUnit * 3, anchoUnit * 22, altoUnit * 14);
+        panelMonitor.setBackground(narLg);
+        panelMonitor.setLayout(null);
+        panelPpal.add(panelMonitor);
+
+        JButton butMonitor = new JButton();
+        butMonitor.setBackground(narUlg);
+        butMonitor.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 20, altoUnit * 10);
+        butMonitor.setBorder(null);
+        butMonitor.setFont(font1);
+        butMonitor.setText("Seguimiento");
+        butMonitor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    if (workshiftNow != null) {
+//                        new Monitor(sal);
+//                        new Monitor();
+                    } else {
+                        utiliMsg.errorWorkshift();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelMonitor.add(butMonitor);
+
         panelBDButtons = new JPanel();
         panelBDButtons.setLayout(null);
         panelBDButtons.setBackground(narLg);
@@ -286,20 +322,7 @@ public class Salon extends FrameFullManager {
         JPanel panelDeli = returnPanelDeli();
         panelBDButtons.add(panelDeli);
 
-//Delivery        
-//        JPanel panelDelivery = new JPanel();
-//        panelDelivery.setBounds(anchoUnit * 42, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
-//        panelDelivery.setBackground(narLg);
-//        panelDelivery.setLayout(null);
-//        panelPpal.add(panelDelivery);
-//        
-//        butDelivery = new JButton();
-//        butDelivery.setBackground(narUlg);
-//        butDelivery.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 15, altoUnit * 10);
-//        butDelivery.setBorder(null);
-//        butDelivery.setFont(font);
-//        butDelivery.setText("Delivery");
-//        panelDelivery.add(butDelivery);
+//Delivery
         JButton butClosePanelBarrDeli = utiliGraf.button2("Cerrar", anchoUnit * 26, alturaPane - altoUnit * 2, anchoUnit * 20);
         butClosePanelBarrDeli.addActionListener(new ActionListener() {
             @Override
@@ -505,19 +528,18 @@ public class Salon extends FrameFullManager {
         JLabel labelUnitsItem = utiliGraf.labelTitleBacker3("Unidades");
         labelUnitsItem.setBounds(anchoUnit * 13, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
         panelSelItem.add(labelUnitsItem);
-
         spinnerUnitsItem = utiliGraf.spinnerBack(anchoUnit * 18, altoUnit * 5, anchoUnit * 3, altoUnit * 4, spinnerUnitsItem);
-
         panelSelItem.add(spinnerUnitsItem);
 
 //Boton Ingreso Item
-        JButton butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 5, altoUnit * 11, anchoUnit * 12);
+        JButton butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 10);
         butSelItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (waiterAux == null) {
                         utiliMsg.errorWaiterNull();
+                        resetTableValues();
                     } else {
                         if (tableAux.isBill() == false) {
                             String item = (String) comboItems.getSelectedItem();
@@ -536,6 +558,24 @@ public class Salon extends FrameFullManager {
             }
         });
         panelSelItem.add(butSelItem);
+
+        JLabel labelAddIndication = utiliGraf.labelTitleBacker3("Indicación item");
+        labelAddIndication.setBounds(anchoUnit * 12, altoUnit * 12, anchoUnit * 8, altoUnit * 3);
+        panelSelItem.add(labelAddIndication);
+
+        checkBoxIndic.setBounds(anchoUnit * 20 - 5, altoUnit * 12, altoUnit * 3, altoUnit * 3);
+        checkBoxIndic.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    indiBool = true;
+                } else {
+                    indiBool = false;
+                }
+            }
+        });
+        panelSelItem.add(checkBoxIndic);
+
         scrollPaneItems = scrollItemsBack(altoUnit, altoUnit * 28, anchoUnit * 21 + altoUnit, altoUnit * 30);
         panelTable.add(scrollPaneItems);
 
@@ -544,7 +584,7 @@ public class Salon extends FrameFullManager {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int filaSeleccionada = jTableItems.getSelectedRow();
-                char[] pass = utiliMsg.solicitudMod();
+                char[] pass = utiliMsg.requestMod();
                 boolean perm = utili.requiredPerm(pass);
                 if (perm) {
                     if (filaSeleccionada <= rowsItems) {
@@ -565,7 +605,7 @@ public class Salon extends FrameFullManager {
                         utiliMsg.errorItemsTableNull();
                     } else {
                         if (tableAux.isBill() == false) {
-                            char[] pass = utiliMsg.solicitudMod();
+                            char[] pass = utiliMsg.requestMod();
                             boolean perm = utili.requiredPerm(pass);
                             if (perm) {
                                 gifter();
@@ -592,7 +632,7 @@ public class Salon extends FrameFullManager {
                     } else {
                         if (discount == 0) {
                             if (tableAux.isBill() == false) {
-                                char[] pass = utiliMsg.solicitudMod();
+                                char[] pass = utiliMsg.requestMod();
                                 boolean perm = utili.requiredPerm(pass);
                                 if (perm) {
                                     discounter();
@@ -725,7 +765,7 @@ public class Salon extends FrameFullManager {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-//                    ArrayList<Table> tabs = new ArrayList<Table>();
+                    ArrayList<Table> tabs = new ArrayList<Table>();
                     new Salon(null);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
@@ -769,46 +809,52 @@ public class Salon extends FrameFullManager {
 //------------------------------------------------------------------------------------------------------------------
 //Ingreso de items
     private void butSelItemActionPerformed(String item) throws Exception {
-        if (itemsTableAux.size() < 1) {
-            ss.createTable(tableAux);
-            if (jbtAux != null) {
-                jbtAux.setOpenJBT(true);
-                jbtAux.setBackground(green);
-            }
-
-            if (jbbAux != null) {
-                jbbAux.setOpenJBB(true);
-                jbbAux.setBackground(green);
-            }
-
-            if (jbdAux != null) {
-                jbdAux.setOpenJBD(true);
-                jbdAux.setBackground(green);
-            }
-        }
-
-        Itemcard ic = null;
         int u = (int) spinnerUnitsItem.getValue();
 
-        ic = utili.ItemcardBacker(item, itemsDB);
-        butCloseTable.setText("CERRAR CUENTA");
-        int counter = 0;
-        while (counter < u) {
-            itemsTableAux.add(ic);
-            counter += 1;
+        if (indiBool == true && u > 1) {
+            utiliMsg.errorMultipleIndications();
+            resetTableValues();
+        } else {
+            if (itemsTableAux.size() < 1) {
+                ss.createTable(sal, tableAux);
+                if (jbtAux != null) {
+                    jbtAux.setOpenJBT(true);
+                    jbtAux.setBackground(green);
+                }
+
+                if (jbbAux != null) {
+                    jbbAux.setOpenJBB(true);
+                    jbbAux.setBackground(green);
+                }
+
+                if (jbdAux != null) {
+                    jbdAux.setOpenJBD(true);
+                    jbdAux.setBackground(green);
+                }
+            }
+
+            Itemcard ic = null;
+
+            ic = utili.ItemcardBacker(item, itemsDB);
+            butCloseTable.setText("CERRAR CUENTA");
+            int counter = 0;
+            while (counter < u) {
+                itemsTableAux.add(ic);
+                counter += 1;
+            }
+            tableAux.setOrder(itemsTableAux);
+            spinnerUnitsItem.setValue(1);
+            total = ss.countBill(tableAux);
+            tableAux.setTotal(total);
+            daoT.updateTableTotal(tableAux);
+            ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
+            ss.addItemOrder(sal, tableAux, arrayAux, indiBool);
+            jButExtSetter();
+            labelCuenta.setText("$ " + total);
+            comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
+            comboItems.setSelectedIndex(itemsDB.size());
+            setTableItems();
         }
-        tableAux.setOrder(itemsTableAux);
-        spinnerUnitsItem.setValue(1);
-        total = ss.countBill(tableAux);
-        tableAux.setTotal(total);
-        daoT.updateTableTotal(tableAux);
-        ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
-        ss.addItemOrder(tableAux, arrayAux);
-        jButExtSetter();
-        labelCuenta.setText("$ " + total);
-        comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
-        comboItems.setSelectedIndex(itemsDB.size());
-        setTableItems();
     }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -1023,7 +1069,6 @@ public class Salon extends FrameFullManager {
         jButExtSetter();
         setTableItems();
         setEnabled(true);
-
     }
 
 //------------------------------------------------------------------------------------------------------------------ 
@@ -1046,12 +1091,11 @@ public class Salon extends FrameFullManager {
         }
         labelCuenta.setText(total + "");
         setEnabled(true);
-
     }
 
 //----------------------------------------------CIERRE Y PAGO DE CUENTA---------------------------------------------    
-//------------------------------
-//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
 //Cierre de cuenta
     private void tableClose() throws Exception {
         total = ss.countBill(tableAux);
@@ -1128,6 +1172,7 @@ public class Salon extends FrameFullManager {
         }
 
         if (endex == true) {
+            itemsMntr = sim.downOpenIMon(itemsMntr, tableAux);
             tablePaid();
         }
         setEnabled(true);
@@ -1401,7 +1446,7 @@ public class Salon extends FrameFullManager {
 
         if (jbdAux != null) {
             labelWaiter.setText("Cajero: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
-            labelOrder.setText("DELIV.: Pedido " + tableAux.getNum());
+            labelOrder.setText("DELIV.: P. " + tableAux.getNum());
         }
 
         labelCuenta.setText(total + "");
@@ -1441,7 +1486,6 @@ public class Salon extends FrameFullManager {
                 for (int i = 0; i < deliButtons.size(); i++) {
                     if (jbdAux.getNum() == deliButtons.get(i).getNum()) {
                         deliBIndex = i;
-//                        jbdAux.setVisible(false);
                     }
                 }
                 deliButtons.remove(deliBIndex);
@@ -1473,6 +1517,9 @@ public class Salon extends FrameFullManager {
         discount = 0;
         priceCorrection = 0;
         setTableItems();
+        checkBoxIndic.setSelected(false);
+        spinnerUnitsItem.setValue(1);
+//        comboItems.setSelectedIndex(itemsDB.size());
         labelTotalParcial.setText("Parcial $:");
         labelCuenta.setText("0.00");
         labelTip.setText("Prop: $0.00");
@@ -1531,7 +1578,6 @@ public class Salon extends FrameFullManager {
         panelPartial.setBackground(bluLg);
         butPartialPay.setEnabled(true);
         resetTableValues();
-
     }
 
     // BARR--------------------------------------
@@ -1562,7 +1608,7 @@ public class Salon extends FrameFullManager {
         panelBarrBut.setBackground(narLg);
         panelBarrBut.setLayout(new GridLayout(0, 1, anchoUnit * 5, altoUnit * 5));
         scrPaneBarr = new JScrollPane(panelBarrBut);
-        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 50);
         panelBarr.add(scrPaneBarr);
 
@@ -1711,7 +1757,7 @@ public class Salon extends FrameFullManager {
         panelDeliBut.setBackground(narLg);
         panelDeliBut.setLayout(new GridLayout(0, 1, anchoUnit * 5, altoUnit * 5));
         scrPaneBarr = new JScrollPane(panelDeliBut);
-        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 50);
         panelDeli.add(scrPaneBarr);
         return panelDeli;
@@ -1827,5 +1873,21 @@ public class Salon extends FrameFullManager {
             tableAux = jbdAux.getTable();
             tableFullerProp();
         }
+    }
+
+    public ArrayList<ItemMonitor> getItemsMonitor() {
+        return itemsMntr;
+    }
+    
+    void setItemsMnr(ArrayList<ItemMonitor> newItemsMntr) {
+        itemsMntr = newItemsMntr;
+    }
+
+    public void addItemMonitorList(ItemMonitor im) {
+        itemsMntr.add(im);
+    }
+
+    public User getUser() {
+        return user;
     }
 }

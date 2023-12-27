@@ -54,7 +54,6 @@ public class ServicioTable {
             tab.setGifts(daoI.listarItemcardGifts(tab.getId()));
             tab.setPartialPayed(daoI.listarItemcardPartialPayed(tab.getId()));
             tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(tab.getId()));
-//            tab.setErrorItems(daoI.listarItemcardError(tab.getId()));
             tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
             wsTabs.add(tab);
         }
@@ -68,19 +67,27 @@ public class ServicioTable {
         tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
         return tab;
     }
-    
-    public void saveTableCompleteChangeWs (Table tab) throws Exception {
+
+    public void saveTableCompleteChangeWs(Table tab) throws Exception {
         daoT.saveTable(tab);
         daoU.saveWaiterTable(tab);
-        
+
         for (int i = 0; i < tab.getOrder().size(); i++) {
             daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
         }
-        
+
         for (int i = 0; i < tab.getGifts().size(); i++) {
             daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
         }
     }
-    
-    
+
+    public Table getCompleteTableById(String id) throws Exception {
+        Table tab = daoT.getTableById(id);
+        tab.setOrder(daoI.listarItemcardOrder(tab.getId()));
+        tab.setGifts(daoI.listarItemcardGifts(tab.getId()));
+        tab.setPartialPayed(daoI.listarItemcardPartialPayed(tab.getId()));
+        tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(tab.getId()));
+        tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
+        return tab;
+    }
 }

@@ -164,6 +164,9 @@ public class ErrorTableCount extends FrameWindow {
         textAreaCause.setColumns(5);
         textAreaCause.setLineWrap(true);
         textAreaCause.setWrapStyleWord(true);
+        Font newFont = new Font("Arial", Font.PLAIN, 16);
+        textAreaCause.setFont(newFont);
+        textAreaCause.setBackground(narUlg);
         JScrollPane scrollPane = new JScrollPane(textAreaCause);
         scrollPane.setBounds(70, 160, 250, 55);
         panelPpal.add(scrollPane);

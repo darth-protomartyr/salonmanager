@@ -540,4 +540,15 @@ public class Utilidades {
         }
         return st;
     }
+
+    public String friendlyHour(Timestamp tsp) {
+        String hour = "";
+        Timestamp ts = tsp;
+
+        SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
+        String horaFormateada = formatoHora.format(ts);
+
+        hour = "Hora: " + horaFormateada;
+        return hour;
+    }
 }

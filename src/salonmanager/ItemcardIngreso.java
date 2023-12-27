@@ -64,7 +64,7 @@ public class ItemcardIngreso extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Ingresar Items a la Card");
+        JLabel labelTit = utiliGraf.labelTitleBacker1("Ingresar Items al Menú");
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 

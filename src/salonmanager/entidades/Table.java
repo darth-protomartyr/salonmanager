@@ -45,7 +45,6 @@ public class Table {
         this.toPay = false;
         this.partialPayed = new ArrayList<Itemcard>();
         this.partialPayedND = new ArrayList<Itemcard>();
-//        this.errorItems = new ArrayList<Itemcard>();
         this.waiter = waiter;
         this.discount = 0;
         this.error = 0;
@@ -68,7 +67,6 @@ public class Table {
         this.gifts = gifts;
         this.partialPayed = partialPayed;
         this.partialPayedND = partialPayedNoDiscount;
-//        this.errorItems = errorItems;
         this.waiter = waiter;
         this.discount = discount;
         this.error = error;
@@ -93,7 +91,6 @@ public class Table {
         this.gifts = new ArrayList();    
         this.partialPayed = new ArrayList<Itemcard>();
         this.partialPayedND = new ArrayList<Itemcard>();
-//        this.errorItems = new ArrayList<Itemcard>();
         this.waiter = waiter;
         this.discount = discount;
         this.error = 0;
