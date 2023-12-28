@@ -295,8 +295,7 @@ public class Salon extends FrameFullManager {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (workshiftNow != null) {
-//                        new Monitor(sal);
-//                        new Monitor();
+                        new Monitor(sal);
                     } else {
                         utiliMsg.errorWorkshift();
                     }

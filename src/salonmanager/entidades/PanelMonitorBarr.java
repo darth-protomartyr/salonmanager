@@ -48,19 +48,19 @@ public class PanelMonitorBarr extends JPanel {
     Utilidades utili = new Utilidades();
     int type = 0;
 
-    JLabel labelTCook = null;
-    JLabel labelTReady = null;
-    JLabel labelTOtw = null;
+    JLabel labelTCook = new JLabel();
+    JLabel labelTReady = new JLabel();
+    JLabel labelTOtw = new JLabel();
 
-//    Salon salon = null;
+    Salon salon = null;
     User user = null;
 
     
-    public PanelMonitorBarr(ItemMonitor itemM, int i) throws Exception {
-//    public PanelMonitorBarr(Salon sal, ItemMonitor itemM, int i) throws Exception {
-//        salon = sal;
+//    public PanelMonitorBarr(ItemMonitor itemM, int i) throws Exception {
+    public PanelMonitorBarr(Salon sal, ItemMonitor itemM, int i) throws Exception {
+        salon = sal;
 
-//        user = salon.getUser();
+        user = salon.getUser();
         ItemMonitor im = itemM;
         
         user = itemM.getTableIMon().getWaiter();
@@ -190,8 +190,13 @@ public class PanelMonitorBarr extends JPanel {
         if (im.isInitIMon()) {
         }
 
+        
         //2
+        labelTCook = utiliGraf.labelTitleBacker4(utili.friendlyHour(im.getDateInitIMon()));
+        panel.add(labelTCook);
+        
         if (im.isCookIMon()) {
+            
             if (type == 2) {
                 labelTCook.setBounds(280, 40, 60, 15);
             } else {
@@ -200,6 +205,9 @@ public class PanelMonitorBarr extends JPanel {
         }
 
         //3
+        labelTReady = utiliGraf.labelTitleBacker4(utili.friendlyHour(im.getDateInitIMon()));
+        panel.add(labelTReady);
+        
         if (im.isReadyIMon()) {
             if (type == 2) {
                 labelTReady.setBounds(400, 40, 60, 15);
@@ -209,6 +217,9 @@ public class PanelMonitorBarr extends JPanel {
         }
 
         //4
+        labelTOtw = utiliGraf.labelTitleBacker4(utili.friendlyHour(im.getDateInitIMon()));
+        panel.add(labelTOtw);
+        
         if (type != 2) {
             if (im.isOtwIMon()) {
                 labelTOtw.setBounds(430, 40, 60, 15);
@@ -216,15 +227,11 @@ public class PanelMonitorBarr extends JPanel {
         }
 
         if (type == 1) {
-            labelWaiter.setText("Mozo: Gonzalo D.");
-//            labelWaiter.setText("Mozo: " + im.getTableIMon().getWaiter().getName() + " " + utili.strShorter(im.getTableIMon().getWaiter().getName(), 2));
+            labelWaiter.setText("Mozo: " + im.getTableIMon().getWaiter().getName() + " " + utili.strShorter(im.getTableIMon().getWaiter().getName(), 2));
         } else if (type == 2) {
-//            labelWaiter.setText("Cajero: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2));
-            labelWaiter.setText("Mozo: Gonzalo D.");
-
+            labelWaiter.setText("Cajero: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2));
         } else {
-//            labelWaiter.setText("Delivery: " + im.getTableIMon().getWaiter().getName() + " " + utili.strShorter(im.getTableIMon().getWaiter().getLastName(), 1) + ".");
-            labelWaiter.setText("Delivery: Gon D.");
+            labelWaiter.setText("Delivery: " + im.getTableIMon().getWaiter().getName() + " " + utili.strShorter(im.getTableIMon().getWaiter().getLastName(), 1) + ".");
         }
 
         JButton butIndi = utiliGraf.button3("Indicaciones", 480, 13, 85);
@@ -243,8 +250,6 @@ public class PanelMonitorBarr extends JPanel {
         if(im.getIndications().length()<1) {
             butIndi.setEnabled(false);
         }
-        
-        
     }
 
     private String orderBacker(ItemMonitor im) {

@@ -60,19 +60,14 @@ public class DAOItemMonitor extends DAO {
                 String posImon = resultado.getString(4);
                 boolean initIMon = resultado.getBoolean(5);
                 Timestamp dateInitIMon = resultado.getTimestamp(6);
-
                 boolean cookIMon = resultado.getBoolean(7);
                 Timestamp dateCookIMon = resultado.getTimestamp(8);
-
                 boolean readyIMon = resultado.getBoolean(9);
                 Timestamp dateReadyIMon = resultado.getTimestamp(10);
-
                 boolean otwIMon = resultado.getBoolean(11);
                 Timestamp dateOtwIMon = resultado.getTimestamp(12);
-
                 boolean openItemMonitor = resultado.getBoolean(13);
                 boolean activeOpenMonitor = resultado.getBoolean(14);
-
                 String indications = resultado.getString(15);
 
                 im = new ItemMonitor(idImon, tableIdIMon, itemIdIMon, posImon, initIMon, dateInitIMon, cookIMon, dateCookIMon, readyIMon, dateReadyIMon, otwIMon, dateOtwIMon, openItemMonitor, activeOpenMonitor, indications);
@@ -85,14 +80,13 @@ public class DAOItemMonitor extends DAO {
             desconectarBase();
         }
     }
-    
-    
+
     public ItemMonitor getItemsMonitorById(String imId) throws Exception {
         try {
-            String sql = "SELECT * FROM item_monits WHERE ItemMonit_id = " +  imId + " AND ItemMonit_active = true;";
+            String sql = "SELECT * FROM item_monits WHERE ItemMonit_id = " + imId + " AND ItemMonit_active = true;";
             System.out.println(sql);
             consultarBase(sql);
-                            ItemMonitor im = new ItemMonitor();
+            ItemMonitor im = new ItemMonitor();
 
             while (resultado.next()) {
                 String idImon = resultado.getString(1);
@@ -119,12 +113,5 @@ public class DAOItemMonitor extends DAO {
             desconectarBase();
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

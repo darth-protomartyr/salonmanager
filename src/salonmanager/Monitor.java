@@ -51,12 +51,10 @@ public class Monitor extends FrameHalf {
 
     JButton butInGift = new JButton();
     JSpinner spinnerDiscount = null;
-//    Salon salon = null;
+    Salon salon = null;
 
     ArrayList<Table> tabs = new ArrayList<Table>();
     ArrayList<ItemMonitor> itemsMnrOld = new ArrayList<ItemMonitor>();
-    ArrayList<ItemMonitor> itemsMnrNew = new ArrayList<ItemMonitor>();
-
 
     JPanel panelHeader = new JPanel(null);
     JPanel panelIMon = new JPanel(null);
@@ -68,12 +66,11 @@ public class Monitor extends FrameHalf {
     JLabel labelItemsMnr = new JLabel();
     private Timer timer;
     int orderKind = 0;
+    String k = "";
 
-        public Monitor() throws Exception {
-
-//      public Monitor(Salon sal) throws Exception {
-//      salon = sal;
-        itemsMnrOld= daoIM.getItemsMonitorOpen();
+    public Monitor(Salon sal) throws Exception {
+        salon = sal;
+        itemsMnrOld = daoIM.getItemsMonitorOpen();
 
         sm.addFrame(this);
         setTitle("Seguimiento");
@@ -145,28 +142,20 @@ public class Monitor extends FrameHalf {
         scrPaneBarr.setPreferredSize(new Dimension(620, altoUnit * 67));
         panelIn.add(scrPaneBarr);
 
-//        initTimer();
+        initTimer();
     }
-    
-    
-    
-    
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Monitor();
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
-    
-    
-    
-    
 
+//    public static void main(String[] args) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    new Monitor();
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
     private JPanel panelHeaderBacker() {
         panelHeader.setPreferredSize(new Dimension(620, altoUnit * 5));
         panelHeader.setBackground(narUlg);
@@ -227,8 +216,6 @@ public class Monitor extends FrameHalf {
 
     private void butMonitOrders(int kind) throws Exception {
         panelIMon.removeAll();
-        String k = "";
-        itemsMnrNew = new ArrayList<ItemMonitor>();
         orderKind = kind;
 
         if (kind == 3) {
@@ -241,19 +228,40 @@ public class Monitor extends FrameHalf {
 
         panelHeaderSetter();
 
+        panelItemMomFiller();
+
+    }
+
+    private void initTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    panelItemMomFiller();
+                    salon.setItemsMnr(itemsMnrOld);
+                } catch (Exception ex) {
+                    Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }, 0, 15000); // Realizar consulta cada 10 segundos (ajusta el intervalo según tus necesidades)
+    }
+
+    private void panelItemMomFiller() throws Exception {
+        ArrayList<ItemMonitor> itemsMnrNew = new ArrayList<ItemMonitor>();
+        itemsMnrOld = daoIM.getItemsMonitorOpen();
+
         for (int i = 0; i < itemsMnrOld.size(); i++) {
             ItemMonitor im = itemsMnrOld.get(i);
             String ty = im.getPosIMon();
             boolean boolTy = im.isOpenItemMonitor();
-            
+
             if (ty.equals(k) && boolTy) {
                 itemsMnrNew.add(itemsMnrOld.get(i));
             }
-
-//            if (!k.equals("delivery") && !k.equals("barra")) {
-//                itemsMnrNew.add(itemsMnrOld.get(i));
-//            }
         }
+
+        panelIMon.removeAll();
 
         int size = itemsMnrNew.size();
         int height = 0;
@@ -268,9 +276,7 @@ public class Monitor extends FrameHalf {
         int round = 0;
         if (itemsMnrNew.size() > 0) {
             for (int i = 0; i < itemsMnrNew.size(); i++) {
-                PanelMonitorBarr pmb = new PanelMonitorBarr(itemsMnrNew.get(i), round);
-//              PanelMonitorBarr pmb = new PanelMonitorBarr(salon, itemsMnrNew.get(i), round);
-
+                PanelMonitorBarr pmb = new PanelMonitorBarr(salon, itemsMnrNew.get(i), round);
                 panelIMon.add(pmb);
                 round += 1;
             }
@@ -279,34 +285,8 @@ public class Monitor extends FrameHalf {
             labelItemsMnr.setBounds(70, 70, 500, 130);
             panelIMon.add(labelItemsMnr);
         }
-        revalidate();
-        repaint();
+        panelIMon.revalidate();
+        panelIMon.repaint();
     }
 
-    private void initTimer() {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    
-                    for (int i = 0; i < itemsMnrNew.size(); i++) {
-                        
-                    }
- 
-                    
-                } catch (Exception ex) {
-                    Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-//                salon.setItemsMnr(itemsMnrOld);
-            }
-        }, 0, 15000); // Realizar consulta cada 10 segundos (ajusta el intervalo según tus necesidades)
-    }
-
-    
-    private ArrayList<ItemMonitor> updateItemMnr() throws Exception {
-        ArrayList<ItemMonitor> newItemsMnr = new ArrayList<ItemMonitor>();
-        daoIM.getItemsMonitorOpen();
-        return newItemsMnr;
-    }
 }
