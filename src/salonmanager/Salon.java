@@ -93,6 +93,7 @@ public class Salon extends FrameFullManager {
     int fontSizeTable = 0;
     int wUnit = 0;
     int hUnit = 0;
+    boolean tabsBut = true;
 
     int f1 = anchoUnit * 3;
     Font font1 = new Font("Arial", Font.BOLD, f1);
@@ -173,10 +174,12 @@ public class Salon extends FrameFullManager {
     JPanel panelPartial = new JPanel();
 
     Salon sal = null;
+    Manager manager = null;
 
-    public Salon(ArrayList<Table> tables) throws Exception {
+    public Salon(ArrayList<Table> tables, Manager man) throws Exception {
+        manager = man;
         sm.addFrame(this);
-        user = sm.getUserIn();
+        user = man.getUser();
         setTitle("Salón Manager");
         sal = this;
         itemsDB = daoI.listarItemsCard();
@@ -322,18 +325,18 @@ public class Salon extends FrameFullManager {
         panelBDButtons.add(panelDeli);
 
 //Delivery
-        JButton butClosePanelBarrDeli = utiliGraf.button2("Cerrar", anchoUnit * 26, alturaPane - altoUnit * 2, anchoUnit * 20);
-        butClosePanelBarrDeli.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    closePanelBarrDeli();
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelBDButtons.add(butClosePanelBarrDeli);
+//        JButton butClosePanelBarrDeli = utiliGraf.button2("Cerrar", anchoUnit * 26, alturaPane - altoUnit * 2, anchoUnit * 20);
+//        butClosePanelBarrDeli.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                try {
+//                    closePanelBarrDeli();
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        panelBDButtons.add(butClosePanelBarrDeli);
 
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
@@ -760,25 +763,24 @@ public class Salon extends FrameFullManager {
 //MAIN----------------------------------------------------------------------------------------------------------------
 //MAIN----------------------------------------------------------------------------------------------------------------
 //MAIN----------------------------------------------------------------------------------------------------------------
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ArrayList<Table> tabs = new ArrayList<Table>();
-                    new Salon(null);
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    ArrayList<Table> tabs = new ArrayList<Table>();
+//                    new Salon(null);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------    
 //Seleccionar Mozo
-
     public void setWaiter(int i) throws Exception {
         WaiterSelector ws = new WaiterSelector(this, i);
         ws.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
@@ -1547,36 +1549,44 @@ public class Salon extends FrameFullManager {
 //Panel BARR-DELI---------------------------------------------------------------
     private void butPanelTurn() throws Exception {
         tableAux = null;
-        if (jbtAux != null) {
-            jbtAux.setBorder(null);
-            jbtAux = null;
+        if (tabsBut == true) {
+            if (jbtAux != null) {
+                jbtAux.setBorder(null);
+                jbtAux = null;
+            }
+            resetTableValues();
+            tabbedPane.setVisible(false);
+            panelBDButtons.setVisible(true);
+            panelPartial.setBackground(narLg);
+            butPartialPay.setEnabled(false);
+            labelPartialPay.setText("DESHABILITADO");
+            butBarrDeli.setText("Mesas");
+            tabsBut = false;
+        } else {
+            if (jbbAux != null) {
+                jbbAux.setBorder(new LineBorder(narLg, 8));
+                tableAux = null;
+                jbbAux = null;
+            }
+
+            if (jbdAux != null) {
+                jbdAux.setBorder(new LineBorder(narLg, 8));
+                tableAux = null;
+                jbdAux = null;
+            }
+            tabbedPane.setVisible(true);
+            panelBDButtons.setVisible(false);
+            panelPartial.setBackground(bluLg);
+            butPartialPay.setEnabled(true);
+            resetTableValues();
+            butBarrDeli.setText("Barra - Delivery");
+            tabsBut = true;
+
         }
-        resetTableValues();
-        tabbedPane.setVisible(false);
-        panelBDButtons.setVisible(true);
-        panelPartial.setBackground(narLg);
-        butPartialPay.setEnabled(false);
-        labelPartialPay.setText("DESHABILITADO");
     }
 
-    private void closePanelBarrDeli() throws Exception {
-        if (jbbAux != null) {
-            jbbAux.setBorder(new LineBorder(narLg, 8));
-            tableAux = null;
-            jbbAux = null;
-        }
+    private void closePanelBarrDel() throws Exception {
 
-        if (jbdAux != null) {
-            jbdAux.setBorder(new LineBorder(narLg, 8));
-            tableAux = null;
-            jbdAux = null;
-        }
-
-        tabbedPane.setVisible(true);
-        panelBDButtons.setVisible(false);
-        panelPartial.setBackground(bluLg);
-        butPartialPay.setEnabled(true);
-        resetTableValues();
     }
 
     // BARR--------------------------------------
@@ -1877,7 +1887,7 @@ public class Salon extends FrameFullManager {
     public ArrayList<ItemMonitor> getItemsMonitor() {
         return itemsMntr;
     }
-    
+
     void setItemsMnr(ArrayList<ItemMonitor> newItemsMntr) {
         itemsMntr = newItemsMntr;
     }

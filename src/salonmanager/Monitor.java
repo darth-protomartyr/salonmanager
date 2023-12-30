@@ -21,6 +21,7 @@ import salonmanager.entidades.ItemMonitor;
 import salonmanager.entidades.PanelMonitorBarr;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
+import salonmanager.entidades.User;
 import salonmanager.persistencia.DAOItemMonitor;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.servicios.ServicioSalon;
@@ -49,12 +50,15 @@ public class Monitor extends FrameHalf {
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
 
-    JButton butInGift = new JButton();
-    JSpinner spinnerDiscount = null;
     Salon salon = null;
-
     ArrayList<Table> tabs = new ArrayList<Table>();
     ArrayList<ItemMonitor> itemsMnrOld = new ArrayList<ItemMonitor>();
+    ArrayList<ItemMonitor> itemsMnrNew = new ArrayList<ItemMonitor>();
+
+    User user = null;
+
+    JButton butInGift = new JButton();
+    JSpinner spinnerDiscount = null;
 
     JPanel panelHeader = new JPanel(null);
     JPanel panelIMon = new JPanel(null);
@@ -70,6 +74,7 @@ public class Monitor extends FrameHalf {
 
     public Monitor(Salon sal) throws Exception {
         salon = sal;
+        user = salon.getUser();
         itemsMnrOld = daoIM.getItemsMonitorOpen();
 
         sm.addFrame(this);
@@ -133,6 +138,9 @@ public class Monitor extends FrameHalf {
         panelIMon.setPreferredSize(new Dimension(600, altoUnit * 67));
 
         labelItemsMnr = utiliGraf.labelTitleBackerA2("<html>Seleccione un tipo de Orden</html>");
+        if (itemsMnrOld.size() < 1) {
+            labelItemsMnr.setText("<html>No hay pedidos en curso</html>");
+        }
         labelItemsMnr.setBounds(130, 70, 400, 150);
         panelIMon.add(labelItemsMnr);
 
@@ -143,19 +151,10 @@ public class Monitor extends FrameHalf {
         panelIn.add(scrPaneBarr);
 
         initTimer();
+
     }
 
-//    public static void main(String[] args) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                try {
-//                    new Monitor();
-//                } catch (Exception ex) {
-//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//    }
+
     private JPanel panelHeaderBacker() {
         panelHeader.setPreferredSize(new Dimension(620, altoUnit * 5));
         panelHeader.setBackground(narUlg);
@@ -238,8 +237,10 @@ public class Monitor extends FrameHalf {
             @Override
             public void run() {
                 try {
-                    panelItemMomFiller();
-                    salon.setItemsMnr(itemsMnrOld);
+                    if (itemsMnrNew.size() > 0) {
+                        panelItemMomFiller();
+                        salon.setItemsMnr(itemsMnrOld);
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -248,7 +249,7 @@ public class Monitor extends FrameHalf {
     }
 
     private void panelItemMomFiller() throws Exception {
-        ArrayList<ItemMonitor> itemsMnrNew = new ArrayList<ItemMonitor>();
+        itemsMnrNew = new ArrayList<ItemMonitor>();
         itemsMnrOld = daoIM.getItemsMonitorOpen();
 
         for (int i = 0; i < itemsMnrOld.size(); i++) {

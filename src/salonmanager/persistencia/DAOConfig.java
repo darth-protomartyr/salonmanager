@@ -20,7 +20,7 @@ public class DAOConfig extends DAO {
             String pans = utili.arrayStrToStr(strPan);
             String charts = utili.arrayStrToStr(chartPan);
             String sql1
-                    = "INSERT INTO config(config_table_total, config_table_numPanes, config_table_namePanes, config_table_chartPanes, config_open_ws, config_open_ws_id, config_open_session, config_open_session_id, config_last_session_time, config_active))"
+                    = "INSERT INTO config(config_table_total, config_table_num_panes, config_table_name_panes, config_table_chart_panes, config_open_ws, config_open_ws_id, config_open_session, config_open_session_id, config_last_session_time, config_active))"
                     + "VALUES('" + totalTab + "', '" + nums + "', '" + pans + "', '" + charts + "', " + wsActive + ", " + wsId + ", " + sessionOpen + ", " + sessionOpenId + ", " + lastSession + ", " + cfgActive + ");";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());

@@ -22,6 +22,11 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
+    public void errorPhoneNumber() {
+        CustomDialog cm = new CustomDialog("Error: El teléfono puede tener de 5 a 30 caracteres y estar formado por números, espacios en blanco, '+' y '-'.", 2);
+        cm.setVisible(true);
+    }
+    
     public void errorNameRepeat() {
         CustomDialog cm = new CustomDialog("Error: El mail ya se encuentra ingresado en nuestra base de datos.", 2);
         cm.setVisible(true);
@@ -252,11 +257,6 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
     
-    public void cargaRegistroExitoso() {
-        CustomDialog cm = new CustomDialog("El usuario fue registrado con éxito.", 1);
-        cm.setVisible(true);
-    }
-    
     public void cargaItem() {
         CustomDialog cm = new CustomDialog("El item de la Card fue cargado con éxito a la base de datos.", 1);
         cm.setVisible(true);
@@ -338,5 +338,10 @@ public class UtilidadesMensajes extends JFrame {
     public void errorIndiLenghtExcess() {
         CustomDialog cm = new CustomDialog("Error: El texto de las indicaciones excede el límite de caracteres.", 2);
         cm.setVisible(true);         
+    }
+
+    public void cargaUsuario() {
+        CustomDialog cm = new CustomDialog("El usuario fue ingresado. El Administrador le asignara un rol a la brevedad.", 1);
+        cm.setVisible(true);
     }
 }

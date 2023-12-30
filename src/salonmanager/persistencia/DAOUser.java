@@ -25,10 +25,11 @@ public class DAOUser extends DAO {
             String routeImage = user.getRouteImage();
             String nameImage = user.getNameImage();
             String pass = user.getPassword();
+            String phone = user.getPhone();
             boolean activeUser = user.isActiveUser();
 
-            String sql1 = "INSERT INTO users(user_id, user_name, user_last_name, user_mail, user_role, user_image_route, user_image_name, user_password, user_active)"
-                    + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', " + activeUser + ");";
+            String sql1 = "INSERT INTO users(user_id, user_name, user_last_name, user_mail, user_role, user_image_route, user_image_name, user_password, user_phone, user_active)"
+                    + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', " + activeUser + ");";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -72,7 +73,8 @@ public class DAOUser extends DAO {
                 user.setRouteImage(resultado.getString(6));
                 user.setNameImage(resultado.getString(7));
                 user.setPassword(resultado.getString(8));
-                user.setActiveUser(resultado.getBoolean(9));
+                user.setPhone(resultado.getString(9));
+                user.setActiveUser(resultado.getBoolean(10));
             }
             return user;
         } catch (Exception e) {
@@ -98,7 +100,8 @@ public class DAOUser extends DAO {
             user.setRouteImage(resultado.getString(6));
             user.setNameImage(resultado.getString(7));
             user.setPassword(resultado.getString(8));
-            user.setActiveUser(resultado.getBoolean(9));
+            user.setPhone(resultado.getString(9));
+            user.setActiveUser(resultado.getBoolean(10));
             users.add(user);
         }
         desconectarBase();
@@ -121,7 +124,9 @@ public class DAOUser extends DAO {
             user.setRouteImage(resultado.getString(6));
             user.setNameImage(resultado.getString(7));
             user.setPassword(resultado.getString(8));
-            user.setActiveUser(resultado.getBoolean(9));
+            user.setPhone(resultado.getString(9));
+            user.setActiveUser(resultado.getBoolean(10));
+            
             users.add(user);
         }
         desconectarBase();
@@ -162,7 +167,8 @@ public class DAOUser extends DAO {
             user.setRouteImage(resultado.getString(6));
             user.setNameImage(resultado.getString(7));
             user.setPassword(resultado.getString(8));
-            user.setActiveUser(resultado.getBoolean(9));
+            user.setPhone(resultado.getString(9));
+            user.setActiveUser(resultado.getBoolean(10));
             users.add(user);
         }
         desconectarBase();

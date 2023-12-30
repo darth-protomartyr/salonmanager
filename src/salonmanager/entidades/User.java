@@ -13,24 +13,26 @@ public class User {
     String routeImage;
     String nameImage;
     String password;
+    String phone;
     boolean activeUser;
 
     public User() {
     }
 
-    public User(String name, String lastName, String mail, String routeImage, String nameImage, String password) {
+    public User(String name, String lastName, String mail, String routeImage, String nameImage, String password, String phone) {
         this.id = utili.idRandom();
         this.name = name;
         this.lastName = lastName;
         this.mail = mail;
-        this.rol = "CAJERO";
+        this.rol = "";
         this.routeImage = routeImage;
         this.nameImage = nameImage;
         this.password = password;
+        this.phone = phone;
         this.activeUser = true;
     }
 
-    public User(String id, String name, String lastName, String mail, String rol, String routeImage, String nameImage, String password, boolean activeUser) {
+    public User(String id, String name, String lastName, String mail, String rol, String routeImage, String nameImage, String password, String phone, boolean activeUser) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -39,17 +41,19 @@ public class User {
         this.routeImage = routeImage;
         this.nameImage = nameImage;
         this.password = password;
-        this.activeUser = true;
-    }
-
-    public User(String id, String name, String lastName, String mail, boolean activeUser) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.mail = mail;
-        this.rol = "MOZO";
+        this.phone = phone;
         this.activeUser = activeUser;
     }
+
+//    public User(String id, String name, String lastName, String mail, String phone, boolean activeUser) {
+//        this.id = id;
+//        this.name = name;
+//        this.lastName = lastName;
+//        this.mail = mail;
+//        this.rol = "MOZO";
+//        this.phone = phone;
+//        this.activeUser = activeUser;
+//    }
 
     public String getId() {
         return id;
@@ -113,6 +117,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getPhone() {
+        return phone;
+    }
+    
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public boolean isActiveUser() {

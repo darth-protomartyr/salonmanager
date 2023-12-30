@@ -10,9 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -68,7 +66,7 @@ public class WorkshiftSession extends FrameWindow {
     public WorkshiftSession(Manager man) throws Exception {
         manager = man;
         sm.addFrame(this);
-        user = sm.getUserIn();
+        user = man.getUser();
 
         cfg = sm.getConfig();
         setTitle("Administrar Turnos Y Sesiones");
@@ -137,12 +135,12 @@ public class WorkshiftSession extends FrameWindow {
             int wsId = cfg.getOpenIdWs();
             Workshift ws = daoW.consultarTurnoById(wsId);
             ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
-            new Salon(tabs);
+            new Salon(tabs, manager);
             dispose();
         } else {
             sses.crearSession(user);
             
-            new Salon(null);
+            new Salon(null, manager);
             dispose();
         }
     }

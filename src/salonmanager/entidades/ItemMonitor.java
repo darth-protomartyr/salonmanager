@@ -4,10 +4,12 @@ import java.sql.Timestamp;
 import java.util.Date;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
+import salonmanager.persistencia.DAOUser;
 
 public class ItemMonitor {
     DAOItemcard daoI = new DAOItemcard();
     DAOTable daoT = new DAOTable();
+    DAOUser daoU = new DAOUser();
 
 
     String idIMon;
@@ -72,7 +74,8 @@ public class ItemMonitor {
     
     public ItemMonitor(String idIMon, String tableIMon, int itemIMon, String posIMon, boolean initIMon, Timestamp dateInitIMon, boolean cookIMon, Timestamp dateCookIMon, boolean readyIMon, Timestamp dateReadyIMon, boolean otwIMon, Timestamp dateOtwIMon, boolean openItemMonitor, boolean activeItemMonitor, String indications) throws Exception {
         this.idIMon = idIMon;
-        this.tableIMon = daoT.getTableById(tableIMon);
+//        this.tableIMon = daoT.getTableById(tableIMon);
+                this.tableIMon = completeTable(tableIMon);
         this.itemIMon = daoI.getItemById(itemIMon);
         this.posIMon = posIMon;
         this.initIMon = initIMon;
@@ -221,5 +224,11 @@ public class ItemMonitor {
             ok = "mesa";
         }
         return ok;
+    }
+
+    private Table completeTable(String tableIMon) throws Exception {
+        Table tab = daoT.getTableById(tableIMon);
+        tab.setWaiter(daoU.getWaiterByTable(tableIMon));
+        return tab;
     }
 }

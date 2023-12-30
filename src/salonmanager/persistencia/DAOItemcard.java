@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.Table;
+import salonmanager.entidades.User;
 import salonmanager.servicios.ServicioRegister;
 import salonmanager.utilidades.UtilidadesMensajes;
 
@@ -16,7 +17,7 @@ public class DAOItemcard extends DAO {
     public ArrayList<Itemcard> listarItemsCard() throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();
         try {
-            String sql = "SELECT * FROM Itemcards WHERE Itemcard_active = true;";
+            String sql = "SELECT * FROM itemcards WHERE itemcard_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             Itemcard ic = new Itemcard();
@@ -47,7 +48,7 @@ public class DAOItemcard extends DAO {
     public ArrayList<Itemcard> listItemsByCaption(String capt) throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();
         try {
-            String sql = "SELECT * FROM Itemcards WHERE Itemcard_active = true AND Itemcard_caption = '" + capt + "';";
+            String sql = "SELECT * FROM itemcards WHERE itemcard_active = true AND itemcard_caption = '" + capt + "';";
             System.out.println(sql);
             consultarBase(sql);
             Itemcard ic = new Itemcard();
@@ -95,12 +96,12 @@ public class DAOItemcard extends DAO {
 
         if (error == false) {
             try {
-                String sql = "INSERT INTO Itemcards(Itemcard_code, Itemcard_name, Itemcard_caption, Itemcard_description, Itemcard_cost, Itemcard_price,  Itemcard_stock, Itemcard_dateCreation, Itemcard_tip, Itemcard_active) "
+                String sql = "INSERT INTO itemcards(itemcard_code, itemcard_name, itemcard_caption, itemcard_description, itemcard_cost, itemcard_price,  itemcard_stock, itemcard_date_creation, itemcard_tip, Itemcard_active) "
                         + "VALUES( '" + item.getCode() + "','" + item.getName() + "','" + item.getCaption() + "','" + item.getDescription() + "','" + item.getCost() + "','" + item.getPrice() + "','" + item.getStock() + "','" + item.getDateCreation() + "'," + item.isActiveTip() + ", " + item.isActiveItem() + ");";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
-                String values = item.getCaption() + " - " + item.getDescription() + " - " + item.getCost() + " - " + item.getPrice() + " - " + item.getStock() + " - " + item.getDateCreation() + " - " + " - " + item.isActiveTip() + " - " + item.isActiveItem() + " - ";
-                sr.crearRegistro("saveItemcard", item.getName(), values);
+//                String values = item.getCaption() + " - " + item.getDescription() + " - " + item.getCost() + " - " + item.getPrice() + " - " + item.getStock() + " - " + item.getDateCreation() + " - " + " - " + item.isActiveTip() + " - " + item.isActiveItem() + " - ";
+//                sr.crearRegistro(user, "saveItemcard", item.getName(), values);
                 utiliMsg.cargaItem();
             } catch (SQLException e) {
                 if (e.getErrorCode() == 1062) {
@@ -117,15 +118,15 @@ public class DAOItemcard extends DAO {
     
     public void modificarItem(Itemcard itemAux, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
         Timestamp upd = new Timestamp(new Date().getTime());
-        String sql = "UPDATE Itemcards "
-                + "SET Itemcard_name = '" + name + "', Itemcard_caption = '" + caption + "', itemCaption_description = '" + description
-                + "', Itemcard_cost = " + cost + " , Itemcard_price = " + price + ", Itemcard_stock = " + stock + ","
-                + "', Itemcard_dateUpdate ='" + upd + "', Itemcard_tip = " + tipAlta
-                + " WHERE Itemcard_id = " + itemAux.getId() + ";";
+        String sql = "UPDATE itemcards "
+                + "SET itemcard_name = '" + name + "', itemcard_caption = '" + caption + "', item_description = '" + description
+                + "', itemcard_cost = " + cost + " , itemcard_price = " + price + ", itemcard_stock = " + stock + ","
+                + "', itemcard_date_update ='" + upd + "', itemcard_tip = " + tipAlta
+                + " WHERE itemcard_id = " + itemAux.getId() + ";";
         System.out.println(sql);
         insertarModificarEliminar(sql);
-        String values = name + " - " + caption + " - " + description + " - " + cost + " - " + price + " - " + stock + " - " + true;
-        sr.crearRegistro("modificarItemcard", name, values);
+//        String values = name + " - " + caption + " - " + description + " - " + cost + " - " + price + " - " + stock + " - " + true;
+//        sr.crearRegistro(user, "modificarItemcard", name, values);
         desconectarBase();
     }
 
@@ -135,7 +136,7 @@ public class DAOItemcard extends DAO {
     //Tabla ItemcardsOrder_tabs-----------------------------------------------------------------------
     public void saveItemOrderTable(Itemcard ic, Table tab) throws Exception {
         try {
-            String sql = "INSERT INTO Itemcardorder_tabs( Itemcardorder_tabs_active, Itemcardorder_id_fkey, table_id_fkey) ";
+            String sql = "INSERT INTO itemcard_order_tabs( itemcard_order_tabs_active, itemcard_order_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES(" + true + ", " + ic.getId() + ", '" + tab.getId() + "');";
             sql += parcialA;
             System.out.println(sql);
@@ -153,7 +154,7 @@ public class DAOItemcard extends DAO {
 
     public void upActiveItemOrderTable(Itemcard ic, Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardorder_tabs SET Itemcardorder_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND Itemcardorder_id_fkey = " + ic.getId() + " AND Itemcardorder_tabs_active = false LIMIT 1;";
+            String sql = "UPDATE itemcard_order_tabs SET itemcard_order_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_order_id_fkey = " + ic.getId() + " AND itemcard_order_tabs_active = false LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -167,7 +168,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemOrderTable(Itemcard ic, Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardorder_tabs SET Itemcardorder_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND Itemcardorder_id_fkey = " + ic.getId() + " AND Itemcardorder_tabs_active = true LIMIT 1;";
+            String sql = "UPDATE itemcard_order_tabs SET itemcard_order_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_order_id_fkey = " + ic.getId() + " AND itemcard_order_tabs_active = true LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -180,7 +181,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemOrderTableAll(Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardorder_tabs SET Itemcardorder_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND Itemcardorder_tabs_active = true;";
+            String sql = "UPDATE itemcard_order_tabs SET itemcard_order_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_order_tabs_active = true;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -194,7 +195,7 @@ public class DAOItemcard extends DAO {
     public ArrayList<Itemcard> listarItemcardOrder(String tabId) throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();
         try {
-            String sql = "SELECT Itemcardorder_id_fkey FROM Itemcardorder_tabs WHERE table_id_fkey = '" + tabId + "' AND Itemcardorder_tabs_active = " + true + ";";
+            String sql = "SELECT itemcard_order_id_fkey FROM itemcard_order_tabs WHERE table_id_fkey = '" + tabId + "' AND itemcard_order_tabs_active = " + true + ";";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<Integer> idItems = new ArrayList<Integer>();
@@ -221,13 +222,13 @@ public class DAOItemcard extends DAO {
         }
     }
 
-    //Tabla Itemcardgift_tabs-----------------------------------------------------------------------
-    //Tabla Itemcardgift_tabs-----------------------------------------------------------------------
-    //Tabla Itemcardgift_tabs-----------------------------------------------------------------------
-    //Tabla Itemcardgift_tabs-----------------------------------------------------------------------
+    //Tabla Itemcard_gift_tabs-----------------------------------------------------------------------
+    //Tabla Itemcard_gift_tabs-----------------------------------------------------------------------
+    //Tabla Itemcard_gift_tabs-----------------------------------------------------------------------
+    //Tabla Itemcard_gift_tabs-----------------------------------------------------------------------
     public void saveItemGiftTable(Itemcard ic, Table tab) throws Exception {
         try {
-            String sql = "INSERT INTO Itemcardgift_tabs(Itemcardgift_tabs_active, ItemcardGift_id_fkey, table_id_fkey) ";
+            String sql = "INSERT INTO itemcard_gift_tabs(itemcard_gift_tabs_active, itemcard_gift_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES(" + true + ", " + ic.getId() + ", '" + tab.getId() + "');";
             sql += parcialA;
             System.out.println(sql);
@@ -245,7 +246,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemGiftTable(Itemcard ic, Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardgift_tabs SET Itemcardgift_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND ItemcardGift_id_fkey = " + ic.getId() + " AND Itemcardgift_tabs_active = true LIMIT 1;";
+            String sql = "UPDATE itemcard_gift_tabs SET itemcard_gift_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_gift_id_fkey = " + ic.getId() + " AND Itemcard_gift_tabs_active = true LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -258,7 +259,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemGiftTableAll(Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardgift_tabs SET Itemcardgift_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND Itemcardgift_tabs_active = true;";
+            String sql = "UPDATE itemcard_gift_tabs SET itemcard_gift_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_gift_tabs_active = true;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -271,7 +272,7 @@ public class DAOItemcard extends DAO {
 
     public void upActiveItemGiftTable(Table t, Itemcard ic) throws Exception {
         try {
-            String sql = "UPDATE Itemcardgift_tabs SET Itemcardgift_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND ItemcardGift_id_fkey = " + ic.getId() + " AND Itemcardorder_id_fkey = " + ic.getId() + " AND Itemcardgift_tabs_active = false LIMIT 1;";
+            String sql = "UPDATE itemcard_gift_tabs SET itemcard_gift_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_gift_id_fkey = " + ic.getId() + " AND itemcard_order_id_fkey = " + ic.getId() + " AND Itemcard_gift_tabs_active = false LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -286,7 +287,7 @@ public class DAOItemcard extends DAO {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();
         ArrayList<Integer> idItems = new ArrayList<Integer>();
         try {
-            String sql = "SELECT ItemcardGift_id_fkey FROM Itemcardgift_tabs WHERE table_id_fkey = '" + tabId + "' AND Itemcardgift_tabs_active = true;";
+            String sql = "SELECT itemcard_gift_id_fkey FROM itemcard_gift_tabs WHERE table_id_fkey = '" + tabId + "' AND itemcard_gift_tabs_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -318,7 +319,7 @@ public class DAOItemcard extends DAO {
     //Tabla Itemcardpayed_tabs-----------------------------------------------------------------------    
     public void saveItemPayedTable(Itemcard ic, Table tab) throws Exception {
         try {
-            String sql = "INSERT INTO Itemcardpayed_tabs( Itemcardpayed_tabs_active, ItemcardPayed_id_fkey, table_id_fkey) ";
+            String sql = "INSERT INTO itemcard_payed_tabs(itemcard_payed_tabs_active, itemcard_payed_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES(" + true + ", " + ic.getId() + ", '" + tab.getId() + "');";
             sql += parcialA;
             System.out.println(sql);
@@ -336,7 +337,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemPayedTable(Itemcard ic, Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardpayed_tabs SET Itemcardpayed_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND ItemcardPayed_id_fkey = " + ic.getId() + " AND Itemcardpayed_tabs_active = true LIMIT 1;";
+            String sql = "UPDATE itemcard_payed_tabs SET itemcard_payed_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_payed_id_fkey = " + ic.getId() + " AND itemcard_payed_tabs_active = true LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -349,7 +350,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemPayedTableAll(Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardpayed_tabs SET Itemcardpayed_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND Itemcardpayed_tabs_active = true;";
+            String sql = "UPDATE itemcard_payed_tabs SET itemcard_payed_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_payed_tabs_active = true;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -362,7 +363,7 @@ public class DAOItemcard extends DAO {
 
     public void upActiveItemPayedTable(Itemcard ic, Table t) throws Exception {
         try {
-            String sql = "UPDATE Itemcardpayed_tabs SET Itemcardpayed_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND ItemcardPayed_id_fkey = " + ic.getId() + " AND Itemcardpayed_tabs_active = false LIMIT 1;";
+            String sql = "UPDATE itemcard_payed_tabs SET itemcard_payed_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_payed_id_fkey = " + ic.getId() + " AND itemcard_payed_tabs_active = false LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -376,7 +377,7 @@ public class DAOItemcard extends DAO {
     public ArrayList<Itemcard> listarItemcardPartialPayed(String tabId) throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();
         try {
-            String sql = "SELECT ItemcardPayed_id_fkey FROM Itemcardpayed_tabs WHERE table_id_fkey = '" + tabId + "' AND Itemcardpayed_tabs_active = true;";
+            String sql = "SELECT itemcard_payed_id_fkey FROM itemcard_payed_tabs WHERE table_id_fkey = '" + tabId + "' AND itemcard_payed_tabs_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<Integer> idItems = new ArrayList<Integer>();
@@ -410,7 +411,7 @@ public class DAOItemcard extends DAO {
 //Tabla ItemcardpayedND_tabs-----------------------------------------------------------------------      
     public void saveItemPayedNDTable(Itemcard ic, Table tab) throws Exception {
         try {
-            String sql = "INSERT INTO ItemcardpayedND_tabs( ItemcardpayedND_tabs_active,ItemcardPayedND_id_fkey, table_id_fkey) ";
+            String sql = "INSERT INTO itemcard_payed_nd_tabs( itemcard_payed_nd_tabs_active,itemcard_payed_nd_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES(" + true + ", " + ic.getId() + ", '" + tab.getId() + "');";
             sql += parcialA;
             System.out.println(sql);
@@ -428,7 +429,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemPayedNDTable(Itemcard ic, Table t) throws Exception {
         try {
-            String sql = "UPDATE ItemcardpayedND_tabs SET ItemcardpayedND_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND ItemcardPayedND_id_fkey = " + ic.getId() + " AND Itemcardpayed_tabs_active = true LIMIT 1;";
+            String sql = "UPDATE itemcard_payed_ND_tabs SET itemcard_payed_ND_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_payed_nd_id_fkey = " + ic.getId() + " AND itemcard_payed_nd_tabs_active = true LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -441,7 +442,7 @@ public class DAOItemcard extends DAO {
 
     public void downActiveItemPayedNDTableAll(Table t) throws Exception {
         try {
-            String sql = "UPDATE ItemcardpayedND_tabs SET ItemcardpayedND_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND ItemcardpayedND_tabs_active = true;";
+            String sql = "UPDATE itemcard_payed_nd_tabs SET itemcard_payed_nd_tabs_active = " + false + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_payed_nd_tabs_active = true;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -455,7 +456,7 @@ public class DAOItemcard extends DAO {
     public ArrayList<Itemcard> listarItemcardPartialPayedND(String tabId) throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();
         try {
-            String sql = "SELECT ItemcardPayedND_id_fkey FROM ItemcardpayedND_tabs WHERE table_id_fkey = '" + tabId + "';";
+            String sql = "SELECT itemcard_payed_nd_id_fkey FROM itemcard_payed_nd_tabs WHERE table_id_fkey = '" + tabId + "';";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<Integer> idItems = new ArrayList<Integer>();
@@ -484,7 +485,7 @@ public class DAOItemcard extends DAO {
 
     public Itemcard getItemById(int itemIMon) throws Exception {     
         try {
-            String sql = "SELECT * FROM Itemcards WHERE Itemcard_active = true AND Itemcard_id = '" + itemIMon + "';";
+            String sql = "SELECT * FROM itemcards WHERE itemcard_active = true AND itemcard_id = '" + itemIMon + "';";
             System.out.println(sql);
             consultarBase(sql);
             Itemcard ic = new Itemcard();

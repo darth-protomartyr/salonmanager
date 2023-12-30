@@ -7,8 +7,6 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -43,6 +41,7 @@ public class CrearCuenta extends FrameHalf {
     String nameImage = "";
     String pass1 = "";
     String pass2 = "";
+    String phone = "";
     File selectedFile = null;
 
     JLabel labelImage = new JLabel("Imagen: Ninguna");
@@ -50,16 +49,18 @@ public class CrearCuenta extends FrameHalf {
     JTextField fieldName = new JTextField();
     JTextField fieldLastName = new JTextField();
     JTextField fieldMail = new JTextField();
+    JTextField fieldPhone = new JTextField();
     JPasswordField fieldPass1 = new JPasswordField();
     JPasswordField fieldPass2 = new JPasswordField();
     JButton butCrearUser;
     JFrame frame = null;
+
     public CrearCuenta() throws Exception {
         frame = this;
         setTitle("Registrar");
         JPanel panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
-        
+
         JLabel labelTit = utiliGraf.labelTitleBacker1("Registrar");
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
@@ -71,29 +72,34 @@ public class CrearCuenta extends FrameHalf {
         panelPpal.add(panelA);
 
         JPanel panelData1 = utiliGraf.dataPanelBacker("Nombre:", 16);
-        panelData1.setBounds(20, 20, 375, 50);
+        panelData1.setBounds(20, 30, 375, 50);
         panelData1.add(fieldName);
         panelA.add(panelData1);
 
         JPanel panelData2 = utiliGraf.dataPanelBacker("Apellido:", 16);
-        panelData2.setBounds(20, 100, 375, 50);
+        panelData2.setBounds(20, 90, 375, 50);
         panelData2.add(fieldLastName);
         panelA.add(panelData2);
 
         JPanel panelData3 = utiliGraf.dataPanelBacker("Mail:", 16);
-        panelData3.setBounds(20, 180, 375, 50);
+        panelData3.setBounds(20, 150, 375, 50);
         panelData3.add(fieldMail);
         panelA.add(panelData3);
 
-        JPanel panelData4 = utiliGraf.dataPanelBacker("Password:", 16);
-        panelData4.setBounds(20, 260, 375, 50);
-        panelData4.add(fieldPass1);
+        JPanel panelData4 = utiliGraf.dataPanelBacker("Teléfono:", 16);
+        panelData4.setBounds(20, 210, 375, 50);
+        panelData4.add(fieldPhone);
         panelA.add(panelData4);
 
-        JPanel panelData5 = utiliGraf.dataPanelBacker("Password Confirmar:", 16);
-        panelData5.setBounds(20, 340, 375, 50);
-        panelData5.add(fieldPass2);
+        JPanel panelData5 = utiliGraf.dataPanelBacker("Password:", 16);
+        panelData5.setBounds(20, 270, 375, 50);
+        panelData5.add(fieldPass1);
         panelA.add(panelData5);
+
+        JPanel panelData6 = utiliGraf.dataPanelBacker("Password Confirmar:", 16);
+        panelData6.setBounds(20, 330, 375, 50);
+        panelData6.add(fieldPass2);
+        panelA.add(panelData6);
 
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluLg);
@@ -145,6 +151,7 @@ public class CrearCuenta extends FrameHalf {
         lastName = fieldLastName.getText();
         mail = fieldMail.getText();
         boolean validMail = utili.isValidEmail(mail);
+        phone = fieldPhone.getText();
         pass1 = fieldPass1.getText();
         pass2 = fieldPass2.getText();
         boolean error = false;
@@ -165,6 +172,25 @@ public class CrearCuenta extends FrameHalf {
             utiliMsg.errorMail();
             fieldMail.setText("");
             error = true;
+        }
+
+        if (phone.length() > 30 || phone.length() < 5) {
+            utiliMsg.errorPhoneNumber();
+            fieldPhone.setText("");
+            error = true;
+        } else {
+            boolean charBool = false;
+            for (char c : phone.toCharArray()) {
+                if (!(Character.isDigit(c) || c == ' ' || c == '+' || c == '-')) {
+                    charBool = true;
+                }
+            }
+            
+            if (charBool) {
+                utiliMsg.errorPhoneNumber();
+                fieldPhone.setText("");
+                error = true;
+            }
         }
 
         if (pass1.length() < 8 || pass1.length() > 30) {
@@ -192,7 +218,8 @@ public class CrearCuenta extends FrameHalf {
         }
 
         if (error == false) {
-            User user = new User(name, lastName, mail, routeImage, nameImage, pass1);
+            User user = new User(name, lastName, mail, routeImage, nameImage, phone, pass1);
+            utiliMsg.cargaUsuario();
             daoU.saveTablaUsers(user);
             resetRegister();
             dispose();
@@ -202,7 +229,6 @@ public class CrearCuenta extends FrameHalf {
     private void butSelImageActionPerformed() {
         JFileChooser fileChooser = new JFileChooser();
         int resultado = fileChooser.showOpenDialog(null);
-
         if (resultado == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
             nameImage = selectedFile.getName();
@@ -210,8 +236,6 @@ public class CrearCuenta extends FrameHalf {
             labelImage.setText("Imagen: " + nameImage);
         }
     }
-    
-    
 
     //Resets
     private void resetRegister() {

@@ -20,8 +20,6 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
 public class PanelMonitorBarr extends JPanel {
-
-    DAOUser daoU = new DAOUser();
     
     Graphics initCircle;
     Graphics cookCircle;
@@ -56,16 +54,12 @@ public class PanelMonitorBarr extends JPanel {
     User user = null;
 
     
-//    public PanelMonitorBarr(ItemMonitor itemM, int i) throws Exception {
     public PanelMonitorBarr(Salon sal, ItemMonitor itemM, int i) throws Exception {
         salon = sal;
-
         user = salon.getUser();
         ItemMonitor im = itemM;
         
-        user = itemM.getTableIMon().getWaiter();
-        
-        
+//        user = itemM.getTableIMon().getWaiter();        
 
         if (im.getPosIMon().equals("barra")) {
             type = 2;

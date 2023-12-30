@@ -26,18 +26,21 @@ public class Manager extends FrameFullManager {
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
-    User userIn = null;
+    User user = null;
+    String pass;
     Workshift actualShift = null;
     
     public Manager (User userIn, String passIn) throws Exception {
         sm.addFrame(this);
-        sm.setUserIn(userIn);
-        sm.setPassIn(passIn);
+//        sm.setUserIn(userIn);
+//        sm.setPassIn(passIn);
+        user = userIn;
+        pass = passIn;
         setTitle("Salón Manager");
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
         
-        JMenuBar menuBar = utiliGraf.navegador(userIn, sm.getPassIn(), this);
+        JMenuBar menuBar = utiliGraf.navegador(userIn, passIn, this);
         setJMenuBar(menuBar);
 
         JPanel panelUser = new JPanel();
@@ -103,5 +106,21 @@ public class Manager extends FrameFullManager {
     
     public Workshift getActualWorkShift() {
         return actualShift;
+    }
+    
+    public User getUser() {
+        return user;
+    }
+    
+    public void setUser(User userAux) {
+        this.user = userAux;
+    }
+    
+    public String getPass() {
+        return pass;
+    }
+    
+    public void setPass(String passAux) {
+        this.pass = passAux;
     }
 }

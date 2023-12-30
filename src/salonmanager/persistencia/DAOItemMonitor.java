@@ -15,7 +15,7 @@ public class DAOItemMonitor extends DAO {
         int indiLenght = im.getIndications().length();
         if (indiLenght < 450) {
             try {
-                sql = "INSERT INTO item_monits(itemMonit_id, itemMonit_table_id, itemMonit_item_id, itemMonit_tipe, itemMonit_init_bool, itemMonit_init_date, itemMonit_cook_bool, itemMonit_cook_date, itemMonit_ready_bool, itemMonit_ready_date, itemMonit_otw_bool, itemMonit_otw_date, itemMonit_open, itemMonit_active, itemMonit_indications) "
+                sql = "INSERT INTO item_monits(item_monit_id, item_monit_table_id, item_monit_item_id, item_monit_tipe, item_monit_init_bool, item_monit_init_date, item_monit_cook_bool, item_monit_cook_date, item_monit_ready_bool, item_monit_ready_date, item_monit_otw_bool, item_monit_otw_date, item_monit_open, item_monit_active, item_monit_indications) "
                         + "VALUES( '" + im.getIdIMon() + "', '" + im.getTableIMon().getId() + "', " + im.getItemIMon().getId() + ", '" + im.getPosIMon() + "', " + im.isInitIMon() + ", '" + im.getDateInitIMon() + "', " + im.isCookIMon() + ", " + im.getDateCookIMon() + ", " + im.isReadyIMon() + ", " + im.getDateReadyIMon() + ", " + im.isOtwIMon() + ", " + im.getDateOtwIMon() + ", " + im.isOpenItemMonitor() + ", " + im.isActiveItemMonitor() + ", '" + im.getIndications() + "');";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
@@ -35,7 +35,7 @@ public class DAOItemMonitor extends DAO {
 
     public void downOpenImon(ItemMonitor im) throws Exception {
         try {
-            String sql = "UPDATE item_monits SET itemMonit_open = " + false + " WHERE itemMonit_id = '" + im.getIdIMon() + "';";
+            String sql = "UPDATE item_monits SET item_monit_open = " + false + " WHERE item_monit_id = '" + im.getIdIMon() + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -48,7 +48,7 @@ public class DAOItemMonitor extends DAO {
 
     public ArrayList<ItemMonitor> getItemsMonitorOpen() throws Exception {
         try {
-            String sql = "SELECT * FROM item_monits WHERE ItemMonit_open = true AND ItemMonit_active = true;";
+            String sql = "SELECT * FROM item_monits WHERE item_monit_open = true AND item_monit_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<ItemMonitor> aims = new ArrayList<ItemMonitor>();
@@ -83,7 +83,7 @@ public class DAOItemMonitor extends DAO {
 
     public ItemMonitor getItemsMonitorById(String imId) throws Exception {
         try {
-            String sql = "SELECT * FROM item_monits WHERE ItemMonit_id = " + imId + " AND ItemMonit_active = true;";
+            String sql = "SELECT * FROM item_monits WHERE item_monit_id = " + imId + " AND item_monit_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             ItemMonitor im = new ItemMonitor();

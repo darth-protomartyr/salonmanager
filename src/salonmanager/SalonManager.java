@@ -40,18 +40,18 @@ public class SalonManager {
         }
     }
 
-    public User getUserIn() {
-        return userIn;
-    }
+//    public User getUserIn() {
+//        return userIn;
+//    }
 
     public void setUserIn(User userIn) {
         this.userIn = userIn;
     }
-
-    public String getPassIn() {
-        return passIn;
-    }
-
+//
+//    public String getPassIn() {
+//        return passIn;
+//    }
+//
     public void setPassIn(String passIn) {
         this.passIn = passIn;
     }
