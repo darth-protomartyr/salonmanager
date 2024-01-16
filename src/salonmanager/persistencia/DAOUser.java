@@ -15,7 +15,35 @@ public class DAOUser extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
 
-    public void saveTablaUsers(User user) throws Exception {
+    public void saveUser(User user) throws Exception {
+        try {
+            String name = user.getName();
+            String apellido = user.getLastName();
+            String mail = user.getMail();
+            String id = user.getId();
+            String rol = user.getRol();
+            String routeImage = user.getRouteImage();
+            String nameImage = user.getNameImage();
+            String pass = user.getPassword();
+            String phone = user.getPhone();
+            boolean activeUser = user.isActiveUser();
+
+            String sql1 = "INSERT INTO users(user_id, user_name, user_last_name, user_mail, user_role, user_image_route, user_image_name, user_password, user_phone, user_active)"
+                    + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', " + activeUser + ");";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    public void saveUserExpress(User user) throws Exception {
         try {
             String name = user.getName();
             String apellido = user.getLastName();
@@ -151,8 +179,8 @@ public class DAOUser extends DAO {
         desconectarBase();
     }
 
-    public ArrayList<User> listWaiter() throws Exception {
-        String sql = "SELECT * FROM users WHERE user_role = 'MOZO' AND user_active = true;";
+    public ArrayList<User> listUserByRol(String rol) throws Exception {
+        String sql = "SELECT * FROM users WHERE user_role = '"+ rol +"' AND user_active = true;";
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
@@ -203,7 +231,7 @@ public class DAOUser extends DAO {
             waiterId = resultado.getString(1);
         }
 
-        ArrayList<User> waiters = listWaiter();
+        ArrayList<User> waiters = listUserByRol("MOZO");
         for (int i = 0; i < waiters.size(); i++) {
             if (waiters.get(i).getId().equals(waiterId)) {
                 waiter = waiters.get(i);
@@ -243,6 +271,32 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public User getUserById(String deliId) throws Exception {
+        try {
+            String sql = "SELECT * FROM users WHERE user_id = '" + deliId + "' AND user_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            User user = new User();
+            while (resultado.next()) {
+                user.setId(resultado.getString(1));
+                user.setName(resultado.getString(2));
+                user.setLastName(resultado.getString(3));
+                user.setMail(resultado.getString(4));
+                user.setRol(resultado.getString(5));
+                user.setRouteImage(resultado.getString(6));
+                user.setNameImage(resultado.getString(7));
+                user.setPassword(resultado.getString(8));
+                user.setPhone(resultado.getString(9));
+                user.setActiveUser(resultado.getBoolean(10));
+            }
+            return user;
+        } catch (Exception e) {
+            throw e;
         } finally {
             desconectarBase();
         }

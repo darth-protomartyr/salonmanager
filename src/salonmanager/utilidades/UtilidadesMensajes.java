@@ -18,7 +18,12 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorCantCharName() {
-        CustomDialog cm = new CustomDialog("Error: El número de caracteres del nombre no debe superar los 30 ni ser menor a 2.", 2);
+        CustomDialog cm = new CustomDialog("Error: El número de caracteres del nombre no debe superar los.", 2);
+        cm.setVisible(true);
+    }
+    
+    public void errorCantCharNameUser() {
+        CustomDialog cm = new CustomDialog("Error: El número de caracteres no debe superar los 30.", 2);
         cm.setVisible(true);
     }
 
@@ -28,12 +33,17 @@ public class UtilidadesMensajes extends JFrame {
     }
     
     public void errorNameRepeat() {
-        CustomDialog cm = new CustomDialog("Error: El mail ya se encuentra ingresado en nuestra base de datos.", 2);
+        CustomDialog cm = new CustomDialog("Error: El nombre ya se encuentra ingresado en nuestra base de datos.", 2);
+        cm.setVisible(true);
+    }
+    
+    public void errorPhoneRepeat() {
+        CustomDialog cm = new CustomDialog("Error: El teléfono ya se encuentra ingresado en nuestra base de datos.", 2);
         cm.setVisible(true);
     }
 
     public void errorMailRepeat() {
-        CustomDialog cm = new CustomDialog("Error: el mail ya se encuentra ingresado en nuestra base de datos.", 2);
+        CustomDialog cm = new CustomDialog("Error: El mail ya se encuentra ingresado en nuestra base de datos.", 2);
         cm.setVisible(true);
     }
 
@@ -68,7 +78,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorCantCharDescription() {
-        CustomDialog cm = new CustomDialog("Error: el número de caracteres de la descripción no debe superar los 149.", 2);
+        CustomDialog cm = new CustomDialog("Error: el número de caracteres el límite establecido en uno de los campos.", 2);
         cm.setVisible(true);
     }
 
@@ -343,5 +353,26 @@ public class UtilidadesMensajes extends JFrame {
     public void cargaUsuario() {
         CustomDialog cm = new CustomDialog("El usuario fue ingresado. El Administrador le asignara un rol a la brevedad.", 1);
         cm.setVisible(true);
+    }
+
+
+    public void errorDeliveryNull() {
+        CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un usuario Delivery para realizar el envío.", 2);
+        cm.setVisible(true); 
+    }
+    
+    public void errorConsumerNull() {
+        CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un cliente para realizar el envío.", 2);
+        cm.setVisible(true); 
+    }
+
+    public void errorEmptyFields() {
+        CustomDialog cm = new CustomDialog("Error: Todos los campos deben ser completados.", 2);
+        cm.setVisible(true); 
+    }
+
+    public void errorNullDeli() {
+        CustomDialog cm = new CustomDialog("Error: Aún no hay se han asignado datos al envío.", 2);
+        cm.setVisible(true); 
     }
 }

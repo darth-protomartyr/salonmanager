@@ -15,6 +15,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
+import salonmanager.entidades.DeliveryConsumer;
 import salonmanager.entidades.Itemcard;
 import salonmanager.entidades.Table;
 
@@ -240,11 +241,12 @@ public class Utilidades {
         return modeloCombo;
     }
 
-    public ComboBoxModel userComboModelReturn(ArrayList<User> users) {
+    public ComboBoxModel userComboModelReturnWNull(ArrayList<User> users) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (User user : users) {
             modeloCombo.addElement(user.getName() + " " + user.getLastName());
         }
+        modeloCombo.addElement("");
         return modeloCombo;
     }
 
@@ -253,6 +255,15 @@ public class Utilidades {
         for (Table tab : tabs) {
             modeloCombo.addElement(tab.getId());
         }
+        return modeloCombo;
+    }
+
+    public ComboBoxModel consumerComboModelReturnWNull(ArrayList<String> cmrs) {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (String cmr : cmrs) {
+            modeloCombo.addElement(cmr);
+        }
+        modeloCombo.addElement("");
         return modeloCombo;
     }
 
@@ -275,11 +286,11 @@ public class Utilidades {
         return caption;
     }
 
-    public boolean ItemcardRepeat(String ic, ArrayList<Itemcard> items, Itemcard Itemcard) {
+    public boolean itemcardRepeat(String ic, ArrayList<Itemcard> items) {
         boolean bool = false;
         ic = stringPlain(ic);
         for (Itemcard i : items) {
-            if (Itemcard == null) {
+            if (i == null) {
                 if (ic.equals(stringPlain(i.getName()))) {
                     bool = true;
                 }
@@ -287,6 +298,23 @@ public class Utilidades {
         }
         return bool;
     }
+    
+    public boolean stringRepeat(String phone, ArrayList<String> phones) {
+        boolean bool = false;
+        phone = stringPlain(phone);
+        for ( String ph: phones) {
+            if (!phone.equals("")) {
+                if (ph.equals(phone)) {
+                    bool = true;
+                }
+            }
+        }
+        return bool;
+    }
+    
+    
+    
+    
 
     ListModel itemsListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
@@ -451,28 +479,31 @@ public class Utilidades {
         int counter = 0;
         int counterEmpty = 0;
 
-        for (int i = 0; i < st.length(); i++) {
-            String letra = st.substring(i, i + 1);
-            if (letra.equals(" ")) {
-                counterEmpty = i;
-            }
-
-            if (counter >= limit && counter <= limit + 10) {
+        if (st.length() > limit) {
+            for (int i = 0; i < st.length(); i++) {
+                String letra = st.substring(i, i + 1);
                 if (letra.equals(" ")) {
-                    letra = letra.replace(letra, jump);
+                    counterEmpty = i;
+                }
+
+                if (counter >= limit && counter <= limit + 10) {
+                    if (letra.equals(" ")) {
+                        letra = letra.replace(letra, jump);
+                        counter = 0;
+                    }
+                }
+
+                if (counter >= limit + 10) {
+                    String trash = stFrd.substring(counterEmpty, stFrd.length());
+                    letra = letra.replace(trash, jump);
                     counter = 0;
                 }
+                stFrd = stFrd + letra;
+                counter++;
             }
-
-            if (counter >= limit + 10) {
-                String trash = stFrd.substring(counterEmpty, stFrd.length());
-                letra = letra.replace(trash, jump);
-                counter = 0;
-            }
-            stFrd = stFrd + letra;
-            counter++;
+        } else {
+            stFrd = st;
         }
-
         stFrd = "<html>" + stFrd + "</html>";
         return stFrd;
     }
@@ -490,24 +521,23 @@ public class Utilidades {
             st += listarItemsQuant(listOr);
         }
 
-        st += "<br>LISTA DE ITEMS OBSEQUIADOS";        
+        st += "<br>LISTA DE ITEMS OBSEQUIADOS";
         if (ta.getGifts().size() > 0) {
             st += listarItemsQuant(ta.getGifts());
-        }  else {
+        } else {
             st += "<br>No se registraron items obsequiados.<br>";
         }
 
         if (ta.getComments().equals("")) {
             st += "<br>COMENTARIOS:<br>" + "No se registraron.";
         } else {
-            st += "<br>COMENTARIOS:" + stringMsgFrd(ta.getComments(),30,1);
+            st += "<br>COMENTARIOS:" + stringMsgFrd(ta.getComments(), 30, 1);
         }
-        
+
         st = "<html>" + st + "</html>";
         return st;
     }
-    
-    
+
     public String listarItemsQuant(ArrayList<Itemcard> ali) {
         String st = "<br>";
         int counter = 0;
@@ -516,19 +546,19 @@ public class Utilidades {
         for (Itemcard ic : ali) {
             iSt.add(ic.getName());
         }
- 
+
         iSt.sort((s1, s2) -> s1.compareTo(s2));
-        
+
         HashSet<String> itemsSt = new HashSet<String>(iSt);
-        
+
         iSt = new ArrayList<String>(itemsSt);
         ArrayList<Integer> cant = new ArrayList<Integer>();
 
         counter = 0;
-        for (String icSt : iSt) {            
+        for (String icSt : iSt) {
             for (int i = 0; i < ali.size(); i++) {
                 if (icSt.equals(ali.get(i).getName())) {
-                    counter ++;
+                    counter++;
                 }
             }
             cant.add(counter);
@@ -536,7 +566,7 @@ public class Utilidades {
         }
 
         for (int i = 0; i < itemsSt.size(); i++) {
-            st+= iSt.get(i) + " - cant: " + cant.get(i) + "<br>";
+            st += iSt.get(i) + " - cant: " + cant.get(i) + "<br>";
         }
         return st;
     }

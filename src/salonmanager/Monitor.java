@@ -128,7 +128,7 @@ public class Monitor extends FrameHalf {
         JPanel panelIn = new JPanel();
         panelIn.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelIn.setBackground(narUlg);
-        panelIn.setBounds(0, altoUnit * 15, anchoFrameHalf, altoUnit * 75);
+        panelIn.setBounds(0, altoUnit * 15, anchoFrameHalf, alturaFrame - altoUnit * 10);
         panelPpal.add(panelIn);
 
         panelHeader = panelHeaderBacker();
@@ -146,7 +146,6 @@ public class Monitor extends FrameHalf {
 
         JScrollPane scrPaneBarr = new JScrollPane(panelIMon);
         scrPaneBarr.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
         scrPaneBarr.setPreferredSize(new Dimension(620, altoUnit * 67));
         panelIn.add(scrPaneBarr);
 

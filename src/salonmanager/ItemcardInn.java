@@ -23,7 +23,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class ItemcardIngreso extends FrameHalf {
+public class ItemcardInn extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
@@ -55,11 +55,11 @@ public class ItemcardIngreso extends FrameHalf {
     JTextField fieldPrice = new JTextField();
     JTextField fieldStock = new JTextField();
     JCheckBox checkTip = new JCheckBox("");
-    JButton butCrearItem = null;
+    JButton butCreateItem = null;
 
-    public ItemcardIngreso() throws Exception {
+    public ItemcardInn() throws Exception {
         sm.addFrame(this);        
-        setTitle("Ingreso Item de Card");
+        setTitle("Ingreso Item de Carta");
         itemsCardDB = daoIC.listarItemsCard();
         PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
         add(panelPpal);
@@ -71,18 +71,18 @@ public class ItemcardIngreso extends FrameHalf {
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, captionsDB, null);
         panelPpal.add(panelForm);
 
-        butCrearItem = utiliGraf.button1("Crear Item", 206, 600, 270);
-        butCrearItem.addActionListener(new ActionListener() {
+        butCreateItem = utiliGraf.button1("Crear Item", 206, 600, 270);
+        butCreateItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    butCrearItemActionPerformed();
+                    butCreateItemActionPerformed();
                 } catch (Exception ex) {
-                    Logger.getLogger(ItemcardIngreso.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelPpal.add(butCrearItem);
+        panelPpal.add(butCreateItem);
 
         JButton butSalir = utiliGraf.buttonSalir(anchoFrameHalf);
         butSalir.addActionListener(new ActionListener() {
@@ -94,7 +94,7 @@ public class ItemcardIngreso extends FrameHalf {
         panelPpal.add(butSalir);
     }
 
-    private void butCrearItemActionPerformed() throws Exception {
+    private void butCreateItemActionPerformed() throws Exception {
         boolean error = false;
         name = fieldName.getText();
         caption = utili.selectorCaption(comboCaption.getSelectedIndex());
@@ -105,7 +105,7 @@ public class ItemcardIngreso extends FrameHalf {
             utiliMsg.errorCantCharName();
         }
 
-        if (utili.ItemcardRepeat(name, itemsCardDB, null)) {
+        if (utili.itemcardRepeat(name, itemsCardDB)) {
             error = true;
             utiliMsg.errorNameRepeat();
         }
@@ -163,7 +163,7 @@ public class ItemcardIngreso extends FrameHalf {
             error = true;
             resetItemcard();
         } catch (Exception ex) {
-            Logger.getLogger(ItemcardIngreso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (cost > price) {

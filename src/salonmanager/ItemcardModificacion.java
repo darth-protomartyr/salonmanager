@@ -81,7 +81,7 @@ public class ItemcardModificacion extends FrameHalf {
                 try {
                     butModificarItemActionPerformed();
                 } catch (Exception ex) {
-                    Logger.getLogger(ItemcardIngreso.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -108,7 +108,7 @@ public class ItemcardModificacion extends FrameHalf {
             utiliMsg.errorCantCharName();
         }
 
-        if (utili.ItemcardRepeat(name, itemsCardDB, null)) {
+        if (utili.itemcardRepeat(name, itemsCardDB)) {
             error = true;
             utiliMsg.errorNameRepeat();
         }
@@ -166,7 +166,7 @@ public class ItemcardModificacion extends FrameHalf {
             error = true;
             resetItemcard();
         } catch (Exception ex) {
-            Logger.getLogger(ItemcardIngreso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (cost > price) {

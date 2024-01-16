@@ -184,11 +184,7 @@ public class MoneyType extends FrameWindow {
                 if (e.getKeyChar() == '-') {
                     e.consume();
                 }
-     
-
             }
-
-
             
             @Override
             public void keyPressed(KeyEvent e) {

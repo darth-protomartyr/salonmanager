@@ -60,13 +60,15 @@ public class Ingresar extends FrameWindow {
         panelLabel.add(labelIngreso);
 
         JPanel panelData1 = utiliGraf.dataPanelBacker("Mail:", 16);
-        panelData1.setBounds(12, 70, 360, 40);
+        panelData1.setBounds(anchoUnit * 3, altoUnit *10, anchoUnit * 23, altoUnit *7);
+        fieldMail.setBounds(anchoUnit * 7, altoUnit *1, anchoUnit * 15, altoUnit *5);
         panelData1.add(fieldMail);
         fieldMail.setText("gon@gmail.com");
         panelPpal.add(panelData1);
 
-        JPanel panelData2 = utiliGraf.dataPanelBacker("Password:", 16);
-        panelData2.setBounds(12, 140, 360, 40);
+        JPanel panelData2 = utiliGraf.dataPanelBacker("Clave:", 16);
+        panelData2.setBounds(anchoUnit * 3, altoUnit *20, anchoUnit * 23, altoUnit *7);
+        fieldPass.setBounds(anchoUnit * 7, altoUnit *1, anchoUnit * 15, altoUnit *5);
         panelData2.add(fieldPass);
         fieldPass.setText("27949874");
         panelPpal.add(panelData2);

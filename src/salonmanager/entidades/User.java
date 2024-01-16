@@ -1,9 +1,7 @@
 package salonmanager.entidades;
-
 import salonmanager.utilidades.Utilidades;
 
 public class User {
-
     Utilidades utili = new Utilidades();
     String id;
     String name;
@@ -43,6 +41,16 @@ public class User {
         this.password = password;
         this.phone = phone;
         this.activeUser = activeUser;
+    }
+
+    public User(String name, String lastName, String phone, String mail, String rol) {
+        this.id = utili.idRandom();
+        this.name = name;
+        this.lastName = lastName;
+        this.mail = mail;
+        this.phone = phone;
+        this.rol = rol;
+        this.activeUser = true;
     }
 
 //    public User(String id, String name, String lastName, String mail, String phone, boolean activeUser) {

@@ -60,7 +60,7 @@ public class WaiterSelector extends FrameWindow {
 
         PanelPpal panelPpal = new PanelPpal(390, 300);
         add(panelPpal);
-        waiters = daoU.listWaiter();
+        waiters = daoU.listUserByRol("MOZO");
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
@@ -75,8 +75,9 @@ public class WaiterSelector extends FrameWindow {
             labelTit.setText("Modifique el mozo");
         }
 
-        comboWaiters.setModel(utili.userComboModelReturn(waiters));
+        comboWaiters.setModel(utili.userComboModelReturnWNull(waiters));
         comboWaiters.setBounds(90, 80, 200, 40);
+        comboWaiters.setSelectedIndex(waiters.size());
         DefaultListCellRenderer renderer = new DefaultListCellRenderer();
         renderer.setFont(new Font("Arial", Font.PLAIN, 50));
         comboWaiters.setRenderer(renderer);
@@ -111,8 +112,10 @@ public class WaiterSelector extends FrameWindow {
     public void getWaiter() {
         User waiter = new User();
         String selection = (String) comboWaiters.getSelectedItem();
-        waiter = utili.userSelReturn(selection, waiters);
-        salon.waiterBacker(waiter);
-        dispose();
+        if(!selection.equals("")) {
+            waiter = utili.userSelReturn(selection, waiters);
+            salon.waiterBacker(waiter);
+            dispose();
+        }
     }
 }

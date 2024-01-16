@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import salonmanager.entidades.FrameHalf;
 import salonmanager.entidades.PanelPpal;
 
-public class CrearCuenta extends FrameHalf {
+public class CreateAccount extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -52,10 +52,10 @@ public class CrearCuenta extends FrameHalf {
     JTextField fieldPhone = new JTextField();
     JPasswordField fieldPass1 = new JPasswordField();
     JPasswordField fieldPass2 = new JPasswordField();
-    JButton butCrearUser;
+    JButton butCreateUser;
     JFrame frame = null;
 
-    public CrearCuenta() throws Exception {
+    public CreateAccount() throws Exception {
         frame = this;
         setTitle("Registrar");
         JPanel panelPpal = new PanelPpal(anchoFrame, alturaFrame);
@@ -72,32 +72,38 @@ public class CrearCuenta extends FrameHalf {
         panelPpal.add(panelA);
 
         JPanel panelData1 = utiliGraf.dataPanelBacker("Nombre:", 16);
-        panelData1.setBounds(20, 30, 375, 50);
+        panelData1.setBounds(anchoUnit * 1, altoUnit * 3, anchoUnit * 30, altoUnit * 7);
+        fieldName.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
         panelData1.add(fieldName);
         panelA.add(panelData1);
 
         JPanel panelData2 = utiliGraf.dataPanelBacker("Apellido:", 16);
-        panelData2.setBounds(20, 90, 375, 50);
+        panelData2.setBounds(anchoUnit * 1, altoUnit * 12, anchoUnit * 30, altoUnit * 7);
+        fieldLastName.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
         panelData2.add(fieldLastName);
         panelA.add(panelData2);
 
         JPanel panelData3 = utiliGraf.dataPanelBacker("Mail:", 16);
-        panelData3.setBounds(20, 150, 375, 50);
+        panelData3.setBounds(anchoUnit * 1, altoUnit * 21, anchoUnit * 30, altoUnit * 7);
+        fieldMail.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
         panelData3.add(fieldMail);
         panelA.add(panelData3);
 
         JPanel panelData4 = utiliGraf.dataPanelBacker("Teléfono:", 16);
-        panelData4.setBounds(20, 210, 375, 50);
+        panelData4.setBounds(anchoUnit * 1, altoUnit * 30, anchoUnit * 30, altoUnit * 7);
+        fieldPhone.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
         panelData4.add(fieldPhone);
         panelA.add(panelData4);
 
-        JPanel panelData5 = utiliGraf.dataPanelBacker("Password:", 16);
-        panelData5.setBounds(20, 270, 375, 50);
+        JPanel panelData5 = utiliGraf.dataPanelBacker("Clave:", 16);
+        panelData5.setBounds(anchoUnit * 1, altoUnit * 39, anchoUnit * 30, altoUnit * 7);
+        fieldPass1.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
         panelData5.add(fieldPass1);
         panelA.add(panelData5);
 
-        JPanel panelData6 = utiliGraf.dataPanelBacker("Password Confirmar:", 16);
-        panelData6.setBounds(20, 330, 375, 50);
+        JPanel panelData6 = utiliGraf.dataPanelBacker("Confirmar Clave:", 16);
+        panelData6.setBounds(anchoUnit * 1, altoUnit * 48, anchoUnit * 30, altoUnit * 7);
+        fieldPass2.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
         panelData6.add(fieldPass2);
         panelA.add(panelData6);
 
@@ -122,18 +128,18 @@ public class CrearCuenta extends FrameHalf {
         labelImage.setBounds(20, 430, 60, 30);
         panelLabelImage.add(labelImage);
 
-        butCrearUser = utiliGraf.button1("Crear Usuario", 206, 580, 270);
-        butCrearUser.addActionListener(new ActionListener() {
+        butCreateUser = utiliGraf.button1("Crear Usuario", 206, 580, 270);
+        butCreateUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    butCrearUserActionPerformed();
+                    butCreateUserActionPerformed();
                 } catch (Exception ex) {
-                    Logger.getLogger(CrearCuenta.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CreateAccount.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelPpal.add(butCrearUser);
+        panelPpal.add(butCreateUser);
 
         JButton butSalir = utiliGraf.buttonSalir(anchoFrame);
         butSalir.addActionListener(new ActionListener() {
@@ -146,7 +152,7 @@ public class CrearCuenta extends FrameHalf {
     }
 
 //Buttons
-    public void butCrearUserActionPerformed() throws Exception {
+    public void butCreateUserActionPerformed() throws Exception {
         name = fieldName.getText();
         lastName = fieldLastName.getText();
         mail = fieldMail.getText();
@@ -220,7 +226,7 @@ public class CrearCuenta extends FrameHalf {
         if (error == false) {
             User user = new User(name, lastName, mail, routeImage, nameImage, phone, pass1);
             utiliMsg.cargaUsuario();
-            daoU.saveTablaUsers(user);
+            daoU.saveUser(user);
             resetRegister();
             dispose();
         }

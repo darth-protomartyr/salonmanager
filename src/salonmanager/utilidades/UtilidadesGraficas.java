@@ -3,7 +3,10 @@ package salonmanager.utilidades;
 import java.awt.BorderLayout;
 import salonmanager.entidades.User;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +34,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import salonmanager.ItemcardIngreso;
+import salonmanager.ItemcardInn;
 import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
 import salonmanager.Manager;
@@ -52,6 +55,13 @@ public class UtilidadesGraficas extends JFrame {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
+    
+    Toolkit pantalla = Toolkit.getDefaultToolkit();
+    Dimension tamanioPantalla = pantalla.getScreenSize();
+    int anchoFrame = tamanioPantalla.width;
+    int alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
+    int anchoUnit = anchoFrame / 100;
+    int altoUnit = alturaFrame / 100;
 
     public JMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
@@ -120,7 +130,7 @@ public class UtilidadesGraficas extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
-                        new ItemcardIngreso();
+                        new ItemcardInn();
                     } else {
                         sm.salir();
                     }
@@ -186,16 +196,17 @@ public class UtilidadesGraficas extends JFrame {
     }
 
     public JPanel dataPanelBacker(String labelData, int font) {
-        javax.swing.border.Border bordeInterior = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+        javax.swing.border.Border bordeInterior = BorderFactory.createEmptyBorder(altoUnit, anchoUnit, altoUnit, anchoUnit);
         JPanel panelData = new JPanel();
-        panelData.setLayout(new BoxLayout(panelData, BoxLayout.X_AXIS));
+        panelData.setLayout(null);
         panelData.setBackground(bluLg);
         panelData.setBorder(bordeInterior);
         JLabel nameData = new JLabel(labelData);
+        nameData.setBounds(anchoUnit * 1, altoUnit * 1,anchoUnit * 20, altoUnit * 5 );
         Font fuente = new Font("Arial", Font.BOLD, font);
         nameData.setFont(fuente);
         panelData.add(nameData);
-        panelData.add(Box.createHorizontalStrut(40)); // Espacio 
+//        panelData.add(Box.createHorizontalStrut(40));  
         return panelData;
     }
 
@@ -308,7 +319,9 @@ public class UtilidadesGraficas extends JFrame {
         bot.setFont(font); // Establecer la fuente en el botón
         bot.setText(text);
         bot.setBorder(new EmptyBorder(10, 10, 10, 10));
-        bot.setBounds(mWidth, mHeight, width, 40);
+//        bot.setBounds(mWidth, mHeight, width, 40);
+        bot.setBounds(mWidth, mHeight, width, altoUnit * 7);
+
         return bot;
     }
 
@@ -319,7 +332,7 @@ public class UtilidadesGraficas extends JFrame {
         bot.setFont(font); // Establecer la fuente en el botón
         bot.setText(text);
         bot.setBorder(new EmptyBorder(8, 8, 8, 8));
-        bot.setBounds(mWidth, mHeight, width, 30);
+        bot.setBounds(mWidth, mHeight, width, altoUnit * 4);
         return bot;
     }
 
@@ -330,7 +343,7 @@ public class UtilidadesGraficas extends JFrame {
         bot.setFont(font); // Establecer la fuente en el botón
         bot.setText(text);
         bot.setBorder(new EmptyBorder(5, 5, 5, 5));
-        bot.setBounds(mWidth, mHeight, width, 25);
+        bot.setBounds(mWidth, mHeight, width, altoUnit * 3);
         return bot;
     }
 
@@ -455,48 +468,55 @@ public class UtilidadesGraficas extends JFrame {
     public JPanel panelItemcardForm(JTextField fieldName, JComboBox comboCaption, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> captionsDB, Itemcard item) {
         JPanel panelA = new JPanel();
         panelA.setLayout(null);
-        panelA.setBounds(135, 50, 416, 545);
+        panelA.setBounds(anchoUnit * 5, altoUnit * 12, anchoUnit * 40, altoUnit * 73);
         panelA.setBackground(viol);
 
-        JPanel panelData1 = dataPanelBacker("Name", 14);
-        panelData1.setBounds(20, 20, 375, 50);
+        JPanel panelData1 = dataPanelBacker("Nombre:", 14);
+        panelData1.setBounds(anchoUnit * 5, altoUnit * 5, anchoUnit * 30, altoUnit * 7);
+        fieldName.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
         panelData1.add(fieldName);
         panelA.add(panelData1);
 
-        JPanel panelData2 = dataPanelBacker("Rubro", 14);
-        panelData2.setBounds(20, 90, 375, 50);
+        JPanel panelData2 = dataPanelBacker("Rubro:", 14);
+        panelData2.setBounds(anchoUnit * 5, altoUnit * 15, anchoUnit * 30, altoUnit * 7);
         comboCaption.setModel(utili.captionComboModelReturn(captionsDB));
+        comboCaption.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
         panelData2.add(comboCaption);
         panelData2.add(Box.createHorizontalStrut(30));
         panelA.add(panelData2);
 
-        JPanel panelData3 = dataPanelBacker("Descripción", 14);
-        panelData3.setBounds(20, 160, 375, 100);
+        JPanel panelData3 = dataPanelBacker("Descripción:", 14);
+        panelData3.setBounds(anchoUnit * 5, altoUnit * 25, anchoUnit * 30, altoUnit * 14);
         areaDescription.setRows(4);
         areaDescription.setColumns(5);
         areaDescription.setLineWrap(true);
         areaDescription.setWrapStyleWord(true);
-        JScrollPane paneDesc = new JScrollPane(areaDescription);
-        panelData3.add(paneDesc);
+        JScrollPane scrollPaneDesc = new JScrollPane(areaDescription);
+        scrollPaneDesc.setBounds(anchoUnit * 3, altoUnit * 5, anchoUnit * 24, altoUnit * 8);
+        panelData3.add(scrollPaneDesc);
         panelA.add(panelData3);
 
-        JPanel panelData4 = dataPanelBacker("Costo", 14);
-        panelData4.setBounds(20, 280, 375, 50);
+        JPanel panelData4 = dataPanelBacker("Costo:", 14);
+        panelData4.setBounds(anchoUnit * 5, altoUnit * 42, anchoUnit * 30, altoUnit * 7);
+        fieldCost.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
         panelData4.add(fieldCost);
         panelA.add(panelData4);
 
-        JPanel panelData5 = dataPanelBacker("Precio", 14);
-        panelData5.setBounds(20, 350, 375, 50);
+        JPanel panelData5 = dataPanelBacker("Precio:", 14);
+        panelData5.setBounds(anchoUnit * 5, altoUnit * 52, anchoUnit * 30, altoUnit * 7);
+        fieldPrice.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
         panelData5.add(fieldPrice);
         panelA.add(panelData5);
 
-        JPanel panelData6 = dataPanelBacker("Stock", 14);
-        panelData6.setBounds(20, 420, 375, 50);
+        JPanel panelData6 = dataPanelBacker("Stock:", 14);
+        panelData6.setBounds(anchoUnit * 5, altoUnit * 62, anchoUnit * 14, altoUnit * 7);
+        fieldStock.setBounds(anchoUnit * 5, altoUnit * 1, anchoUnit * 8, altoUnit * 5);
         panelData6.add(fieldStock);
         panelA.add(panelData6);
 
-        JPanel panelData7 = dataPanelBacker("Propina deducible", 14);
-        panelData7.setBounds(180, 490, 215, 35);
+        JPanel panelData7 = dataPanelBacker("Propina deducible:", 14);
+        panelData7.setBounds(anchoUnit * 20, altoUnit * 62 , anchoUnit * 15, altoUnit * 7);
+        checkTip.setBounds(anchoUnit * 12, altoUnit * 2, altoUnit * 3, altoUnit * 3);
         panelData7.add(checkTip);
         panelA.add(panelData7);
 
