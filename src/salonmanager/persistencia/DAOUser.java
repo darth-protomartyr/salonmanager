@@ -42,7 +42,7 @@ public class DAOUser extends DAO {
             desconectarBase();
         }
     }
-    
+
     public void saveUserExpress(User user) throws Exception {
         try {
             String name = user.getName();
@@ -154,7 +154,7 @@ public class DAOUser extends DAO {
             user.setPassword(resultado.getString(8));
             user.setPhone(resultado.getString(9));
             user.setActiveUser(resultado.getBoolean(10));
-            
+
             users.add(user);
         }
         desconectarBase();
@@ -180,7 +180,7 @@ public class DAOUser extends DAO {
     }
 
     public ArrayList<User> listUserByRol(String rol) throws Exception {
-        String sql = "SELECT * FROM users WHERE user_role = '"+ rol +"' AND user_active = true;";
+        String sql = "SELECT * FROM users WHERE user_role = '" + rol + "' AND user_active = true;";
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
@@ -300,5 +300,36 @@ public class DAOUser extends DAO {
         } finally {
             desconectarBase();
         }
+    }
+
+    public void updateUser(User userAux, String id) throws Exception {
+        
+        String name = userAux.getName();
+        String lastName = userAux.getLastName();
+        String mail = userAux.getMail();
+        String rol = userAux.getRol();
+        String routeImage = userAux.getRouteImage();
+        String nameImage = userAux.getNameImage();
+        String password = userAux.getPassword();
+        String phone = userAux.getPhone();
+        boolean activeUser = userAux.isActiveUser();
+
+        try {
+            String sql1 = "UPDATE users SET user_name = '" + name +"', user_last_name ='" + lastName + "', user_mail = '" + mail 
+                    + "', user_role = '" + rol + "', user_image_route = '" + routeImage + "', user_image_name = '" + nameImage 
+                    + "', user_password = '" + password + "', user_phone = '" + phone +"', user_active = " + activeUser 
+                    + " WHERE user_id = '" + id + "';";
+            
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        } 
     }
 }

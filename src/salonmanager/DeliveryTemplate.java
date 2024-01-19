@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import salonmanager.ConsumerTemplate;
 import salonmanager.Salon;
 import salonmanager.entidades.DeliveryConsumer;
 import salonmanager.entidades.CustomDialogConfirm;
@@ -22,7 +21,7 @@ import salonmanager.entidades.Delivery;
 import salonmanager.entidades.FrameHalf;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
-import salonmanager.persistencia.DAOConsumer;
+import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -30,7 +29,7 @@ import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DeliveryTemplate extends FrameHalf {
 
-    DAOConsumer daoC = new DAOConsumer();
+    DAODeliveryConsumer daoC = new DAODeliveryConsumer();
     DAOUser daoU = new DAOUser();
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -52,6 +51,8 @@ public class DeliveryTemplate extends FrameHalf {
     JComboBox comboConsumers = new JComboBox();
     JComboBox comboDelis = new JComboBox();
     JPanel panelDetails = new JPanel();
+    JLabel labelSelectPhone = new JLabel();
+    JLabel labelSelectDeli = new JLabel();
     JLabel labelName = new JLabel();
     JLabel labelPhone = new JLabel();
     JLabel labelSn = new JLabel();
@@ -72,10 +73,18 @@ public class DeliveryTemplate extends FrameHalf {
     ArrayList<String> consumers = new ArrayList<String>();
     ArrayList<User> deliverys = new ArrayList<User>();
 
+    JButton butOpConsumer = null;
+    JButton butOpDeliUser = null;
+    JButton butUpdateConsumer = null;
+    JButton butUpdateDeliUser = null;
+
+    JButton butOpDelivery = null;
+
     DeliveryConsumer cmrAux = new DeliveryConsumer();
     User deliAux = new User();
     Salon salon = null;
     Delivery deliFull = null;
+    boolean change = false;
 
     public DeliveryTemplate(Salon sal, Delivery deli) throws Exception {
         salon = sal;
@@ -108,13 +117,13 @@ public class DeliveryTemplate extends FrameHalf {
         JPanel panelConsumer = panelBacker("Cliente", anchoUnit, altoUnit * 7, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 8));
         panelPpal.add(panelConsumer);
 
-        JLabel labelSelectPhone = utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:");
+        labelSelectPhone = utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:");
         labelSelectPhone.setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 23, altoUnit * 4);
         panelConsumer.add(labelSelectPhone);
 
         consumers = daoC.getConsumersPhone();
         comboConsumers.setModel(utili.consumerComboModelReturnWNull(consumers));
-        comboConsumers.setBounds(anchoUnit * 24, altoUnit * 7, anchoUnit * 13, altoUnit * 4);
+        comboConsumers.setBounds(anchoUnit * 24, altoUnit * 7, anchoUnit * 12, altoUnit * 4);
         comboConsumers.setSelectedIndex(consumers.size());
         panelConsumer.add(comboConsumers);
 
@@ -123,6 +132,9 @@ public class DeliveryTemplate extends FrameHalf {
             public void actionPerformed(ActionEvent e) {
                 try {
                     consumerPhoneBacker();
+                    if (deliFull != null) {
+                        butOpDelivery.setVisible(true);
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(DeliveryTemplate.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -134,9 +146,9 @@ public class DeliveryTemplate extends FrameHalf {
             comboConsumers.setVisible(false);
         }
 
-        JButton consumerButton = utiliGraf.button2("Crear Cliente", anchoUnit * 38, altoUnit * 7, anchoUnit * 11);
+        butOpConsumer = utiliGraf.button2("CREAR CLIENTE", anchoUnit * 38, altoUnit * 7, anchoUnit * 11);
         if (deliFull == null) {
-            consumerButton.addActionListener(new ActionListener() {
+            butOpConsumer.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
@@ -148,25 +160,25 @@ public class DeliveryTemplate extends FrameHalf {
             }
             );
         } else {
-            consumerButton.addActionListener(new ActionListener() {
+            butOpConsumer.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        updateConsumer();
+                        changeConsumer();
                     } catch (Exception ex) {
                         Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
             );
-            consumerButton.setLocation(anchoUnit * 20, altoUnit * 7);
-            consumerButton.setText("CAMBIAR CLIENTE");
+            butOpConsumer.setLocation(anchoUnit * 20, altoUnit * 7);
+            butOpConsumer.setText("CAMBIAR CLIENTE");
         }
-        panelConsumer.add(consumerButton);
-        
+        panelConsumer.add(butOpConsumer);
+
         if (deliFull != null) {
-            JButton consumerUpdButton = utiliGraf.button3("Modificar datos Cliente", anchoUnit * 35, altoUnit * 8, anchoUnit * 14);
-            consumerUpdButton.addActionListener(new ActionListener() {
+            butUpdateConsumer = utiliGraf.button3("MODIFICAR DATOS", anchoUnit * 38, altoUnit * 8, anchoUnit * 10);
+            butUpdateConsumer.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
@@ -177,12 +189,8 @@ public class DeliveryTemplate extends FrameHalf {
                 }
             }
             );
-            panelConsumer.add(consumerUpdButton);
+            panelConsumer.add(butUpdateConsumer);
         }
-        
-        
-        
-        
 
         labelName = utiliGraf.labelTitleBacker2("Nombre:");
         labelName.setBounds(anchoUnit * 5, altoUnit * 13, anchoUnit * 22, altoUnit * 3);
@@ -242,13 +250,13 @@ public class DeliveryTemplate extends FrameHalf {
         JPanel panelDelivery = panelBacker("Delivery", anchoUnit, alturaFrame / 2 + altoUnit, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 15));
         panelPpal.add(panelDelivery);
 
-        JLabel labelSelectDeli = utiliGraf.labelTitleBacker1("Elija Delivery para envíar:");
+        labelSelectDeli = utiliGraf.labelTitleBacker1("Elija Delivery para envíar:");
         labelSelectDeli.setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 19, altoUnit * 4);
         panelDelivery.add(labelSelectDeli);
 
         deliverys = daoU.listUserByRol("DELIVERY");
         comboDelis.setModel(utili.userComboModelReturnWNull(deliverys));
-        comboDelis.setBounds(anchoUnit * 22, altoUnit * 7, anchoUnit * 13, altoUnit * 4);
+        comboDelis.setBounds(anchoUnit * 22, altoUnit * 7, anchoUnit * 12, altoUnit * 4);
         comboDelis.setSelectedIndex(deliverys.size());
         panelDelivery.add(comboDelis);
 
@@ -257,6 +265,9 @@ public class DeliveryTemplate extends FrameHalf {
             public void actionPerformed(ActionEvent e) {
                 try {
                     deliveryBacker();
+                    if (deliFull != null) {
+                        butOpDelivery.setVisible(true);
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(DeliveryTemplate.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -271,9 +282,9 @@ public class DeliveryTemplate extends FrameHalf {
             comboDelis.setVisible(false);
         }
 
-        JButton deliveryButton = utiliGraf.button2("Crear Conductor", anchoUnit * 36, altoUnit * 7, anchoUnit * 14);
+        butOpDeliUser = utiliGraf.button2("CREAR CONDUCTOR", anchoUnit * 35, altoUnit * 7, anchoUnit * 14);
         if (deliFull == null) {
-            deliveryButton.addActionListener(new ActionListener() {
+            butOpDeliUser.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
@@ -285,25 +296,25 @@ public class DeliveryTemplate extends FrameHalf {
             }
             );
         } else {
-            deliveryButton.addActionListener(new ActionListener() {
+            butOpDeliUser.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        updateDeliveryUser();
+                        changeDeliveryUser();
                     } catch (Exception ex) {
                         Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
             );
-            deliveryButton.setLocation(anchoUnit * 20, altoUnit * 7);
-            deliveryButton.setText("CAMBIAR CONDUCTOR");
+            butOpDeliUser.setLocation(anchoUnit * 20, altoUnit * 7);
+            butOpDeliUser.setText("CAMBIAR CONDUCTOR");
         }
-        panelDelivery.add(deliveryButton);
-        
+        panelDelivery.add(butOpDeliUser);
+
         if (deliFull != null) {
-            JButton deliUserUpdButton = utiliGraf.button3("Modificar datos Conductor", anchoUnit * 35, altoUnit * 8, anchoUnit * 14);
-            deliUserUpdButton.addActionListener(new ActionListener() {
+            butUpdateDeliUser = utiliGraf.button3("MODIFICAR DATOS", anchoUnit * 38, altoUnit * 8, anchoUnit * 10);
+            butUpdateDeliUser.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
@@ -314,7 +325,7 @@ public class DeliveryTemplate extends FrameHalf {
                 }
             }
             );
-            panelDelivery.add(deliUserUpdButton);
+            panelDelivery.add(butUpdateDeliUser);
         }
 
         labelNameDeli = utiliGraf.labelTitleBacker1("Nombre:");
@@ -337,25 +348,42 @@ public class DeliveryTemplate extends FrameHalf {
         labelRolDeli.setBounds(anchoUnit * 8, altoUnit * 31, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(labelRolDeli);
 
-        if (deliAux != null) {
-           setDeliveryFields(deliAux);
+        if (deliFull != null) {
+            setDeliveryFields(deliAux);
         }
 
-        JButton createOrderButton = utiliGraf.button1("Crear Envío", anchoUnit * 17, altoUnit * 90, anchoUnit * 20);
-        createOrderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    createDeliveryOrder();
-                } catch (Exception ex) {
-                    Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
+        butOpDelivery = utiliGraf.button1("CREAR ENVÏO", anchoUnit * 17, altoUnit * 90, anchoUnit * 20);
+        if (deliFull == null) {
+            butOpDelivery.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        createDeliveryOrder();
+                    } catch (Exception ex) {
+                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
+            );
+        } else {
+            butOpDelivery.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        updateDeliveryOrder();
+                    } catch (Exception ex) {
+                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            );
         }
-        );
-        if (deliAux == null) { 
-            panelPpal.add(createOrderButton);
+        panelPpal.add(butOpDelivery);
+        if (deliFull != null) {
+            butOpDelivery.setVisible(false);
+            butOpDelivery.setText("CONFIRMAR CAMBIOS");
         }
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -446,6 +474,9 @@ public class DeliveryTemplate extends FrameHalf {
         consumers.add(cmrAux.getPhone());
         comboConsumers.setModel(utili.consumerComboModelReturnWNull(consumers));
         comboConsumers.setSelectedIndex(consumers.size() - 1);
+        if (deliFull != null) {
+            butOpDelivery.setVisible(true);
+        }
         setFndEnabled();
     }
 
@@ -455,12 +486,15 @@ public class DeliveryTemplate extends FrameHalf {
         deliverys.add(deliAux);
         comboDelis.setModel(utili.userComboModelReturnWNull(deliverys));
         comboDelis.setSelectedIndex(deliverys.size() - 1);
+        if (deliFull != null) {
+            butOpDelivery.setVisible(true);
+        }
         setFndEnabled();
     }
 
     private void createDeliveryOrder() throws Exception {
         if (deliAux != null && cmrAux != null) {
-            Delivery deliOrder = new Delivery( cmrAux.getPhone(), deliAux.getId());
+            Delivery deliOrder = new Delivery(cmrAux.getPhone(), deliAux.getId());
             salon.getDeliOrder(deliOrder);
             salon.setSalonEnabled();
             dispose();
@@ -475,15 +509,41 @@ public class DeliveryTemplate extends FrameHalf {
             }
         }
     }
-    
-    private void updateConsumer() {
 
+    private void updateDeliveryOrder() throws Exception {
+        deliFull.setConsumer(cmrAux);
+        deliFull.setDeli(deliAux);
+        salon.setDeliOrder(deliFull);
+        salon.setSalonEnabled();
+        dispose();
     }
 
-    private void updateDeliveryUser() {
-
+    private void changeConsumer() {
+        labelSelectPhone.setVisible(true);
+        comboConsumers.setVisible(true);
+        butOpConsumer.setVisible(false);
+        butUpdateConsumer.setVisible(false);
     }
-    
+
+    private void changeDeliveryUser() {
+        labelSelectDeli.setVisible(true);
+        comboDelis.setVisible(true);
+        butOpDeliUser.setVisible(false);
+        butUpdateDeliUser.setVisible(false);
+    }
+
+    private void updateConsumer() throws Exception {
+        DeliveryTemplate fnd = this;
+        new ConsumerTemplate(fnd, cmrAux);
+        fnd.setEnabled(false);
+    }
+
+    private void updateDeliveryUser() throws Exception {
+        DeliveryTemplate fnd = this;
+        new UserExpressTemplate(fnd, "DELIVERY", deliAux);
+        fnd.setEnabled(false);
+    }
+
     public void setFndEnabled() {
         setEnabled(true);
     }

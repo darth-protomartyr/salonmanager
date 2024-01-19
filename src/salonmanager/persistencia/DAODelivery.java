@@ -4,9 +4,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import salonmanager.entidades.Delivery;
-import salonmanager.entidades.DeliveryConsumer;
 
 public class DAODelivery extends DAO {
 
@@ -21,8 +19,33 @@ public class DAODelivery extends DAO {
             String deliId = deli.getDeli().getId();
             boolean open = deli.isOpen();
             boolean active = deli.isActive();
-            String sql1 = "INSERT INTO deliverys(delivery_consumer int, delivery_tab, delivery_user, delivery_open, delivery_active)"
+            String sql1 = "INSERT INTO deliverys(delivery_consumer, delivery_tab, delivery_user, delivery_open, delivery_active)"
                     + "VALUES(" + cmrId + ", '" + tabId + "', '" + deliId + "', '" + open + "', " + open + ", " + active + ");";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    public void updateDelivery(Delivery deli) throws Exception {
+        try {
+            int orderId = deli.getId();
+            int cmrId = deli.getConsumer().getId();
+            String tabId = deli.getTab().getId();
+            String deliId = deli.getDeli().getId();
+            boolean open = deli.isOpen();
+            boolean active = deli.isActive();
+            String sql1 = "UPDATE deliverys SET delivery_consumer = " + cmrId + ", delivery_tab = '" + tabId + "', delivery_user = '" + deliId
+                    + "', delivery_open = '" + open + "', delivery_active = '" + active + "'"
+                    + " WHERE delivery_id = " + orderId + ";";            
+            
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -37,7 +60,7 @@ public class DAODelivery extends DAO {
     }
 
 
-
+/*
     public DeliveryConsumer getConsumerByPhone(String phone) throws Exception {
         try {
             String sql = "SELECT * FROM consumers WHERE consumer_phone = '" + phone + "' AND consumer_active = true;";
@@ -84,23 +107,23 @@ public class DAODelivery extends DAO {
             desconectarBase();
         }
     }
+*/
 
-
-    public ArrayList<String> listarPhones() throws Exception {
-        try {
-            String sql = "SELECT consumers_phone FROM consumers WHERE consumer_active = true;";
-            System.out.println(sql);
-            consultarBase(sql);
-            ArrayList<String> phones = new ArrayList<String>();
-            while (resultado.next()) {
-                String st = resultado.getString(1);
-                phones.add(st);
-            }
-            return phones;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            desconectarBase();
-        }        
-    }
+//    public ArrayList<String> listarDeliveryConsumersPhones() throws Exception {
+//        try {
+//            String sql = "SELECT consumers_phone FROM consumers WHERE consumer_active = true;";
+//            System.out.println(sql);
+//            consultarBase(sql);
+//            ArrayList<String> phones = new ArrayList<String>();
+//            while (resultado.next()) {
+//                String st = resultado.getString(1);
+//                phones.add(st);
+//            }
+//            return phones;
+//        } catch (Exception e) {
+//            throw e;
+//        } finally {
+//            desconectarBase();
+//        }        
+//    }  
 }

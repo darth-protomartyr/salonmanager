@@ -1,12 +1,12 @@
 package salonmanager.entidades;
 
-import salonmanager.persistencia.DAOConsumer;
+import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 
 
 public class Delivery {
-    DAOConsumer daoC = new DAOConsumer();
+    DAODeliveryConsumer daoC = new DAODeliveryConsumer();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
     

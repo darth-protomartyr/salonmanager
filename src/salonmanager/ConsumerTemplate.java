@@ -21,7 +21,7 @@ import salonmanager.entidades.DeliveryConsumer;
 import salonmanager.entidades.FrameHalf;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
-import salonmanager.persistencia.DAOConsumer;
+import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -31,7 +31,7 @@ public class ConsumerTemplate extends FrameHalf {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAOConsumer daoC = new DAOConsumer();
+    DAODeliveryConsumer daoC = new DAODeliveryConsumer();
 
     DeliveryTemplate fnd = null;
 
@@ -72,14 +72,19 @@ public class ConsumerTemplate extends FrameHalf {
     JTextField fieldPhone = new JTextField();
     JTextField fieldSN = new JTextField();
 
-    JButton butCreateItem = null;
+    JButton butCreateConsumer = null;
     DeliveryConsumer cmrFull = null;
 
     public ConsumerTemplate(DeliveryTemplate f, DeliveryConsumer cmr) throws Exception {
-        if ()
-        
-        
-        setTitle("Alta Cliente");
+        String tit = "";
+        if (cmr != null) {
+            cmrFull = cmr;
+            tit = "Modificar Cliente";
+        } else {
+            tit = "Alta Cliente";
+        }
+
+        setTitle(tit);
         fnd = f;
         phonesCmrs = daoC.getConsumersPhone();
 
@@ -88,7 +93,7 @@ public class ConsumerTemplate extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(anchoFrame / 2, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Alta Cliente");
+        JLabel labelTit = utiliGraf.labelTitleBacker1(tit);
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 
@@ -167,18 +172,45 @@ public class ConsumerTemplate extends FrameHalf {
 
         panelPpal.add(panelForm);
 
-        butCreateItem = utiliGraf.button1("Crear Cliente", 206, 600, 270);
-        butCreateItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    butCreateConsumer();
-                } catch (Exception ex) {
-                    Logger.getLogger(ConsumerTemplate.class.getName()).log(Level.SEVERE, null, ex);
+        butCreateConsumer = utiliGraf.button1("Crear Cliente", 206, 600, 270);
+        if (cmrFull != null) {
+            butCreateConsumer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        consumerOp(2);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ConsumerTemplate.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-        });
-        panelPpal.add(butCreateItem);
+            });
+            butCreateConsumer.setText("Modificar Cliente");
+        } else {
+            butCreateConsumer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        consumerOp(1);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ConsumerTemplate.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        }
+        panelPpal.add(butCreateConsumer);
+
+        if (cmrFull != null) {
+            fieldStreet.setText(cmrFull.getStreet());
+            fieldNumStreet.setText(cmrFull.getNumSt());
+            fieldDeptFloor.setText(cmrFull.getDeptFloor());
+            fieldDeptNum.setText(cmrFull.getDeptNum());
+            fieldDistrict.setText(cmrFull.getDistrict());
+            fieldArea.setText(cmrFull.getArea());
+            areaDetails.setText(cmrFull.getDetails());
+            fieldName.setText(cmrFull.getName());
+            fieldPhone.setText(cmrFull.getPhone());
+            fieldSN.setText(cmrFull.getSocialNetwork());
+        }
 
         JButton butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
         butSalir.addActionListener(new ActionListener() {
@@ -198,7 +230,7 @@ public class ConsumerTemplate extends FrameHalf {
         });
     }
 
-    private void butCreateConsumer() throws Exception {
+    private void consumerOp(int i) throws Exception {
         boolean error = false;
         name = fieldName.getText();
         phone = fieldPhone.getText();
@@ -216,9 +248,11 @@ public class ConsumerTemplate extends FrameHalf {
             utiliMsg.errorCantCharName();
         }
 
-        if (utili.stringRepeat(phone, phonesCmrs)) {
-            error = true;
-            utiliMsg.errorNameRepeat();
+        if (i == 0) {
+            if (utili.stringRepeat(phone, phonesCmrs)) {
+                error = true;
+                utiliMsg.errorNameRepeat();
+            }
         }
 
         if (details.length() > 150 || name.length() > 60 || name.length() < 2 || phone.length() > 19 || phone.length() < 7
@@ -234,11 +268,16 @@ public class ConsumerTemplate extends FrameHalf {
         }
 
         if (error == false) {
-            cmr = new DeliveryConsumer(street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
-            daoC.saveConsumer(cmr);
-            fnd.getConsumer(cmr);
+            cmrAux = new DeliveryConsumer(street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
+            if (i == 1) {
+                daoC.saveConsumer(cmrAux);
+            } else {
+                daoC.updateConsumer(cmrAux, cmrFull.getId());
+            }
+            fnd.getConsumer(cmrAux);
             fnd.setFndEnabled();
             dispose();
+
         } else {
             resetFields();
         }

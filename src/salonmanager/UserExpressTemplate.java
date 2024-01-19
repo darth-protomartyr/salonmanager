@@ -1,7 +1,6 @@
 package salonmanager;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,11 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import salonmanager.entidades.DeliveryConsumer;
 import salonmanager.entidades.FrameHalf;
 import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.User;
@@ -52,7 +47,8 @@ public class UserExpressTemplate extends FrameHalf {
     String mail = "";
     String rol = "";
 
-    User user = new User();
+    User userAux = new User();
+    User userFull = new User();
     ArrayList<String> mailUsers = null;
 
     JTextField fieldName = new JTextField();
@@ -63,9 +59,17 @@ public class UserExpressTemplate extends FrameHalf {
 
     JButton butCreateUserExpress = null;
 
-    public UserExpressTemplate(DeliveryTemplate f, String r) throws Exception {
+    public UserExpressTemplate(DeliveryTemplate f, String r, User u) throws Exception {
         rol = r;
-        setTitle("Alta " + rol.toLowerCase());
+        String tit = "";
+        if (u != null) {
+            userFull = u;
+            tit = "Modificar " + r;
+        } else {
+            tit = "Alta " + r;
+        }
+
+        setTitle(tit);
         fnd = f;
         mailUsers = daoU.listarUserMails();
 
@@ -74,7 +78,7 @@ public class UserExpressTemplate extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(anchoFrame / 2, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Alta " + rol.toLowerCase());
+        JLabel labelTit = utiliGraf.labelTitleBacker1(tit);
         labelTit.setBounds(10, 15, 300, 30);
         panelPpal.add(labelTit);
 
@@ -118,17 +122,32 @@ public class UserExpressTemplate extends FrameHalf {
 
         panelPpal.add(panelForm);
 
-        butCreateUserExpress = utiliGraf.button1("Crear Usuario Delivery", anchoUnit * 14, altoUnit * 88, anchoUnit * 25);
-        butCreateUserExpress.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    createUserExpress();
-                } catch (Exception ex) {
-                    Logger.getLogger(UserExpressTemplate.class.getName()).log(Level.SEVERE, null, ex);
+        butCreateUserExpress = utiliGraf.button1("Crear Usuario " + r, anchoUnit * 14, altoUnit * 88, anchoUnit * 25);
+
+        if (userFull != null) {
+            butCreateUserExpress.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        userExpressOp(2);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ConsumerTemplate.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-        });
+            });
+            butCreateUserExpress.setText("Modificar Usuario" + r);
+        } else {
+            butCreateUserExpress.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        userExpressOp(1);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ConsumerTemplate.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        }
         panelPpal.add(butCreateUserExpress);
 
         JButton butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
@@ -141,6 +160,14 @@ public class UserExpressTemplate extends FrameHalf {
         });
         panelPpal.add(butSalir);
 
+        if (userFull != null) {
+            fieldName.setText(userFull.getName());
+            fieldLastName.setText(userFull.getLastName());
+            fieldPhone.setText(userFull.getPhone());
+            fieldMail.setText(userFull.getMail());
+            fieldRol.setText(userFull.getRol());
+        }
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 fnd.setFndEnabled();
@@ -149,7 +176,7 @@ public class UserExpressTemplate extends FrameHalf {
         });
     }
 
-    private void createUserExpress() throws Exception {
+    private void userExpressOp(int i) throws Exception {
         boolean error = false;
         name = fieldName.getText();
         lastName = fieldLastName.getText();
@@ -185,9 +212,11 @@ public class UserExpressTemplate extends FrameHalf {
             }
         }
 
-        if (utili.stringRepeat(mail, mailUsers)) {
-            error = true;
-            utiliMsg.errorMailRepeat();
+        if (i == 1) {
+            if (utili.stringRepeat(mail, mailUsers)) {
+                error = true;
+                utiliMsg.errorMailRepeat();
+            }
         }
 
         if (name.length() > 60 || name.length() < 2 || lastName.length() > 60 || lastName.length() < 2 || phone.length() > 19 || phone.length() < 7 || mail.length() > 60 || mail.length() < 6) {
@@ -201,9 +230,13 @@ public class UserExpressTemplate extends FrameHalf {
         }
 
         if (error == false) {
-            user = new User(name, lastName, phone, mail, rol);
-            daoU.saveUser(user);
-            fnd.getDeliUser(user);
+            userAux = new User(name, lastName, phone, mail, rol);
+            if (i == 1) {
+                daoU.saveUser(userAux);
+            } else {
+                daoU.updateUser(userAux, userFull.getId());
+            }
+            fnd.getDeliUser(userAux);
             fnd.setFndEnabled();
             dispose();
         } else {

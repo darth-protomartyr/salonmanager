@@ -406,9 +406,9 @@ public class Salon extends FrameFullManager {
                             }
                         }
                     }
-                    JButtonTable botonClicado = (JButtonTable) e.getSource();
+                    JButtonTable butClicked = (JButtonTable) e.getSource();
                     for (int i = 0; i < tableButtons.size(); i++) {
-                        if (tableButtons.get(i).getNum() == botonClicado.getNum()) {
+                        if (tableButtons.get(i).getNum() == butClicked.getNum()) {
                             jbtAux = tableButtons.get(i);
                         }
                     }
@@ -1434,13 +1434,10 @@ public class Salon extends FrameFullManager {
         scrPaneBarr.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 //        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 55);
-        
-        
+
 //                scrPaneBarr.setPreferredSize(new Dimension(anchoUnit * 32, altoUnit * 55));
 //        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 //        scrPaneBarr.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
-        
         panelBarr.add(scrPaneBarr);
 
         return panelBarr;
@@ -1529,9 +1526,9 @@ public class Salon extends FrameFullManager {
             jbbAux = null;
         }
 
-        JButtonBarr botonClicado = (JButtonBarr) e.getSource();
+        JButtonBarr butClicked = (JButtonBarr) e.getSource();
         for (int i = 0; i < barrButtons.size(); i++) {
-            if (barrButtons.get(i).getNum() == botonClicado.getNum()) {
+            if (barrButtons.get(i).getNum() == butClicked.getNum()) {
                 jbbAux = barrButtons.get(i);
             }
         }
@@ -1562,7 +1559,6 @@ public class Salon extends FrameFullManager {
         }
     }
 
-    
     // DELIVERY----------------------------------
     // DELIVERY----------------------------------
     private JPanel returnPanelDeli() {
@@ -1666,7 +1662,25 @@ public class Salon extends FrameFullManager {
         resetTableValues();
     }
 
-    private void deliButUpdater() {
+    void setDeliOrder(Delivery dOrder) throws Exception {
+
+        deliOrderAux = dOrder;
+//        int num = deliButtons.size() + 1;
+//        JButtonDelivery newJBD = new JButtonDelivery(num);
+//        Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
+//        newJBD.setTable(newTable);
+//        newJBD.setTable(newTable);
+//        deliButtons.add(0, newJBD);
+//        jbdSAux.setDelivery(dOrder);
+
+//        panelDeliBut.repaint();
+//        panelDeliContainerSetter();
+        deliButUpdater();
+        resetTableValues();
+
+    }
+
+    private void deliButUpdate() {
         for (int i = 0; i < deliButtons.size(); i++) {
             JButtonDelivery butSelDelivery = deliButtons.get(i);
             butSelDelivery.setBackground(narUlg);
@@ -1698,6 +1712,7 @@ public class Salon extends FrameFullManager {
                     } catch (Exception ex) {
                         Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
                 }
             });
 
@@ -1747,9 +1762,9 @@ public class Salon extends FrameFullManager {
             jbbAux = null;
         }
 
-        JButtonDelivery botonClicado = (JButtonDelivery) e.getSource();
+        JButtonDelivery butClicked = (JButtonDelivery) e.getSource();
         for (int i = 0; i < deliButtons.size(); i++) {
-            if (deliButtons.get(i).getNum() == botonClicado.getNum()) {
+            if (deliButtons.get(i).getNum() == butClicked.getNum()) {
                 jbdAux = deliButtons.get(i);
                 jbdSAux = deliButtonsSees.get(i);
             }
@@ -1762,7 +1777,7 @@ public class Salon extends FrameFullManager {
 
         jbdAux.setBorder(new LineBorder(bluSt, 8));
         jbdSAux.setBorder(new LineBorder(bluSt, 8));
-        
+
         if (jbdAux.isOpenJBD() == false) {
             tableAux = jbdAux.getTable();
             waiterAux = user;
@@ -1783,12 +1798,12 @@ public class Salon extends FrameFullManager {
     }
 
     private void selDeliSee(ActionEvent e) throws Exception {
-        
+
         if (jbtAux != null) {
             jbtAux.setBorder(null);
             jbtAux = null;
         }
-        
+
         if (jbdAux != null) {
             jbdAux.setBorder(new LineBorder(narLg, 8));
             jbdAux = null;
@@ -1801,14 +1816,16 @@ public class Salon extends FrameFullManager {
             jbbAux = null;
         }
 
-        JButtonDeliverySee botonClicado = (JButtonDeliverySee) e.getSource();
+        JButtonDeliverySee butClicked = (JButtonDeliverySee) e.getSource();
+        int counter = 0;
         for (int i = 0; i < deliButtonsSees.size(); i++) {
-            if (deliButtonsSees.get(i).getNumDeli() == botonClicado.getNumDeli()) {
+            if (deliButtonsSees.get(i).getNumDeli() == butClicked.getNumDeli()) {
                 jbdAux = deliButtons.get(i);
                 jbdSAux = deliButtonsSees.get(i);
                 Delivery deli = jbdSAux.getDelivery();
-                if (jbdSAux.getDelivery().getConsumer() != null) {
+                if (jbdSAux.getDelivery().getConsumer() != null && counter < 1) {
                     new DeliveryTemplate(sal, deli);
+                    counter+=1;
                 } else {
                     utiliMsg.errorNullDeli();
                 }
@@ -1822,7 +1839,6 @@ public class Salon extends FrameFullManager {
 
         jbdAux.setBorder(new LineBorder(bluSt, 8));
         jbdSAux.setBorder(new LineBorder(bluSt, 8));
-
 
         if (jbdAux.isOpenJBD() == false) {
             tableAux = jbdAux.getTable();
@@ -1841,7 +1857,7 @@ public class Salon extends FrameFullManager {
             tableAux = jbdAux.getTable();
             tableFullerProp();
         }
-        
+
     }
 
 //--------------------------------------------------FUNCIONES-------------------------------------------------------

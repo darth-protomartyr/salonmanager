@@ -1,21 +1,19 @@
 package salonmanager.persistencia;
 
-import salonmanager.entidades.User;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import salonmanager.entidades.Session;
-import salonmanager.entidades.Table;
 import salonmanager.entidades.DeliveryConsumer;
 
-public class DAOConsumer extends DAO {
+public class DAODeliveryConsumer extends DAO {
 
     UtilidadesGraficas utiliF = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
 
+    
     public void saveConsumer(DeliveryConsumer cmr) throws Exception {
         try {
             String street = cmr.getStreet();
@@ -46,6 +44,7 @@ public class DAOConsumer extends DAO {
         }
     }
 
+    
     public DeliveryConsumer getConsumerByPhone(String phone) throws Exception {
         try {
             String sql = "SELECT * FROM consumers WHERE consumer_phone = '" + phone + "' AND consumer_active = true;";
@@ -74,6 +73,7 @@ public class DAOConsumer extends DAO {
         }
     }
 
+    
     public ArrayList<String> getConsumersPhone() throws Exception {
         try {
             String sql = "SELECT consumer_phone FROM consumers WHERE consumer_active = true;";
@@ -92,6 +92,7 @@ public class DAOConsumer extends DAO {
         }
     }
 
+    
     public ArrayList<String> listarPhones() throws Exception {
         try {
             String sql = "SELECT consumers_phone FROM consumers WHERE consumer_active = true;";
@@ -110,8 +111,10 @@ public class DAOConsumer extends DAO {
         }
     }
 
+    
     public void updateConsumer(DeliveryConsumer cmr, int id) throws Exception {
         try {
+            
             String street = cmr.getStreet();
             String numSt = cmr.getNumSt();
             String deptFloor = cmr.getDeptFloor();
@@ -127,20 +130,25 @@ public class DAOConsumer extends DAO {
             String sql1 = "UPDATE consumers SET consumer_street = '" + street + "', consumer_street_num = '" + numSt
                     + "', consumer_dept_floor = '" + deptFloor +"', consumer_dept_num = '" + deptNum + "', consumer_district = '" + district
                     + "', consumer_area = '" + area +"', consumer_details = '" + details +"', consumer_name = '" + name + "', consumer_phone = '" + phone
-                    + "', consume_social_network = '" + socialNetwork + "', consumer_active = '" + active
-                    + "' WHERE consumer_id = " + id + ";";
+                    + "', consume_social_network = '" + socialNetwork + "', consumer_active = " + active
+                    + " WHERE consumer_id = " + id + ";";
             
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
+            
                 utiliMsg.errorRegistroFallido();
+            
             } else {
+            
                 e.printStackTrace();
+            
             }
         } finally {
+            
             desconectarBase();
+        
         }
-
     }
 }
