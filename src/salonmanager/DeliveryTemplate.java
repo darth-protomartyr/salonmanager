@@ -80,8 +80,8 @@ public class DeliveryTemplate extends FrameHalf {
 
     JButton butOpDelivery = null;
 
-    DeliveryConsumer cmrAux = new DeliveryConsumer();
-    User deliAux = new User();
+    DeliveryConsumer cmrAux = null;
+    User deliAux = null;
     Salon salon = null;
     Delivery deliFull = null;
     boolean change = false;

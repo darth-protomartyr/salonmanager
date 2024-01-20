@@ -15,12 +15,15 @@ public class DAODelivery extends DAO {
     public void saveDelivery(Delivery deli) throws Exception {
         try {
             int cmrId = deli.getConsumer().getId();
-            String tabId = deli.getTab().getId();
+            String tabId = "";
+            if (deli.getTab() != null) {
+                tabId = deli.getTab().getId();
+            }
             String deliId = deli.getDeli().getId();
             boolean open = deli.isOpen();
             boolean active = deli.isActive();
             String sql1 = "INSERT INTO deliverys(delivery_consumer, delivery_tab, delivery_user, delivery_open, delivery_active)"
-                    + "VALUES(" + cmrId + ", '" + tabId + "', '" + deliId + "', '" + open + "', " + open + ", " + active + ");";
+                    + "VALUES(" + cmrId + ", '" + tabId + "', '" + deliId + "', " + open + ", " + active + ");";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

@@ -21,6 +21,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -49,6 +52,7 @@ import salonmanager.entidades.PanelPpal;
 import salonmanager.entidades.Table;
 import salonmanager.entidades.User;
 import salonmanager.entidades.Workshift;
+import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -72,6 +76,7 @@ public class Salon extends FrameFullManager {
     DAOItemcard daoI = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
+    DAODelivery daoD = new DAODelivery();
     ServicioSalon ss = new ServicioSalon();
     ServicioTable st = new ServicioTable();
     ServicioItemMonitor sim = new ServicioItemMonitor();
@@ -139,9 +144,9 @@ public class Salon extends FrameFullManager {
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
     ArrayList<JButtonBarr> barrButtons = new ArrayList<JButtonBarr>();
     ArrayList<JButtonDelivery> deliButtons = new ArrayList<JButtonDelivery>();
-    //Test Botones ver
     ArrayList<JButtonDeliverySee> deliButtonsSees = new ArrayList<JButtonDeliverySee>();
-//    JButton bsAux = new JButton();
+    ScheduledExecutorService scheduler = null;
+    boolean loopBreaker = false;
 
     JButton butBarrDeli = null;
     JPanel panelBDButtons = new JPanel();
@@ -1481,7 +1486,24 @@ public class Salon extends FrameFullManager {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        selectBarr(ae);
+
+                        if (scheduler != null) {
+                            scheduler.shutdown();
+                            scheduler = Executors.newSingleThreadScheduledExecutor();
+                        } else {
+                            scheduler = Executors.newSingleThreadScheduledExecutor();
+                        }
+
+                        if (!loopBreaker) {
+                            selectBarr(ae);
+                            loopBreaker = true;
+                            Runnable duty = () -> {
+                                loopBreaker = false;
+                            };
+                            long timeWait = 1000; // en segundos
+                            scheduler.schedule(duty, timeWait, TimeUnit.MILLISECONDS);
+                        }
+
                     } catch (Exception ex) {
                         Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -1646,6 +1668,7 @@ public class Salon extends FrameFullManager {
 
     void getDeliOrder(Delivery dOrder) throws Exception {
         deliOrderAux = dOrder;
+        daoD.saveDelivery(deliOrderAux);
         int num = deliButtons.size() + 1;
         JButtonDelivery newJBD = new JButtonDelivery(num);
         Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
@@ -1663,24 +1686,13 @@ public class Salon extends FrameFullManager {
     }
 
     void setDeliOrder(Delivery dOrder) throws Exception {
-
         deliOrderAux = dOrder;
-//        int num = deliButtons.size() + 1;
-//        JButtonDelivery newJBD = new JButtonDelivery(num);
-//        Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
-//        newJBD.setTable(newTable);
-//        newJBD.setTable(newTable);
-//        deliButtons.add(0, newJBD);
-//        jbdSAux.setDelivery(dOrder);
-
-//        panelDeliBut.repaint();
-//        panelDeliContainerSetter();
+        daoD.updateDelivery(deliOrderAux);
         deliButUpdater();
         resetTableValues();
-
     }
 
-    private void deliButUpdate() {
+    private void deliButUpdater() {
         for (int i = 0; i < deliButtons.size(); i++) {
             JButtonDelivery butSelDelivery = deliButtons.get(i);
             butSelDelivery.setBackground(narUlg);
@@ -1691,49 +1703,96 @@ public class Salon extends FrameFullManager {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        selectDeli(ae);
+                        if (scheduler != null) {
+                            scheduler.shutdown();
+                            scheduler = Executors.newSingleThreadScheduledExecutor();
+                        } else {
+                            scheduler = Executors.newSingleThreadScheduledExecutor();
+                        }
+
+                        if (!loopBreaker) {
+                            selectDeli(ae);
+                            if (!loopBreaker) {
+                                selectDeli(ae);
+                                loopBreaker = true;
+                                Runnable duty = () -> {
+                                    loopBreaker = false;
+                                };
+                                long timeWait = 1000; // en segundos
+                                scheduler.schedule(duty, timeWait, TimeUnit.MILLISECONDS);
+                            }
+                        }
                     } catch (Exception ex) {
                         Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            });
+            }
+            );
 
             //Test
             JButtonDeliverySee butSee = deliButtonsSees.get(i);
+
             butSee.setBackground(narUlg);
-            butSee.setBorder(new LineBorder(narLg, 8));
+
+            butSee.setBorder(
+                    new LineBorder(narLg, 8));
             butSee.setFont(font3);
-            butSee.setText("ver");
-            butSee.addActionListener(new ActionListener() {
+
+            butSee.setText(
+                    "ver");
+            butSee.addActionListener(
+                    new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent ae) {
+                public void actionPerformed(ActionEvent ae
+                ) {
                     try {
-                        selDeliSee(ae);
+                        if (scheduler != null) {
+                            scheduler.shutdown();
+                            scheduler = Executors.newSingleThreadScheduledExecutor();
+                        } else {
+                            scheduler = Executors.newSingleThreadScheduledExecutor();
+                        }
+
+                        if (!loopBreaker) {
+                            selectDeliSee(ae);
+                            loopBreaker = true;
+                            Runnable duty = () -> {
+                                loopBreaker = false;
+                            };
+                            long timeWait = 1000; // en segundos
+                            scheduler.schedule(duty, timeWait, TimeUnit.MILLISECONDS);
+                        }
+
                     } catch (Exception ex) {
                         Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
-            });
+            }
+            );
 
-            if (deliButtons.get(i).isOpenJBD()) {
+            if (deliButtons.get(i)
+                    .isOpenJBD()) {
                 deliButtons.get(i).setBackground(green);
                 deliButtonsSees.get(i).setBackground(green);
             }
 
-            if (deliButtons.get(i).getTable().isBill() == true) {
+            if (deliButtons.get(i)
+                    .getTable().isBill() == true) {
                 deliButtons.get(i).setBackground(red);
                 //Test
                 deliButtonsSees.get(i).setBackground(red);
             }
 
-            if (deliButtons.get(i).isOpenJBD() == false && deliButtons.get(i).getTable().isBill() == true) {
+            if (deliButtons.get(i)
+                    .isOpenJBD() == false && deliButtons.get(i).getTable().isBill() == true) {
                 deliButtons.get(i).setBackground(narUlgX);
                 deliButtons.get(i).setEnabled(false);
                 //Test
                 deliButtonsSees.get(i).setBackground(narUlgX);
                 deliButtonsSees.get(i).setEnabled(false);
             }
+
             panelDeliBut.add(butSelDelivery);
         }
         revalidate();
@@ -1797,7 +1856,7 @@ public class Salon extends FrameFullManager {
         }
     }
 
-    private void selDeliSee(ActionEvent e) throws Exception {
+    private void selectDeliSee(ActionEvent e) throws Exception {
 
         if (jbtAux != null) {
             jbtAux.setBorder(null);
@@ -1817,15 +1876,13 @@ public class Salon extends FrameFullManager {
         }
 
         JButtonDeliverySee butClicked = (JButtonDeliverySee) e.getSource();
-        int counter = 0;
         for (int i = 0; i < deliButtonsSees.size(); i++) {
             if (deliButtonsSees.get(i).getNumDeli() == butClicked.getNumDeli()) {
                 jbdAux = deliButtons.get(i);
                 jbdSAux = deliButtonsSees.get(i);
                 Delivery deli = jbdSAux.getDelivery();
-                if (jbdSAux.getDelivery().getConsumer() != null && counter < 1) {
+                if (jbdSAux.getDelivery().getConsumer() != null) {
                     new DeliveryTemplate(sal, deli);
-                    counter+=1;
                 } else {
                     utiliMsg.errorNullDeli();
                 }
