@@ -3,7 +3,7 @@ package salonmanager.persistencia;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import salonmanager.entidades.ItemMonitor;
+import salonmanager.entidades.bussiness.ItemMonitor;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DAOItemMonitor extends DAO {

@@ -1,7 +1,7 @@
 package salonmanager.utilidades;
 
 import java.awt.BorderLayout;
-import salonmanager.entidades.User;
+import salonmanager.entidades.bussiness.User;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -39,10 +39,10 @@ import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
 import salonmanager.Manager;
 import salonmanager.WorkshiftSession;
-import salonmanager.entidades.Admin;
-import salonmanager.entidades.Config;
-import salonmanager.entidades.Itemcard;
-import salonmanager.entidades.Register;
+import salonmanager.Admin;
+import salonmanager.entidades.config.Config;
+import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Register;
 
 public class UtilidadesGraficas extends JFrame {
 

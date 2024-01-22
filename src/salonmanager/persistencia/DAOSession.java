@@ -7,7 +7,7 @@ package salonmanager.persistencia;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import salonmanager.entidades.Session;
+import salonmanager.entidades.bussiness.Session;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 /**

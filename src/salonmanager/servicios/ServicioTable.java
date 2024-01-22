@@ -1,9 +1,9 @@
 package salonmanager.servicios;
 
 import java.util.ArrayList;
-import salonmanager.entidades.Itemcard;
-import salonmanager.entidades.Table;
-import salonmanager.entidades.Workshift;
+import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;

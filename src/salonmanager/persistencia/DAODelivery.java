@@ -4,7 +4,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
-import salonmanager.entidades.Delivery;
+import salonmanager.entidades.bussiness.Delivery;
 
 public class DAODelivery extends DAO {
 

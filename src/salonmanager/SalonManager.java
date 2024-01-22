@@ -3,16 +3,16 @@ package salonmanager;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import salonmanager.entidades.User;
-import salonmanager.entidades.Workshift;
+import salonmanager.entidades.bussiness.User;
+import salonmanager.entidades.bussiness.Workshift;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import javax.swing.JFrame;
-import salonmanager.entidades.Config;
-import salonmanager.entidades.Session;
+import salonmanager.entidades.config.Config;
+import salonmanager.entidades.bussiness.Session;
 import salonmanager.persistencia.DAOConfig;
 
 public class SalonManager {

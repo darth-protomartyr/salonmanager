@@ -5,8 +5,8 @@
  */
 package salonmanager.servicios;
 
-import salonmanager.entidades.Session;
-import salonmanager.entidades.User;
+import salonmanager.entidades.bussiness.Session;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOSession;
 import salonmanager.persistencia.DAOUser;

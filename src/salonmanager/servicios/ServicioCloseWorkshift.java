@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.Salon;
 import salonmanager.WorkshiftEndPanel;
-import salonmanager.entidades.Itemcard;
-import salonmanager.entidades.Table;
-import salonmanager.entidades.User;
-import salonmanager.entidades.Workshift;
+import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.User;
+import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.utilidades.Utilidades;
 

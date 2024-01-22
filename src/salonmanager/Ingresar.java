@@ -1,7 +1,7 @@
 package salonmanager;
 
-import salonmanager.entidades.FrameWindow;
-import salonmanager.entidades.User;
+import salonmanager.entidades.graphics.FrameWindow;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.servicios.ServicioUser;
 import salonmanager.utilidades.Utilidades;
@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import salonmanager.entidades.PanelPpal;
+import salonmanager.entidades.graphics.PanelPpal;
 
 public class Ingresar extends FrameWindow {
 

@@ -1,7 +1,7 @@
 package salonmanager.utilidades;
 
 import static java.lang.Integer.parseInt;
-import salonmanager.entidades.User;
+import salonmanager.entidades.bussiness.User;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -15,9 +15,9 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
-import salonmanager.entidades.DeliveryConsumer;
-import salonmanager.entidades.Itemcard;
-import salonmanager.entidades.Table;
+import salonmanager.entidades.bussiness.DeliveryConsumer;
+import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Table;
 
 public class Utilidades {
 

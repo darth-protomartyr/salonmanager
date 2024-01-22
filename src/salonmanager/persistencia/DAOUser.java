@@ -1,13 +1,13 @@
 package salonmanager.persistencia;
 
-import salonmanager.entidades.User;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import salonmanager.entidades.Session;
-import salonmanager.entidades.Table;
+import salonmanager.entidades.bussiness.Session;
+import salonmanager.entidades.bussiness.Table;
 
 public class DAOUser extends DAO {
 

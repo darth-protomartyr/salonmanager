@@ -1,6 +1,6 @@
 package salonmanager.persistencia;
 
-import salonmanager.entidades.Register;
+import salonmanager.entidades.bussiness.Register;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import salonmanager.SalonManager;
-import salonmanager.entidades.Register;
-import salonmanager.entidades.User;
+import salonmanager.entidades.bussiness.Register;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAO;
 
 public class DAORegister extends DAO {

@@ -1,7 +1,7 @@
 package salonmanager.servicios;
 
 import java.util.ArrayList;
-import salonmanager.entidades.Itemcard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.persistencia.DAOItemcard;
 
 public class ServicioItemcard {

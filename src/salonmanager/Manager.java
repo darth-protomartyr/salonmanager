@@ -11,10 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import salonmanager.entidades.FrameFullManager;
-import salonmanager.entidades.PanelPpal;
-import salonmanager.entidades.User;
-import salonmanager.entidades.Workshift;
+import salonmanager.entidades.graphics.FrameFullManager;
+import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.entidades.bussiness.User;
+import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 

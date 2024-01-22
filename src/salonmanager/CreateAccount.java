@@ -1,6 +1,6 @@
 package salonmanager;
 
-import salonmanager.entidades.User;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.servicios.ServicioUser;
 import salonmanager.utilidades.Utilidades;
@@ -19,8 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import salonmanager.entidades.FrameHalf;
-import salonmanager.entidades.PanelPpal;
+import salonmanager.entidades.graphics.FrameHalf;
+import salonmanager.entidades.graphics.PanelPpal;
 
 public class CreateAccount extends FrameHalf {
 

@@ -1,6 +1,6 @@
 package salonmanager;
 
-import salonmanager.entidades.FrameWindow;
+import salonmanager.entidades.graphics.FrameWindow;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -27,7 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import salonmanager.entidades.PanelPpal;
+import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 

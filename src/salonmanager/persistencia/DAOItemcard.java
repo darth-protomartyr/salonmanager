@@ -4,9 +4,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import salonmanager.entidades.Itemcard;
-import salonmanager.entidades.Table;
-import salonmanager.entidades.User;
+import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.servicios.ServicioRegister;
 import salonmanager.utilidades.UtilidadesMensajes;
 

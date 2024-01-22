@@ -6,7 +6,7 @@
 package salonmanager.servicios;
 
 import java.util.function.Consumer;
-import salonmanager.entidades.Delivery;
+import salonmanager.entidades.bussiness.Delivery;
 
 /**
  *

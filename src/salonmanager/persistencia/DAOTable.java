@@ -3,8 +3,8 @@ package salonmanager.persistencia;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import salonmanager.entidades.Table;
-import salonmanager.entidades.Workshift;
+import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DAOTable extends DAO {

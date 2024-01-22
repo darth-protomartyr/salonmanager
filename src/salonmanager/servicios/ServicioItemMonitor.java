@@ -2,9 +2,9 @@ package salonmanager.servicios;
 
 import java.util.ArrayList;
 import salonmanager.Salon;
-import salonmanager.entidades.ItemMonitor;
-import salonmanager.entidades.Itemcard;
-import salonmanager.entidades.Table;
+import salonmanager.entidades.bussiness.ItemMonitor;
+import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Table;
 import salonmanager.persistencia.DAOItemMonitor;
 import salonmanager.utilidades.UtilidadesMensajes;
 

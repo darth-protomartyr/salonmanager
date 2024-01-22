@@ -14,8 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import javax.swing.JPanel;
-import salonmanager.entidades.FrameGeneral;
-import salonmanager.entidades.PanelPpal;
+import salonmanager.entidades.graphics.FrameGeneral;
+import salonmanager.entidades.graphics.PanelPpal;
 
 public class LandingFrame extends FrameGeneral {
 

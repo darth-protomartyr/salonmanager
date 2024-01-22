@@ -1,11 +1,11 @@
 package salonmanager.utilidades;
 
 import javax.swing.JFrame;
-import salonmanager.entidades.CustomDialog;
-import salonmanager.entidades.CustomDialogConfirm;
-import salonmanager.entidades.CustomDialogPass;
-import salonmanager.entidades.CustomDialogTextIn;
-import salonmanager.entidades.User;
+import salonmanager.entidades.graphics.CustomDialog;
+import salonmanager.entidades.graphics.CustomDialogConfirm;
+import salonmanager.entidades.graphics.CustomDialogPass;
+import salonmanager.entidades.graphics.CustomDialogTextIn;
+import salonmanager.entidades.bussiness.User;
 
 public class UtilidadesMensajes extends JFrame {
 

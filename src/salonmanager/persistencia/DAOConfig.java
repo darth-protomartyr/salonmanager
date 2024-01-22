@@ -3,8 +3,8 @@ package salonmanager.persistencia;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import salonmanager.entidades.Config;
-import salonmanager.entidades.Session;
+import salonmanager.entidades.config.Config;
+import salonmanager.entidades.bussiness.Session;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 
