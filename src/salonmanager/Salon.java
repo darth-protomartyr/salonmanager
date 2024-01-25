@@ -273,132 +273,124 @@ public class Salon extends FrameFullManager {
 
         JPanel panelTable = utiliGrafSal.returnPanelTable(sal);
         panelLateral.add(panelTable);
-//        
-//        JPanel panelTable = new JPanel();
-//        panelTable.setLayout(null);
-//        panelTable.setBackground(narLg);
-//        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (anchoPane + anchoUnit * 9), altoUnit * 89);
-//        panelLateral.add(panelTable);
-//        labelOrder = utiliGraf.labelTitleBackerA2b("MESA: --");
-//        labelOrder.setBounds(altoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
-//        panelTable.add(labelOrder);
-//        labelWaiter = utiliGraf.labelTitleBackerA4("Mozo: --");
-//        labelWaiter.setBounds(altoUnit, altoUnit * 7, anchoUnit * 20, 30);
-//        panelTable.add(labelWaiter);
 
-        JPanel panelSelItem = new JPanel();
-        panelSelItem.setLayout(null);
-        panelSelItem.setBounds(6, altoUnit * 12, anchoFrame - (anchoPane + anchoUnit * 10), altoUnit * 16);
-        panelSelItem.setBackground(bluLg);
+        JPanel panelSelItem = utiliGrafSal.returnPanelSelItem(sal);
         panelTable.add(panelSelItem);
 
-        JButton butCaptionBebidas = utiliGraf.button3("Bebidas", 5, 5, 55);
-        butCaptionBebidas.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    itemCaptionBack("Bebidas");
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelSelItem.add(butCaptionBebidas);
-
-        JButton butCaptionPlatos = utiliGraf.button3("Platos", 65, 5, 55);
-        butCaptionPlatos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    itemCaptionBack("Platos");
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelSelItem.add(butCaptionPlatos);
-
-        JButton butCaptionCafeteria = utiliGraf.button3("Cafetería", 125, 5, 80);
-        butCaptionCafeteria.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    itemCaptionBack("Cafeteria");
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelSelItem.add(butCaptionCafeteria);
-
-        JButton butCaptionOtros = utiliGraf.button3("Otros", 210, 5, 65);
-        butCaptionOtros.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    itemCaptionBack("Otros");
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelSelItem.add(butCaptionOtros);
-
-        comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
-        comboItems.setBounds(anchoUnit, altoUnit * 5, anchoUnit * 11, altoUnit * 4);
-        comboItems.setSelectedIndex(itemsDB.size());
-        panelSelItem.add(comboItems);
-
-        JLabel labelUnitsItem = utiliGraf.labelTitleBacker3("Unidades");
-        labelUnitsItem.setBounds(anchoUnit * 13, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
-        panelSelItem.add(labelUnitsItem);
-        spinnerUnitsItem = utiliGraf.spinnerBack(anchoUnit * 18, altoUnit * 5, anchoUnit * 3, altoUnit * 4, spinnerUnitsItem);
-        panelSelItem.add(spinnerUnitsItem);
-
-//Boton Ingreso Item
-        JButton butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 10);
-        butSelItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (waiterAux == null) {
-                        utiliMsg.errorWaiterNull();
-                        resetTableValues();
-                    } else {
-                        if (tableAux.isBill() == false) {
-                            String item = (String) comboItems.getSelectedItem();
-                            if (!item.equals("")) {
-                                butSelItemActionPerformed(item);
-                            } else {
-                                utiliMsg.errorSeleccion();
-                            }
-                        } else {
-                            utiliMsg.errorBillSend();
-                        }
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(ItemSelector.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelSelItem.add(butSelItem);
-
-        JLabel labelAddIndication = utiliGraf.labelTitleBacker3("Indicación item");
-        labelAddIndication.setBounds(anchoUnit * 12, altoUnit * 12, anchoUnit * 8, altoUnit * 3);
-        panelSelItem.add(labelAddIndication);
-
-        checkBoxIndic.setBounds(anchoUnit * 20 - 5, altoUnit * 12, altoUnit * 3, altoUnit * 3);
-        checkBoxIndic.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    indiBool = true;
-                } else {
-                    indiBool = false;
-                }
-            }
-        });
-        panelSelItem.add(checkBoxIndic);
+        
+//        JPanel panelSelItem = new JPanel();
+//        panelSelItem.setLayout(null);
+//        panelSelItem.setBounds(6, altoUnit * 12, anchoFrame - (anchoPane + anchoUnit * 10), altoUnit * 16);
+//        panelSelItem.setBackground(bluLg);
+//        panelTable.add(panelSelItem);
+//
+//        JButton butCaptionBebidas = utiliGraf.button3("Bebidas", 5, 5, 55);
+//        butCaptionBebidas.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                try {
+//                    itemCaptionBack("Bebidas");
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        panelSelItem.add(butCaptionBebidas);
+//
+//        JButton butCaptionPlatos = utiliGraf.button3("Platos", 65, 5, 55);
+//        butCaptionPlatos.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                try {
+//                    itemCaptionBack("Platos");
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        panelSelItem.add(butCaptionPlatos);
+//
+//        JButton butCaptionCafeteria = utiliGraf.button3("Cafetería", 125, 5, 80);
+//        butCaptionCafeteria.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                try {
+//                    itemCaptionBack("Cafeteria");
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        panelSelItem.add(butCaptionCafeteria);
+//
+//        JButton butCaptionOtros = utiliGraf.button3("Otros", 210, 5, 65);
+//        butCaptionOtros.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                try {
+//                    itemCaptionBack("Otros");
+//                } catch (Exception ex) {
+//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        panelSelItem.add(butCaptionOtros);
+//
+//        comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
+//        comboItems.setBounds(anchoUnit, altoUnit * 5, anchoUnit * 11, altoUnit * 4);
+//        comboItems.setSelectedIndex(itemsDB.size());
+//        panelSelItem.add(comboItems);
+//
+//        JLabel labelUnitsItem = utiliGraf.labelTitleBacker3("Unidades");
+//        labelUnitsItem.setBounds(anchoUnit * 13, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
+//        panelSelItem.add(labelUnitsItem);
+//        spinnerUnitsItem = utiliGraf.spinnerBack(anchoUnit * 18, altoUnit * 5, anchoUnit * 3, altoUnit * 4, spinnerUnitsItem);
+//        panelSelItem.add(spinnerUnitsItem);
+//
+////Boton Ingreso Item
+//        JButton butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 10);
+//        butSelItem.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                try {
+//                    if (waiterAux == null) {
+//                        utiliMsg.errorWaiterNull();
+//                        resetTableValues();
+//                    } else {
+//                        if (tableAux.isBill() == false) {
+//                            String item = (String) comboItems.getSelectedItem();
+//                            if (!item.equals("")) {
+//                                butSelItemActionPerformed(item);
+//                            } else {
+//                                utiliMsg.errorSeleccion();
+//                            }
+//                        } else {
+//                            utiliMsg.errorBillSend();
+//                        }
+//                    }
+//                } catch (Exception ex) {
+//                    Logger.getLogger(ItemSelector.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        panelSelItem.add(butSelItem);
+//
+//        JLabel labelAddIndication = utiliGraf.labelTitleBacker3("Indicación item");
+//        labelAddIndication.setBounds(anchoUnit * 12, altoUnit * 12, anchoUnit * 8, altoUnit * 3);
+//        panelSelItem.add(labelAddIndication);
+//
+//        checkBoxIndic.setBounds(anchoUnit * 20 - 5, altoUnit * 12, altoUnit * 3, altoUnit * 3);
+//        checkBoxIndic.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                if (e.getStateChange() == ItemEvent.SELECTED) {
+//                    indiBool = true;
+//                } else {
+//                    indiBool = false;
+//                }
+//            }
+//        });
+//        panelSelItem.add(checkBoxIndic);
 
         scrollPaneItems = scrollItemsBack(altoUnit, altoUnit * 28, anchoUnit * 21 + altoUnit, altoUnit * 30);
         panelTable.add(scrollPaneItems);
