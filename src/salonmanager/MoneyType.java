@@ -73,7 +73,7 @@ public class MoneyType extends FrameWindow {
     public MoneyType(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed1, double amountToPay) {
         salon = sal;
         sm.addFrame(this);
-        tab = salon.getTable();
+        tab = salon.getTableAux();
         itemsPayed = itemsPayed1;
         endex = end;
         total = amountToPay;

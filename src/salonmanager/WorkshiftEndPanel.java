@@ -60,10 +60,10 @@ public class WorkshiftEndPanel extends FrameHalf {
     Salon salon = null;
     Workshift actualWs = null;
     Workshift newWs = null;
-    ArrayList<Table> actualTabs = null;
-    ArrayList<Table> newTabs = null;
-    ArrayList<Table> toEraseTabs = null;
-    ArrayList<Table> toUpdTabs = null;
+    ArrayList<Table> actualTabs = new ArrayList<Table>();
+    ArrayList<Table> newTabs = new ArrayList<Table>();
+    ArrayList<Table> toEraseTabs = new ArrayList<Table>();
+    ArrayList<Table> toUpdTabs = new ArrayList<Table>();
     double total = 0;
     double cash = 0;
     double electronic = 0;
@@ -73,10 +73,25 @@ public class WorkshiftEndPanel extends FrameHalf {
         actualWs = ws1;
         newWs = ws2;
         actualTabs = filterClose(actTabs);
-        newTabs = nTabs;
-        toEraseTabs = toErsdTabs;
-        toUpdTabs = updTabs;
         
+        if (nTabs == null) {
+            newTabs = new ArrayList<Table>();
+        } else {
+            newTabs = nTabs;
+        }
+
+        if (toErsdTabs == null) {
+            toEraseTabs = new ArrayList<Table>();
+        } else {
+            toEraseTabs = toErsdTabs;
+        }
+
+        if (updTabs == null) {
+            toUpdTabs = new ArrayList<Table>();
+        } else {
+            toUpdTabs = updTabs;
+        }
+
 //        tabs = daoT.listarTablesByTimestamp(ws);
 
         salon = sal;
@@ -266,6 +281,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                 }
                 
                 salon.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs);
+ 
                 dispose();
             }
         } catch (NumberFormatException e) {

@@ -62,12 +62,14 @@ import salonmanager.servicios.ServicioCloseWorkshift;
 import salonmanager.servicios.ServicioItemMonitor;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class Salon extends FrameFullManager {
 
     Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
     SalonManager sm = new SalonManager();
@@ -150,14 +152,15 @@ public class Salon extends FrameFullManager {
 
     JButton butBarrDeli = null;
     JPanel panelBDButtons = new JPanel();
+        JPanel panelA = new JPanel();
+
     JButtonBarr jbbAux = null;
     JButtonDelivery jbdAux = null;
     JButtonDeliverySee jbdSAux = null;
 
-    JPanel panelA = new JPanel();
     JTabbedPane tabbedPane = new JTabbedPane();
     JButtonTable jbtAux = null; //boton de mesa actual
-    ServicioCloseWorkshift sw = new ServicioCloseWorkshift();
+//    ServicioCloseWorkshift sw = new ServicioCloseWorkshift();
 
     //Menu Lateral
     int rowsItems = 0; //nro filas de la tabla
@@ -208,122 +211,34 @@ public class Salon extends FrameFullManager {
         tablePan = cfg.getTablePan();
         tablePanCh = cfg.getTablePanCh();
 
-        JPanel panelActual = new JPanel();
-        panelActual.setBounds(anchoUnit * 11, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
-        panelActual.setBackground(bluLg);
-        panelActual.setLayout(null);
+//HEADER---------------------------------------------------------------------------------------------------------------
+//HEADER---------------------------------------------------------------------------------------------------------------
+//HEADER---------------------------------------------------------------------------------------------------------------
+//HEADER---------------------------------------------------------------------------------------------------------------
+//PANEL STATE----------------------------------------------------------------------------------------------------------
+//PANEL STATE----------------------------------------------------------------------------------------------------------        
+        JPanel panelActual = utiliGrafSal.panelActualBacker(sal);
         panelPpal.add(panelActual);
 
-        JLabel labelUser = utiliGraf.labelTitleBacker3("Usuario: " + user.getName().toUpperCase() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
-        labelUser.setBounds(altoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
-        panelActual.add(labelUser);
-
-        JLabel labelSession = utiliGraf.labelTitleBacker3("");
-
-        Timestamp timeInitSes = new Timestamp(new Date().getTime());
-        if (timeInitSes != null) {
-            labelSession.setText("Inicio Sesion: " + utili.friendlyDate(timeInitSes));
-        } else {
-            labelSession.setText("Sesion no iniciada.");
-        }
-        labelSession.setBounds(altoUnit, altoUnit * 4, anchoUnit * 17, altoUnit * 2);
-        panelActual.add(labelSession);
-
-        JLabel labelWorkshift = utiliGraf.labelTitleBacker3("");
-        if (workshiftNow != null) {
-            Timestamp timeInitWork = workshiftNow.getWsOpen();
-            labelWorkshift.setText("Inicio Turno: " + utili.friendlyDate(timeInitWork));
-        } else {
-            labelWorkshift.setText("Turno no iniciado.");
-        }
-        labelWorkshift.setBounds(altoUnit, altoUnit * 7, anchoUnit * 17, altoUnit * 2);
-        panelActual.add(labelWorkshift);
-
-        butInitWorkshift = utiliGraf.button2("Abrir Turno", anchoUnit * 3, altoUnit * 9, anchoUnit * 11);
-        butInitWorkshift.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (workshiftNow == null) {
-                        boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(user.getName(), user.getLastName());
-                        if (confirm1 == true) {
-                            workshiftNow = new Workshift(user);
-                            daoW.saveWorkshift(workshiftNow);
-                            sm.workshiftBacker(workshiftNow);
-                            labelWorkshift.setText("Inicio Turno: " + utili.friendlyDate(workshiftNow.getWsOpen()));
-                            butInitWorkshift.setText("CERRAR TURNO");
-                        }
-                    } else {
-                        endWorkshift();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelActual.add(butInitWorkshift);
-
-//PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
-//PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
 //PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
 //PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------      
 //BARR / DELI
-        JPanel panelBarrDeli = new JPanel();
-        panelBarrDeli.setBounds(anchoUnit * 52, altoUnit * 3, anchoUnit * 25, altoUnit * 14);
-        panelBarrDeli.setBackground(narLg);
-        panelBarrDeli.setLayout(null);
+        JPanel panelBarrDeli = utiliGrafSal.panelBarrDeliBacker(sal);
         panelPpal.add(panelBarrDeli);
 
-        butBarrDeli = new JButton();
-        butBarrDeli.setBackground(narUlg);
-        butBarrDeli.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 23, altoUnit * 10);
-        butBarrDeli.setBorder(null);
-        butBarrDeli.setFont(font1);
-        butBarrDeli.setText("Barra - Delivery");
-        butBarrDeli.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (workshiftNow != null) {
-                        butPanelTurn();
-                    } else {
-                        utiliMsg.errorWorkshift();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelBarrDeli.add(butBarrDeli);
-
-        JPanel panelMonitor = new JPanel();
-        panelMonitor.setBounds(anchoUnit * 29, altoUnit * 3, anchoUnit * 22, altoUnit * 14);
-        panelMonitor.setBackground(narLg);
-        panelMonitor.setLayout(null);
+//PANEL MONITOR--------------------------------------------------------------------------------------------------------
+//PANEL MONITOR--------------------------------------------------------------------------------------------------------
+        JPanel panelMonitor = utiliGrafSal.panelMonitor(sal);
         panelPpal.add(panelMonitor);
+        
+//PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
+//PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
 
-        JButton butMonitor = new JButton();
-        butMonitor.setBackground(narUlg);
-        butMonitor.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 20, altoUnit * 10);
-        butMonitor.setBorder(null);
-        butMonitor.setFont(font1);
-        butMonitor.setText("Seguimiento");
-        butMonitor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (workshiftNow != null) {
-                        new Monitor(sal);
-                    } else {
-                        utiliMsg.errorWorkshift();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelMonitor.add(butMonitor);
-
+        panelA = new JPanel();
+        panelA.setLayout(null);
+        panelA.setBounds(20, altoUnit * 18, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
+        panelA.setBackground(bluLg);
+        panelPpal.add(panelA);        
         panelBDButtons = new JPanel();
         panelBDButtons.setLayout(null);
         panelBDButtons.setBackground(narLg);
@@ -331,36 +246,22 @@ public class Salon extends FrameFullManager {
         panelBDButtons.setVisible(false);
         panelA.add(panelBDButtons);
 
-//Panel Barra-----------------------------------------------------------        
-        JPanel panelBarr = returnPanelBarr();
+//Panel Barra-----------------------------------------------------------
+        JPanel panelBarr = utiliGrafSal.returnPanelBarr(sal);
         panelBDButtons.add(panelBarr);
 
 //Panel Delivery--------------------------------------------------------        
-        JPanel panelDeli = returnPanelDeli();
+        JPanel panelDeli = utiliGrafSal.returnPanelDeli(sal);
         panelBDButtons.add(panelDeli);
 
-//Delivery
-//        JButton butClosePanelBarrDeli = utiliGraf.button2("Cerrar", anchoUnit * 26, alturaPane - altoUnit * 2, anchoUnit * 20);
-//        butClosePanelBarrDeli.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent ae) {
-//                try {
-//                    closePanelBarrDeli();
-//                } catch (Exception ex) {
-//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//        panelBDButtons.add(butClosePanelBarrDeli);
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
-        panelA.setLayout(null);
-        panelA.setBounds(20, altoUnit * 18, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
-        panelA.setBackground(bluLg);
-        panelPpal.add(panelA);
 
+//    utiliGrafSal.returnTabbedPanes(sal);
+//    returnTabbedPanes();
+/*
         for (int i = 0; i < tableNum.size(); i++) {
             JPanel panelB = new JPanel();
             panelB.setBackground(narLg);
@@ -389,71 +290,75 @@ public class Salon extends FrameFullManager {
             panelB.setBounds(wUnit, hUnit, anchoPane, alturaPane + hUnit);
             panelsPane.add(panelB);
         }
+*/        
+        utiliGrafSal.returnTabbedPanes(sal);
 
-        for (int i = 0; i < panelsPane.size(); i++) {
-            tabbedPane.addTab(tablePan.get(i), panelsPane.get(i));
-        }
-
-        tabbedPane.setBounds(anchoUnit, anchoUnit, anchoPane, (alturaPane + altoUnit * 3));
-        panelA.add(tabbedPane);
-
-        ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (workshiftNow != null) {
-                    if (jbtAux != null) {
-                        jbtAux.setBorder(null);
-                        if (jbtAux.isOpenJBT() == true) {
-                            try {
-                                resetTableValues();
-                            } catch (Exception ex) {
-                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                    JButtonTable butClicked = (JButtonTable) e.getSource();
-                    for (int i = 0; i < tableButtons.size(); i++) {
-                        if (tableButtons.get(i).getNum() == butClicked.getNum()) {
-                            jbtAux = tableButtons.get(i);
-                        }
-                    }
-                    try {
-                        resetTableValues();
-                    } catch (Exception ex) {
-                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    jbtAux.setBorder(new LineBorder(bluSt, 8));
-
-                    if (jbtAux.isOpenJBT() == false) {
-                        try {
-                            setWaiter(0);
-                        } catch (Exception ex) {
-                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        tableAux = new Table(jbtAux.getNum(), jbtAux.getPos(), waiterAux);
-                        tableAux.setOpen(true);
-                        String nameT = tableAux.getPos() + tableAux.getNum();
-                        labelOrder.setText("MESA:" + nameT);
-                        tableAux.setOrder(new ArrayList<Itemcard>());
-                        try {
-                            jButExtSetter();
-                        } catch (Exception ex) {
-                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        tableAux = jbtAux.getTable();
-                        tableFullerProp();
-                    }
-                } else {
-                    utiliMsg.errorWorkshift();
-                }
-            }
-        };
-
-        for (int i = 0; i < tableButtons.size(); i++) {
-            jbtAux = tableButtons.get(i);
-            jbtAux.addActionListener(actionListener);
-        }
+        
+//
+//        for (int i = 0; i < panelsPane.size(); i++) {
+//            tabbedPane.addTab(tablePan.get(i), panelsPane.get(i));
+//        }
+//
+//        tabbedPane.setBounds(anchoUnit, anchoUnit, anchoPane, (alturaPane + altoUnit * 3));
+//        panelA.add(tabbedPane);
+//
+//        ActionListener actionListener = new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if (workshiftNow != null) {
+//                    if (jbtAux != null) {
+//                        jbtAux.setBorder(null);
+//                        if (jbtAux.isOpenJBT() == true) {
+//                            try {
+//                                resetTableValues();
+//                            } catch (Exception ex) {
+//                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        }
+//                    }
+//                    JButtonTable butClicked = (JButtonTable) e.getSource();
+//                    for (int i = 0; i < tableButtons.size(); i++) {
+//                        if (tableButtons.get(i).getNum() == butClicked.getNum()) {
+//                            jbtAux = tableButtons.get(i);
+//                        }
+//                    }
+//                    try {
+//                        resetTableValues();
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                    jbtAux.setBorder(new LineBorder(bluSt, 8));
+//
+//                    if (jbtAux.isOpenJBT() == false) {
+//                        try {
+//                            setWaiter(0);
+//                        } catch (Exception ex) {
+//                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                        tableAux = new Table(jbtAux.getNum(), jbtAux.getPos(), waiterAux);
+//                        tableAux.setOpen(true);
+//                        String nameT = tableAux.getPos() + tableAux.getNum();
+//                        labelOrder.setText("MESA:" + nameT);
+//                        tableAux.setOrder(new ArrayList<Itemcard>());
+//                        try {
+//                            jButExtSetter();
+//                        } catch (Exception ex) {
+//                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    } else {
+//                        tableAux = jbtAux.getTable();
+//                        tableFullerProp();
+//                    }
+//                } else {
+//                    utiliMsg.errorWorkshift();
+//                }
+//            }
+//        };
+//
+//        for (int i = 0; i < tableButtons.size(); i++) {
+//            jbtAux = tableButtons.get(i);
+//            jbtAux.addActionListener(actionListener);
+//        }
 
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
@@ -1273,40 +1178,25 @@ public class Salon extends FrameFullManager {
 //----------------------------------------------Finalización Turno--------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------
-    private void endWorkshift() throws Exception {
-        setEnabled(true);
-        if (ss.openJBTButtonsTester(tableButtons) == true) {
-            boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(user.getName(), user.getLastName());
-            if (confirm2 == true) {
-                sw.closeWorkshift(sal, workshiftNow, null, null, null, null, null);
-                setEnabled(false);
-            }
-        } else {
-            boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(user);
-            if (confirm3 == true) {
-                sw.inconcludeWsCutter(sal, workshiftNow);
-                setEnabled(false);
-            }
-        }
-    }
+    public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs) throws Exception {
 
-    public void saveWorkshift(Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> eraseTabs, ArrayList<Table> updTabs) throws Exception {
         boolean isTabs = false;
-        if (actTabs.size() > 0 || nTabs.size() > 0 || updTabs.size() > 0) {
+
+        if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
             isTabs = true;
         }
 
-        daoW.updateWorkshiftCash(actWs);
-        daoW.updateWorkshiftClose(actWs, isTabs);
-        daoW.updateWorkshiftElectronic(actWs);
-        daoW.updateWorkshiftError(actWs);
-        daoW.updateWorkshiftErrorReal(actWs);
-        daoW.updateWorkshiftMountReal(actWs);
-        daoW.updateWorkshiftState(actWs);
-        daoW.updateWorkshiftTotal(actWs);
-        if (nWs != null) {
-            daoW.saveWorkshift(nWs);
-            for (Table t : eraseTabs) {
+        daoW.updateWorkshiftCash(actualWs);
+        daoW.updateWorkshiftClose(actualWs, isTabs);
+        daoW.updateWorkshiftElectronic(actualWs);
+        daoW.updateWorkshiftError(actualWs);
+        daoW.updateWorkshiftErrorReal(actualWs);
+        daoW.updateWorkshiftMountReal(actualWs);
+        daoW.updateWorkshiftState(actualWs);
+        daoW.updateWorkshiftTotal(actualWs);
+        if (newWs != null) {
+            daoW.saveWorkshift(newWs);
+            for (Table t : toEraseTabs) {
 
                 if (t.getOrder().size() > 0) {
                     daoI.downActiveItemOrderTableAll(t);
@@ -1326,9 +1216,9 @@ public class Salon extends FrameFullManager {
                 daoT.downActiveTable(t);
             }
 
-            if (updTabs.size() > 0) {
-                for (int i = 0; i < updTabs.size(); i++) {
-                    Table t = updTabs.get(i);
+            if (toUpdTabs.size() > 0) {
+                for (int i = 0; i < toUpdTabs.size(); i++) {
+                    Table t = toUpdTabs.get(i);
                     daoI.downActiveItemOrderTableAll(t);
                     daoI.downActiveItemGiftTableAll(t);
                     daoI.downActiveItemPayedTableAll(t);
@@ -1352,7 +1242,7 @@ public class Salon extends FrameFullManager {
                 }
             }
 
-            for (Table t : nTabs) {
+            for (Table t : newTabs) {
                 st.saveTableCompleteChangeWs(t);
             }
         }
@@ -1401,10 +1291,6 @@ public class Salon extends FrameFullManager {
             tabsBut = true;
 
         }
-    }
-
-    private void closePanelBarrDel() throws Exception {
-
     }
 
     // BARR--------------------------------------
@@ -1924,25 +1810,7 @@ public class Salon extends FrameFullManager {
         setEnabled(true);
     }
 
-    public Table getTable() {
-        return tableAux;
-    }
-
 //------------------------------------------------------------------------------------------------------------------
-    double getTotal() {
-        return total;
-    }
-
-//------------------------------------------------------------------------------------------------------------------
-    double totalBacker() {
-        return total;
-    }
-
-//------------------------------------------------------------------------------------------------------------------
-    public ArrayList<Itemcard> getItemsTableAux() {
-        return itemsTableAux;
-    }
-
 //------------------------------------------------------------------------------------------------------------------
     private void jButExtSetter() throws Exception {
         if (jbtAux != null) {
@@ -2137,4 +2005,684 @@ public class Salon extends FrameFullManager {
     public void setSalonEnabled() {
         setEnabled(true);
     }
+
+    //GETTER && SETTER----------------------------------------------
+    //GETTER && SETTER----------------------------------------------
+    //GETTER && SETTER----------------------------------------------
+    //GETTER && SETTER----------------------------------------------
+    public Table getTableAux() {
+        return tableAux;
+    }
+
+    public void setTableAux(Table table) {
+        this.tableAux = table;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public ArrayList<Itemcard> getItemsTableAux() {
+        return itemsTableAux;
+    }
+
+    public void setItemsTableAux(ArrayList<Itemcard> itemsTableAux) {
+        this.itemsTableAux = itemsTableAux;
+    }
+
+    public ArrayList<String> getConfigSalon() {
+        return configSalon;
+    }
+
+    public void setConfigSalon(ArrayList<String> configSalon) {
+        this.configSalon = configSalon;
+    }
+
+    public int getAnchoPane() {
+        return anchoPane;
+    }
+
+    public void setAnchoPane(int anchoPane) {
+        this.anchoPane = anchoPane;
+    }
+    
+
+    public int getAlturaPane() {
+        return alturaPane;
+    }
+
+    public void setAlturaPane(int alturaPane) {
+        this.alturaPane = alturaPane;
+    }
+
+    
+
+    public int getTotalTable() {
+        return totalTable;
+    }
+
+    public void setTotalTable(int totalTable) {
+        this.totalTable = totalTable;
+    }
+
+    public int getNumBut() {
+        return numBut;
+    }
+
+    public void setNumBut(int numBut) {
+        this.numBut = numBut;
+    }
+
+    public int getRowsButtons() {
+        return rowsButtons;
+    }
+
+    public void setRowsButtons(int rowsButtons) {
+        this.rowsButtons = rowsButtons;
+    }
+
+    public int getColButtons() {
+        return colButtons;
+    }
+
+    public void setColButtons(int colButtons) {
+        this.colButtons = colButtons;
+    }
+
+    public int getFontSizeTable() {
+        return fontSizeTable;
+    }
+
+    public void setFontSizeTable(int fontSizeTable) {
+        this.fontSizeTable = fontSizeTable;
+    }
+
+    public boolean isTabsBut() {
+        return tabsBut;
+    }
+
+    public void setTabsBut(boolean tabsBut) {
+        this.tabsBut = tabsBut;
+    }
+
+    public int getF1() {
+        return f1;
+    }
+
+    public void setF1(int f1) {
+        this.f1 = f1;
+    }
+
+    public Font getFont1() {
+        return font1;
+    }
+
+    public void setFont1(Font font1) {
+        this.font1 = font1;
+    }
+
+    public int getF2() {
+        return f2;
+    }
+
+    public void setF2(int f2) {
+        this.f2 = f2;
+    }
+
+    public Font getFont2() {
+        return font2;
+    }
+
+    public void setFont2(Font font2) {
+        this.font2 = font2;
+    }
+
+    public int getF3() {
+        return f3;
+    }
+
+    public void setF3(int f3) {
+        this.f3 = f3;
+    }
+
+    public Font getFont3() {
+        return font3;
+    }
+
+    public void setFont3(Font font3) {
+        this.font3 = font3;
+    }
+
+    public JScrollPane getScrPaneBarr() {
+        return scrPaneBarr;
+    }
+
+    public void setScrPaneBarr(JScrollPane scrPaneBarr) {
+        this.scrPaneBarr = scrPaneBarr;
+    }
+
+    public JPanel getPanelBarrBut() {
+        return panelBarrBut;
+    }
+
+    public void setPanelBarrBut(JPanel panelBarrBut) {
+        this.panelBarrBut = panelBarrBut;
+    }
+
+    public JPanel getPanelDeliBut() {
+        return panelDeliBut;
+    }
+
+    public void setPanelDeliBut(JPanel panelDeliBut) {
+        this.panelDeliBut = panelDeliBut;
+    }
+
+    public JPanel getPanelDeliContainer() {
+        return panelDeliContainer;
+    }
+
+    public void setPanelDeliContainer(JPanel panelDeliContainer) {
+        this.panelDeliContainer = panelDeliContainer;
+    }
+
+    public ArrayList<Integer> getTableNum() {
+        return tableNum;
+    }
+
+    public void setTableNum(ArrayList<Integer> tableNum) {
+        this.tableNum = tableNum;
+    }
+
+    public ArrayList<String> getTablePan() {
+        return tablePan;
+    }
+
+    public void setTablePan(ArrayList<String> tablePan) {
+        this.tablePan = tablePan;
+    }
+
+    public ArrayList<String> getTablePanCh() {
+        return tablePanCh;
+    }
+
+    public void setTablePanCh(ArrayList<String> tablePanCh) {
+        this.tablePanCh = tablePanCh;
+    }
+
+    public ArrayList<User> getWaiters() {
+        return waiters;
+    }
+
+    public void setWaiters(ArrayList<User> waiters) {
+        this.waiters = waiters;
+    }
+
+    public ArrayList<Itemcard> getItemsDB() {
+        return itemsDB;
+    }
+
+    public void setItemsDB(ArrayList<Itemcard> itemsDB) {
+        this.itemsDB = itemsDB;
+    }
+
+    public ArrayList<Itemcard> getItemsGift() {
+        return itemsGift;
+    }
+
+    public void setItemsGift(ArrayList<Itemcard> itemsGift) {
+        this.itemsGift = itemsGift;
+    }
+
+    public ArrayList<Itemcard> getItemsPartialPaid() {
+        return itemsPartialPaid;
+    }
+
+    public void setItemsPartialPaid(ArrayList<Itemcard> itemsPartialPaid) {
+        this.itemsPartialPaid = itemsPartialPaid;
+    }
+
+    public ArrayList<Itemcard> getItemsPartialPaidNoDiscount() {
+        return itemsPartialPaidNoDiscount;
+    }
+
+    public void setItemsPartialPaidNoDiscount(ArrayList<Itemcard> itemsPartialPaidNoDiscount) {
+        this.itemsPartialPaidNoDiscount = itemsPartialPaidNoDiscount;
+    }
+
+    public ArrayList<Itemcard> getItemsError() {
+        return itemsError;
+    }
+
+    public void setItemsError(ArrayList<Itemcard> itemsError) {
+        this.itemsError = itemsError;
+    }
+
+    public ArrayList<ItemMonitor> getItemsMntr() {
+        return itemsMntr;
+    }
+
+    public void setItemsMntr(ArrayList<ItemMonitor> itemsMntr) {
+        this.itemsMntr = itemsMntr;
+    }
+
+    public User getWaiterAux() {
+        return waiterAux;
+    }
+
+    public void setWaiterAux(User waiterAux) {
+        this.waiterAux = waiterAux;
+    }
+
+    public Workshift getWorkshiftNow() {
+        return workshiftNow;
+    }
+
+    public void setWorkshiftNow(Workshift workshiftNow) {
+        this.workshiftNow = workshiftNow;
+    }
+
+    public Delivery getDeliOrderAux() {
+        return deliOrderAux;
+    }
+
+    public void setDeliOrderAux(Delivery deliOrderAux) {
+        this.deliOrderAux = deliOrderAux;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public double getPriceCorrection() {
+        return priceCorrection;
+    }
+
+    public void setPriceCorrection(double priceCorrection) {
+        this.priceCorrection = priceCorrection;
+    }
+
+    public double getAmoutnCash() {
+        return amoutnCash;
+    }
+
+    public void setAmoutnCash(double amoutnCash) {
+        this.amoutnCash = amoutnCash;
+    }
+
+    public double getAmountElectronic() {
+        return amountElectronic;
+    }
+
+    public void setAmountElectronic(double amountElectronic) {
+        this.amountElectronic = amountElectronic;
+    }
+
+    public double getError() {
+        return error;
+    }
+
+    public void setError(double error) {
+        this.error = error;
+    }
+
+    public ArrayList<JPanel> getPanelsPane() {
+        return panelsPane;
+    }
+
+    public void setPanelsPane(ArrayList<JPanel> panelsPane) {
+        this.panelsPane = panelsPane;
+    }
+
+    public ArrayList<JButtonTable> getTableButtons() {
+        return tableButtons;
+    }
+
+    public void setTableButtons(ArrayList<JButtonTable> tableButtons) {
+        this.tableButtons = tableButtons;
+    }
+
+    public ArrayList<JButtonBarr> getBarrButtons() {
+        return barrButtons;
+    }
+
+    public void setBarrButtons(ArrayList<JButtonBarr> barrButtons) {
+        this.barrButtons = barrButtons;
+    }
+
+    public ArrayList<JButtonDelivery> getDeliButtons() {
+        return deliButtons;
+    }
+
+    public void setDeliButtons(ArrayList<JButtonDelivery> deliButtons) {
+        this.deliButtons = deliButtons;
+    }
+
+    public ArrayList<JButtonDeliverySee> getDeliButtonsSees() {
+        return deliButtonsSees;
+    }
+
+    public void setDeliButtonsSees(ArrayList<JButtonDeliverySee> deliButtonsSees) {
+        this.deliButtonsSees = deliButtonsSees;
+    }
+
+    public ScheduledExecutorService getScheduler() {
+        return scheduler;
+    }
+
+    public void setScheduler(ScheduledExecutorService scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    public boolean isLoopBreaker() {
+        return loopBreaker;
+    }
+
+    public void setLoopBreaker(boolean loopBreaker) {
+        this.loopBreaker = loopBreaker;
+    }
+
+    public JButton getButBarrDeli() {
+        return butBarrDeli;
+    }
+
+    public void setButBarrDeli(JButton butBarrDeli) {
+        this.butBarrDeli = butBarrDeli;
+    }
+
+    public JPanel getPanelBDButtons() {
+        return panelBDButtons;
+    }
+
+    public void setPanelBDButtons(JPanel panelBDButtons) {
+        this.panelBDButtons = panelBDButtons;
+    }
+
+    public JButtonBarr getJbbAux() {
+        return jbbAux;
+    }
+
+    public void setJbbAux(JButtonBarr jbbAux) {
+        this.jbbAux = jbbAux;
+    }
+
+    public JButtonDelivery getJbdAux() {
+        return jbdAux;
+    }
+
+    public void setJbdAux(JButtonDelivery jbdAux) {
+        this.jbdAux = jbdAux;
+    }
+
+    public JButtonDeliverySee getJbdSAux() {
+        return jbdSAux;
+    }
+
+    public void setJbdSAux(JButtonDeliverySee jbdSAux) {
+        this.jbdSAux = jbdSAux;
+    }
+
+    public JPanel getPanelA() {
+        return panelA;
+    }
+
+    public void setPanelA(JPanel panelA) {
+        this.panelA = panelA;
+    }
+
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
+
+    public void setTabbedPane(JTabbedPane tabbedPane) {
+        this.tabbedPane = tabbedPane;
+    }
+
+    public JButtonTable getJbtAux() {
+        return jbtAux;
+    }
+
+    public void setJbtAux(JButtonTable jbtAux) {
+        this.jbtAux = jbtAux;
+    }
+
+    public int getRowsItems() {
+        return rowsItems;
+    }
+
+    public void setRowsItems(int rowsItems) {
+        this.rowsItems = rowsItems;
+    }
+
+    public int getColItems() {
+        return colItems;
+    }
+
+    public void setColItems(int colItems) {
+        this.colItems = colItems;
+    }
+
+    public String getCol1() {
+        return col1;
+    }
+
+    public void setCol1(String col1) {
+        this.col1 = col1;
+    }
+
+    public String getCol2() {
+        return col2;
+    }
+
+    public void setCol2(String col2) {
+        this.col2 = col2;
+    }
+
+    public String getCol3() {
+        return col3;
+    }
+
+    public void setCol3(String col3) {
+        this.col3 = col3;
+    }
+
+    public boolean isIndiBool() {
+        return indiBool;
+    }
+
+    public void setIndiBool(boolean indiBool) {
+        this.indiBool = indiBool;
+    }
+
+    public String[] getColNames() {
+        return colNames;
+    }
+
+    public void setColNames(String[] colNames) {
+        this.colNames = colNames;
+    }
+
+    public String[][] getData() {
+        return data;
+    }
+
+    public void setData(String[][] data) {
+        this.data = data;
+    }
+
+    public JComboBox getComboItems() {
+        return comboItems;
+    }
+
+    public void setComboItems(JComboBox comboItems) {
+        this.comboItems = comboItems;
+    }
+
+    public JCheckBox getCheckBoxIndic() {
+        return checkBoxIndic;
+    }
+
+    public void setCheckBoxIndic(JCheckBox checkBoxIndic) {
+        this.checkBoxIndic = checkBoxIndic;
+    }
+
+    public JSpinner getSpinnerUnitsItem() {
+        return spinnerUnitsItem;
+    }
+
+    public void setSpinnerUnitsItem(JSpinner spinnerUnitsItem) {
+        this.spinnerUnitsItem = spinnerUnitsItem;
+    }
+
+    public JScrollPane getScrollPaneItems() {
+        return scrollPaneItems;
+    }
+
+    public void setScrollPaneItems(JScrollPane scrollPaneItems) {
+        this.scrollPaneItems = scrollPaneItems;
+    }
+
+    public JTable getJTableItems() {
+        return jTableItems;
+    }
+
+    public void setJTableItems(JTable jTableItems) {
+        this.jTableItems = jTableItems;
+    }
+
+    public JButton getButCloseTable() {
+        return butCloseTable;
+    }
+
+    public void setButCloseTable(JButton butCloseTable) {
+        this.butCloseTable = butCloseTable;
+    }
+
+    public JPanel getPanelCuenta() {
+        return panelCuenta;
+    }
+
+    public void setPanelCuenta(JPanel panelCuenta) {
+        this.panelCuenta = panelCuenta;
+    }
+
+    public JPanel getPanelFlotante() {
+        return panelFlotante;
+    }
+
+    public void setPanelFlotante(JPanel panelFlotante) {
+        this.panelFlotante = panelFlotante;
+    }
+
+    public JLabel getLabelTotalParcial() {
+        return labelTotalParcial;
+    }
+
+    public void setLabelTotalParcial(JLabel labelTotalParcial) {
+        this.labelTotalParcial = labelTotalParcial;
+    }
+
+    public JLabel getLabelOrder() {
+        return labelOrder;
+    }
+
+    public void setLabelOrder(JLabel labelOrder) {
+        this.labelOrder = labelOrder;
+    }
+
+    public JLabel getLabelCuenta() {
+        return labelCuenta;
+    }
+
+    public void setLabelCuenta(JLabel labelCuenta) {
+        this.labelCuenta = labelCuenta;
+    }
+
+    public JLabel getLabelWaiter() {
+        return labelWaiter;
+    }
+
+    public void setLabelWaiter(JLabel labelWaiter) {
+        this.labelWaiter = labelWaiter;
+    }
+
+    public JLabel getLabelTip() {
+        return labelTip;
+    }
+
+    public void setLabelTip(JLabel labelTip) {
+        this.labelTip = labelTip;
+    }
+
+    public JLabel getLabelTotal() {
+        return labelTotal;
+    }
+
+    public void setLabelTotal(JLabel labelTotal) {
+        this.labelTotal = labelTotal;
+    }
+
+    public JLabel getLabelPartialPay() {
+        return labelPartialPay;
+    }
+
+    public void setLabelPartialPay(JLabel labelPartialPay) {
+        this.labelPartialPay = labelPartialPay;
+    }
+
+    public JButton getButInitWorkshift() {
+        return butInitWorkshift;
+    }
+
+    public void setButInitWorkshift(JButton butInitWorkshift) {
+        this.butInitWorkshift = butInitWorkshift;
+    }
+
+    public JButton getButPartialPay() {
+        return butPartialPay;
+    }
+
+    public void setButPartialPay(JButton butPartialPay) {
+        this.butPartialPay = butPartialPay;
+    }
+
+    public JPanel getPanelPartial() {
+        return panelPartial;
+    }
+
+    public void setPanelPartial(JPanel panelPartial) {
+        this.panelPartial = panelPartial;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+    
+    public int getWUnit() {
+        return wUnit;
+    }
+
+    public void setWUnit(int wUnit) {
+        this.wUnit = wUnit;
+    }
+    
+    public int getHUnit() {
+        return hUnit;
+    }
+
+    public void setHUnit(int wUnit) {
+        this.hUnit = wUnit;
+    }
+
 }

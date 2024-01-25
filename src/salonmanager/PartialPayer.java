@@ -66,7 +66,7 @@ public class PartialPayer extends FrameWindow {
     PartialPayer(Salon sal) {
         salon = sal;
         sm.addFrame(this);
-        Table table = salon.getTable();
+        Table table = salon.getTableAux();
         tab = new Table(table);
         total = tab.getTotal();
         discount = tab.getDiscount();

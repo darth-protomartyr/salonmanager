@@ -54,7 +54,7 @@ public class WaiterSelector extends FrameWindow {
 
     WaiterSelector(Salon sal, int i) throws Exception {
         salon = sal;
-        tableAux = salon.getTable();
+        tableAux = salon.getTableAux();
         sm.addFrame(this);
         setTitle("Selector de Mozos");
 

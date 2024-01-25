@@ -139,7 +139,6 @@ public class WorkshiftSession extends FrameWindow {
             dispose();
         } else {
             sses.crearSession(user);
-            
             new Salon(null, manager);
             dispose();
         }
