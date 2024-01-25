@@ -258,107 +258,8 @@ public class Salon extends FrameFullManager {
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
-
-//    utiliGrafSal.returnTabbedPanes(sal);
-//    returnTabbedPanes();
-/*
-        for (int i = 0; i < tableNum.size(); i++) {
-            JPanel panelB = new JPanel();
-            panelB.setBackground(narLg);
-            panelB.setLayout(null);
-            ArrayList<Integer> configValues = ss.salonConfigValues(tableNum.get(i), anchoPane, alturaPane);
-            fontSizeTable = configValues.get(0);
-            wUnit = configValues.get(1);
-            hUnit = configValues.get(2);
-            rowsButtons = configValues.get(3);
-            colButtons = configValues.get(4);
-
-            for (int y = 0; y < rowsButtons; y++) {
-                for (int z = 0; z < colButtons; z++) {
-                    JButtonTable jbt = new JButtonTable(tablePanCh.get(i), numBut, wUnit * (5 * z + 1), hUnit * (5 * y + 1), (wUnit * 4), (hUnit * 4));
-                    font1 = new Font("Arial", Font.BOLD, fontSizeTable);
-                    jbt.setFont(font1);
-                    jbt.setText(jbt.getText());
-                    jbt.setBackground(narUlg);
-                    jbt.setBorder(new EmptyBorder(10, 10, 10, 10));
-                    jbt.setBounds(jbt.getMarginW(), jbt.getMarginH(), jbt.getWidth(), jbt.getHeight());
-                    numBut += 1;
-                    tableButtons.add(jbt);
-                    panelB.add(jbt);
-                }
-            }
-            panelB.setBounds(wUnit, hUnit, anchoPane, alturaPane + hUnit);
-            panelsPane.add(panelB);
-        }
-*/        
+      
         utiliGrafSal.returnTabbedPanes(sal);
-
-        
-//
-//        for (int i = 0; i < panelsPane.size(); i++) {
-//            tabbedPane.addTab(tablePan.get(i), panelsPane.get(i));
-//        }
-//
-//        tabbedPane.setBounds(anchoUnit, anchoUnit, anchoPane, (alturaPane + altoUnit * 3));
-//        panelA.add(tabbedPane);
-//
-//        ActionListener actionListener = new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (workshiftNow != null) {
-//                    if (jbtAux != null) {
-//                        jbtAux.setBorder(null);
-//                        if (jbtAux.isOpenJBT() == true) {
-//                            try {
-//                                resetTableValues();
-//                            } catch (Exception ex) {
-//                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-//                    }
-//                    JButtonTable butClicked = (JButtonTable) e.getSource();
-//                    for (int i = 0; i < tableButtons.size(); i++) {
-//                        if (tableButtons.get(i).getNum() == butClicked.getNum()) {
-//                            jbtAux = tableButtons.get(i);
-//                        }
-//                    }
-//                    try {
-//                        resetTableValues();
-//                    } catch (Exception ex) {
-//                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                    jbtAux.setBorder(new LineBorder(bluSt, 8));
-//
-//                    if (jbtAux.isOpenJBT() == false) {
-//                        try {
-//                            setWaiter(0);
-//                        } catch (Exception ex) {
-//                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                        tableAux = new Table(jbtAux.getNum(), jbtAux.getPos(), waiterAux);
-//                        tableAux.setOpen(true);
-//                        String nameT = tableAux.getPos() + tableAux.getNum();
-//                        labelOrder.setText("MESA:" + nameT);
-//                        tableAux.setOrder(new ArrayList<Itemcard>());
-//                        try {
-//                            jButExtSetter();
-//                        } catch (Exception ex) {
-//                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    } else {
-//                        tableAux = jbtAux.getTable();
-//                        tableFullerProp();
-//                    }
-//                } else {
-//                    utiliMsg.errorWorkshift();
-//                }
-//            }
-//        };
-//
-//        for (int i = 0; i < tableButtons.size(); i++) {
-//            jbtAux = tableButtons.get(i);
-//            jbtAux.addActionListener(actionListener);
-//        }
 
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
@@ -370,18 +271,20 @@ public class Salon extends FrameFullManager {
         panelLateral.setBounds((anchoFrame * 7 / 10) + anchoUnit * 5, altoUnit * 3, anchoFrame - (anchoPane + anchoUnit * 7), (alturaPane + altoUnit * 22));
         panelPpal.add(panelLateral);
 
-        JPanel panelTable = new JPanel();
-        panelTable.setLayout(null);
-        panelTable.setBackground(narLg);
-        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (anchoPane + anchoUnit * 9), altoUnit * 89);
+        JPanel panelTable = utiliGrafSal.returnPanelTable(sal);
         panelLateral.add(panelTable);
-        labelOrder = utiliGraf.labelTitleBackerA2b("MESA: --");
-        labelOrder.setBounds(altoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
-        panelTable.add(labelOrder);
-
-        labelWaiter = utiliGraf.labelTitleBackerA4("Mozo: --");
-        labelWaiter.setBounds(altoUnit, altoUnit * 7, anchoUnit * 20, 30);
-        panelTable.add(labelWaiter);
+//        
+//        JPanel panelTable = new JPanel();
+//        panelTable.setLayout(null);
+//        panelTable.setBackground(narLg);
+//        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (anchoPane + anchoUnit * 9), altoUnit * 89);
+//        panelLateral.add(panelTable);
+//        labelOrder = utiliGraf.labelTitleBackerA2b("MESA: --");
+//        labelOrder.setBounds(altoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
+//        panelTable.add(labelOrder);
+//        labelWaiter = utiliGraf.labelTitleBackerA4("Mozo: --");
+//        labelWaiter.setBounds(altoUnit, altoUnit * 7, anchoUnit * 20, 30);
+//        panelTable.add(labelWaiter);
 
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
@@ -2684,5 +2587,4 @@ public class Salon extends FrameFullManager {
     public void setHUnit(int wUnit) {
         this.hUnit = wUnit;
     }
-
 }
