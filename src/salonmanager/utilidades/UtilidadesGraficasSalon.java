@@ -93,6 +93,13 @@ public class UtilidadesGraficasSalon {
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
 
+    
+//HEADER---------------------------------------------------------------------------------------------------------------
+//HEADER---------------------------------------------------------------------------------------------------------------
+//HEADER---------------------------------------------------------------------------------------------------------------
+//HEADER---------------------------------------------------------------------------------------------------------------        
+//PANEL ACTUAL.........................................................................................................
+//PANEL ACTUAL.........................................................................................................
     public JPanel panelActualBacker(Salon salon) {
         JPanel panelActual = new JPanel();
         panelActual.setBounds(anchoUnit * 11, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
@@ -151,6 +158,8 @@ public class UtilidadesGraficasSalon {
         return panelActual;
     }
 
+//PANEL BARRDELI.......................................................................................................
+//PANEL BARRDELI.......................................................................................................
     public JPanel panelBarrDeliBacker(Salon salon) {
         JPanel panelBarrDeli = new JPanel();
         panelBarrDeli.setBounds(anchoUnit * 52, altoUnit * 3, anchoUnit * 25, altoUnit * 14);
@@ -180,6 +189,38 @@ public class UtilidadesGraficasSalon {
         });
         panelBarrDeli.add(salon.getButBarrDeli());
         return panelBarrDeli;
+    }
+
+//PANEL MONITOR........................................................................................................
+//PANEL MONITOR........................................................................................................
+    public JPanel panelMonitor(Salon salon) {
+        JPanel panelMonitor = new JPanel();
+        panelMonitor.setBounds(anchoUnit * 29, altoUnit * 3, anchoUnit * 22, altoUnit * 14);
+        panelMonitor.setBackground(narLg);
+        panelMonitor.setLayout(null);
+
+        JButton butMonitor = new JButton();
+        butMonitor.setBackground(narUlg);
+        butMonitor.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 20, altoUnit * 10);
+        butMonitor.setBorder(null);
+        butMonitor.setFont(salon.getFont1());
+        butMonitor.setText("Seguimiento");
+        butMonitor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    if (salon.getWorkshiftNow() != null) {
+                        new Monitor(salon);
+                    } else {
+                        utiliMsg.errorWorkshift();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelMonitor.add(butMonitor);
+        return panelMonitor;
     }
 
     private void butPanelTurn(Salon salon) throws Exception {
@@ -223,180 +264,112 @@ public class UtilidadesGraficasSalon {
         }
     }
 
-    private void resetTableValues(Salon salon) throws Exception {
-        salon.setItemsTableAux(new ArrayList<Itemcard>());//items a cobrar de la mesa
-        salon.setItemsGift(new ArrayList<Itemcard>()); //items obsequiados
-        salon.setItemsPartialPaid(new ArrayList<Itemcard>()); // items cobrados por pago parcial
-        salon.setItemsPartialPaidNoDiscount(new ArrayList<Itemcard>()); // items cobrados anted de aplicar descuento
-        salon.setWaiterAux(null);
-        salon.setTableAux(null);
-        salon.setTotal(0);
-        salon.setError(0);
-        salon.setDiscount(0);
-        salon.setPriceCorrection(0);
-        setTableItems(salon);
-        salon.getCheckBoxIndic().setSelected(false);
-        salon.getSpinnerUnitsItem().setValue(1);
-//        comboItems.setSelectedIndex(itemsDB.size());
-        salon.getLabelTotalParcial().setText("Parcial $:");
-        salon.getLabelCuenta().setText("0.00");
-        salon.getLabelTip().setText("Prop: $0.00");
-        salon.getLabelTotal().setText("Total: $0.00");
-        salon.getLabelPartialPay().setText("Pagado: $0.00");
-        salon.getLabelOrder().setText("MESA:--");
-        salon.getLabelWaiter().setText("Mozo: --");
-        salon.getButCloseTable().setText("CERRAR ORDEN");
-        if (salon.getJbtAux() != null) {
-            salon.getJbtAux().setBorder(null);
-            if (salon.getJbtAux().isOpenJBT() == true) {
-                if (salon.getItemsTableAux().size() > 0) {
-                    if (salon.getTableAux().isBill() == true) {
-                        salon.getButCloseTable().setText("CONFIRMAR PAGO");
-                    } else {
-                        salon.getButCloseTable().setText("CERRAR CUENTA");
-                    }
+    
+//PANEL BUTTONS--------------------------------------------------------------------------------------------------------        
+//PANEL BUTTONS--------------------------------------------------------------------------------------------------------        
+//PANEL BUTTONS--------------------------------------------------------------------------------------------------------        
+//PANEL BUTTONS--------------------------------------------------------------------------------------------------------        
+
+//PANEL TABLE BUTTONS..................................................................................................
+//PANEL TABLE BUTTONS..................................................................................................    
+    public void returnTabbedPanes(Salon salon) {
+        for (int i = 0; i < salon.getTableNum().size(); i++) {
+            JPanel panelB = new JPanel();
+            panelB.setBackground(narLg);
+            panelB.setLayout(null);
+            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), salon.getAnchoPane(), salon.getAlturaPane());
+            salon.setFontSizeTable(configValues.get(0));
+            salon.setWUnit(configValues.get(1));
+            salon.setHUnit(configValues.get(2));
+            salon.setRowsButtons(configValues.get(3));
+            salon.setColButtons(configValues.get(4));
+
+            for (int y = 0; y < salon.getRowsButtons(); y++) {
+                for (int z = 0; z < salon.getColButtons(); z++) {
+                    JButtonTable jbt = new JButtonTable(salon.getTablePanCh().get(i), salon.getNumBut(), salon.getWUnit() * (5 * z + 1), salon.getHUnit() * (5 * y + 1), (salon.getWUnit() * 4), (salon.getHUnit() * 4));
+                    salon.setFont1(new Font("Arial", Font.BOLD, salon.getFontSizeTable()));
+                    jbt.setFont(salon.getFont1());
+                    jbt.setText(jbt.getText());
+                    jbt.setBackground(narUlg);
+                    jbt.setBorder(new EmptyBorder(10, 10, 10, 10));
+                    jbt.setBounds(jbt.getMarginW(), jbt.getMarginH(), jbt.getWidth(), jbt.getHeight());
+                    salon.setNumBut(salon.getNumBut() + 1);
+                    salon.getTableButtons().add(jbt);
+                    panelB.add(jbt);
                 }
             }
-        }
-    }
-
-    private void setTableItems(Salon salon) {
-        HashSet<Itemcard> itemsSet = new HashSet<Itemcard>(salon.getItemsTableAux());
-        ArrayList<Itemcard> itemsAux = new ArrayList<Itemcard>(itemsSet);
-
-        HashSet<Itemcard> partialSet = new HashSet<Itemcard>(salon.getItemsPartialPaid());
-        ArrayList<Itemcard> partials = new ArrayList<Itemcard>(partialSet);
-
-        HashSet<Itemcard> partialSetND = new HashSet<Itemcard>(salon.getItemsPartialPaidNoDiscount());
-        ArrayList<Itemcard> partialsND = new ArrayList<Itemcard>(partialSetND);
-
-        HashSet<Itemcard> giftSet = new HashSet<Itemcard>(salon.getItemsGift());
-        ArrayList<Itemcard> gifts = new ArrayList<Itemcard>(giftSet);
-
-        HashSet<Itemcard> totalSet = new HashSet<Itemcard>(itemsAux);
-        ArrayList<Itemcard> totalItems = new ArrayList<Itemcard>(totalSet);
-
-        totalItems.addAll(partials);
-        totalItems.addAll(partialsND);
-        totalItems.addAll(gifts);
-
-        salon.setRowsItems(totalItems.size());
-
-        int aux = 0;
-        if (salon.getDiscount() > 0) {
-            aux += 1;
+            panelB.setBounds(salon.getWUnit(), salon.getHUnit(), salon.getAnchoPane(), salon.getAlturaPane() + salon.getHUnit());
+            salon.getPanelsPane().add(panelB);
         }
 
-        if (salon.getPriceCorrection() > 0) {
-            aux += 1;
+        for (int i = 0; i < salon.getPanelsPane().size(); i++) {
+            salon.getTabbedPane().addTab(salon.getTablePan().get(i), salon.getPanelsPane().get(i));
         }
+        salon.getTabbedPane().setBounds(anchoUnit, anchoUnit, salon.getAnchoPane(), (salon.getAlturaPane() + altoUnit * 3));
+        salon.getPanelA().add(salon.getTabbedPane());
 
-        salon.setData(new String[salon.getRowsItems() + aux][salon.getColItems()]);
-
-        int intAux = itemsAux.size();
-        int intPartial = itemsAux.size() + partials.size();
-        int intPartialND = itemsAux.size() + partials.size() + partialsND.size();
-
-        double disc = (double) salon.getDiscount() / 100;
-
-        for (int i = 0; i < salon.getRowsItems(); i++) {
-            Itemcard ic = totalItems.get(i);
-
-            if (i < intAux) {
-                int u = st.itemUnitsBacker(salon.getItemsTableAux(), ic);
-                salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " " + ic.getName();
-                salon.getData()[i][2] = " " + ic.getPrice() * u * (1 - disc);
-            }
-
-            if (partials.size() > 0 && i >= intAux && i < intPartial) {
-                int u = st.itemUnitsBacker(salon.getItemsPartialPaid(), ic);
-                salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " PAG." + ic.getName();
-                salon.getData()[i][2] = "PAGADO";
-            }
-
-            if (partialsND.size() > 0 && i >= intPartial && i < intPartialND) {
-                int u = st.itemUnitsBacker(salon.getItemsPartialPaidNoDiscount(), ic);
-                salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " PAG*." + ic.getName();
-                salon.getData()[i][2] = "PAGADO";
-            }
-
-            if (i >= intPartialND) {
-                int u = st.itemUnitsBacker(salon.getItemsGift(), ic);
-                salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " OBS." + ic.getName();
-                salon.getData()[i][2] = " 0";
-            }
-        }
-
-        if (salon.getPriceCorrection() > 0) {
-            if (salon.getDiscount() > 0) {
-                salon.getData()[salon.getRowsItems() - 1][1] = "Corrección precio mod:";
-                salon.getData()[salon.getRowsItems() - 1][2] = salon.getPriceCorrection() + "";
-            } else {
-                salon.getData()[salon.getRowsItems()][1] = "Corrección precio mod:";
-                salon.getData()[salon.getRowsItems()][2] = salon.getPriceCorrection() + "";
-            }
-        }
-
-        if (salon.getDiscount() > 0) {
-            salon.getData()[salon.getRowsItems()][1] = "DESCUENTO: " + salon.getDiscount() + "%";
-        }
-
-        DefaultTableModel tableModel = new DefaultTableModel(salon.getData(), salon.getColNames());
-        salon.getJTableItems().setModel(tableModel);
-        salon.getJTableItems().setDefaultEditor(Object.class, null);
-
-        JTableHeader header = salon.getJTableItems().getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 16));
-        header.setBackground(bluSt);
-
-        Font cellFont = new Font("Arial", Font.BOLD, 14);
-        salon.getJTableItems().setFont(cellFont);
-        salon.getJTableItems().setRowHeight(25);
-        salon.getJTableItems().setBackground(narUlg);
-
-        int c = (salon.getAnchoPane() - 50) / 8;
-        TableColumn column1 = salon.getJTableItems().getColumnModel().getColumn(0);
-        column1.setPreferredWidth(c);
-        TableColumn column2 = salon.getJTableItems().getColumnModel().getColumn(1);
-        column2.setPreferredWidth(c * 5);
-        TableColumn column3 = salon.getJTableItems().getColumnModel().getColumn(2);
-        column3.setPreferredWidth(c * 2);
-    }
-
-    public JPanel panelMonitor(Salon salon) {
-        JPanel panelMonitor = new JPanel();
-        panelMonitor.setBounds(anchoUnit * 29, altoUnit * 3, anchoUnit * 22, altoUnit * 14);
-        panelMonitor.setBackground(narLg);
-        panelMonitor.setLayout(null);
-
-        JButton butMonitor = new JButton();
-        butMonitor.setBackground(narUlg);
-        butMonitor.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 20, altoUnit * 10);
-        butMonitor.setBorder(null);
-        butMonitor.setFont(salon.getFont1());
-        butMonitor.setText("Seguimiento");
-        butMonitor.addActionListener(new ActionListener() {
+        ActionListener actionListener = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (salon.getWorkshiftNow() != null) {
-                        new Monitor(salon);
-                    } else {
-                        utiliMsg.errorWorkshift();
+            public void actionPerformed(ActionEvent e) {
+                if (salon.getWorkshiftNow() != null) {
+                    if (salon.getJbtAux() != null) {
+                        salon.getJbtAux().setBorder(null);
+                        if (salon.getJbtAux().isOpenJBT() == true) {
+                            try {
+                                resetTableValues(salon);
+                            } catch (Exception ex) {
+                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
                     }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    JButtonTable butClicked = (JButtonTable) e.getSource();
+                    for (int i = 0; i < salon.getTableButtons().size(); i++) {
+                        if (salon.getTableButtons().get(i).getNum() == butClicked.getNum()) {
+                            salon.setJbtAux(salon.getTableButtons().get(i));
+                        }
+                    }
+                    try {
+                        resetTableValues(salon);
+                    } catch (Exception ex) {
+                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    salon.getJbtAux().setBorder(new LineBorder(bluSt, 8));
+
+                    if (salon.getJbtAux().isOpenJBT() == false) {
+                        try {
+                            salon.setWaiter(0);
+                        } catch (Exception ex) {
+                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        salon.setTableAux(new Table(salon.getJbtAux().getNum(), salon.getJbtAux().getPos(), salon.getWaiterAux()));
+                        salon.getTableAux().setOpen(true);
+                        String nameT = salon.getTableAux().getPos() + salon.getTableAux().getNum();
+                        salon.getLabelOrder().setText("MESA:" + nameT);
+                        salon.getTableAux().setOrder(new ArrayList<Itemcard>());
+                        try {
+                            jButExtSetter(salon);
+                        } catch (Exception ex) {
+                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        salon.setTableAux(salon.getJbtAux().getTable());
+                        tableFullerProp(salon);
+                    }
+                } else {
+                    utiliMsg.errorWorkshift();
                 }
             }
-        });
-        panelMonitor.add(butMonitor);
-        return panelMonitor;
+        };
+
+        for (int i = 0; i < salon.getTableButtons().size(); i++) {
+            salon.setJbtAux(salon.getTableButtons().get(i));
+            salon.getJbtAux().addActionListener(actionListener);
+        }
+
     }
 
+//PANEL BARR BUTTONS...................................................................................................
+//PANEL BARR BUTTONS...................................................................................................    
     public JPanel returnPanelBarr(Salon salon) {
         JPanel panelBarr = new JPanel();
         panelBarr.setLayout(null);
@@ -425,12 +398,7 @@ public class UtilidadesGraficasSalon {
         salon.setScrPaneBarr(new JScrollPane(salon.getPanelBarrBut()));
         salon.getScrPaneBarr().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         salon.getScrPaneBarr().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         salon.getScrPaneBarr().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 55);
-
-//                scrPaneBarr.setPreferredSize(new Dimension(anchoUnit * 32, altoUnit * 55));
-//        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrPaneBarr.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         panelBarr.add(salon.getScrPaneBarr());
 
         return panelBarr;
@@ -570,89 +538,8 @@ public class UtilidadesGraficasSalon {
         }
     }
 
-    private void jButExtSetter(Salon salon) {
-        if (salon.getJbtAux() != null) {
-            salon.getJbtAux().setTable(salon.getTableAux());
-
-            for (int i = 0; i < salon.getTableButtons().size(); i++) {
-                if (salon.getTableButtons().get(i).getNum() == salon.getJbtAux().getNum()) {
-                    salon.getTableButtons().set(i, salon.getJbtAux());
-                }
-            }
-        }
-
-        if (salon.getJbbAux() != null) {
-            salon.getJbbAux().setTable(salon.getTableAux());
-            for (int i = 0; i < salon.getBarrButtons().size(); i++) {
-                if (salon.getBarrButtons().get(i).getNum() == salon.getJbbAux().getNum()) {
-                    salon.getBarrButtons().set(i, salon.getJbbAux());
-                }
-            }
-        }
-
-        if (salon.getJbdAux() != null) {
-            salon.getJbdAux().setTable(salon.getTableAux());
-            for (int i = 0; i < salon.getDeliButtons().size(); i++) {
-                if (salon.getDeliButtons().get(i).getNum() == salon.getJbdAux().getNum()) {
-                    salon.getDeliButtons().set(i, salon.getJbdAux());
-                }
-            }
-        }
-    }
-
-    private void tableFullerProp(Salon salon) {
-        salon.setItemsTableAux(salon.getTableAux().getOrder());
-        salon.setItemsGift(salon.getTableAux().getGifts());
-        salon.setItemsPartialPaid(salon.getTableAux().getPartialPayed());
-        salon.setItemsPartialPaidNoDiscount(salon.getTableAux().getPartialPayedND());
-        salon.setWaiterAux(salon.getTableAux().getWaiter());
-        salon.setDiscount(salon.getTableAux().getDiscount());
-        salon.setPriceCorrection(salon.getTableAux().getPriceCorrection());
-        salon.setTotal(salon.getTableAux().getTotal());
-        salon.setError(salon.getTableAux().getError());
-        setTableItems(salon);
-        if (salon.getItemsPartialPaid().size() > 0) {
-            double payed = ss.partialBillPayed(salon.getTableAux());
-            salon.getLabelPartialPay().setText("Pagado: $" + (payed));
-        }
-
-        if (salon.getTableAux().isBill() == true) {
-            salon.getLabelTotalParcial().setText("Total $:");
-            salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * 0.1));
-            double tot = Math.round(salon.getTotal() * 0.1) + salon.getTotal();
-            salon.getLabelTotal().setText("Total: " + tot);
-        } else {
-            salon.getLabelTotalParcial().setText("Parcial $:");
-        }
-
-        if (salon.getJbtAux() != null) {
-            salon.getLabelWaiter().setText("Mozo: " + salon.getWaiterAux().getName() + " " + utili.strShorter(salon.getWaiterAux().getLastName(), 2).toUpperCase());
-            String nameT = salon.getTableAux().getPos() + salon.getTableAux().getNum();
-            salon.getLabelOrder().setText("MESA:" + nameT);
-            if (salon.getJbtAux().isOpenJBT() == false) {
-                salon.getButCloseTable().setText("CERRAR ORDEN");
-            } else {
-                if (salon.getTableAux().isBill() == true) {
-                    salon.getButCloseTable().setText("CONFIRMAR PAGO");
-                } else {
-                    salon.getButCloseTable().setText("CERRAR CUENTA");
-                }
-            }
-        }
-
-        if (salon.getJbbAux() != null) {
-            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-            salon.getLabelOrder().setText("BARRA: B" + salon.getTableAux().getNum());
-        }
-
-        if (salon.getJbdAux() != null) {
-            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-            salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
-        }
-
-        salon.getLabelCuenta().setText(salon.getTotal() + "");
-    }
-
+//PANEL DELIVERY BUTTONS...............................................................................................
+//PANEL DELIVERY BUTTONS...............................................................................................    
     public JPanel returnPanelDeli(Salon salon) {
         JPanel panelDeli = new JPanel();
         panelDeli.setLayout(null);
@@ -728,7 +615,6 @@ public class UtilidadesGraficasSalon {
             salon.getDeliButtons().get(i).setBounds(anchoUnit, altoUnit * ((i * 10) + 1), anchoUnit * 23, altoUnit * 10);
             salon.getPanelDeliBut().add(salon.getDeliButtons().get(i));
 
-            //Test
             salon.getDeliButtonsSees().get(i).setBounds(anchoUnit * 24, altoUnit * ((i * 10) + 1), anchoUnit * 6, altoUnit * 10);
             salon.getPanelDeliBut().add(salon.getDeliButtonsSees().get(i));
         }
@@ -741,132 +627,14 @@ public class UtilidadesGraficasSalon {
         salon.getPanelDeliContainer().add(scrPaneDeli);
     }
 
-    public void returnTabbedPanes(Salon salon) {
-        for (int i = 0; i < salon.getTableNum().size(); i++) {
-            JPanel panelB = new JPanel();
-            panelB.setBackground(narLg);
-            panelB.setLayout(null);
-            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), salon.getAnchoPane(), salon.getAlturaPane());
-            salon.setFontSizeTable(configValues.get(0));
-            salon.setWUnit(configValues.get(1));
-            salon.setHUnit(configValues.get(2));
-            salon.setRowsButtons(configValues.get(3));
-            salon.setColButtons(configValues.get(4));
+        
+//PANEL LATERAL--------------------------------------------------------------------------------------------------------        
+//PANEL LATERAL--------------------------------------------------------------------------------------------------------        
+//PANEL LATERAL--------------------------------------------------------------------------------------------------------        
+//PANEL LATERAL--------------------------------------------------------------------------------------------------------        
 
-            for (int y = 0; y < salon.getRowsButtons(); y++) {
-                for (int z = 0; z < salon.getColButtons(); z++) {
-                    JButtonTable jbt = new JButtonTable(salon.getTablePanCh().get(i), salon.getNumBut(), salon.getWUnit() * (5 * z + 1), salon.getHUnit() * (5 * y + 1), (salon.getWUnit() * 4), (salon.getHUnit() * 4));
-                    salon.setFont1(new Font("Arial", Font.BOLD, salon.getFontSizeTable()));
-                    jbt.setFont(salon.getFont1());
-                    jbt.setText(jbt.getText());
-                    jbt.setBackground(narUlg);
-                    jbt.setBorder(new EmptyBorder(10, 10, 10, 10));
-                    jbt.setBounds(jbt.getMarginW(), jbt.getMarginH(), jbt.getWidth(), jbt.getHeight());
-                    salon.setNumBut(salon.getNumBut() + 1);
-                    salon.getTableButtons().add(jbt);
-                    panelB.add(jbt);
-                }
-            }
-            panelB.setBounds(salon.getWUnit(), salon.getHUnit(), salon.getAnchoPane(), salon.getAlturaPane() + salon.getHUnit());
-            salon.getPanelsPane().add(panelB);
-        }
-
-        /*        for (int i = 0; i < salon.getTableNum().size(); i++) {
-            JPanel panelB = new JPanel();
-            panelB.setBackground(narLg);
-            panelB.setLayout(null);
-            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), salon.getAnchoPane(), salon.getAlturaPane());
-            salon.setFontSizeTable(configValues.get(0));
-            salon.setWUnit(configValues.get(1));
-            salon.setHUnit(configValues.get(2));
-            salon.setRowsButtons(configValues.get(3));
-            salon.setColButtons(configValues.get(4));
-
-            for (int y = 0; y < salon.getRowsButtons(); y++) {
-                for (int z = 0; z < salon.getColButtons(); z++) {
-                    JButtonTable jbt = new JButtonTable(salon.getTablePanCh().get(i), salon.getNumBut(), salon.getWUnit() * (5 * z + 1), salon.getHUnit() * (5 * y + 1), (salon.getWUnit() * 4), (salon.getHUnit() * 4));
-                    salon.setFont1(new Font("Arial", Font.BOLD, salon.getFontSizeTable()));
-                    jbt.setFont(salon.getFont1());
-                    jbt.setText(jbt.getText());
-                    jbt.setBackground(narUlg);
-                    jbt.setBorder(new EmptyBorder(10, 10, 10, 10));
-                    jbt.setBounds(jbt.getMarginW(), jbt.getMarginH(), jbt.getWidth(), jbt.getHeight());
-                    salon.setNumBut( salon.getNumBut() + 1);
-                    salon.getTableButtons().add(jbt);
-                    panelB.add(jbt);
-                }
-            }
-            panelB.setBounds(salon.getWUnit(), salon.getHUnit(), salon.getAnchoPane(), salon.getAlturaPane() + salon.getHUnit());
-            salon.getPanelsPane().add(panelB);
-        }
-
-         */
-        for (int i = 0; i < salon.getPanelsPane().size(); i++) {
-            salon.getTabbedPane().addTab(salon.getTablePan().get(i), salon.getPanelsPane().get(i));
-        }
-        salon.getTabbedPane().setBounds(anchoUnit, anchoUnit, salon.getAnchoPane(), (salon.getAlturaPane() + altoUnit * 3));
-        salon.getPanelA().add(salon.getTabbedPane());
-
-        ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (salon.getWorkshiftNow() != null) {
-                    if (salon.getJbtAux() != null) {
-                        salon.getJbtAux().setBorder(null);
-                        if (salon.getJbtAux().isOpenJBT() == true) {
-                            try {
-                                resetTableValues(salon);
-                            } catch (Exception ex) {
-                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                    JButtonTable butClicked = (JButtonTable) e.getSource();
-                    for (int i = 0; i < salon.getTableButtons().size(); i++) {
-                        if (salon.getTableButtons().get(i).getNum() == butClicked.getNum()) {
-                            salon.setJbtAux(salon.getTableButtons().get(i));
-                        }
-                    }
-                    try {
-                        resetTableValues(salon);
-                    } catch (Exception ex) {
-                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    salon.getJbtAux().setBorder(new LineBorder(bluSt, 8));
-
-                    if (salon.getJbtAux().isOpenJBT() == false) {
-                        try {
-                            salon.setWaiter(0);
-                        } catch (Exception ex) {
-                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        salon.setTableAux(new Table(salon.getJbtAux().getNum(), salon.getJbtAux().getPos(), salon.getWaiterAux()));
-                        salon.getTableAux().setOpen(true);
-                        String nameT = salon.getTableAux().getPos() + salon.getTableAux().getNum();
-                        salon.getLabelOrder().setText("MESA:" + nameT);
-                        salon.getTableAux().setOrder(new ArrayList<Itemcard>());
-                        try {
-                            jButExtSetter(salon);
-                        } catch (Exception ex) {
-                            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        salon.setTableAux(salon.getJbtAux().getTable());
-                        tableFullerProp(salon);
-                    }
-                } else {
-                    utiliMsg.errorWorkshift();
-                }
-            }
-        };
-
-        for (int i = 0; i < salon.getTableButtons().size(); i++) {
-            salon.setJbtAux(salon.getTableButtons().get(i));
-            salon.getJbtAux().addActionListener(actionListener);
-        }
-
-    }
-
+//PANEL TABLE..........................................................................................................
+//PANEL TABLE.......................................................................................................... 
     public JPanel returnPanelTable(Salon salon) {
         JPanel panelTable = new JPanel();
         panelTable.setLayout(null);
@@ -882,6 +650,8 @@ public class UtilidadesGraficasSalon {
         return panelTable;
     }
 
+//PANEL SELECT ITEM....................................................................................................
+//PANEL SELECT ITEM....................................................................................................
     public JPanel returnPanelSelItem(Salon salon) {
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
@@ -898,7 +668,6 @@ public class UtilidadesGraficasSalon {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
         });
         panelSelItem.add(butCaptionBebidas);
 
@@ -1059,5 +828,240 @@ public class UtilidadesGraficasSalon {
             setTableItems(salon);
         }
     }
+    
+//FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
+//FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
+//FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
+//FUNCIONES GENERALES--------------------------------------------------------------------------------------------------         
+    private void resetTableValues(Salon salon) throws Exception {
+        salon.setItemsTableAux(new ArrayList<Itemcard>());//items a cobrar de la mesa
+        salon.setItemsGift(new ArrayList<Itemcard>()); //items obsequiados
+        salon.setItemsPartialPaid(new ArrayList<Itemcard>()); // items cobrados por pago parcial
+        salon.setItemsPartialPaidNoDiscount(new ArrayList<Itemcard>()); // items cobrados anted de aplicar descuento
+        salon.setWaiterAux(null);
+        salon.setTableAux(null);
+        salon.setTotal(0);
+        salon.setError(0);
+        salon.setDiscount(0);
+        salon.setPriceCorrection(0);
+        setTableItems(salon);
+        salon.getCheckBoxIndic().setSelected(false);
+        salon.getSpinnerUnitsItem().setValue(1);
+//        comboItems.setSelectedIndex(itemsDB.size());
+        salon.getLabelTotalParcial().setText("Parcial $:");
+        salon.getLabelCuenta().setText("0.00");
+        salon.getLabelTip().setText("Prop: $0.00");
+        salon.getLabelTotal().setText("Total: $0.00");
+        salon.getLabelPartialPay().setText("Pagado: $0.00");
+        salon.getLabelOrder().setText("MESA:--");
+        salon.getLabelWaiter().setText("Mozo: --");
+        salon.getButCloseTable().setText("CERRAR ORDEN");
+        if (salon.getJbtAux() != null) {
+            salon.getJbtAux().setBorder(null);
+            if (salon.getJbtAux().isOpenJBT() == true) {
+                if (salon.getItemsTableAux().size() > 0) {
+                    if (salon.getTableAux().isBill() == true) {
+                        salon.getButCloseTable().setText("CONFIRMAR PAGO");
+                    } else {
+                        salon.getButCloseTable().setText("CERRAR CUENTA");
+                    }
+                }
+            }
+        }
+    }
+
+    private void setTableItems(Salon salon) {
+        HashSet<Itemcard> itemsSet = new HashSet<Itemcard>(salon.getItemsTableAux());
+        ArrayList<Itemcard> itemsAux = new ArrayList<Itemcard>(itemsSet);
+
+        HashSet<Itemcard> partialSet = new HashSet<Itemcard>(salon.getItemsPartialPaid());
+        ArrayList<Itemcard> partials = new ArrayList<Itemcard>(partialSet);
+
+        HashSet<Itemcard> partialSetND = new HashSet<Itemcard>(salon.getItemsPartialPaidNoDiscount());
+        ArrayList<Itemcard> partialsND = new ArrayList<Itemcard>(partialSetND);
+
+        HashSet<Itemcard> giftSet = new HashSet<Itemcard>(salon.getItemsGift());
+        ArrayList<Itemcard> gifts = new ArrayList<Itemcard>(giftSet);
+
+        HashSet<Itemcard> totalSet = new HashSet<Itemcard>(itemsAux);
+        ArrayList<Itemcard> totalItems = new ArrayList<Itemcard>(totalSet);
+
+        totalItems.addAll(partials);
+        totalItems.addAll(partialsND);
+        totalItems.addAll(gifts);
+
+        salon.setRowsItems(totalItems.size());
+
+        int aux = 0;
+        if (salon.getDiscount() > 0) {
+            aux += 1;
+        }
+
+        if (salon.getPriceCorrection() > 0) {
+            aux += 1;
+        }
+
+        salon.setData(new String[salon.getRowsItems() + aux][salon.getColItems()]);
+
+        int intAux = itemsAux.size();
+        int intPartial = itemsAux.size() + partials.size();
+        int intPartialND = itemsAux.size() + partials.size() + partialsND.size();
+
+        double disc = (double) salon.getDiscount() / 100;
+
+        for (int i = 0; i < salon.getRowsItems(); i++) {
+            Itemcard ic = totalItems.get(i);
+
+            if (i < intAux) {
+                int u = st.itemUnitsBacker(salon.getItemsTableAux(), ic);
+                salon.getData()[i][0] = " " + u;
+                salon.getData()[i][1] = " " + ic.getName();
+                salon.getData()[i][2] = " " + ic.getPrice() * u * (1 - disc);
+            }
+
+            if (partials.size() > 0 && i >= intAux && i < intPartial) {
+                int u = st.itemUnitsBacker(salon.getItemsPartialPaid(), ic);
+                salon.getData()[i][0] = " " + u;
+                salon.getData()[i][1] = " PAG." + ic.getName();
+                salon.getData()[i][2] = "PAGADO";
+            }
+
+            if (partialsND.size() > 0 && i >= intPartial && i < intPartialND) {
+                int u = st.itemUnitsBacker(salon.getItemsPartialPaidNoDiscount(), ic);
+                salon.getData()[i][0] = " " + u;
+                salon.getData()[i][1] = " PAG*." + ic.getName();
+                salon.getData()[i][2] = "PAGADO";
+            }
+
+            if (i >= intPartialND) {
+                int u = st.itemUnitsBacker(salon.getItemsGift(), ic);
+                salon.getData()[i][0] = " " + u;
+                salon.getData()[i][1] = " OBS." + ic.getName();
+                salon.getData()[i][2] = " 0";
+            }
+        }
+
+        if (salon.getPriceCorrection() > 0) {
+            if (salon.getDiscount() > 0) {
+                salon.getData()[salon.getRowsItems() - 1][1] = "Corrección precio mod:";
+                salon.getData()[salon.getRowsItems() - 1][2] = salon.getPriceCorrection() + "";
+            } else {
+                salon.getData()[salon.getRowsItems()][1] = "Corrección precio mod:";
+                salon.getData()[salon.getRowsItems()][2] = salon.getPriceCorrection() + "";
+            }
+        }
+
+        if (salon.getDiscount() > 0) {
+            salon.getData()[salon.getRowsItems()][1] = "DESCUENTO: " + salon.getDiscount() + "%";
+        }
+
+        DefaultTableModel tableModel = new DefaultTableModel(salon.getData(), salon.getColNames());
+        salon.getJTableItems().setModel(tableModel);
+        salon.getJTableItems().setDefaultEditor(Object.class, null);
+
+        JTableHeader header = salon.getJTableItems().getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 16));
+        header.setBackground(bluSt);
+
+        Font cellFont = new Font("Arial", Font.BOLD, 14);
+        salon.getJTableItems().setFont(cellFont);
+        salon.getJTableItems().setRowHeight(25);
+        salon.getJTableItems().setBackground(narUlg);
+
+        int c = (salon.getAnchoPane() - 50) / 8;
+        TableColumn column1 = salon.getJTableItems().getColumnModel().getColumn(0);
+        column1.setPreferredWidth(c);
+        TableColumn column2 = salon.getJTableItems().getColumnModel().getColumn(1);
+        column2.setPreferredWidth(c * 5);
+        TableColumn column3 = salon.getJTableItems().getColumnModel().getColumn(2);
+        column3.setPreferredWidth(c * 2);
+    }
+
+    private void jButExtSetter(Salon salon) {
+        if (salon.getJbtAux() != null) {
+            salon.getJbtAux().setTable(salon.getTableAux());
+
+            for (int i = 0; i < salon.getTableButtons().size(); i++) {
+                if (salon.getTableButtons().get(i).getNum() == salon.getJbtAux().getNum()) {
+                    salon.getTableButtons().set(i, salon.getJbtAux());
+                }
+            }
+        }
+
+        if (salon.getJbbAux() != null) {
+            salon.getJbbAux().setTable(salon.getTableAux());
+            for (int i = 0; i < salon.getBarrButtons().size(); i++) {
+                if (salon.getBarrButtons().get(i).getNum() == salon.getJbbAux().getNum()) {
+                    salon.getBarrButtons().set(i, salon.getJbbAux());
+                }
+            }
+        }
+
+        if (salon.getJbdAux() != null) {
+            salon.getJbdAux().setTable(salon.getTableAux());
+            for (int i = 0; i < salon.getDeliButtons().size(); i++) {
+                if (salon.getDeliButtons().get(i).getNum() == salon.getJbdAux().getNum()) {
+                    salon.getDeliButtons().set(i, salon.getJbdAux());
+                }
+            }
+        }
+    }
+
+    private void tableFullerProp(Salon salon) {
+        salon.setItemsTableAux(salon.getTableAux().getOrder());
+        salon.setItemsGift(salon.getTableAux().getGifts());
+        salon.setItemsPartialPaid(salon.getTableAux().getPartialPayed());
+        salon.setItemsPartialPaidNoDiscount(salon.getTableAux().getPartialPayedND());
+        salon.setWaiterAux(salon.getTableAux().getWaiter());
+        salon.setDiscount(salon.getTableAux().getDiscount());
+        salon.setPriceCorrection(salon.getTableAux().getPriceCorrection());
+        salon.setTotal(salon.getTableAux().getTotal());
+        salon.setError(salon.getTableAux().getError());
+        setTableItems(salon);
+        if (salon.getItemsPartialPaid().size() > 0) {
+            double payed = ss.partialBillPayed(salon.getTableAux());
+            salon.getLabelPartialPay().setText("Pagado: $" + (payed));
+        }
+
+        if (salon.getTableAux().isBill() == true) {
+            salon.getLabelTotalParcial().setText("Total $:");
+            salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * 0.1));
+            double tot = Math.round(salon.getTotal() * 0.1) + salon.getTotal();
+            salon.getLabelTotal().setText("Total: " + tot);
+        } else {
+            salon.getLabelTotalParcial().setText("Parcial $:");
+        }
+
+        if (salon.getJbtAux() != null) {
+            salon.getLabelWaiter().setText("Mozo: " + salon.getWaiterAux().getName() + " " + utili.strShorter(salon.getWaiterAux().getLastName(), 2).toUpperCase());
+            String nameT = salon.getTableAux().getPos() + salon.getTableAux().getNum();
+            salon.getLabelOrder().setText("MESA:" + nameT);
+            if (salon.getJbtAux().isOpenJBT() == false) {
+                salon.getButCloseTable().setText("CERRAR ORDEN");
+            } else {
+                if (salon.getTableAux().isBill() == true) {
+                    salon.getButCloseTable().setText("CONFIRMAR PAGO");
+                } else {
+                    salon.getButCloseTable().setText("CERRAR CUENTA");
+                }
+            }
+        }
+
+        if (salon.getJbbAux() != null) {
+            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
+            salon.getLabelOrder().setText("BARRA: B" + salon.getTableAux().getNum());
+        }
+
+        if (salon.getJbdAux() != null) {
+            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
+            salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
+        }
+
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+    }
+
+    
+    
+    
 
 }
