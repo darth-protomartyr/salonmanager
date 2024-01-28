@@ -55,7 +55,7 @@ public class CorrectorItem extends FrameWindow {
     int numArray = 1;
     String itemCategory = "a Pagar";
 
-    CorrectorItem(Salon sal) {
+    public CorrectorItem(Salon sal) {
         salon = sal;
         sm.addFrame(this);
         tab = new Table(salon.getTableAux());

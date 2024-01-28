@@ -51,7 +51,7 @@ public class GiftSelector extends FrameWindow {
     Salon salon = null;
     ArrayList<Itemcard> aIC = null;
 
-    GiftSelector(Salon sal) {
+    public GiftSelector(Salon sal) {
         salon = sal;
         sm.addFrame(this);
         tab = salon.getTableAux();

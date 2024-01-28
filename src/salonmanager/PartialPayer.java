@@ -63,7 +63,7 @@ public class PartialPayer extends FrameWindow {
     JLabel labelTip = new JLabel();
     JButton butPartialIn = new JButton();
 
-    PartialPayer(Salon sal) {
+    public PartialPayer(Salon sal) {
         salon = sal;
         sm.addFrame(this);
         Table table = salon.getTableAux();
