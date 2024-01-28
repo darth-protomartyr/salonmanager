@@ -35,7 +35,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -58,7 +57,6 @@ import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
-import salonmanager.servicios.ServicioCloseWorkshift;
 import salonmanager.servicios.ServicioItemMonitor;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -152,7 +150,7 @@ public class Salon extends FrameFullManager {
 
     JButton butBarrDeli = null;
     JPanel panelBDButtons = new JPanel();
-        JPanel panelA = new JPanel();
+    JPanel panelA = new JPanel();
 
     JButtonBarr jbbAux = null;
     JButtonDelivery jbdAux = null;
@@ -230,15 +228,14 @@ public class Salon extends FrameFullManager {
 //PANEL MONITOR--------------------------------------------------------------------------------------------------------
         JPanel panelMonitor = utiliGrafSal.panelMonitor(sal);
         panelPpal.add(panelMonitor);
-        
-//PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
-//PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
 
+//PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
+//PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
         panelA = new JPanel();
         panelA.setLayout(null);
         panelA.setBounds(20, altoUnit * 18, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
         panelA.setBackground(bluLg);
-        panelPpal.add(panelA);        
+        panelPpal.add(panelA);
         panelBDButtons = new JPanel();
         panelBDButtons.setLayout(null);
         panelBDButtons.setBackground(narLg);
@@ -258,7 +255,6 @@ public class Salon extends FrameFullManager {
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
-      
         utiliGrafSal.returnTabbedPanes(sal);
 
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
@@ -271,21 +267,20 @@ public class Salon extends FrameFullManager {
         panelLateral.setBounds((anchoFrame * 7 / 10) + anchoUnit * 5, altoUnit * 3, anchoFrame - (anchoPane + anchoUnit * 7), (alturaPane + altoUnit * 22));
         panelPpal.add(panelLateral);
 
+//Panel Table-----------------------------------------------------------
         JPanel panelTable = utiliGrafSal.returnPanelTable(sal);
         panelLateral.add(panelTable);
 
+//Panel SelItem---------------------------------------------------------
         JPanel panelSelItem = utiliGrafSal.returnPanelSelItem(sal);
         panelTable.add(panelSelItem);
 
-//Tabla con corrector 
+//Tabla con corrector--------------------------------------------------- 
         scrollPaneItems = utiliGrafSal.scrollItemsBack(altoUnit, altoUnit * 28, anchoUnit * 21 + altoUnit, altoUnit * 30, sal);
         panelTable.add(scrollPaneItems);
         utiliGrafSal.tableCarrector(sal);
 
-
-//Boton Obsequio
-
-
+//Boton Obsequio--------------------------------------------------------
         JButton butGift = utiliGraf.button2("Obsequio", altoUnit, altoUnit * 59, anchoUnit * 11);
         butGift.addActionListener(new ActionListener() {
             @Override
@@ -299,29 +294,13 @@ public class Salon extends FrameFullManager {
         });
         panelTable.add(butGift);
 
-//Boton Descuento
+//Boton Descuento-------------------------------------------------------
         JButton butDiscount = utiliGraf.button2("Descuento", altoUnit * 2 + anchoUnit * 11, altoUnit * 59, anchoUnit * 10);
         butDiscount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (itemsTableAux.size() < 1) {
-                        utiliMsg.errorItemsTableNull();
-                    } else {
-                        if (discount == 0) {
-                            if (tableAux.isBill() == false) {
-                                char[] pass = utiliMsg.requestMod();
-                                boolean perm = utili.requiredPerm(pass);
-                                if (perm) {
-                                    discounter();
-                                }
-                            } else {
-                                utiliMsg.errorBillSend();
-                            }
-                        } else {
-                            utiliMsg.errorDiscountRepeat();
-                        }
-                    }
+                    utiliGrafSal.actionButtonDiscount(sal);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -329,32 +308,9 @@ public class Salon extends FrameFullManager {
         });
         panelTable.add(butDiscount);
 
-//Boton Pago Parcial
-        panelPartial.setLayout(null);
-        panelPartial.setBounds(altoUnit, altoUnit * 64, anchoUnit * 21 + altoUnit, altoUnit * 5);
-        panelPartial.setBackground(bluLg);
+//Boton Pago Parcial----------------------------------------------------
+        panelPartial = utiliGrafSal.returnPanelPartial(sal);
         panelTable.add(panelPartial);
-
-        butPartialPay = utiliGraf.button3("PAGO PARCIAL", altoUnit, altoUnit * 1, anchoUnit * 8);
-        butPartialPay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (itemsTableAux.size() == 0) {
-                        utiliMsg.errorItemsTableNull();
-                    } else {
-                        partialPayer();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelPartial.add(butPartialPay);
-
-        labelPartialPay.setText("Pagado: $0.0");
-        labelPartialPay.setBounds(anchoUnit * 10, altoUnit, anchoUnit * 10, altoUnit * 3);
-        panelPartial.add(labelPartialPay);
 
 //Boton Pago Final
         butCloseTable = utiliGraf.button1("CERRAR ORDEN", altoUnit, altoUnit * 70, anchoUnit * 13 + altoUnit);
@@ -363,6 +319,8 @@ public class Salon extends FrameFullManager {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
+                    utiliGrafSal.actionButtonCloseTable(sal);
+
                     if (tableAux == null) {
                         utiliMsg.errorTableNull();
                     } else {
@@ -434,23 +392,7 @@ public class Salon extends FrameFullManager {
             }
         });
     }
-
-//MAIN----------------------------------------------------------------------------------------------------------------
-//MAIN----------------------------------------------------------------------------------------------------------------
-//MAIN----------------------------------------------------------------------------------------------------------------
-//MAIN----------------------------------------------------------------------------------------------------------------
-//    public static void main(String[] args) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                try {
-//                    ArrayList<Table> tabs = new ArrayList<Table>();
-//                    new Salon(null);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//    }
+    
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
 //FUNCTIONS-----------------------------------------------------------------------------------------------------------
@@ -537,14 +479,6 @@ public class Salon extends FrameFullManager {
 
 //------------------------------------------------------------------------------------------------------------------
 //Scroll de la Tabla
-    private JScrollPane scrollItemsBack(int marginW, int marginH, int anchoPane, int alturaPane) {
-        setTableItems();
-        JScrollPane scrollPane = new JScrollPane(jTableItems);
-        scrollPane.setPreferredSize(new Dimension(anchoPane, alturaPane));
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(marginW, marginH, anchoPane, alturaPane);
-        return scrollPane;
-    }
 
 //------------------------------------------------------------------------------------------------------------------
 //Tabla de Items
@@ -657,13 +591,6 @@ public class Salon extends FrameFullManager {
 
 //-----------------------------------------------------OBSEQUIO-----------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
-    private void gifter() {
-        itemsTableAux = tableAux.getOrder();
-        GiftSelector gs = new GiftSelector(this);
-        gs.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        gs.setAlwaysOnTop(true);
-        setEnabled(false);
-    }
 
 //------------------------------------------------------------------------------------------------------------------
     public void giftBacker(Itemcard ic) throws Exception {
@@ -685,18 +612,6 @@ public class Salon extends FrameFullManager {
 
 //-------------------------------------------------PAGO DESCUENTO---------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
-    private void discounter() {
-        if (itemsPartialPaid.size() > 0) {
-            itemsPartialPaidNoDiscount = itemsPartialPaid;
-            itemsPartialPaid = new ArrayList<Itemcard>();
-            tableAux.setPartialPayedND(itemsPartialPaidNoDiscount);
-            tableAux.setPartialPayed(itemsPartialPaid);
-        }
-        BillDiscounter bd = new BillDiscounter(this);
-        bd.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        bd.setAlwaysOnTop(true);
-        setEnabled(false);
-    }
 
 //------------------------------------------------------------------------------------------------------------------
     public void discountBacker(int disc) throws Exception {
@@ -714,13 +629,6 @@ public class Salon extends FrameFullManager {
 
 //-------------------------------------------------PAGO PARCIAL-----------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------ 
-//Ingreso a pago parcial
-    private void partialPayer() {
-        PartialPayer pp = new PartialPayer(this);
-        pp.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        pp.setAlwaysOnTop(true);
-        setEnabled(false);
-    }
 
 //------------------------------------------------------------------------------------------------------------------
 //pago parcial de cuenta fraccionada
@@ -895,13 +803,6 @@ public class Salon extends FrameFullManager {
 //------------------------------------------------Corrector deItems-------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
 //Corregir
-    private void itemCorrector() {
-        CorrectorItem ci = new CorrectorItem(this);
-        ci.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        ci.setAlwaysOnTop(true);
-        setEnabled(false);
-    }
-
 //Corregir
     public void correctItems(Itemcard ic, int num) throws Exception {
         switch (num) {
@@ -1010,112 +911,10 @@ public class Salon extends FrameFullManager {
 //Panel BARR-DELI---------------------------------------------------------------
 //Panel BARR-DELI---------------------------------------------------------------
 //Panel BARR-DELI---------------------------------------------------------------
-    private void butPanelTurn() throws Exception {
-        tableAux = null;
-        if (tabsBut == true) {
-            if (jbtAux != null) {
-                jbtAux.setBorder(null);
-                jbtAux = null;
-            }
-            resetTableValues();
-            tabbedPane.setVisible(false);
-            panelBDButtons.setVisible(true);
-            panelPartial.setBackground(narLg);
-            butPartialPay.setEnabled(false);
-            labelPartialPay.setText("DESHABILITADO");
-            butBarrDeli.setText("Mesas");
-            tabsBut = false;
-        } else {
-            if (jbbAux != null) {
-                jbbAux.setBorder(new LineBorder(narLg, 8));
-                tableAux = null;
-                jbbAux = null;
-            }
-
-            if (jbdAux != null) {
-                jbdAux.setBorder(new LineBorder(narLg, 8));
-                jbdSAux.setBorder(new LineBorder(narLg, 8));
-                tableAux = null;
-                jbdAux = null;
-                jbdSAux = null;
-            }
-            tabbedPane.setVisible(true);
-            panelBDButtons.setVisible(false);
-            panelPartial.setBackground(bluLg);
-            butPartialPay.setEnabled(true);
-            resetTableValues();
-            butBarrDeli.setText("Barra - Delivery");
-            tabsBut = true;
-
-        }
-    }
-
+    
     // BARR--------------------------------------
     // BARR--------------------------------------
-    private JPanel returnPanelBarr() {
-        JPanel panelBarr = new JPanel();
-        panelBarr.setLayout(null);
-        panelBarr.setBackground(bluLg);
-        panelBarr.setBounds(anchoUnit * 2, altoUnit, (anchoPane / 2) - anchoUnit * 3, alturaPane);
-
-        JLabel labelBP = utiliGraf.labelTitleBackerA4("Barra");
-        labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
-        panelBarr.add(labelBP);
-
-        JButton butCreateBarr = utiliGraf.button1("Crear pedido Barra", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
-        butCreateBarr.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    createBarr();
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelBarr.add(butCreateBarr);
-
-        panelBarrBut.setBackground(narLg);
-        panelBarrBut.setLayout(new GridLayout(0, 1, anchoUnit * 5, altoUnit * 5));
-        scrPaneBarr = new JScrollPane(panelBarrBut);
-        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrPaneBarr.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrPaneBarr.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 55);
-
-//                scrPaneBarr.setPreferredSize(new Dimension(anchoUnit * 32, altoUnit * 55));
-//        scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrPaneBarr.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        panelBarr.add(scrPaneBarr);
-
-        return panelBarr;
-    }
-
-    private void createBarr() throws Exception {
-        boolean testN = false;
-        boolean emptyButton = false;
-        if (barrButtons.size() > 0) {
-            testN = true;
-        }
-
-        if (testN) {
-            Table tab = barrButtons.get(0).getTable();
-            if (barrButtons.get(0).isOpenJBB() == false && tab.isBill() == false) {
-                emptyButton = true;
-                utiliMsg.erroNotNewButton();
-            }
-        }
-
-        if (emptyButton == false) {
-            int num = barrButtons.size() + 1;
-            JButtonBarr newJBB = new JButtonBarr(num);
-            Table newTable = new Table(newJBB.getNum(), newJBB.getPos(), user);
-            newJBB.setTable(newTable);
-            barrButtons.add(0, newJBB);
-            barrButUpdater();
-            resetTableValues();
-        }
-    }
+    
 
     private void barrButUpdater() {
         for (int i = 0; i < barrButtons.size(); i++) {
@@ -1226,60 +1025,7 @@ public class Salon extends FrameFullManager {
 
     // DELIVERY----------------------------------
     // DELIVERY----------------------------------
-    private JPanel returnPanelDeli() {
-        JPanel panelDeli = new JPanel();
-        panelDeli.setLayout(null);
-        panelDeli.setBackground(bluLg);
-        panelDeli.setBounds(anchoPane / 2 + anchoUnit, altoUnit, (anchoPane / 2) - anchoUnit * 3, alturaPane);
-
-        JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
-        labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
-        panelDeli.add(labelDP);
-
-        JButton butCreateDeli = utiliGraf.button1("Crear pedido delivery", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
-        butCreateDeli.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    createDelivery();
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelDeli.add(butCreateDeli);
-
-        panelDeliContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
-        panelDeliContainer.setBackground(bluLg);
-        panelDeliContainer.setBounds(0, altoUnit * 14, (anchoPane / 2) - anchoUnit * 3, (alturaPane - altoUnit * 13));
-        panelDeli.add(panelDeliContainer);
-
-        panelDeliContainerSetter();
-
-        return panelDeli;
-    }
-
-    private void createDelivery() throws Exception {
-        boolean testN = false;
-        boolean emptyButton = false;
-        int deliBq = deliButtons.size();
-        if (deliBq > 0) {
-            testN = true;
-        }
-
-        //To not create new buttons if is empty 
-        if (testN) {
-            Table tab = deliButtons.get(0).getTable();
-            if (deliButtons.get(0).isOpenJBD() == false && tab.isBill() == false) {
-                emptyButton = true;
-                utiliMsg.erroNotNewButton();
-            }
-        }
-
-        if (emptyButton == false) {
-            innDeliveryData();
-        }
-    }
+   
 
     private void panelDeliContainerSetter() {
         panelDeliContainer.removeAll();
@@ -1440,11 +1186,6 @@ public class Salon extends FrameFullManager {
         }
         revalidate();
         repaint();
-    }
-
-    private void innDeliveryData() throws Exception {
-        new DeliveryTemplate(sal, null);
-        setEnabled(false);
     }
 
     private void selectDeli(ActionEvent e) {
@@ -1806,7 +1547,6 @@ public class Salon extends FrameFullManager {
     public void setAnchoPane(int anchoPane) {
         this.anchoPane = anchoPane;
     }
-    
 
     public int getAlturaPane() {
         return alturaPane;
@@ -1815,8 +1555,6 @@ public class Salon extends FrameFullManager {
     public void setAlturaPane(int alturaPane) {
         this.alturaPane = alturaPane;
     }
-
-    
 
     public int getTotalTable() {
         return totalTable;
@@ -2425,7 +2163,7 @@ public class Salon extends FrameFullManager {
     public void setManager(Manager manager) {
         this.manager = manager;
     }
-    
+
     public int getWUnit() {
         return wUnit;
     }
@@ -2433,7 +2171,7 @@ public class Salon extends FrameFullManager {
     public void setWUnit(int wUnit) {
         this.wUnit = wUnit;
     }
-    
+
     public int getHUnit() {
         return hUnit;
     }

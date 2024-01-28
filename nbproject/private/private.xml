@@ -21,9 +21,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasSalon.java</file>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/servicios/ServicioCloseWorkshift.java</file>
+            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/PartialPayer.java</file>
+            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/CorrectorItem.java</file>
+            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/GiftSelector.java</file>
             <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/Salon.java</file>
-            <file>file:/C:/Users/ferlo/Documents/NetBeansProjects/SalonManager/src/salonmanager/servicios/ServicioSalon.java</file>
         </group>
     </open-files>
 </project-private>
