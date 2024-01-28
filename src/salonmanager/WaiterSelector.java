@@ -25,10 +25,12 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class WaiterSelector extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
@@ -52,7 +54,7 @@ public class WaiterSelector extends FrameWindow {
     ArrayList<User> waiters = null;
     User waiterAux = null;
 
-    WaiterSelector(Salon sal, int i) throws Exception {
+    public WaiterSelector(Salon sal, int i) throws Exception {
         salon = sal;
         tableAux = salon.getTableAux();
         sm.addFrame(this);
@@ -114,7 +116,7 @@ public class WaiterSelector extends FrameWindow {
         String selection = (String) comboWaiters.getSelectedItem();
         if(!selection.equals("")) {
             waiter = utili.userSelReturn(selection, waiters);
-            salon.waiterBacker(waiter);
+            utiliGrafSal.waiterBacker(waiter, salon);
             dispose();
         }
     }

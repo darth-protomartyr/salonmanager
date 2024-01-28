@@ -46,9 +46,11 @@ import salonmanager.Monitor;
 import salonmanager.PartialPayer;
 import salonmanager.Salon;
 import salonmanager.SalonManager;
+import salonmanager.WaiterSelector;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
@@ -343,7 +345,7 @@ public class UtilidadesGraficasSalon {
 
                     if (salon.getJbtAux().isOpenJBT() == false) {
                         try {
-                            salon.setWaiter(0);
+                            setWaiter(0, salon);
                         } catch (Exception ex) {
                             Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -371,8 +373,23 @@ public class UtilidadesGraficasSalon {
             salon.setJbtAux(salon.getTableButtons().get(i));
             salon.getJbtAux().addActionListener(actionListener);
         }
-
     }
+    
+    public void setWaiter(int i, Salon salon) throws Exception {
+        WaiterSelector ws = new WaiterSelector(salon, i);
+        ws.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        ws.setAlwaysOnTop(true);
+        salon.setEnabled(false);
+    }
+    
+    public void waiterBacker(User waiter,Salon salon) {
+        salon.setWaiterAux(waiter);
+        salon.getLabelWaiter().setText("Mozo: " + salon.getWaiterAux().getName() + " " + utili.strShorter(salon.getWaiterAux().getLastName(), 2).toUpperCase());
+        salon.getTableAux().setWaiter(salon.getWaiterAux());
+        salon.setEnabled(true);
+    }
+    
+    
 
 //PANEL BARR BUTTONS...................................................................................................
 //PANEL BARR BUTTONS...................................................................................................    
@@ -436,7 +453,7 @@ public class UtilidadesGraficasSalon {
         }
     }
 
-    private void barrButUpdater(Salon salon) {
+    public void barrButUpdater(Salon salon) {
         for (int i = 0; i < salon.getBarrButtons().size(); i++) {
             JButtonBarr butSelBarr = salon.getBarrButtons().get(i);
             butSelBarr.setBackground(narUlg);
@@ -606,7 +623,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    private void panelDeliContainerSetter(Salon salon) {
+    public void panelDeliContainerSetter(Salon salon) {
         salon.getPanelDeliContainer().removeAll();
         int height = altoUnit * ((salon.getDeliButtons().size() * 10) + 1);
         salon.getPanelDeliBut().setLayout(null);
@@ -967,11 +984,37 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
+//PANEL COUNT..........................................................................................................    
+//PANEL COUNT..........................................................................................................
+    public JPanel returnPanelCount(Salon salon) {
+        JPanel panelCount = new JPanel();
+        panelCount.setLayout(null);
+        panelCount.setBounds(altoUnit, altoUnit * 78, anchoUnit * 21 + altoUnit, altoUnit * 10);
+        panelCount.setBackground(narUlg);
+
+        salon.setLabelTotalParcial(utiliGraf.labelTitleBacker2("Parcial $:"));
+        salon.getLabelTotalParcial().setBounds(5, altoUnit * 2, anchoUnit * 6, altoUnit * 3);
+        panelCount.add(salon.getLabelTotalParcial());
+
+        salon.setLabelCuenta(utiliGraf.labelTitleBackerA3("00,0"));
+        salon.getLabelCuenta().setBounds(anchoUnit * 7, altoUnit * 2, anchoUnit * 15, altoUnit * 4);
+        salon.getLabelCuenta().setBackground(viol);
+        panelCount.add(salon.getLabelCuenta());
+
+        salon.setLabelTip(utiliGraf.labelTitleBacker3("Prop.: $ 00,0"));
+        salon.getLabelTip().setBounds(5, altoUnit * 7, anchoUnit * 10, altoUnit * 2);
+        panelCount.add(salon.getLabelTip());
+
+        salon.setLabelTotal(utiliGraf.labelTitleBacker3("Total: $ 00,0"));
+        salon.getLabelTotal().setBounds(anchoUnit * 11, altoUnit * 7, anchoUnit * 10, altoUnit * 2);
+        panelCount.add(salon.getLabelTotal());
+        return panelCount;
+    }
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------         
-    private void resetTableValues(Salon salon) throws Exception {
+    public void resetTableValues(Salon salon) throws Exception {
         salon.setItemsTableAux(new ArrayList<Itemcard>());//items a cobrar de la mesa
         salon.setItemsGift(new ArrayList<Itemcard>()); //items obsequiados
         salon.setItemsPartialPaid(new ArrayList<Itemcard>()); // items cobrados por pago parcial
@@ -1008,7 +1051,7 @@ public class UtilidadesGraficasSalon {
         }
     }
 
-    private void setTableItems(Salon salon) {
+    public void setTableItems(Salon salon) {
         HashSet<Itemcard> itemsSet = new HashSet<Itemcard>(salon.getItemsTableAux());
         ArrayList<Itemcard> itemsAux = new ArrayList<Itemcard>(itemsSet);
 
@@ -1115,7 +1158,7 @@ public class UtilidadesGraficasSalon {
         column3.setPreferredWidth(c * 2);
     }
 
-    private void jButExtSetter(Salon salon) {
+    public void jButExtSetter(Salon salon) {
         if (salon.getJbtAux() != null) {
             salon.getJbtAux().setTable(salon.getTableAux());
 
@@ -1145,7 +1188,7 @@ public class UtilidadesGraficasSalon {
         }
     }
 
-    private void tableFullerProp(Salon salon) {
+    public void tableFullerProp(Salon salon) {
         salon.setItemsTableAux(salon.getTableAux().getOrder());
         salon.setItemsGift(salon.getTableAux().getGifts());
         salon.setItemsPartialPaid(salon.getTableAux().getPartialPayed());
@@ -1217,7 +1260,7 @@ public class UtilidadesGraficasSalon {
         }
     }
 
-    private void resetTableFull(Salon salon) throws Exception {
+    public void resetTableFull(Salon salon) throws Exception {
         if (salon.getJbtAux() != null) {
             salon.getJbtAux().setBackground(narUlg);
             salon.getJbtAux().setTable(null);
@@ -1517,5 +1560,4 @@ public class UtilidadesGraficasSalon {
         mt.setAlwaysOnTop(true);
         salon.setEnabled(false);
     }
-
 }
