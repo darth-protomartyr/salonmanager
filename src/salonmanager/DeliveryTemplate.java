@@ -25,6 +25,7 @@ import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DeliveryTemplate extends FrameHalf {
@@ -34,6 +35,8 @@ public class DeliveryTemplate extends FrameHalf {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
+
     Utilidades utili = new Utilidades();
     ImageIcon icono = new ImageIcon("menu.png");
 
@@ -495,7 +498,7 @@ public class DeliveryTemplate extends FrameHalf {
     private void createDeliveryOrder() throws Exception {
         if (deliAux != null && cmrAux != null) {
             Delivery deliOrder = new Delivery(cmrAux.getPhone(), deliAux.getId());
-            salon.getDeliOrder(deliOrder);
+            utiliGrafSal.getDeliOrder(deliOrder, salon);
             salon.setSalonEnabled();
             dispose();
 
@@ -513,7 +516,7 @@ public class DeliveryTemplate extends FrameHalf {
     private void updateDeliveryOrder() throws Exception {
         deliFull.setConsumer(cmrAux);
         deliFull.setDeli(deliAux);
-        salon.setDeliOrder(deliFull);
+        utiliGrafSal.setDeliOrder(deliFull, salon);
         salon.setSalonEnabled();
         dispose();
     }

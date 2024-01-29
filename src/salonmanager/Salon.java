@@ -816,31 +816,31 @@ public class Salon extends FrameFullManager {
     // BARR--------------------------------------
     // DELIVERY----------------------------------
     // DELIVERY----------------------------------
-    void getDeliOrder(Delivery dOrder) throws Exception {
-        deliOrderAux = dOrder;
-        daoD.saveDelivery(deliOrderAux);
-        int num = deliButtons.size() + 1;
-        JButtonDelivery newJBD = new JButtonDelivery(num);
-        Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
-        newJBD.setTable(newTable);
-        deliButtons.add(0, newJBD);
+//    void getDeliOrder(Delivery dOrder) throws Exception {
+//        deliOrderAux = dOrder;
+//        daoD.saveDelivery(deliOrderAux);
+//        int num = deliButtons.size() + 1;
+//        JButtonDelivery newJBD = new JButtonDelivery(num);
+//        Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
+//        newJBD.setTable(newTable);
+//        deliButtons.add(0, newJBD);
+//
+//        JButtonDeliverySee butSee = new JButtonDeliverySee(num, dOrder);
+//        deliButtonsSees.add(0, butSee);
+//
+//        panelDeliBut.repaint();
+//
+//        utiliGrafSal.panelDeliContainerSetter(sal);
+//        deliButUpdater();
+//        utiliGrafSal.resetTableValues(sal);
+//    }
 
-        JButtonDeliverySee butSee = new JButtonDeliverySee(num, dOrder);
-        deliButtonsSees.add(0, butSee);
-
-        panelDeliBut.repaint();
-
-        utiliGrafSal.panelDeliContainerSetter(sal);
-        deliButUpdater();
-        utiliGrafSal.resetTableValues(sal);
-    }
-
-    void setDeliOrder(Delivery dOrder) throws Exception {
-        deliOrderAux = dOrder;
-        daoD.updateDelivery(deliOrderAux);
-        deliButUpdater();
-        utiliGrafSal.resetTableValues(sal);
-    }
+//    void setDeliOrder(Delivery dOrder) throws Exception {
+//        deliOrderAux = dOrder;
+//        daoD.updateDelivery(deliOrderAux);
+//        deliButUpdater();
+//        utiliGrafSal.resetTableValues(sal);
+//    }
 
     private void deliButUpdater() {
         for (int i = 0; i < deliButtons.size(); i++) {

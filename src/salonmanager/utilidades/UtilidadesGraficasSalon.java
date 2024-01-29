@@ -857,6 +857,32 @@ public class UtilidadesGraficasSalon {
             tableFullerProp(salon);
         }
     }
+    
+    public void getDeliOrder(Delivery dOrder, Salon salon) throws Exception {
+        salon.setDeliOrderAux(dOrder);
+        daoD.saveDelivery(salon.getDeliOrderAux());
+        int num = salon.getDeliButtons().size() + 1;
+        JButtonDelivery newJBD = new JButtonDelivery(num);
+        Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), salon.getUser());
+        newJBD.setTable(newTable);
+        salon.getDeliButtons().add(0, newJBD);
+
+        JButtonDeliverySee butSee = new JButtonDeliverySee(num, dOrder);
+        salon.getDeliButtonsSees().add(0, butSee);
+
+        salon.getPanelDeliBut().repaint();
+
+        panelDeliContainerSetter(salon);
+        deliButUpdater(salon);
+        resetTableValues(salon);
+    }
+    
+    public void setDeliOrder(Delivery dOrder, Salon salon) throws Exception {
+        salon.setDeliOrderAux(dOrder);
+        daoD.updateDelivery(salon.getDeliOrderAux());
+        deliButUpdater(salon);
+        resetTableValues(salon);
+    }
 
 //PANEL LATERAL--------------------------------------------------------------------------------------------------------        
 //PANEL LATERAL--------------------------------------------------------------------------------------------------------        
