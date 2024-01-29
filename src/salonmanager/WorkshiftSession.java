@@ -27,7 +27,7 @@ import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
-import salonmanager.servicios.ServicioSession;
+import salonmanager.servicios.ServicioWorkshiftSession;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -43,7 +43,7 @@ public class WorkshiftSession extends FrameWindow {
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
-    ServicioSession sses = new ServicioSession();
+    ServicioWorkshiftSession sses = new ServicioWorkshiftSession();
     SalonManager sm = new SalonManager();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOUser daoU = new DAOUser();

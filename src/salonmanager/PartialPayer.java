@@ -26,10 +26,12 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class PartialPayer extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
@@ -231,11 +233,11 @@ public class PartialPayer extends FrameWindow {
         if (itemsPartialToPay.size() > 0) {
             if ((total - subTotal == 0)) {
                 boolean toPay = false;
-                salon.moneyKind(salon, true, itemsPartialToPay, toPay, amountToPay);
+                utiliGrafSal.moneyKind(salon, true, itemsPartialToPay, toPay, amountToPay);
                 dispose();
             } else {
                 boolean toPay = true;
-                salon.moneyKind(salon, false, itemsPartialToPay, toPay, amountToPay);
+                utiliGrafSal.moneyKind(salon, false, itemsPartialToPay, toPay, amountToPay);
                 dispose();
             }
         } else {

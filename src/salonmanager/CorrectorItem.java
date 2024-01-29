@@ -21,10 +21,12 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class CorrectorItem extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
@@ -119,20 +121,6 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsPayed);
 
-//        JButton butItemsPayedNoDiscount = utiliGraf.button3("Items pag. s/descuento", 30, 165, 150);
-//        butItemsPayedNoDiscount.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent ae) {
-//                try {
-//                    itemsComboChanger(itemsPayedNoDiscount, 4);
-////                    labelComboItems.setText("lista de pagados s/DTO:");
-//                } catch (Exception ex) {
-//                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//        panelPpal.add(butItemsPayedNoDiscount);
-
         JLabel labelComboItems1 = utiliGraf.labelTitleBacker2("Seleccione un item");
         labelComboItems1.setBounds(200, 70, 170, 20);
         panelPpal.add(labelComboItems1);
@@ -197,19 +185,18 @@ public class CorrectorItem extends FrameWindow {
         switch (numArray) {
             case 1:
                 ic = itemsOrder.get(i);
-                salon.correctItems(ic, numArray);
+                utiliGrafSal.correctItems(ic, numArray, salon);
                 break;
             case 2:
                 ic = itemsGift.get(i);
-                salon.correctItems(ic, numArray);
+                utiliGrafSal.correctItems(ic, numArray, salon);
                 break;
             case 3:
                 ic = itemsPayed.get(i);
-                salon.correctItems(ic, numArray);
+                utiliGrafSal.correctItems(ic, numArray, salon);
                 break;
         }
         dispose();
-
     }
 
 }

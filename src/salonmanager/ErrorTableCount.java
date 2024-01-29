@@ -30,10 +30,12 @@ import javax.swing.event.DocumentListener;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class ErrorTableCount extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
@@ -274,7 +276,7 @@ public class ErrorTableCount extends FrameWindow {
         if (error == false) {
             boolean confirm = utiliMsg.cargaConfirmarMontoError(total - errorMount, errorMount);
             if (confirm) {
-                salon.errorMountBacker(errorMount, cause);
+                utiliGrafSal.errorMountBacker(errorMount, cause, salon);
                 dispose();
             }
         } else {

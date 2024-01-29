@@ -330,10 +330,10 @@ public class Salon extends FrameFullManager {
                             if (tableAux.isBill() == false) {
                                 boolean confirm = utiliMsg.cargaConfirmarCierre();
                                 if (confirm) {
-                                    tableClose();
+                                    utiliGrafSal.tableClose(sal);
                                 }
                             } else {
-                                moneyKind(sal, true, null, false, total);
+                                utiliGrafSal.moneyKind(sal, true, null, false, total);
                             }
                         }
                     }
@@ -352,7 +352,7 @@ public class Salon extends FrameFullManager {
                     if (tableAux.isBill() == false) {
                         utiliMsg.errorBillUnsend();
                     } else {
-                        errorTaker();
+                        utiliGrafSal.errorTaker(sal);
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
@@ -497,317 +497,316 @@ public class Salon extends FrameFullManager {
 //-----------------------------------------------------OBSEQUIO-----------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------
-    public void giftBacker(Itemcard ic) throws Exception {
-        itemsGift.add(ic);
-        tableAux.setGifts(itemsGift);
-        itemsTableAux = ss.itemTableLesser(tableAux.getOrder(), ic);
-        tableAux.setOrder(itemsTableAux);
-        utiliMsg.cargaGift(ic.getName());
-        utiliGrafSal.setTableItems(sal);
-        total = ss.countBill(tableAux);
-        tableAux.setTotal(total);
-        daoI.downActiveItemOrderTable(ic, tableAux);
-        daoI.saveItemGiftTable(ic, tableAux);
-        daoT.updateTableTotal(tableAux);
-        utiliGrafSal.jButExtSetter(sal);
-        labelCuenta.setText(total + "");
-        setEnabled(true);
-    }
+//    public void giftBacker(Itemcard ic) throws Exception {
+//        itemsGift.add(ic);
+//        tableAux.setGifts(itemsGift);
+//        itemsTableAux = ss.itemTableLesser(tableAux.getOrder(), ic);
+//        tableAux.setOrder(itemsTableAux);
+//        utiliMsg.cargaGift(ic.getName());
+//        utiliGrafSal.setTableItems(sal);
+//        total = ss.countBill(tableAux);
+//        tableAux.setTotal(total);
+//        daoI.downActiveItemOrderTable(ic, tableAux);
+//        daoI.saveItemGiftTable(ic, tableAux);
+//        daoT.updateTableTotal(tableAux);
+//        utiliGrafSal.jButExtSetter(sal);
+//        labelCuenta.setText(total + "");
+//        setEnabled(true);
+//    }
 
 //-------------------------------------------------PAGO DESCUENTO---------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------
-    public void discountBacker(int disc) throws Exception {
-        discount = disc;
-        tableAux.setDiscount(disc);
-        total = ss.countBill(tableAux);
-        tableAux.setTotal(total);
-        daoT.updateTableTotal(tableAux);
-        daoT.updateTableDiscount(tableAux);
-        utiliGrafSal.jButExtSetter(sal);
-        labelCuenta.setText(total + "");
-        utiliGrafSal.setTableItems(sal);
-        setEnabled(true);
-    }
+//    public void discountBacker(int disc) throws Exception {
+//        discount = disc;
+//        tableAux.setDiscount(disc);
+//        total = ss.countBill(tableAux);
+//        tableAux.setTotal(total);
+//        daoT.updateTableTotal(tableAux);
+//        daoT.updateTableDiscount(tableAux);
+//        utiliGrafSal.jButExtSetter(sal);
+//        labelCuenta.setText(total + "");
+//        utiliGrafSal.setTableItems(sal);
+//        setEnabled(true);
+//    }
 
 //-------------------------------------------------PAGO PARCIAL-----------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------ 
 //------------------------------------------------------------------------------------------------------------------
 //pago parcial de cuenta fraccionada
-    void partialPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
-        jbtAux.setBackground(viol);
-        for (int i = 0; i < itemsPayed.size(); i++) {
-            itemsTableAux = ss.itemTableLesser(itemsTableAux, itemsPayed.get(i));
-        }
-        itemsPartialPaid.addAll(itemsPayed);
-        tableAux.setPartialPayed(itemsPartialPaid);
-        tableAux.setOrder(itemsTableAux);
-        total = ss.countBill(tableAux);
-        tableAux.setTotal(total);
-        daoT.updateTableTotal(tableAux);
-        tableAux.setToPay(true);
-        daoT.updateToPay(tableAux);
-        for (Itemcard ic : itemsPayed) {
-            daoI.saveItemPayedTable(ic, tableAux);
-            daoI.downActiveItemOrderTable(ic, tableAux);
-        }
-        labelCuenta.setText(total + "");
-        double payed = ss.partialBillPayed(tableAux);
-        labelPartialPay.setText("Pagado: $" + (payed));
-        utiliGrafSal.jButExtSetter(sal);
-        utiliGrafSal.setTableItems(sal);
-        setEnabled(true);
-    }
+//    void partialPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
+//        jbtAux.setBackground(viol);
+//        for (int i = 0; i < itemsPayed.size(); i++) {
+//            itemsTableAux = ss.itemTableLesser(itemsTableAux, itemsPayed.get(i));
+//        }
+//        itemsPartialPaid.addAll(itemsPayed);
+//        tableAux.setPartialPayed(itemsPartialPaid);
+//        tableAux.setOrder(itemsTableAux);
+//        total = ss.countBill(tableAux);
+//        tableAux.setTotal(total);
+//        daoT.updateTableTotal(tableAux);
+//        tableAux.setToPay(true);
+//        daoT.updateToPay(tableAux);
+//        for (Itemcard ic : itemsPayed) {
+//            daoI.saveItemPayedTable(ic, tableAux);
+//            daoI.downActiveItemOrderTable(ic, tableAux);
+//        }
+//        labelCuenta.setText(total + "");
+//        double payed = ss.partialBillPayed(tableAux);
+//        labelPartialPay.setText("Pagado: $" + (payed));
+//        utiliGrafSal.jButExtSetter(sal);
+//        utiliGrafSal.setTableItems(sal);
+//        setEnabled(true);
+//    }
 
 //------------------------------------------------------------------------------------------------------------------ 
 //pago completo de cuenta fraccionada
-    void totalPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
-        itemsPartialPaid.addAll(itemsPayed);
-        tableAux.setPartialPayed(itemsPartialPaid);
-        itemsTableAux = itemsPartialPaid;
-        itemsPartialPaid = new ArrayList<Itemcard>();
-        tableAux.setOrder(itemsTableAux);
-        total = ss.countBill(tableAux);
-        tableAux.setTotal(total);
-        tableAux.setOpen(false);
-        daoT.updateTableTotal(tableAux);
-        tableAux.setToPay(false);
-        daoT.updateToPay(tableAux);
-        for (Itemcard ic : itemsPayed) {
-            daoI.saveItemPayedTable(ic, tableAux);
-            daoI.downActiveItemOrderTable(ic, tableAux);
-        }
-        labelCuenta.setText(total + "");
-        setEnabled(true);
-    }
+//    void totalPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
+//        itemsPartialPaid.addAll(itemsPayed);
+//        tableAux.setPartialPayed(itemsPartialPaid);
+//        itemsTableAux = itemsPartialPaid;
+//        itemsPartialPaid = new ArrayList<Itemcard>();
+//        tableAux.setOrder(itemsTableAux);
+//        total = ss.countBill(tableAux);
+//        tableAux.setTotal(total);
+//        tableAux.setOpen(false);
+//        daoT.updateTableTotal(tableAux);
+//        tableAux.setToPay(false);
+//        daoT.updateToPay(tableAux);
+//        for (Itemcard ic : itemsPayed) {
+//            daoI.saveItemPayedTable(ic, tableAux);
+//            daoI.downActiveItemOrderTable(ic, tableAux);
+//        }
+//        labelCuenta.setText(total + "");
+//        setEnabled(true);
+//    }
 
 //----------------------------------------------CIERRE Y PAGO DE CUENTA---------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------
 //Cierre de cuenta
-    private void tableClose() throws Exception {
-        total = ss.countBill(tableAux);
-        tableAux.setTotal(total);
-        daoT.updateTableTotal(tableAux);
-        tableAux.setBill(true);
-        daoT.updateTableBill(tableAux);
-        utiliGrafSal.jButExtSetter(sal);
-        labelTotalParcial.setText("Total $:");
-        labelCuenta.setText("" + total);
-        labelTip.setText("Prop.: " + Math.round(total * 0.1));
-        double tot = total + Math.round(total * 0.1);
-        labelTotal.setText("Total: " + tot);
-
-        if (jbtAux != null) {
-            jbtAux.setBackground(red);
-        }
-
-        if (jbbAux != null) {
-            jbbAux.setBackground(red);
-        }
-
-        if (jbdAux != null) {
-            jbdAux.setBackground(red);
-            jbdSAux.setBackground(red);
-        }
-
-        butCloseTable.setText("CONFIRMAR PAGO");
-        setEnabled(true);
-    }
-
-//------------------------------------------------------------------------------------------------------------------
-//Forma de pago
-    public void moneyKind(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed, boolean toPay, double amountToPay) {
-        tableAux.setToPay(toPay);
-        MoneyType mt = new MoneyType(sal, end, itemsPayed, amountToPay);
-        mt.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        mt.setAlwaysOnTop(true);
-        setEnabled(false);
-    }
-
-//------------------------------------------------------------------------------------------------------------------
-//Pago de cuenta y cierre de mesa
-    private void tablePaid() throws Exception {
-        utiliGrafSal.jButExtSetter(sal);
-        utiliGrafSal.resetTableFull(sal);
-        utiliGrafSal.setTableItems(sal);
-        setEnabled(true);
-    }
+//    private void tableClose() throws Exception {
+//        total = ss.countBill(tableAux);
+//        tableAux.setTotal(total);
+//        daoT.updateTableTotal(tableAux);
+//        tableAux.setBill(true);
+//        daoT.updateTableBill(tableAux);
+//        utiliGrafSal.jButExtSetter(sal);
+//        labelTotalParcial.setText("Total $:");
+//        labelCuenta.setText("" + total);
+//        labelTip.setText("Prop.: " + Math.round(total * 0.1));
+//        double tot = total + Math.round(total * 0.1);
+//        labelTotal.setText("Total: " + tot);
+//
+//        if (jbtAux != null) {
+//            jbtAux.setBackground(red);
+//        }
+//
+//        if (jbbAux != null) {
+//            jbbAux.setBackground(red);
+//        }
+//
+//        if (jbdAux != null) {
+//            jbdAux.setBackground(red);
+//            jbdSAux.setBackground(red);
+//        }
+//
+//        butCloseTable.setText("CONFIRMAR PAGO");
+//        setEnabled(true);
+//    }
 
 //------------------------------------------------------------------------------------------------------------------
 //Forma de pago
-    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments) throws Exception {
-        double amountC = amounts.get(0);
-        double amountE = amounts.get(1);
-        tableAux.setAmountCash(amountC);
-        tableAux.setAmountElectronic(amountE);
-        tableAux.setTotal(total);
-        total = ss.countBill(tableAux);
-        tableAux.setTotal(total);
-        tableAux.setComments(comments);
-        if (tableAux.isToPay() == false) {
-            tableAux.setOpen(false);
-        }
-        daoT.updateTableMountCash(tableAux);
-        daoT.updateTableMountElectronic(tableAux);
-        daoT.updateTableOpen(tableAux);
-        daoT.updateComments(tableAux);
-        if (itemsPayed != null) {
-            if (endex == true) {
-                totalPayTaker(itemsPayed);
-            } else {
-                partialPayTaker(itemsPayed);
-            }
-        }
-
-        if (endex == true) {
-            itemsMntr = sim.downOpenIMon(itemsMntr, tableAux);
-            tablePaid();
-        }
-        setEnabled(true);
-    }
-
-//----------------------------------------------------ERROR---------------------------------------------------------    
-//------------------------------------------------------------------------------------------------------------------
-//Ingreso a error
-    private void errorTaker() {
-        ErrorTableCount etc = new ErrorTableCount(this);
-        etc.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        etc.setAlwaysOnTop(true);
-        setEnabled(false);
-    }
+//    public void moneyKind(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed, boolean toPay, double amountToPay) {
+//        tableAux.setToPay(toPay);
+//        MoneyType mt = new MoneyType(sal, end, itemsPayed, amountToPay);
+//        mt.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+//        mt.setAlwaysOnTop(true);
+//        setEnabled(false);
+//    }
+//
+////------------------------------------------------------------------------------------------------------------------
+////Pago de cuenta y cierre de mesa
+//    private void tablePaid() throws Exception {
+//        utiliGrafSal.jButExtSetter(sal);
+//        utiliGrafSal.resetTableFull(sal);
+//        utiliGrafSal.setTableItems(sal);
+//        setEnabled(true);
+//    }
 
 //------------------------------------------------------------------------------------------------------------------
-//Monto faltante por cash
-    public void errorMountBacker(double errorBack, String cause) throws Exception {
-        error = errorBack;
-        tableAux.setError(error);
-        daoT.updateError(tableAux);
-        tableAux.setComments(cause);
-        daoT.updateComments(tableAux);
-        utiliMsg.cargaError();
-        if (itemsPartialPaid.size() > 0) {
-            itemsTableAux = itemsPartialPaid;
-            tableAux.setOrder(itemsTableAux);
-            itemsPartialPaid = new ArrayList<Itemcard>();
-            tableAux.setPartialPayed(itemsPartialPaid);
-            total = ss.countBill(tableAux);
-            tableAux.setTotal(total);
-            daoT.updateTableTotal(tableAux);
-        } else {
-            total = total - error;
-        }
-        tableAux.setTotal(total);
-        tablePaid();
-        setEnabled(true);
-    }
+//Forma de pago
+//    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments) throws Exception {
+//        double amountC = amounts.get(0);
+//        double amountE = amounts.get(1);
+//        tableAux.setAmountCash(amountC);
+//        tableAux.setAmountElectronic(amountE);
+//        tableAux.setTotal(total);
+//        total = ss.countBill(tableAux);
+//        tableAux.setTotal(total);
+//        tableAux.setComments(comments);
+//        if (tableAux.isToPay() == false) {
+//            tableAux.setOpen(false);
+//        }
+//        daoT.updateTableMountCash(tableAux);
+//        daoT.updateTableMountElectronic(tableAux);
+//        daoT.updateTableOpen(tableAux);
+//        daoT.updateComments(tableAux);
+//        if (itemsPayed != null) {
+//            if (endex == true) {
+//                utiliGrafSal.totalPayTaker(itemsPayed, sal);
+//            } else {
+//                utiliGrafSal.partialPayTaker(itemsPayed,sal);
+//            }
+//        }
+//
+//        if (endex == true) {
+//            itemsMntr = sim.downOpenIMon(itemsMntr, tableAux);
+//            utiliGrafSal.tablePaid(sal);
+//        }
+//        setEnabled(true);
+//    }
+//
+////----------------------------------------------------ERROR---------------------------------------------------------    
+////------------------------------------------------------------------------------------------------------------------
+////Ingreso a error
+//    private void errorTaker() {
+//        ErrorTableCount etc = new ErrorTableCount(this);
+//        etc.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+//        etc.setAlwaysOnTop(true);
+//        setEnabled(false);
+//    }
+//
+////------------------------------------------------------------------------------------------------------------------
+////Monto faltante por cash
+//    public void errorMountBacker(double errorBack, String cause) throws Exception {
+//        error = errorBack;
+//        tableAux.setError(error);
+//        daoT.updateError(tableAux);
+//        tableAux.setComments(cause);
+//        daoT.updateComments(tableAux);
+//        utiliMsg.cargaError();
+//        if (itemsPartialPaid.size() > 0) {
+//            itemsTableAux = itemsPartialPaid;
+//            tableAux.setOrder(itemsTableAux);
+//            itemsPartialPaid = new ArrayList<Itemcard>();
+//            tableAux.setPartialPayed(itemsPartialPaid);
+//            total = ss.countBill(tableAux);
+//            tableAux.setTotal(total);
+//            daoT.updateTableTotal(tableAux);
+//        } else {
+//            total = total - error;
+//        }
+//        tableAux.setTotal(total);
+//        utiliGrafSal.tablePaid(sal);
+//        setEnabled(true);
+//    }
 
 //------------------------------------------------Corrector deItems-------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
 //Corregir
 //Corregir
-    public void correctItems(Itemcard ic, int num) throws Exception {
-        switch (num) {
-            case 1:
-                itemsTableAux = ss.itemTableLesser(itemsTableAux, ic);
-                tableAux.setOrder(itemsTableAux);
-                daoI.downActiveItemOrderTable(ic, tableAux);
-                break;
-            case 2:
-                itemsGift = ss.itemTableLesser(itemsGift, ic);
-                tableAux.setGifts(itemsGift);
-                itemsTableAux.add(ic);
-                tableAux.setOrder(itemsTableAux);
-                daoI.downActiveItemGiftTable(ic, tableAux);
-                daoI.upActiveItemOrderTable(ic, tableAux);
-                break;
-            case 3:
-                itemsPartialPaid = ss.itemTableLesser(itemsPartialPaid, ic);
-                tableAux.setPartialPayed(itemsPartialPaid);
-                itemsTableAux.add(ic);
-                tableAux.setOrder(itemsTableAux);
-                daoI.downActiveItemPayedTable(ic, tableAux);
-                daoI.upActiveItemOrderTable(ic, tableAux);
-                break;
-        }
-        utiliGrafSal.jButExtSetter(sal);
-        utiliGrafSal.setTableItems(sal);
-        setEnabled(true);
-    }
+//    public void correctItems(Itemcard ic, int num) throws Exception {
+//        switch (num) {
+//            case 1:
+//                itemsTableAux = ss.itemTableLesser(itemsTableAux, ic);
+//                tableAux.setOrder(itemsTableAux);
+//                daoI.downActiveItemOrderTable(ic, tableAux);
+//                break;
+//            case 2:
+//                itemsGift = ss.itemTableLesser(itemsGift, ic);
+//                tableAux.setGifts(itemsGift);
+//                itemsTableAux.add(ic);
+//                tableAux.setOrder(itemsTableAux);
+//                daoI.downActiveItemGiftTable(ic, tableAux);
+//                daoI.upActiveItemOrderTable(ic, tableAux);
+//                break;
+//            case 3:
+//                itemsPartialPaid = ss.itemTableLesser(itemsPartialPaid, ic);
+//                tableAux.setPartialPayed(itemsPartialPaid);
+//                itemsTableAux.add(ic);
+//                tableAux.setOrder(itemsTableAux);
+//                daoI.downActiveItemPayedTable(ic, tableAux);
+//                daoI.upActiveItemOrderTable(ic, tableAux);
+//                break;
+//        }
+//        utiliGrafSal.jButExtSetter(sal);
+//        utiliGrafSal.setTableItems(sal);
+//        setEnabled(true);
+//    }
 
 //----------------------------------------------Finalización Turno--------------------------------------------------    
 //------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------
-    public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs) throws Exception {
-
-        boolean isTabs = false;
-
-        if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
-            isTabs = true;
-        }
-
-        daoW.updateWorkshiftCash(actualWs);
-        daoW.updateWorkshiftClose(actualWs, isTabs);
-        daoW.updateWorkshiftElectronic(actualWs);
-        daoW.updateWorkshiftError(actualWs);
-        daoW.updateWorkshiftErrorReal(actualWs);
-        daoW.updateWorkshiftMountReal(actualWs);
-        daoW.updateWorkshiftState(actualWs);
-        daoW.updateWorkshiftTotal(actualWs);
-        if (newWs != null) {
-            daoW.saveWorkshift(newWs);
-            for (Table t : toEraseTabs) {
-
-                if (t.getOrder().size() > 0) {
-                    daoI.downActiveItemOrderTableAll(t);
-                }
-
-                if (t.getGifts().size() > 0) {
-                    daoI.downActiveItemGiftTableAll(t);
-                }
-
-                if (t.getPartialPayed().size() > 0) {
-                    daoI.downActiveItemPayedTableAll(t);
-                }
-
-                if (t.getPartialPayedND().size() > 0) {
-                    daoI.downActiveItemPayedNDTableAll(t);
-                }
-                daoT.downActiveTable(t);
-            }
-
-            if (toUpdTabs.size() > 0) {
-                for (int i = 0; i < toUpdTabs.size(); i++) {
-                    Table t = toUpdTabs.get(i);
-                    daoI.downActiveItemOrderTableAll(t);
-                    daoI.downActiveItemGiftTableAll(t);
-                    daoI.downActiveItemPayedTableAll(t);
-                    daoI.downActiveItemPayedNDTableAll(t);
-                    daoT.updateComments(t);
-                    daoT.updateTableTotal(t);
-                    if (t.getOrder().size() > 0) {
-                        for (Itemcard ic : t.getOrder()) {
-                            daoI.upActiveItemOrderTable(ic, t);
-                        }
-                    }
-
-                    if (t.getGifts().size() > 0) {
-                        for (Itemcard ic : t.getGifts()) {
-                            daoI.upActiveItemGiftTable(t, ic);
-                        }
-                    }
-
-                    daoT.updateTableOpen(t);
-                    daoT.updateToPay(t);
-                }
-            }
-
-            for (Table t : newTabs) {
-                st.saveTableCompleteChangeWs(t);
-            }
-        }
-        dispose();
-    }
+//    public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs) throws Exception {
+//        boolean isTabs = false;
+//
+//        if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
+//            isTabs = true;
+//        }
+//
+//        daoW.updateWorkshiftCash(actualWs);
+//        daoW.updateWorkshiftClose(actualWs, isTabs);
+//        daoW.updateWorkshiftElectronic(actualWs);
+//        daoW.updateWorkshiftError(actualWs);
+//        daoW.updateWorkshiftErrorReal(actualWs);
+//        daoW.updateWorkshiftMountReal(actualWs);
+//        daoW.updateWorkshiftState(actualWs);
+//        daoW.updateWorkshiftTotal(actualWs);
+//        if (newWs != null) {
+//            daoW.saveWorkshift(newWs);
+//            for (Table t : toEraseTabs) {
+//
+//                if (t.getOrder().size() > 0) {
+//                    daoI.downActiveItemOrderTableAll(t);
+//                }
+//
+//                if (t.getGifts().size() > 0) {
+//                    daoI.downActiveItemGiftTableAll(t);
+//                }
+//
+//                if (t.getPartialPayed().size() > 0) {
+//                    daoI.downActiveItemPayedTableAll(t);
+//                }
+//
+//                if (t.getPartialPayedND().size() > 0) {
+//                    daoI.downActiveItemPayedNDTableAll(t);
+//                }
+//                daoT.downActiveTable(t);
+//            }
+//
+//            if (toUpdTabs.size() > 0) {
+//                for (int i = 0; i < toUpdTabs.size(); i++) {
+//                    Table t = toUpdTabs.get(i);
+//                    daoI.downActiveItemOrderTableAll(t);
+//                    daoI.downActiveItemGiftTableAll(t);
+//                    daoI.downActiveItemPayedTableAll(t);
+//                    daoI.downActiveItemPayedNDTableAll(t);
+//                    daoT.updateComments(t);
+//                    daoT.updateTableTotal(t);
+//                    if (t.getOrder().size() > 0) {
+//                        for (Itemcard ic : t.getOrder()) {
+//                            daoI.upActiveItemOrderTable(ic, t);
+//                        }
+//                    }
+//
+//                    if (t.getGifts().size() > 0) {
+//                        for (Itemcard ic : t.getGifts()) {
+//                            daoI.upActiveItemGiftTable(t, ic);
+//                        }
+//                    }
+//
+//                    daoT.updateTableOpen(t);
+//                    daoT.updateToPay(t);
+//                }
+//            }
+//
+//            for (Table t : newTabs) {
+//                st.saveTableCompleteChangeWs(t);
+//            }
+//        }
+//        dispose();
+//    }
 
 //Panel BARR-DELI---------------------------------------------------------------
 //Panel BARR-DELI---------------------------------------------------------------

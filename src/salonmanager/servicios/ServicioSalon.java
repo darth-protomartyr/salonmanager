@@ -35,7 +35,6 @@ public class ServicioSalon {
     DAOItemcard daoIC = new DAOItemcard();
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioItemMonitor sim = new ServicioItemMonitor();
-    ServicioCloseWorkshift sw = new ServicioCloseWorkshift();
     ServicioTable st = new ServicioTable();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();

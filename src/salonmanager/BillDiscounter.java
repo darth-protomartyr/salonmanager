@@ -20,9 +20,11 @@ import javax.swing.SpinnerNumberModel;
 import salonmanager.entidades.graphics.PanelPpal;                                                                                                                                                                                                                                                                                                                                                                            
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class BillDiscounter extends FrameWindow {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
@@ -96,7 +98,7 @@ public class BillDiscounter extends FrameWindow {
 
     private void butDiscounterActionPerformed() throws Exception {
         int u = (int) spinnerDiscount.getValue();
-        salon.discountBacker(u);
+        utiliGrafSal.discountBacker(u, salon);
         dispose();
     }
 }

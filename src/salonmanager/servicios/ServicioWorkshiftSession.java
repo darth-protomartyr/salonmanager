@@ -1,0 +1,119 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package salonmanager.servicios;
+
+import java.util.ArrayList;
+import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Session;
+import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.User;
+import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOSession;
+import salonmanager.persistencia.DAOTable;
+import salonmanager.persistencia.DAOUser;
+import salonmanager.persistencia.DAOWorkshift;
+
+/**
+ *
+ * @author Gonzalo
+ */
+public class ServicioWorkshiftSession {
+
+    DAOConfig daoC = new DAOConfig();
+    DAOSession daoS = new DAOSession();
+    DAOItemcard daoI = new DAOItemcard();
+    DAOTable daoT = new DAOTable();
+    DAOUser daoU = new DAOUser();
+    DAOWorkshift daoW = new DAOWorkshift();
+    ServicioTable st = new ServicioTable();
+    
+    public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs) throws Exception {
+        boolean isTabs = false;
+
+        if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
+            isTabs = true;
+        }
+
+        daoW.updateWorkshiftCash(actualWs);
+        daoW.updateWorkshiftClose(actualWs, isTabs);
+        daoW.updateWorkshiftElectronic(actualWs);
+        daoW.updateWorkshiftError(actualWs);
+        daoW.updateWorkshiftErrorReal(actualWs);
+        daoW.updateWorkshiftMountReal(actualWs);
+        daoW.updateWorkshiftState(actualWs);
+        daoW.updateWorkshiftTotal(actualWs);
+        if (newWs != null) {
+            daoW.saveWorkshift(newWs);
+            for (Table t : toEraseTabs) {
+
+                if (t.getOrder().size() > 0) {
+                    daoI.downActiveItemOrderTableAll(t);
+                }
+
+                if (t.getGifts().size() > 0) {
+                    daoI.downActiveItemGiftTableAll(t);
+                }
+
+                if (t.getPartialPayed().size() > 0) {
+                    daoI.downActiveItemPayedTableAll(t);
+                }
+
+                if (t.getPartialPayedND().size() > 0) {
+                    daoI.downActiveItemPayedNDTableAll(t);
+                }
+                daoT.downActiveTable(t);
+            }
+
+            if (toUpdTabs.size() > 0) {
+                for (int i = 0; i < toUpdTabs.size(); i++) {
+                    Table t = toUpdTabs.get(i);
+                    daoI.downActiveItemOrderTableAll(t);
+                    daoI.downActiveItemGiftTableAll(t);
+                    daoI.downActiveItemPayedTableAll(t);
+                    daoI.downActiveItemPayedNDTableAll(t);
+                    daoT.updateComments(t);
+                    daoT.updateTableTotal(t);
+                    if (t.getOrder().size() > 0) {
+                        for (Itemcard ic : t.getOrder()) {
+                            daoI.upActiveItemOrderTable(ic, t);
+                        }
+                    }
+
+                    if (t.getGifts().size() > 0) {
+                        for (Itemcard ic : t.getGifts()) {
+                            daoI.upActiveItemGiftTable(t, ic);
+                        }
+                    }
+
+                    daoT.updateTableOpen(t);
+                    daoT.updateToPay(t);
+                }
+            }
+
+            for (Table t : newTabs) {
+                st.saveTableCompleteChangeWs(t);
+            }
+        }
+//        dispose();
+    }
+
+    public Session crearSession(User user) throws Exception {
+        Session sess = new Session(user);
+        daoS.saveSession(sess);
+
+        int id = daoS.findSessionId(sess.getOpenSession());
+        sess.setId(id);
+        daoU.saveCashierInit(sess);
+//        daoW.listarWsByDate(sess);
+        daoC.upOpenSession();
+        daoC.upOpenSessionId(sess);
+
+        return sess;
+    }
+
+}

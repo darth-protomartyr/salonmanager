@@ -29,10 +29,13 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class MoneyType extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
+
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
@@ -275,7 +278,7 @@ public class MoneyType extends FrameWindow {
                 break;
             case 2:
                 amounts.set(1, total);
-                salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
+                utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
                 dispose();
                 break;
             case 3:
@@ -298,7 +301,7 @@ public class MoneyType extends FrameWindow {
                 cash = parseDouble(amountCash);
                 if (cash >= total) {
                     amounts.set(0, cash);
-                    salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
+                    utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
                     dispose();
                 } else {
                     utiliMsg.errorInsufficientMount();
@@ -307,7 +310,7 @@ public class MoneyType extends FrameWindow {
             } else if (num == 2) {
                 amounts.set(0, cash);
                 amounts.set(1, total - cash);
-                salon.amountsTypes(amounts, endex, itemsPayed, getCommentIn());
+                utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
                 dispose();
             }
         } catch (NumberFormatException e) {

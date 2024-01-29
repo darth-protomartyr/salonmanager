@@ -29,22 +29,21 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
-import salonmanager.servicios.ServicioCloseWorkshift;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.servicios.ServicioWorkshiftSession;
 
 public class WorkshiftEndPanel extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
-    ServicioCloseWorkshift sw = new ServicioCloseWorkshift();
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
-
+    ServicioWorkshiftSession sws = new ServicioWorkshiftSession();
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -280,7 +279,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                     realError = 0;
                 }
                 
-                salon.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs);
+                sws.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs);
  
                 dispose();
             }

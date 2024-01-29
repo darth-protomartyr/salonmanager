@@ -24,10 +24,12 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class GiftSelector extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
@@ -115,7 +117,7 @@ public class GiftSelector extends FrameWindow {
     private void butInGiftActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
         Itemcard ic = aIC.get(i);
-        salon.giftBacker(ic);
+        utiliGrafSal.giftBacker(ic, salon);
         dispose();
     }
 }

@@ -39,6 +39,7 @@ import javax.swing.table.TableColumn;
 import salonmanager.BillDiscounter;
 import salonmanager.CorrectorItem;
 import salonmanager.DeliveryTemplate;
+import salonmanager.ErrorTableCount;
 import salonmanager.GiftSelector;
 import salonmanager.ItemSelector;
 import salonmanager.MoneyType;
@@ -374,22 +375,20 @@ public class UtilidadesGraficasSalon {
             salon.getJbtAux().addActionListener(actionListener);
         }
     }
-    
+
     public void setWaiter(int i, Salon salon) throws Exception {
         WaiterSelector ws = new WaiterSelector(salon, i);
         ws.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         ws.setAlwaysOnTop(true);
         salon.setEnabled(false);
     }
-    
-    public void waiterBacker(User waiter,Salon salon) {
+
+    public void waiterBacker(User waiter, Salon salon) {
         salon.setWaiterAux(waiter);
         salon.getLabelWaiter().setText("Mozo: " + salon.getWaiterAux().getName() + " " + utili.strShorter(salon.getWaiterAux().getLastName(), 2).toUpperCase());
         salon.getTableAux().setWaiter(salon.getWaiterAux());
         salon.setEnabled(true);
     }
-    
-    
 
 //PANEL BARR BUTTONS...................................................................................................
 //PANEL BARR BUTTONS...................................................................................................    
@@ -650,6 +649,215 @@ public class UtilidadesGraficasSalon {
         salon.getPanelDeliContainer().add(scrPaneDeli);
     }
 
+    private void deliButUpdater(Salon salon) {
+        for (int i = 0; i < salon.getDeliButtons().size(); i++) {
+            JButtonDelivery butSelDelivery = salon.getDeliButtons().get(i);
+            butSelDelivery.setBackground(narUlg);
+            butSelDelivery.setBorder(new LineBorder(narLg, 8));
+            butSelDelivery.setFont(salon.getFont2());
+            butSelDelivery.setText("Delivery pedido " + butSelDelivery.getNum());
+            butSelDelivery.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        if (salon.getScheduler() != null) {
+                            salon.getScheduler().shutdown();
+                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
+                        } else {
+                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
+                        }
+
+                        if (!salon.isLoopBreaker()) {
+                            selectDeli(ae, salon);
+                            if (!salon.isLoopBreaker()) {
+                                selectDeli(ae, salon);
+                                salon.setLoopBreaker(true);
+                                Runnable duty = () -> {
+                                    salon.setLoopBreaker(false);
+                                };
+                                long timeWait = 1000; // en segundos
+                                salon.getScheduler().schedule(duty, timeWait, TimeUnit.MILLISECONDS);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            );
+
+            //Test
+            JButtonDeliverySee butSee = salon.getDeliButtonsSees().get(i);
+            butSee.setBackground(narUlg);
+            butSee.setBorder(new LineBorder(narLg, 8));
+            butSee.setFont(salon.getFont3());
+            butSee.setText("ver");
+            butSee.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        if (salon.getScheduler() != null) {
+                            salon.getScheduler().shutdown();
+                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
+                        } else {
+                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
+                        }
+
+                        if (!salon.isLoopBreaker()) {
+                            selectDeliSee(ae, salon);
+                            salon.setLoopBreaker(true);
+                            Runnable duty = () -> {
+                                salon.setLoopBreaker(false);
+                            };
+                            long timeWait = 1000; // en segundos
+                            salon.getScheduler().schedule(duty, timeWait, TimeUnit.MILLISECONDS);
+                        }
+
+                    } catch (Exception ex) {
+                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+            }
+            );
+
+            if (salon.getDeliButtons().get(i).isOpenJBD()) {
+                salon.getDeliButtons().get(i).setBackground(green);
+                salon.getDeliButtonsSees().get(i).setBackground(green);
+            }
+
+            if (salon.getDeliButtons().get(i).getTable().isBill() == true) {
+                salon.getDeliButtons().get(i).setBackground(red);
+                //Test
+                salon.getDeliButtonsSees().get(i).setBackground(red);
+            }
+
+            if (salon.getDeliButtons().get(i).isOpenJBD() == false && salon.getDeliButtons().get(i).getTable().isBill() == true) {
+                salon.getDeliButtons().get(i).setBackground(narUlgX);
+                salon.getDeliButtons().get(i).setEnabled(false);
+                //Test
+                salon.getDeliButtonsSees().get(i).setBackground(narUlgX);
+                salon.getDeliButtonsSees().get(i).setEnabled(false);
+            }
+
+            salon.getPanelDeliBut().add(butSelDelivery);
+        }
+        salon.revalidate();
+        salon.repaint();
+    }
+
+    private void selectDeli(ActionEvent ae, Salon salon) {
+        if (salon.getJbtAux() != null) {
+            salon.getJbtAux().setBorder(null);
+            salon.setJbtAux(null);
+        }
+        if (salon.getJbdAux() != null) {
+            salon.getJbdAux().setBorder(new LineBorder(narLg, 8));
+            salon.setJbdAux(null);
+            salon.getJbdSAux().setBorder(new LineBorder(narLg, 8));
+            salon.setJbdSAux(null);
+        }
+
+        if (salon.getJbbAux() != null) {
+            salon.getJbbAux().setBorder(new LineBorder(narLg, 8));
+            salon.setJbbAux(null);
+        }
+
+        JButtonDelivery butClicked = (JButtonDelivery) ae.getSource();
+        for (int i = 0; i < salon.getDeliButtons().size(); i++) {
+            if (salon.getDeliButtons().get(i).getNum() == butClicked.getNum()) {
+                salon.setJbdAux(salon.getDeliButtons().get(i));
+                salon.setJbdSAux(salon.getDeliButtonsSees().get(i));
+            }
+        }
+        try {
+            resetTableValues(salon);
+        } catch (Exception ex) {
+            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        salon.getJbdAux().setBorder(new LineBorder(bluSt, 8));
+        salon.getJbdSAux().setBorder(new LineBorder(bluSt, 8));
+
+        if (salon.getJbdAux().isOpenJBD() == false) {
+            salon.setTableAux(salon.getJbdAux().getTable());
+            salon.setWaiterAux(salon.getUser());
+            salon.getTableAux().setWaiter(salon.getUser());
+            salon.getTableAux().setOpen(true);
+            salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
+            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
+            salon.getTableAux().setOrder(new ArrayList<Itemcard>());
+            try {
+                jButExtSetter(salon);
+            } catch (Exception ex) {
+                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            salon.setTableAux(salon.getJbdAux().getTable());
+            tableFullerProp(salon);
+        }
+
+    }
+
+    private void selectDeliSee(ActionEvent ae, Salon salon) throws Exception {
+        if (salon.getJbtAux() != null) {
+            salon.getJbtAux().setBorder(null);
+            salon.setJbtAux(null);
+        }
+
+        if (salon.getJbdAux() != null) {
+            salon.getJbdAux().setBorder(new LineBorder(narLg, 8));
+            salon.setJbdAux(null);
+            salon.getJbdSAux().setBorder(new LineBorder(narLg, 8));
+            salon.setJbdSAux(null);
+        }
+
+        if (salon.getJbbAux() != null) {
+            salon.getJbbAux().setBorder(new LineBorder(narLg, 8));
+            salon.setJbbAux(null);
+        }
+
+        JButtonDeliverySee butClicked = (JButtonDeliverySee) ae.getSource();
+        for (int i = 0; i < salon.getDeliButtonsSees().size(); i++) {
+            if (salon.getDeliButtonsSees().get(i).getNumDeli() == butClicked.getNumDeli()) {
+                salon.setJbdAux(salon.getDeliButtons().get(i));
+                salon.setJbdSAux(salon.getDeliButtonsSees().get(i));
+                Delivery deli = salon.getJbdSAux().getDelivery();
+                if (salon.getJbdSAux().getDelivery().getConsumer() != null) {
+                    new DeliveryTemplate(salon, deli);
+                } else {
+                    utiliMsg.errorNullDeli();
+                }
+            }
+        }
+        try {
+            resetTableValues(salon);
+        } catch (Exception ex) {
+            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        salon.getJbdAux().setBorder(new LineBorder(bluSt, 8));
+        salon.getJbdSAux().setBorder(new LineBorder(bluSt, 8));
+
+        if (salon.getJbdAux().isOpenJBD() == false) {
+            salon.setTableAux(salon.getJbdAux().getTable());
+            salon.setWaiterAux(salon.getUser());
+            salon.getTableAux().setWaiter(salon.getUser());
+            salon.getTableAux().setOpen(true);
+            salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
+            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
+            salon.getTableAux().setOrder(new ArrayList<Itemcard>());
+            try {
+                jButExtSetter(salon);
+            } catch (Exception ex) {
+                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            salon.setTableAux(salon.getJbdAux().getTable());
+            tableFullerProp(salon);
+        }
+    }
+
 //PANEL LATERAL--------------------------------------------------------------------------------------------------------        
 //PANEL LATERAL--------------------------------------------------------------------------------------------------------        
 //PANEL LATERAL--------------------------------------------------------------------------------------------------------        
@@ -878,11 +1086,42 @@ public class UtilidadesGraficasSalon {
         });
     }
 
+//CORRECTOR............................................................................................................
+//CORRECTOR............................................................................................................
     private void itemCorrector(Salon salon) {
         CorrectorItem ci = new CorrectorItem(salon);
         ci.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         ci.setAlwaysOnTop(true);
         salon.setEnabled(false);
+    }
+
+    public void correctItems(Itemcard ic, int num, Salon salon) throws Exception {
+        switch (num) {
+            case 1:
+                salon.setItemsTableAux(ss.itemTableLesser(salon.getItemsTableAux(), ic));
+                salon.getTableAux().setOrder(salon.getItemsTableAux());
+                daoI.downActiveItemOrderTable(ic, salon.getTableAux());
+                break;
+            case 2:
+                salon.setItemsGift(ss.itemTableLesser(salon.getItemsGift(), ic));
+                salon.getTableAux().setGifts(salon.getItemsGift());
+                salon.getItemsTableAux().add(ic);
+                salon.getTableAux().setOrder(salon.getItemsTableAux());
+                daoI.downActiveItemGiftTable(ic, salon.getTableAux());
+                daoI.upActiveItemOrderTable(ic, salon.getTableAux());
+                break;
+            case 3:
+                salon.setItemsPartialPaid(ss.itemTableLesser(salon.getItemsPartialPaid(), ic));
+                salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+                salon.getItemsTableAux().add(ic);
+                salon.getTableAux().setOrder(salon.getItemsTableAux());
+                daoI.downActiveItemPayedTable(ic, salon.getTableAux());
+                daoI.upActiveItemOrderTable(ic, salon.getTableAux());
+                break;
+        }
+        jButExtSetter(salon);
+        setTableItems(salon);
+        salon.setEnabled(true);
     }
 
 //GIFTS................................................................................................................
@@ -909,6 +1148,23 @@ public class UtilidadesGraficasSalon {
         gs.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         gs.setAlwaysOnTop(true);
         salon.setEnabled(false);
+    }
+
+    public void giftBacker(Itemcard ic, Salon salon) throws Exception {
+        salon.getItemsGift().add(ic);
+        salon.getTableAux().setGifts(salon.getItemsGift());
+        salon.setItemsTableAux(ss.itemTableLesser(salon.getTableAux().getOrder(), ic));
+        salon.getTableAux().setOrder(salon.getItemsTableAux());
+        utiliMsg.cargaGift(ic.getName());
+        setTableItems(salon);
+        salon.setTotal(ss.countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoI.downActiveItemOrderTable(ic, salon.getTableAux());
+        daoI.saveItemGiftTable(ic, salon.getTableAux());
+        daoT.updateTableTotal(salon.getTableAux());
+        jButExtSetter(salon);
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        salon.setEnabled(true);
     }
 
 //DISCOUNT.............................................................................................................
@@ -944,6 +1200,19 @@ public class UtilidadesGraficasSalon {
         bd.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         bd.setAlwaysOnTop(true);
         salon.setEnabled(false);
+    }
+
+    public void discountBacker(int disc, Salon salon) throws Exception {
+        salon.setDiscount(disc);
+        salon.getTableAux().setDiscount(disc);
+        salon.setTotal(ss.countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoT.updateTableTotal(salon.getTableAux());
+        daoT.updateTableDiscount(salon.getTableAux());
+        jButExtSetter(salon);
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        setTableItems(salon);
+        salon.setEnabled(true);
     }
 
 //PARTIAL PAY..........................................................................................................
@@ -984,6 +1253,163 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
+    public void partialPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
+        salon.getJbtAux().setBackground(viol);
+        for (int i = 0; i < itemsPayed.size(); i++) {
+            salon.setItemsTableAux(ss.itemTableLesser(salon.getItemsTableAux(), itemsPayed.get(i)));
+        }
+        salon.getItemsPartialPaid().addAll(itemsPayed);
+        salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+        salon.getTableAux().setOrder(salon.getItemsTableAux());
+        salon.setTotal(ss.countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoT.updateTableTotal(salon.getTableAux());
+        salon.getTableAux().setToPay(true);
+        daoT.updateToPay(salon.getTableAux());
+        for (Itemcard ic : itemsPayed) {
+            daoI.saveItemPayedTable(ic, salon.getTableAux());
+            daoI.downActiveItemOrderTable(ic, salon.getTableAux());
+        }
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        double payed = ss.partialBillPayed(salon.getTableAux());
+        salon.getLabelPartialPay().setText("Pagado: $" + (payed));
+        jButExtSetter(salon);
+        setTableItems(salon);
+        salon.setEnabled(true);
+    }
+
+    public void totalPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
+        salon.getItemsPartialPaid().addAll(itemsPayed);
+        salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+        salon.setItemsTableAux(salon.getItemsPartialPaid());
+        salon.setItemsPartialPaid(new ArrayList<Itemcard>());
+        salon.getTableAux().setOrder(salon.getItemsTableAux());
+        salon.setTotal(ss.countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        salon.getTableAux().setOpen(false);
+        daoT.updateTableTotal(salon.getTableAux());
+        salon.getTableAux().setToPay(false);
+        daoT.updateToPay(salon.getTableAux());
+        for (Itemcard ic : itemsPayed) {
+            daoI.saveItemPayedTable(ic, salon.getTableAux());
+            daoI.downActiveItemOrderTable(ic, salon.getTableAux());
+        }
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        salon.setEnabled(true);
+    }
+
+//TABLE CLOSER.........................................................................................................
+//TABLE CLOSER.........................................................................................................
+    public void tableClose(Salon salon) throws Exception {
+        salon.setTotal(ss.countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoT.updateTableTotal(salon.getTableAux());
+        salon.getTableAux().setBill(true);
+        daoT.updateTableBill(salon.getTableAux());
+        jButExtSetter(salon);
+        salon.getLabelTotalParcial().setText("Total $:");
+        salon.getLabelCuenta().setText("" + salon.getTotal());
+        salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * 0.1));
+        double tot = salon.getTotal() + Math.round(salon.getTotal() * 0.1);
+        salon.getLabelTotal().setText("Total: " + tot);
+
+        if (salon.getJbtAux() != null) {
+            salon.getJbtAux().setBackground(red);
+        }
+
+        if (salon.getJbbAux() != null) {
+            salon.getJbbAux().setBackground(red);
+        }
+
+        if (salon.getJbdAux() != null) {
+            salon.getJbdAux().setBackground(red);
+            salon.getJbdSAux().setBackground(red);
+        }
+
+        salon.getButCloseTable().setText("CONFIRMAR PAGO");
+        salon.setEnabled(true);
+    }
+
+    public void moneyKind(Salon salon, boolean end, ArrayList<Itemcard> itemsPayed, boolean toPay, double amountToPay) {
+        salon.getTableAux().setToPay(toPay);
+        MoneyType mt = new MoneyType(salon, end, itemsPayed, amountToPay);
+        mt.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        mt.setAlwaysOnTop(true);
+        salon.setEnabled(false);
+    }
+
+    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
+        double amountC = amounts.get(0);
+        double amountE = amounts.get(1);
+        salon.getTableAux().setAmountCash(amountC);
+        salon.getTableAux().setAmountElectronic(amountE);
+        salon.getTableAux().setTotal(salon.getTotal());
+        salon.setTotal(ss.countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        salon.getTableAux().setComments(comments);
+        if (salon.getTableAux().isToPay() == false) {
+            salon.getTableAux().setOpen(false);
+        }
+        daoT.updateTableMountCash(salon.getTableAux());
+        daoT.updateTableMountElectronic(salon.getTableAux());
+        daoT.updateTableOpen(salon.getTableAux());
+        daoT.updateComments(salon.getTableAux());
+        if (itemsPayed != null) {
+            if (endex == true) {
+                totalPayTaker(itemsPayed, salon);
+            } else {
+                partialPayTaker(itemsPayed, salon);
+            }
+        }
+
+        if (endex == true) {
+            salon.setItemsMntr(sim.downOpenIMon(salon.getItemsMntr(), salon.getTableAux()));
+            tablePaid(salon);
+        }
+        salon.setEnabled(true);
+    }
+
+//Pago de cuenta y cierre de mesa
+    public void tablePaid(Salon salon) throws Exception {
+        jButExtSetter(salon);
+        resetTableFull(salon);
+        setTableItems(salon);
+        salon.setEnabled(true);
+    }
+
+//Ingreso a error
+    public void errorTaker(Salon salon) {
+        ErrorTableCount etc = new ErrorTableCount(salon);
+        etc.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        etc.setAlwaysOnTop(true);
+        salon.setEnabled(false);
+    }
+
+//------------------------------------------------------------------------------------------------------------------
+//Monto faltante por cash
+    public void errorMountBacker(double errorBack, String cause, Salon salon) throws Exception {
+        salon.setError(errorBack);
+        salon.getTableAux().setError(salon.getError());
+        daoT.updateError(salon.getTableAux());
+        salon.getTableAux().setComments(cause);
+        daoT.updateComments(salon.getTableAux());
+        utiliMsg.cargaError();
+        if (salon.getItemsPartialPaid().size() > 0) {
+            salon.setItemsTableAux(salon.getItemsPartialPaid());
+            salon.getTableAux().setOrder(salon.getItemsTableAux());
+            salon.setItemsPartialPaid(new ArrayList<Itemcard>());
+            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+            salon.setTotal(ss.countBill(salon.getTableAux()));
+            salon.getTableAux().setTotal(salon.getTotal());
+            daoT.updateTableTotal(salon.getTableAux());
+        } else {
+            salon.setTotal(salon.getTotal() - salon.getError());
+        }
+        salon.getTableAux().setTotal(salon.getTotal());
+        tablePaid(salon);
+        salon.setEnabled(true);
+    }
+
 //PANEL COUNT..........................................................................................................    
 //PANEL COUNT..........................................................................................................
     public JPanel returnPanelCount(Salon salon) {
@@ -1010,6 +1436,7 @@ public class UtilidadesGraficasSalon {
         panelCount.add(salon.getLabelTotal());
         return panelCount;
     }
+
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
@@ -1254,7 +1681,7 @@ public class UtilidadesGraficasSalon {
                         tableClose(salon);
                     }
                 } else {
-                    moneyKind(salon, true, null, false, salon.getTotal(), salon);
+                    moneyKind(salon, true, null, false, salon.getTotal());
                 }
             }
         }
@@ -1311,253 +1738,5 @@ public class UtilidadesGraficasSalon {
         resetTableValues(salon);
 
         utiliMsg.cargaTableErase();
-    }
-
-    private void deliButUpdater(Salon salon) {
-        for (int i = 0; i < salon.getDeliButtons().size(); i++) {
-            JButtonDelivery butSelDelivery = salon.getDeliButtons().get(i);
-            butSelDelivery.setBackground(narUlg);
-            butSelDelivery.setBorder(new LineBorder(narLg, 8));
-            butSelDelivery.setFont(salon.getFont2());
-            butSelDelivery.setText("Delivery pedido " + butSelDelivery.getNum());
-            butSelDelivery.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        if (salon.getScheduler() != null) {
-                            salon.getScheduler().shutdown();
-                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
-                        } else {
-                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
-                        }
-
-                        if (!salon.isLoopBreaker()) {
-                            selectDeli(ae, salon);
-                            if (!salon.isLoopBreaker()) {
-                                selectDeli(ae, salon);
-                                salon.setLoopBreaker(true);
-                                Runnable duty = () -> {
-                                    salon.setLoopBreaker(false);
-                                };
-                                long timeWait = 1000; // en segundos
-                                salon.getScheduler().schedule(duty, timeWait, TimeUnit.MILLISECONDS);
-                            }
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            );
-
-            //Test
-            JButtonDeliverySee butSee = salon.getDeliButtonsSees().get(i);
-            butSee.setBackground(narUlg);
-            butSee.setBorder(new LineBorder(narLg, 8));
-            butSee.setFont(salon.getFont3());
-            butSee.setText("ver");
-            butSee.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        if (salon.getScheduler() != null) {
-                            salon.getScheduler().shutdown();
-                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
-                        } else {
-                            salon.setScheduler(Executors.newSingleThreadScheduledExecutor());
-                        }
-
-                        if (!salon.isLoopBreaker()) {
-                            selectDeliSee(ae, salon);
-                            salon.setLoopBreaker(true);
-                            Runnable duty = () -> {
-                                salon.setLoopBreaker(false);
-                            };
-                            long timeWait = 1000; // en segundos
-                            salon.getScheduler().schedule(duty, timeWait, TimeUnit.MILLISECONDS);
-                        }
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            }
-            );
-
-            if (salon.getDeliButtons().get(i).isOpenJBD()) {
-                salon.getDeliButtons().get(i).setBackground(green);
-                salon.getDeliButtonsSees().get(i).setBackground(green);
-            }
-
-            if (salon.getDeliButtons().get(i).getTable().isBill() == true) {
-                salon.getDeliButtons().get(i).setBackground(red);
-                //Test
-                salon.getDeliButtonsSees().get(i).setBackground(red);
-            }
-
-            if (salon.getDeliButtons().get(i).isOpenJBD() == false && salon.getDeliButtons().get(i).getTable().isBill() == true) {
-                salon.getDeliButtons().get(i).setBackground(narUlgX);
-                salon.getDeliButtons().get(i).setEnabled(false);
-                //Test
-                salon.getDeliButtonsSees().get(i).setBackground(narUlgX);
-                salon.getDeliButtonsSees().get(i).setEnabled(false);
-            }
-
-            salon.getPanelDeliBut().add(butSelDelivery);
-        }
-        salon.revalidate();
-        salon.repaint();
-    }
-
-    private void selectDeli(ActionEvent ae, Salon salon) {
-        if (salon.getJbtAux() != null) {
-            salon.getJbtAux().setBorder(null);
-            salon.setJbtAux(null);
-        }
-        if (salon.getJbdAux() != null) {
-            salon.getJbdAux().setBorder(new LineBorder(narLg, 8));
-            salon.setJbdAux(null);
-            salon.getJbdSAux().setBorder(new LineBorder(narLg, 8));
-            salon.setJbdSAux(null);
-        }
-
-        if (salon.getJbbAux() != null) {
-            salon.getJbbAux().setBorder(new LineBorder(narLg, 8));
-            salon.setJbbAux(null);
-        }
-
-        JButtonDelivery butClicked = (JButtonDelivery) ae.getSource();
-        for (int i = 0; i < salon.getDeliButtons().size(); i++) {
-            if (salon.getDeliButtons().get(i).getNum() == butClicked.getNum()) {
-                salon.setJbdAux(salon.getDeliButtons().get(i));
-                salon.setJbdSAux(salon.getDeliButtonsSees().get(i));
-            }
-        }
-        try {
-            resetTableValues(salon);
-        } catch (Exception ex) {
-            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        salon.getJbdAux().setBorder(new LineBorder(bluSt, 8));
-        salon.getJbdSAux().setBorder(new LineBorder(bluSt, 8));
-
-        if (salon.getJbdAux().isOpenJBD() == false) {
-            salon.setTableAux(salon.getJbdAux().getTable());
-            salon.setWaiterAux(salon.getUser());
-            salon.getTableAux().setWaiter(salon.getUser());
-            salon.getTableAux().setOpen(true);
-            salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
-            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-            salon.getTableAux().setOrder(new ArrayList<Itemcard>());
-            try {
-                jButExtSetter(salon);
-            } catch (Exception ex) {
-                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            salon.setTableAux(salon.getJbdAux().getTable());
-            tableFullerProp(salon);
-        }
-
-    }
-
-    private void selectDeliSee(ActionEvent ae, Salon salon) throws Exception {
-
-        if (salon.getJbtAux() != null) {
-            salon.getJbtAux().setBorder(null);
-            salon.setJbtAux(null);
-        }
-
-        if (salon.getJbdAux() != null) {
-            salon.getJbdAux().setBorder(new LineBorder(narLg, 8));
-            salon.setJbdAux(null);
-            salon.getJbdSAux().setBorder(new LineBorder(narLg, 8));
-            salon.setJbdSAux(null);
-        }
-
-        if (salon.getJbbAux() != null) {
-            salon.getJbbAux().setBorder(new LineBorder(narLg, 8));
-            salon.setJbbAux(null);
-        }
-
-        JButtonDeliverySee butClicked = (JButtonDeliverySee) ae.getSource();
-        for (int i = 0; i < salon.getDeliButtonsSees().size(); i++) {
-            if (salon.getDeliButtonsSees().get(i).getNumDeli() == butClicked.getNumDeli()) {
-                salon.setJbdAux(salon.getDeliButtons().get(i));
-                salon.setJbdSAux(salon.getDeliButtonsSees().get(i));
-                Delivery deli = salon.getJbdSAux().getDelivery();
-                if (salon.getJbdSAux().getDelivery().getConsumer() != null) {
-                    new DeliveryTemplate(salon, deli);
-                } else {
-                    utiliMsg.errorNullDeli();
-                }
-            }
-        }
-        try {
-            resetTableValues(salon);
-        } catch (Exception ex) {
-            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        salon.getJbdAux().setBorder(new LineBorder(bluSt, 8));
-        salon.getJbdSAux().setBorder(new LineBorder(bluSt, 8));
-
-        if (salon.getJbdAux().isOpenJBD() == false) {
-            salon.setTableAux(salon.getJbdAux().getTable());
-            salon.setWaiterAux(salon.getUser());
-            salon.getTableAux().setWaiter(salon.getUser());
-            salon.getTableAux().setOpen(true);
-            salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
-            salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-            salon.getTableAux().setOrder(new ArrayList<Itemcard>());
-            try {
-                jButExtSetter(salon);
-            } catch (Exception ex) {
-                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            salon.setTableAux(salon.getJbdAux().getTable());
-            tableFullerProp(salon);
-        }
-    }
-
-    private void tableClose(Salon salon) throws Exception {
-        salon.setTotal(ss.countBill(salon.getTableAux()));
-        salon.getTableAux().setTotal(salon.getTotal());
-        daoT.updateTableTotal(salon.getTableAux());
-        salon.getTableAux().setBill(true);
-        daoT.updateTableBill(salon.getTableAux());
-        jButExtSetter(salon);
-        salon.getLabelTotalParcial().setText("Total $:");
-        salon.getLabelCuenta().setText("" + salon.getTotal());
-        salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * 0.1));
-        double tot = salon.getTotal() + Math.round(salon.getTotal() * 0.1);
-        salon.getLabelTotal().setText("Total: " + tot);
-
-        if (salon.getJbtAux() != null) {
-            salon.getJbtAux().setBackground(red);
-        }
-
-        if (salon.getJbbAux() != null) {
-            salon.getJbbAux().setBackground(red);
-        }
-
-        if (salon.getJbdAux() != null) {
-            salon.getJbdAux().setBackground(red);
-            salon.getJbdSAux().setBackground(red);
-        }
-
-        salon.getButCloseTable().setText("CONFIRMAR PAGO");
-        salon.setEnabled(true);
-    }
-
-    public void moneyKind(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed, boolean toPay, double amountToPay, Salon salon) {
-        salon.getTableAux().setToPay(toPay);
-        MoneyType mt = new MoneyType(sal, end, itemsPayed, amountToPay);
-        mt.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        mt.setAlwaysOnTop(true);
-        salon.setEnabled(false);
     }
 }
