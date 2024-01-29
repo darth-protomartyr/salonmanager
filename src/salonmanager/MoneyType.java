@@ -259,7 +259,7 @@ public class MoneyType extends FrameWindow {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                sal.enableSalon();
+                salon.setEnabled(true);
                 dispose();
             }
         });

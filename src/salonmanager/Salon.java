@@ -4,26 +4,13 @@ import salonmanager.entidades.graphics.JButtonDeliverySee;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
 import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -35,10 +22,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 import salonmanager.entidades.config.Config;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.graphics.FrameFullManager;
@@ -158,7 +141,6 @@ public class Salon extends FrameFullManager {
 
     JTabbedPane tabbedPane = new JTabbedPane();
     JButtonTable jbtAux = null; //boton de mesa actual
-//    ServicioCloseWorkshift sw = new ServicioCloseWorkshift();
 
     //Menu Lateral
     int rowsItems = 0; //nro filas de la tabla
@@ -176,7 +158,7 @@ public class Salon extends FrameFullManager {
     JScrollPane scrollPaneItems = new JScrollPane();
     JTable jTableItems = new JTable();
     JButton butCloseTable = new JButton();
-    JPanel panelCuenta = new JPanel();
+    JPanel panelCount = new JPanel();
     JPanel panelFlotante = new JPanel();
     JLabel labelTotalParcial = new JLabel();
     JLabel labelOrder = new JLabel();
@@ -320,23 +302,6 @@ public class Salon extends FrameFullManager {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     utiliGrafSal.actionButtonCloseTable(sal);
-
-                    if (tableAux == null) {
-                        utiliMsg.errorTableNull();
-                    } else {
-                        if (itemsTableAux.size() < 1) {
-                            utiliGrafSal.resetTableFull(sal);
-                        } else {
-                            if (tableAux.isBill() == false) {
-                                boolean confirm = utiliMsg.cargaConfirmarCierre();
-                                if (confirm) {
-                                    utiliGrafSal.tableClose(sal);
-                                }
-                            } else {
-                                utiliGrafSal.moneyKind(sal, true, null, false, total);
-                            }
-                        }
-                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -360,9 +325,11 @@ public class Salon extends FrameFullManager {
             }
         });
         panelTable.add(butErrorTable);
+//Panel SelItem---------------------------------------------------------
+//Panel Count---------------------------------------------------------
         
-        panelCuenta = utiliGrafSal.returnPanelCount(sal);
-        panelTable.add(panelCuenta);
+        panelCount = utiliGrafSal.returnPanelCount(sal);
+        panelTable.add(panelCount);
 
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
@@ -372,734 +339,32 @@ public class Salon extends FrameFullManager {
                 dispose();
             }
         });
-    }
+    }  
+  
 
-//FUNCTIONS-----------------------------------------------------------------------------------------------------------
-//FUNCTIONS-----------------------------------------------------------------------------------------------------------
-//FUNCTIONS-----------------------------------------------------------------------------------------------------------
-//FUNCTIONS-----------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------    
-
-//------------------------------------------------------------------------------------------------------------------
-//Listar Items por etiqueta
-//------------------------------------------------------------------------------------------------------------------
-//Ingreso de items
-//------------------------------------------------------------------------------------------------------------------
-//Scroll de la Tabla
-//------------------------------------------------------------------------------------------------------------------
-//Tabla de Items
-//    private void setTableItems() {
-//        HashSet<Itemcard> itemsSet = new HashSet<Itemcard>(itemsTableAux);
-//        ArrayList<Itemcard> itemsAux = new ArrayList<Itemcard>(itemsSet);
-//
-//        HashSet<Itemcard> partialSet = new HashSet<Itemcard>(itemsPartialPaid);
-//        ArrayList<Itemcard> partials = new ArrayList<Itemcard>(partialSet);
-//
-//        HashSet<Itemcard> partialSetND = new HashSet<Itemcard>(itemsPartialPaidNoDiscount);
-//        ArrayList<Itemcard> partialsND = new ArrayList<Itemcard>(partialSetND);
-//
-//        HashSet<Itemcard> giftSet = new HashSet<Itemcard>(itemsGift);
-//        ArrayList<Itemcard> gifts = new ArrayList<Itemcard>(giftSet);
-//
-//        HashSet<Itemcard> totalSet = new HashSet<Itemcard>(itemsAux);
-//        ArrayList<Itemcard> totalItems = new ArrayList<Itemcard>(totalSet);
-//
-//        totalItems.addAll(partials);
-//        totalItems.addAll(partialsND);
-//        totalItems.addAll(gifts);
-//
-//        rowsItems = totalItems.size();
-//
-//        int aux = 0;
-//        if (discount > 0) {
-//            aux += 1;
-//        }
-//
-//        if (priceCorrection > 0) {
-//            aux += 1;
-//        }
-//
-//        data = new String[rowsItems + aux][colItems];
-//
-//        int intAux = itemsAux.size();
-//        int intPartial = itemsAux.size() + partials.size();
-//        int intPartialND = itemsAux.size() + partials.size() + partialsND.size();
-//
-//        double disc = (double) discount / 100;
-//
-//        for (int i = 0; i < rowsItems; i++) {
-//            Itemcard ic = totalItems.get(i);
-//
-//            if (i < intAux) {
-//                int u = st.itemUnitsBacker(itemsTableAux, ic);
-//                data[i][0] = " " + u;
-//                data[i][1] = " " + ic.getName();
-//                data[i][2] = " " + ic.getPrice() * u * (1 - disc);
-//            }
-//
-//            if (partials.size() > 0 && i >= intAux && i < intPartial) {
-//                int u = st.itemUnitsBacker(itemsPartialPaid, ic);
-//                data[i][0] = " " + u;
-//                data[i][1] = " PAG." + ic.getName();
-//                data[i][2] = "PAGADO";
-//            }
-//
-//            if (partialsND.size() > 0 && i >= intPartial && i < intPartialND) {
-//                int u = st.itemUnitsBacker(itemsPartialPaidNoDiscount, ic);
-//                data[i][0] = " " + u;
-//                data[i][1] = " PAG*." + ic.getName();
-//                data[i][2] = "PAGADO";
-//            }
-//
-//            if (i >= intPartialND) {
-//                int u = st.itemUnitsBacker(itemsGift, ic);
-//                data[i][0] = " " + u;
-//                data[i][1] = " OBS." + ic.getName();
-//                data[i][2] = " 0";
-//            }
-//        }
-//
-//        if (priceCorrection > 0) {
-//            if (discount > 0) {
-//                data[rowsItems - 1][1] = "Corrección precio mod:";
-//                data[rowsItems - 1][2] = priceCorrection + "";
-//            } else {
-//                data[rowsItems][1] = "Corrección precio mod:";
-//                data[rowsItems][2] = priceCorrection + "";
-//            }
-//        }
-//
-//        if (discount > 0) {
-//            data[rowsItems][1] = "DESCUENTO: " + discount + "%";
-//        }
-//
-//        DefaultTableModel tableModel = new DefaultTableModel(data, colNames);
-//        jTableItems.setModel(tableModel);
-//        jTableItems.setDefaultEditor(Object.class, null);
-//
-//        JTableHeader header = jTableItems.getTableHeader();
-//        header.setFont(new Font("Arial", Font.BOLD, 16));
-//        header.setBackground(bluSt);
-//
-//        Font cellFont = new Font("Arial", Font.BOLD, 14);
-//        jTableItems.setFont(cellFont);
-//        jTableItems.setRowHeight(25);
-//        jTableItems.setBackground(narUlg);
-//
-//        int c = (anchoPane - 50) / 8;
-//        TableColumn column1 = jTableItems.getColumnModel().getColumn(0);
-//        column1.setPreferredWidth(c);
-//        TableColumn column2 = jTableItems.getColumnModel().getColumn(1);
-//        column2.setPreferredWidth(c * 5);
-//        TableColumn column3 = jTableItems.getColumnModel().getColumn(2);
-//        column3.setPreferredWidth(c * 2);
-//    }
-//-----------------------------------------------------OBSEQUIO-----------------------------------------------------    
-//------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-//    public void giftBacker(Itemcard ic) throws Exception {
-//        itemsGift.add(ic);
-//        tableAux.setGifts(itemsGift);
-//        itemsTableAux = ss.itemTableLesser(tableAux.getOrder(), ic);
-//        tableAux.setOrder(itemsTableAux);
-//        utiliMsg.cargaGift(ic.getName());
-//        utiliGrafSal.setTableItems(sal);
-//        total = ss.countBill(tableAux);
-//        tableAux.setTotal(total);
-//        daoI.downActiveItemOrderTable(ic, tableAux);
-//        daoI.saveItemGiftTable(ic, tableAux);
-//        daoT.updateTableTotal(tableAux);
-//        utiliGrafSal.jButExtSetter(sal);
-//        labelCuenta.setText(total + "");
-//        setEnabled(true);
-//    }
-
-//-------------------------------------------------PAGO DESCUENTO---------------------------------------------------    
-//------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-//    public void discountBacker(int disc) throws Exception {
-//        discount = disc;
-//        tableAux.setDiscount(disc);
-//        total = ss.countBill(tableAux);
-//        tableAux.setTotal(total);
-//        daoT.updateTableTotal(tableAux);
-//        daoT.updateTableDiscount(tableAux);
-//        utiliGrafSal.jButExtSetter(sal);
-//        labelCuenta.setText(total + "");
-//        utiliGrafSal.setTableItems(sal);
-//        setEnabled(true);
-//    }
-
-//-------------------------------------------------PAGO PARCIAL-----------------------------------------------------    
-//------------------------------------------------------------------------------------------------------------------ 
-//------------------------------------------------------------------------------------------------------------------
-//pago parcial de cuenta fraccionada
-//    void partialPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
-//        jbtAux.setBackground(viol);
-//        for (int i = 0; i < itemsPayed.size(); i++) {
-//            itemsTableAux = ss.itemTableLesser(itemsTableAux, itemsPayed.get(i));
-//        }
-//        itemsPartialPaid.addAll(itemsPayed);
-//        tableAux.setPartialPayed(itemsPartialPaid);
-//        tableAux.setOrder(itemsTableAux);
-//        total = ss.countBill(tableAux);
-//        tableAux.setTotal(total);
-//        daoT.updateTableTotal(tableAux);
-//        tableAux.setToPay(true);
-//        daoT.updateToPay(tableAux);
-//        for (Itemcard ic : itemsPayed) {
-//            daoI.saveItemPayedTable(ic, tableAux);
-//            daoI.downActiveItemOrderTable(ic, tableAux);
-//        }
-//        labelCuenta.setText(total + "");
-//        double payed = ss.partialBillPayed(tableAux);
-//        labelPartialPay.setText("Pagado: $" + (payed));
-//        utiliGrafSal.jButExtSetter(sal);
-//        utiliGrafSal.setTableItems(sal);
-//        setEnabled(true);
-//    }
-
-//------------------------------------------------------------------------------------------------------------------ 
-//pago completo de cuenta fraccionada
-//    void totalPayTaker(ArrayList<Itemcard> itemsPayed) throws Exception {
-//        itemsPartialPaid.addAll(itemsPayed);
-//        tableAux.setPartialPayed(itemsPartialPaid);
-//        itemsTableAux = itemsPartialPaid;
-//        itemsPartialPaid = new ArrayList<Itemcard>();
-//        tableAux.setOrder(itemsTableAux);
-//        total = ss.countBill(tableAux);
-//        tableAux.setTotal(total);
-//        tableAux.setOpen(false);
-//        daoT.updateTableTotal(tableAux);
-//        tableAux.setToPay(false);
-//        daoT.updateToPay(tableAux);
-//        for (Itemcard ic : itemsPayed) {
-//            daoI.saveItemPayedTable(ic, tableAux);
-//            daoI.downActiveItemOrderTable(ic, tableAux);
-//        }
-//        labelCuenta.setText(total + "");
-//        setEnabled(true);
-//    }
-
-//----------------------------------------------CIERRE Y PAGO DE CUENTA---------------------------------------------    
-//------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-//Cierre de cuenta
-//    private void tableClose() throws Exception {
-//        total = ss.countBill(tableAux);
-//        tableAux.setTotal(total);
-//        daoT.updateTableTotal(tableAux);
-//        tableAux.setBill(true);
-//        daoT.updateTableBill(tableAux);
-//        utiliGrafSal.jButExtSetter(sal);
-//        labelTotalParcial.setText("Total $:");
-//        labelCuenta.setText("" + total);
-//        labelTip.setText("Prop.: " + Math.round(total * 0.1));
-//        double tot = total + Math.round(total * 0.1);
-//        labelTotal.setText("Total: " + tot);
-//
-//        if (jbtAux != null) {
-//            jbtAux.setBackground(red);
-//        }
-//
-//        if (jbbAux != null) {
-//            jbbAux.setBackground(red);
-//        }
-//
-//        if (jbdAux != null) {
-//            jbdAux.setBackground(red);
-//            jbdSAux.setBackground(red);
-//        }
-//
-//        butCloseTable.setText("CONFIRMAR PAGO");
-//        setEnabled(true);
-//    }
-
-//------------------------------------------------------------------------------------------------------------------
-//Forma de pago
-//    public void moneyKind(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed, boolean toPay, double amountToPay) {
-//        tableAux.setToPay(toPay);
-//        MoneyType mt = new MoneyType(sal, end, itemsPayed, amountToPay);
-//        mt.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-//        mt.setAlwaysOnTop(true);
-//        setEnabled(false);
-//    }
-//
-////------------------------------------------------------------------------------------------------------------------
-////Pago de cuenta y cierre de mesa
-//    private void tablePaid() throws Exception {
-//        utiliGrafSal.jButExtSetter(sal);
-//        utiliGrafSal.resetTableFull(sal);
-//        utiliGrafSal.setTableItems(sal);
-//        setEnabled(true);
-//    }
-
-//------------------------------------------------------------------------------------------------------------------
-//Forma de pago
-//    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments) throws Exception {
-//        double amountC = amounts.get(0);
-//        double amountE = amounts.get(1);
-//        tableAux.setAmountCash(amountC);
-//        tableAux.setAmountElectronic(amountE);
-//        tableAux.setTotal(total);
-//        total = ss.countBill(tableAux);
-//        tableAux.setTotal(total);
-//        tableAux.setComments(comments);
-//        if (tableAux.isToPay() == false) {
-//            tableAux.setOpen(false);
-//        }
-//        daoT.updateTableMountCash(tableAux);
-//        daoT.updateTableMountElectronic(tableAux);
-//        daoT.updateTableOpen(tableAux);
-//        daoT.updateComments(tableAux);
-//        if (itemsPayed != null) {
-//            if (endex == true) {
-//                utiliGrafSal.totalPayTaker(itemsPayed, sal);
-//            } else {
-//                utiliGrafSal.partialPayTaker(itemsPayed,sal);
-//            }
-//        }
-//
-//        if (endex == true) {
-//            itemsMntr = sim.downOpenIMon(itemsMntr, tableAux);
-//            utiliGrafSal.tablePaid(sal);
-//        }
-//        setEnabled(true);
-//    }
-//
-////----------------------------------------------------ERROR---------------------------------------------------------    
-////------------------------------------------------------------------------------------------------------------------
-////Ingreso a error
-//    private void errorTaker() {
-//        ErrorTableCount etc = new ErrorTableCount(this);
-//        etc.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-//        etc.setAlwaysOnTop(true);
-//        setEnabled(false);
-//    }
-//
-////------------------------------------------------------------------------------------------------------------------
-////Monto faltante por cash
-//    public void errorMountBacker(double errorBack, String cause) throws Exception {
-//        error = errorBack;
-//        tableAux.setError(error);
-//        daoT.updateError(tableAux);
-//        tableAux.setComments(cause);
-//        daoT.updateComments(tableAux);
-//        utiliMsg.cargaError();
-//        if (itemsPartialPaid.size() > 0) {
-//            itemsTableAux = itemsPartialPaid;
-//            tableAux.setOrder(itemsTableAux);
-//            itemsPartialPaid = new ArrayList<Itemcard>();
-//            tableAux.setPartialPayed(itemsPartialPaid);
-//            total = ss.countBill(tableAux);
-//            tableAux.setTotal(total);
-//            daoT.updateTableTotal(tableAux);
-//        } else {
-//            total = total - error;
-//        }
-//        tableAux.setTotal(total);
-//        utiliGrafSal.tablePaid(sal);
-//        setEnabled(true);
-//    }
-
-//------------------------------------------------Corrector deItems-------------------------------------------------    
-//------------------------------------------------------------------------------------------------------------------
-//Corregir
-//Corregir
-//    public void correctItems(Itemcard ic, int num) throws Exception {
-//        switch (num) {
-//            case 1:
-//                itemsTableAux = ss.itemTableLesser(itemsTableAux, ic);
-//                tableAux.setOrder(itemsTableAux);
-//                daoI.downActiveItemOrderTable(ic, tableAux);
-//                break;
-//            case 2:
-//                itemsGift = ss.itemTableLesser(itemsGift, ic);
-//                tableAux.setGifts(itemsGift);
-//                itemsTableAux.add(ic);
-//                tableAux.setOrder(itemsTableAux);
-//                daoI.downActiveItemGiftTable(ic, tableAux);
-//                daoI.upActiveItemOrderTable(ic, tableAux);
-//                break;
-//            case 3:
-//                itemsPartialPaid = ss.itemTableLesser(itemsPartialPaid, ic);
-//                tableAux.setPartialPayed(itemsPartialPaid);
-//                itemsTableAux.add(ic);
-//                tableAux.setOrder(itemsTableAux);
-//                daoI.downActiveItemPayedTable(ic, tableAux);
-//                daoI.upActiveItemOrderTable(ic, tableAux);
-//                break;
-//        }
-//        utiliGrafSal.jButExtSetter(sal);
-//        utiliGrafSal.setTableItems(sal);
-//        setEnabled(true);
-//    }
-
-//----------------------------------------------Finalización Turno--------------------------------------------------    
-//------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-//    public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs) throws Exception {
-//        boolean isTabs = false;
-//
-//        if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
-//            isTabs = true;
-//        }
-//
-//        daoW.updateWorkshiftCash(actualWs);
-//        daoW.updateWorkshiftClose(actualWs, isTabs);
-//        daoW.updateWorkshiftElectronic(actualWs);
-//        daoW.updateWorkshiftError(actualWs);
-//        daoW.updateWorkshiftErrorReal(actualWs);
-//        daoW.updateWorkshiftMountReal(actualWs);
-//        daoW.updateWorkshiftState(actualWs);
-//        daoW.updateWorkshiftTotal(actualWs);
-//        if (newWs != null) {
-//            daoW.saveWorkshift(newWs);
-//            for (Table t : toEraseTabs) {
-//
-//                if (t.getOrder().size() > 0) {
-//                    daoI.downActiveItemOrderTableAll(t);
-//                }
-//
-//                if (t.getGifts().size() > 0) {
-//                    daoI.downActiveItemGiftTableAll(t);
-//                }
-//
-//                if (t.getPartialPayed().size() > 0) {
-//                    daoI.downActiveItemPayedTableAll(t);
-//                }
-//
-//                if (t.getPartialPayedND().size() > 0) {
-//                    daoI.downActiveItemPayedNDTableAll(t);
-//                }
-//                daoT.downActiveTable(t);
-//            }
-//
-//            if (toUpdTabs.size() > 0) {
-//                for (int i = 0; i < toUpdTabs.size(); i++) {
-//                    Table t = toUpdTabs.get(i);
-//                    daoI.downActiveItemOrderTableAll(t);
-//                    daoI.downActiveItemGiftTableAll(t);
-//                    daoI.downActiveItemPayedTableAll(t);
-//                    daoI.downActiveItemPayedNDTableAll(t);
-//                    daoT.updateComments(t);
-//                    daoT.updateTableTotal(t);
-//                    if (t.getOrder().size() > 0) {
-//                        for (Itemcard ic : t.getOrder()) {
-//                            daoI.upActiveItemOrderTable(ic, t);
-//                        }
-//                    }
-//
-//                    if (t.getGifts().size() > 0) {
-//                        for (Itemcard ic : t.getGifts()) {
-//                            daoI.upActiveItemGiftTable(t, ic);
-//                        }
-//                    }
-//
-//                    daoT.updateTableOpen(t);
-//                    daoT.updateToPay(t);
-//                }
-//            }
-//
-//            for (Table t : newTabs) {
-//                st.saveTableCompleteChangeWs(t);
-//            }
-//        }
-//        dispose();
-//    }
-
-//Panel BARR-DELI---------------------------------------------------------------
-//Panel BARR-DELI---------------------------------------------------------------
-//Panel BARR-DELI---------------------------------------------------------------
-//Panel BARR-DELI---------------------------------------------------------------
-    // BARR--------------------------------------
-    // BARR--------------------------------------
-    // DELIVERY----------------------------------
-    // DELIVERY----------------------------------
-//    void getDeliOrder(Delivery dOrder) throws Exception {
-//        deliOrderAux = dOrder;
-//        daoD.saveDelivery(deliOrderAux);
-//        int num = deliButtons.size() + 1;
-//        JButtonDelivery newJBD = new JButtonDelivery(num);
-//        Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), user);
-//        newJBD.setTable(newTable);
-//        deliButtons.add(0, newJBD);
-//
-//        JButtonDeliverySee butSee = new JButtonDeliverySee(num, dOrder);
-//        deliButtonsSees.add(0, butSee);
-//
-//        panelDeliBut.repaint();
-//
-//        utiliGrafSal.panelDeliContainerSetter(sal);
-//        deliButUpdater();
-//        utiliGrafSal.resetTableValues(sal);
-//    }
-
-//    void setDeliOrder(Delivery dOrder) throws Exception {
-//        deliOrderAux = dOrder;
-//        daoD.updateDelivery(deliOrderAux);
-//        deliButUpdater();
-//        utiliGrafSal.resetTableValues(sal);
-//    }
-
-    private void deliButUpdater() {
-        for (int i = 0; i < deliButtons.size(); i++) {
-            JButtonDelivery butSelDelivery = deliButtons.get(i);
-            butSelDelivery.setBackground(narUlg);
-            butSelDelivery.setBorder(new LineBorder(narLg, 8));
-            butSelDelivery.setFont(font2);
-            butSelDelivery.setText("Delivery pedido " + butSelDelivery.getNum());
-            butSelDelivery.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        if (scheduler != null) {
-                            scheduler.shutdown();
-                            scheduler = Executors.newSingleThreadScheduledExecutor();
-                        } else {
-                            scheduler = Executors.newSingleThreadScheduledExecutor();
-                        }
-
-                        if (!loopBreaker) {
-                            selectDeli(ae);
-                            if (!loopBreaker) {
-                                selectDeli(ae);
-                                loopBreaker = true;
-                                Runnable duty = () -> {
-                                    loopBreaker = false;
-                                };
-                                long timeWait = 1000; // en segundos
-                                scheduler.schedule(duty, timeWait, TimeUnit.MILLISECONDS);
-                            }
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            );
-
-            //Test
-            JButtonDeliverySee butSee = deliButtonsSees.get(i);
-
-            butSee.setBackground(narUlg);
-
-            butSee.setBorder(
-                    new LineBorder(narLg, 8));
-            butSee.setFont(font3);
-
-            butSee.setText(
-                    "ver");
-            butSee.addActionListener(
-                    new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae
-                ) {
-                    try {
-                        if (scheduler != null) {
-                            scheduler.shutdown();
-                            scheduler = Executors.newSingleThreadScheduledExecutor();
-                        } else {
-                            scheduler = Executors.newSingleThreadScheduledExecutor();
-                        }
-
-                        if (!loopBreaker) {
-                            selectDeliSee(ae);
-                            loopBreaker = true;
-                            Runnable duty = () -> {
-                                loopBreaker = false;
-                            };
-                            long timeWait = 1000; // en segundos
-                            scheduler.schedule(duty, timeWait, TimeUnit.MILLISECONDS);
-                        }
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-            }
-            );
-
-            if (deliButtons.get(i)
-                    .isOpenJBD()) {
-                deliButtons.get(i).setBackground(green);
-                deliButtonsSees.get(i).setBackground(green);
-            }
-
-            if (deliButtons.get(i)
-                    .getTable().isBill() == true) {
-                deliButtons.get(i).setBackground(red);
-                //Test
-                deliButtonsSees.get(i).setBackground(red);
-            }
-
-            if (deliButtons.get(i)
-                    .isOpenJBD() == false && deliButtons.get(i).getTable().isBill() == true) {
-                deliButtons.get(i).setBackground(narUlgX);
-                deliButtons.get(i).setEnabled(false);
-                //Test
-                deliButtonsSees.get(i).setBackground(narUlgX);
-                deliButtonsSees.get(i).setEnabled(false);
-            }
-
-            panelDeliBut.add(butSelDelivery);
-        }
-        revalidate();
-        repaint();
-    }
-
-    private void selectDeli(ActionEvent e) {
-        if (jbtAux != null) {
-            jbtAux.setBorder(null);
-            jbtAux = null;
-        }
-        if (jbdAux != null) {
-            jbdAux.setBorder(new LineBorder(narLg, 8));
-            jbdAux = null;
-            jbdSAux.setBorder(new LineBorder(narLg, 8));
-            jbdSAux = null;
-        }
-
-        if (jbbAux != null) {
-            jbbAux.setBorder(new LineBorder(narLg, 8));
-            jbbAux = null;
-        }
-
-        JButtonDelivery butClicked = (JButtonDelivery) e.getSource();
-        for (int i = 0; i < deliButtons.size(); i++) {
-            if (deliButtons.get(i).getNum() == butClicked.getNum()) {
-                jbdAux = deliButtons.get(i);
-                jbdSAux = deliButtonsSees.get(i);
-            }
-        }
-        try {
-            utiliGrafSal.resetTableValues(sal);
-        } catch (Exception ex) {
-            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        jbdAux.setBorder(new LineBorder(bluSt, 8));
-        jbdSAux.setBorder(new LineBorder(bluSt, 8));
-
-        if (jbdAux.isOpenJBD() == false) {
-            tableAux = jbdAux.getTable();
-            waiterAux = user;
-            tableAux.setWaiter(user);
-            tableAux.setOpen(true);
-            labelOrder.setText("DELIV.: D" + tableAux.getNum());
-            labelWaiter.setText("Cajero: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
-            tableAux.setOrder(new ArrayList<Itemcard>());
-            try {
-                utiliGrafSal.jButExtSetter(sal);
-            } catch (Exception ex) {
-                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            tableAux = jbdAux.getTable();
-            utiliGrafSal.tableFullerProp(sal);
-        }
-    }
-
-    private void selectDeliSee(ActionEvent e) throws Exception {
-
-        if (jbtAux != null) {
-            jbtAux.setBorder(null);
-            jbtAux = null;
-        }
-
-        if (jbdAux != null) {
-            jbdAux.setBorder(new LineBorder(narLg, 8));
-            jbdAux = null;
-            jbdSAux.setBorder(new LineBorder(narLg, 8));
-            jbdSAux = null;
-        }
-
-        if (jbbAux != null) {
-            jbbAux.setBorder(new LineBorder(narLg, 8));
-            jbbAux = null;
-        }
-
-        JButtonDeliverySee butClicked = (JButtonDeliverySee) e.getSource();
-        for (int i = 0; i < deliButtonsSees.size(); i++) {
-            if (deliButtonsSees.get(i).getNumDeli() == butClicked.getNumDeli()) {
-                jbdAux = deliButtons.get(i);
-                jbdSAux = deliButtonsSees.get(i);
-                Delivery deli = jbdSAux.getDelivery();
-                if (jbdSAux.getDelivery().getConsumer() != null) {
-                    new DeliveryTemplate(sal, deli);
-                } else {
-                    utiliMsg.errorNullDeli();
-                }
-            }
-        }
-        try {
-            utiliGrafSal.resetTableValues(sal);
-        } catch (Exception ex) {
-            Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        jbdAux.setBorder(new LineBorder(bluSt, 8));
-        jbdSAux.setBorder(new LineBorder(bluSt, 8));
-
-        if (jbdAux.isOpenJBD() == false) {
-            tableAux = jbdAux.getTable();
-            waiterAux = user;
-            tableAux.setWaiter(user);
-            tableAux.setOpen(true);
-            labelOrder.setText("DELIV.: D" + tableAux.getNum());
-            labelWaiter.setText("Cajero: " + user.getName() + " " + utili.strShorter(user.getLastName(), 2).toUpperCase());
-            tableAux.setOrder(new ArrayList<Itemcard>());
-            try {
-                utiliGrafSal.jButExtSetter(sal);
-            } catch (Exception ex) {
-                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            tableAux = jbdAux.getTable();
-            utiliGrafSal.tableFullerProp(sal);
-        
-        }
-
-    }
-
-//--------------------------------------------------FUNCIONES-------------------------------------------------------
-//--------------------------------------------------GENERALES-------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-    public void enableSalon() {
-        setEnabled(true);
-    }
-
-//------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-   
-//------------------------------------------------------------------------------------------------------------------
-    
-    public ArrayList<ItemMonitor> getItemsMonitor() {
+    //GETTER && SETTER----------------------------------------------
+    //GETTER && SETTER----------------------------------------------
+    //GETTER && SETTER----------------------------------------------
+    //GETTER && SETTER----------------------------------------------
+    public ArrayList<ItemMonitor> getItemsMnr() {
         return itemsMntr;
     }
 
     void setItemsMnr(ArrayList<ItemMonitor> newItemsMntr) {
         itemsMntr = newItemsMntr;
     }
-
+    
     public void addItemMonitorList(ItemMonitor im) {
         itemsMntr.add(im);
     }
-
+    
     public User getUser() {
         return user;
     }
 
-    public void setSalonEnabled() {
-        setEnabled(true);
-    }
-
-    //GETTER && SETTER----------------------------------------------
-    //GETTER && SETTER----------------------------------------------
-    //GETTER && SETTER----------------------------------------------
-    //GETTER && SETTER----------------------------------------------
+    public void getUser(User user) {
+        this.user = user;
+    }    
     public Table getTableAux() {
         return tableAux;
     }
@@ -1652,12 +917,12 @@ public class Salon extends FrameFullManager {
         this.butCloseTable = butCloseTable;
     }
 
-    public JPanel getPanelCuenta() {
-        return panelCuenta;
+    public JPanel getPanelCount() {
+        return panelCount;
     }
 
-    public void setPanelCuenta(JPanel panelCuenta) {
-        this.panelCuenta = panelCuenta;
+    public void setPanelCount(JPanel panelCount) {
+        this.panelCount = panelCount;
     }
 
     public JPanel getPanelFlotante() {

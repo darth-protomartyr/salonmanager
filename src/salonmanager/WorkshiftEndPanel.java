@@ -202,7 +202,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 utiliMsg.confirmRealWsMount();
-                sal.enableSalon();
+                salon.setEnabled(true);
                 dispose();
             }
         });

@@ -1041,7 +1041,7 @@ public class UtilidadesGraficasSalon {
             utiliMsg.errorMultipleIndications();
             resetTableValues(salon);
         } else {
-            if (salon.getItemsTableAux().size() < 1) {
+            if (salon.getItemsTableAux().size() < 1 && salon.getItemsGift().size() == 0) {
                 ss.createTable(salon, salon.getTableAux());
                 if (salon.getJbtAux() != null) {
                     salon.getJbtAux().setOpenJBT(true);

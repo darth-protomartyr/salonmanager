@@ -390,7 +390,7 @@ public class DeliveryTemplate extends FrameHalf {
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
-                salon.setSalonEnabled();
+                salon.setEnabled(true);
             }
         });
     }
@@ -499,7 +499,7 @@ public class DeliveryTemplate extends FrameHalf {
         if (deliAux != null && cmrAux != null) {
             Delivery deliOrder = new Delivery(cmrAux.getPhone(), deliAux.getId());
             utiliGrafSal.getDeliOrder(deliOrder, salon);
-            salon.setSalonEnabled();
+            salon.setEnabled(true);
             dispose();
 
         } else {
@@ -517,7 +517,7 @@ public class DeliveryTemplate extends FrameHalf {
         deliFull.setConsumer(cmrAux);
         deliFull.setDeli(deliAux);
         utiliGrafSal.setDeliOrder(deliFull, salon);
-        salon.setSalonEnabled();
+        salon.setEnabled(true);
         dispose();
     }
 
