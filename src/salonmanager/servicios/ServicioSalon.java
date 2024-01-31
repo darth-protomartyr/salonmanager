@@ -209,8 +209,8 @@ public class ServicioSalon {
     }
 
     //CLOSE Workshift
-    public void closeWorkshift(Salon sal1, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs) throws Exception {
-        Salon sal = sal1;
+    public void closeWorkshift(Salon salon, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs) throws Exception {
+//        Salon sal = sal1;
         Workshift actualWs = actWs;
         Workshift newWs = nWs;
         ArrayList<Table> actualTabs = actTabs;
@@ -238,7 +238,7 @@ public class ServicioSalon {
         actualWs.setWsErrorMount(mountError);
         actualWs.setWsTotalMountCash(mountCash);
         actualWs.setWsTotalMountElectronic(mountElectronic);
-        new WorkshiftEndPanel(sal, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs);
+        new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs);
     }
 
     public void inconcludeWsCutter(Salon sal, Workshift ws) throws InterruptedException, Exception {

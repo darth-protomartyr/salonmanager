@@ -12,12 +12,11 @@ public class Table {
     String id;
     boolean open;
     boolean bill;
-    boolean toPay;
+    boolean toPay;// indicate tha table has been partial paid 
     ArrayList<Itemcard> order;
     ArrayList<Itemcard> gifts;
     ArrayList<Itemcard> partialPayed;
     ArrayList<Itemcard> partialPayedND;
-//    ArrayList<Itemcard> errorItems;
     User waiter;
     int discount;
     double error;
@@ -49,6 +48,8 @@ public class Table {
         this.discount = 0;
         this.error = 0;
         this.priceCorrection = 0;
+        this.amountCash = 0;
+        this.amountElectronic = 0;
         this.total = 0;
         this.comments = "";
         this.activeTable = true;
@@ -116,7 +117,6 @@ public class Table {
         this.waiter = tab.getWaiter();
         this.discount = tab.getDiscount();
         this.error = tab.getError();
-//        this.errorItems = tab.getErrorItems();
         this.priceCorrection = tab.getPriceCorrection();
         this.amountCash = tab.getAmountCash();
         this.amountElectronic = tab.getAmountElectronic();
@@ -224,14 +224,6 @@ public class Table {
         return partialPayedND;
     }
 
-//    public void setErrorItems(ArrayList<Itemcard> errorItems) {
-//        this.errorItems = errorItems;
-//    }
-//
-//    public ArrayList<Itemcard> getErrorItems() {
-//        return errorItems;
-//    }
-
     public User getWaiter() {
         return waiter;
     }
@@ -305,8 +297,4 @@ public class Table {
     public String toString() {
         return "Table{" + "num=" + num + ", pos=" + pos + ", openTime=" + openTime + ", id=" + id + ", open=" + open + ", bill=" + bill + ", toPay=" + toPay + ", discount=" + discount + ", error=" + error + ", priceCorrection=" + priceCorrection + ", amountCash=" + amountCash + ", amountElectronic=" + amountElectronic + ", total=" + total + ", comments=" + comments + ", activeTable=" + activeTable + '}';
     }
-
-
-
-
 }

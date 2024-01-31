@@ -365,6 +365,7 @@ public class Salon extends FrameFullManager {
     public void getUser(User user) {
         this.user = user;
     }    
+    
     public Table getTableAux() {
         return tableAux;
     }

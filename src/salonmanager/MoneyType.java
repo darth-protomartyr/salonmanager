@@ -119,14 +119,10 @@ public class MoneyType extends FrameWindow {
             public void actionPerformed(ActionEvent ae) {
                 try {
 
-//                    if (mixedPay == false) {
                     butMixedIn.setVisible(false);
                     butCashIn.setVisible(false);
                     butElectronicIn.setVisible(false);
                     butMoneyTypeActionPerformed(1);
-//                    } else {
-//                        utiliMsg.errorMixedPayUp();
-//                    }
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -139,11 +135,7 @@ public class MoneyType extends FrameWindow {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-//                    if (mixedPay == false) {
                     butMoneyTypeActionPerformed(2);
-//                    } else {
-//                        utiliMsg.errorMixedPayUp();
-//                    }
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -159,7 +151,6 @@ public class MoneyType extends FrameWindow {
                     butMixedIn.setVisible(false);
                     butCashIn.setVisible(false);
                     butElectronicIn.setVisible(false);
-//                    mixedPay = true;
                     butMoneyTypeActionPerformed(3);
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,12 +284,13 @@ public class MoneyType extends FrameWindow {
         }
     }
 
+
     private void butInPartialCashActionPerformed(int num) throws Exception {
         String amountCash = fieldAmountCash.getText();
         double cash = 0;
         try {
+            cash = parseDouble(amountCash);
             if (num == 1) {
-                cash = parseDouble(amountCash);
                 if (cash >= total) {
                     amounts.set(0, cash);
                     utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);

@@ -1364,6 +1364,9 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
+    
+    
+    
     public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
@@ -1376,6 +1379,7 @@ public class UtilidadesGraficasSalon {
         if (salon.getTableAux().isToPay() == false) {
             salon.getTableAux().setOpen(false);
         }
+        
         daoT.updateTableMountCash(salon.getTableAux());
         daoT.updateTableMountElectronic(salon.getTableAux());
         daoT.updateTableOpen(salon.getTableAux());

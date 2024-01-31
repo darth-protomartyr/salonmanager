@@ -120,7 +120,7 @@ public class DAOTable extends DAO {
 
     public void updateTableMountCash(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_amount_cash = " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_amount_cash = table_amount_cash + " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -136,7 +136,7 @@ public class DAOTable extends DAO {
 
     public void updateTableMountElectronic(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_amount_electronic = " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_amount_electronic = table_amount_electronic + " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

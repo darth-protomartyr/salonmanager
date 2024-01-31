@@ -20,7 +20,7 @@ public class DAOWorkshift extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveWorkshift(Workshift ws) throws Exception {
+    public void saveWorkshit(Workshift ws) throws Exception {
         boolean error = false;
         String sql = "";
 
