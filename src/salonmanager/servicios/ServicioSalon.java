@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.swing.border.LineBorder;
 import salonmanager.Salon;
 import salonmanager.WorkshiftEndPanel;
+import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.entidades.bussiness.Table;
@@ -217,6 +218,7 @@ public class ServicioSalon {
         ArrayList<Table> upTabs = nTabs;
         ArrayList<Table> downTabs = ersdTabs;
         ArrayList<Table> toUpdTabs = updTabs;
+//        Delivery deli = salon.getDeliButtons().get(0).getD;
         if (nWs == null) {
             actualWs = setWsEnd(actualWs);
             actualTabs = st.workshiftTableslistComplete(actualWs);
