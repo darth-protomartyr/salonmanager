@@ -18,6 +18,7 @@ import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -35,6 +36,8 @@ public class ServicioSalon {
     DAOTable daoT = new DAOTable();
     DAOItemcard daoIC = new DAOItemcard();
     DAOWorkshift daoW = new DAOWorkshift();
+    DAODelivery daoD = new DAODelivery();
+
     ServicioItemMonitor sim = new ServicioItemMonitor();
     ServicioTable st = new ServicioTable();
     Utilidades utili = new Utilidades();
@@ -211,14 +214,16 @@ public class ServicioSalon {
 
     //CLOSE Workshift
     public void closeWorkshift(Salon salon, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs) throws Exception {
-//        Salon sal = sal1;
         Workshift actualWs = actWs;
         Workshift newWs = nWs;
         ArrayList<Table> actualTabs = actTabs;
         ArrayList<Table> upTabs = nTabs;
         ArrayList<Table> downTabs = ersdTabs;
         ArrayList<Table> toUpdTabs = updTabs;
-//        Delivery deli = salon.getDeliButtons().get(0).getD;
+        Delivery deli = salon.getDeliButtons().get(0).getDelivery();
+        if (deli.getTab()==null) {
+            daoD.updateDownAct(deli);
+        }
         if (nWs == null) {
             actualWs = setWsEnd(actualWs);
             actualTabs = st.workshiftTableslistComplete(actualWs);

@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import salonmanager.entidades.config.Config;
+import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.graphics.FrameFullManager;
 import salonmanager.entidades.bussiness.ItemMonitor;
@@ -185,11 +185,11 @@ public class Salon extends FrameFullManager {
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
 
-        Config cfg = daoC.consultarConfig();
-        totalTable = cfg.getTotalTable();
-        tableNum = cfg.getTableNum();
-        tablePan = cfg.getTablePan();
-        tablePanCh = cfg.getTablePanCh();
+        ConfigGeneral cfgGen = daoC.askConfigGeneral();
+        totalTable = cfgGen.getTotalTable();
+        tableNum = cfgGen.getTableNum();
+        tablePan = cfgGen.getTablePan();
+        tablePanCh = cfgGen.getTablePanCh();
 
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------

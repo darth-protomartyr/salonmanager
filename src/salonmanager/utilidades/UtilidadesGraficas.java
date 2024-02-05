@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import salonmanager.entidades.bussiness.User;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -38,11 +36,17 @@ import salonmanager.ItemcardInn;
 import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
 import salonmanager.Manager;
-import salonmanager.WorkshiftSession;
+import salonmanager.WorkshiftSessionLanding;
 import salonmanager.Admin;
-import salonmanager.entidades.config.Config;
+import salonmanager.Salon;
+import salonmanager.entidades.config.ConfigActual;
+import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Register;
+import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAOUser;
+import salonmanager.persistencia.DAOWorkshift;
+import salonmanager.servicios.ServicioSalon;
 
 public class UtilidadesGraficas extends JFrame {
 
@@ -52,10 +56,12 @@ public class UtilidadesGraficas extends JFrame {
     Color narLg = new Color(252, 203, 5);
     Color viol = new Color(242, 29, 41);
     Utilidades utili = new Utilidades();
+    ServicioSalon ss = new ServicioSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
-    
+    DAOUser daoU = new DAOUser();
+    DAOWorkshift daoW = new DAOWorkshift();
     Toolkit pantalla = Toolkit.getDefaultToolkit();
     Dimension tamanioPantalla = pantalla.getScreenSize();
     int anchoFrame = tamanioPantalla.width;
@@ -176,9 +182,24 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            Config cfg = sm.getConfig();
-                            if (cfg.isActiveConfig()) {
-                                new WorkshiftSession(manager);
+                            ConfigGeneral cfgGen = sm.getConfigGen();
+                            if (cfgGen.isActiveConfig()) {
+                                ConfigActual cfgAct = sm.getConfigAct();
+                                if (cfgAct.isOpenSession()) {
+                                    if (cfgAct.isOpenWs()) {
+                                        Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+                                        ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
+                                        if(user.getId().equals(ws.getWsCashier().getId())) {
+//                                            new Salon(null, man);  
+                                        } else {
+//                                            ss.endWorkshift(salon);
+                                        }
+                                    } else {
+                                        new Salon(null, man);
+                                    }
+                                } else {
+                                    new WorkshiftSessionLanding(manager);
+                                }
                             } else {
                                 utiliMsg.configNull();
                             }
@@ -202,7 +223,7 @@ public class UtilidadesGraficas extends JFrame {
         panelData.setBackground(bluLg);
         panelData.setBorder(bordeInterior);
         JLabel nameData = new JLabel(labelData);
-        nameData.setBounds(anchoUnit * 1, altoUnit * 1,anchoUnit * 20, altoUnit * 5 );
+        nameData.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 20, altoUnit * 5);
         Font fuente = new Font("Arial", Font.BOLD, font);
         nameData.setFont(fuente);
         panelData.add(nameData);
@@ -515,7 +536,7 @@ public class UtilidadesGraficas extends JFrame {
         panelA.add(panelData6);
 
         JPanel panelData7 = dataPanelBacker("Propina deducible:", 14);
-        panelData7.setBounds(anchoUnit * 20, altoUnit * 62 , anchoUnit * 15, altoUnit * 7);
+        panelData7.setBounds(anchoUnit * 20, altoUnit * 62, anchoUnit * 15, altoUnit * 7);
         checkTip.setBounds(anchoUnit * 12, altoUnit * 2, altoUnit * 3, altoUnit * 3);
         panelData7.add(checkTip);
         panelA.add(panelData7);

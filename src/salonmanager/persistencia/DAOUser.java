@@ -11,7 +11,7 @@ import salonmanager.entidades.bussiness.Table;
 
 public class DAOUser extends DAO {
 
-    UtilidadesGraficas utiliF = new UtilidadesGraficas();
+//    UtilidadesGraficas utiliF = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
 
@@ -303,7 +303,7 @@ public class DAOUser extends DAO {
     }
 
     public void updateUser(User userAux, String id) throws Exception {
-        
+
         String name = userAux.getName();
         String lastName = userAux.getLastName();
         String mail = userAux.getMail();
@@ -315,11 +315,11 @@ public class DAOUser extends DAO {
         boolean activeUser = userAux.isActiveUser();
 
         try {
-            String sql1 = "UPDATE users SET user_name = '" + name +"', user_last_name ='" + lastName + "', user_mail = '" + mail 
-                    + "', user_role = '" + rol + "', user_image_route = '" + routeImage + "', user_image_name = '" + nameImage 
-                    + "', user_password = '" + password + "', user_phone = '" + phone +"', user_active = " + activeUser 
+            String sql1 = "UPDATE users SET user_name = '" + name + "', user_last_name ='" + lastName + "', user_mail = '" + mail
+                    + "', user_role = '" + rol + "', user_image_route = '" + routeImage + "', user_image_name = '" + nameImage
+                    + "', user_password = '" + password + "', user_phone = '" + phone + "', user_active = " + activeUser
                     + " WHERE user_id = '" + id + "';";
-            
+
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -330,6 +330,27 @@ public class DAOUser extends DAO {
             }
         } finally {
             desconectarBase();
-        } 
+        }
+    }
+
+    public User getCashierByWorkshift(int wsId) throws Exception {
+        User cashier = null;
+        String cashierId = "";
+        try {
+            String sql = "SELECT cashier_id_fkey FROM cashier_tabs WHERE workshift_id_fkey = '" + wsId + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                cashierId = resultado.getString(1);
+            }
+            cashier = getUserById(cashierId);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return cashier;
     }
 }

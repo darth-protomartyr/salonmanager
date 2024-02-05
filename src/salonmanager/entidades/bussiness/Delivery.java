@@ -1,18 +1,22 @@
 package salonmanager.entidades.bussiness;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
+import salonmanager.utilidades.Utilidades;
 
 
 public class Delivery {
     DAODeliveryConsumer daoC = new DAODeliveryConsumer();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
+    Utilidades utili = new Utilidades();
     
-    int id;
+    String id;
     DeliveryConsumer consumer;
     Table tab;
     User deli;
@@ -23,13 +27,15 @@ public class Delivery {
     }
 
     public Delivery(String phone,String userId) throws Exception {
+        Timestamp ts = new Timestamp(new Date().getTime());
+        this.id = utili.emptyToStr(ts + "");
         this.consumer = consumerBack(phone);
         this.deli = daoU.getUserById(userId);
         this.open = true;
         this.active = true;
     }
 
-    public Delivery(int id, String phone, String tab, String deli, boolean open, boolean active) throws Exception {
+    public Delivery(String id, String phone, String tab, String deli, boolean open, boolean active) throws Exception {
         this.id = id;
         this.consumer = consumerBack(phone);
         this.tab = tabBack(tab);
@@ -53,11 +59,11 @@ public class Delivery {
         return user;        
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -100,11 +106,4 @@ public class Delivery {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    
-    
-    
-    
-    
-    
 }

@@ -164,7 +164,7 @@ public class DAOWorkshift extends DAO {
         }
     }
 
-    public ArrayList<Workshift> consultarTurnoByDate(Timestamp ts1, Timestamp ts2) throws Exception {
+    public ArrayList<Workshift> askWorshiftByDate(Timestamp ts1, Timestamp ts2) throws Exception {
         ArrayList<Workshift> wss = new ArrayList<Workshift>();
         if (ts2 == null) {
             ts2 = new Timestamp(new Date().getTime());
@@ -198,7 +198,7 @@ public class DAOWorkshift extends DAO {
     }
     
     
-    public Workshift consultarTurnoById(int id) throws Exception {
+    public Workshift askWorshiftById(int id) throws Exception {
         Workshift ws = new Workshift();
         
         try {

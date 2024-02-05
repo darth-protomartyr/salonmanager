@@ -30,7 +30,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -862,7 +861,7 @@ public class UtilidadesGraficasSalon {
         salon.setDeliOrderAux(dOrder);
         daoD.saveDelivery(salon.getDeliOrderAux());
         int num = salon.getDeliButtons().size() + 1;
-        JButtonDelivery newJBD = new JButtonDelivery(num);
+        JButtonDelivery newJBD = new JButtonDelivery(num, dOrder);
         Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), salon.getUser());
         newJBD.setTable(newTable);
         salon.getDeliButtons().add(0, newJBD);

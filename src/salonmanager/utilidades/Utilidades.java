@@ -298,11 +298,11 @@ public class Utilidades {
         }
         return bool;
     }
-    
+
     public boolean stringRepeat(String phone, ArrayList<String> phones) {
         boolean bool = false;
         phone = stringPlain(phone);
-        for ( String ph: phones) {
+        for (String ph : phones) {
             if (!phone.equals("")) {
                 if (ph.equals(phone)) {
                     bool = true;
@@ -311,10 +311,6 @@ public class Utilidades {
         }
         return bool;
     }
-    
-    
-    
-    
 
     ListModel itemsListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
@@ -362,6 +358,23 @@ public class Utilidades {
             str += i + "-";
         }
         return str;
+    }
+
+    public String emptyToStr(String stEmtSp) {
+        StringBuilder str = new StringBuilder();
+        // Recorrer cada caracter de la cadena
+        for (int i = 0; i < stEmtSp.length(); i++) {
+            char caracter = stEmtSp.charAt(i);
+
+            // Reemplazar espacio por el caracter especificado
+            if (caracter == ' ') {
+                str.append("_");
+            } else {
+                str.append(caracter);
+            }
+        }
+
+        return str.toString();
     }
 
     public ArrayList<Integer> strToArrayInt(String str) {

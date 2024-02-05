@@ -222,6 +222,14 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
+    
+    
+    public boolean cargaConfirmarCierrePrograma() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres cerrar el programa?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
 
     public boolean cargaConfirmarFacturacion(double realMount, double error) {
         String mess = "";
@@ -259,8 +267,6 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-  
-
     
     public void cargaError() {
         CustomDialog cm = new CustomDialog("El error fue ingresado al sistema.", 1);

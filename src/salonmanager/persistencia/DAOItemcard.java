@@ -6,13 +6,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.bussiness.User;
-import salonmanager.servicios.ServicioRegister;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DAOItemcard extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    ServicioRegister sr = new ServicioRegister();
+//    ServicioRegister sr = new ServicioRegister();
 
     public ArrayList<Itemcard> listarItemsCard() throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();

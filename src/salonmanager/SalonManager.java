@@ -11,8 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import javax.swing.JFrame;
-import salonmanager.entidades.config.Config;
+import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Session;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.persistencia.DAOConfig;
 
 public class SalonManager {
@@ -30,7 +31,8 @@ public class SalonManager {
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
-    Config cfg = new Config();
+    ConfigGeneral cfgGen = new ConfigGeneral();
+    ConfigActual cfgAct = new ConfigActual();
     
     public static void main(String[] args) {
         try {
@@ -168,8 +170,15 @@ public class SalonManager {
         sessionActual = null;
     }
     
-    public Config getConfig() throws Exception {
-        cfg = daoC.consultarConfig();
-        return cfg;
+    public ConfigGeneral getConfigGen() throws Exception {
+        cfgGen = daoC.askConfigGeneral();
+        return cfgGen;
     }
+    public ConfigActual getConfigAct() throws Exception {
+        cfgAct = daoC.askConfigActual();
+        return cfgAct;
+    }    
+    
+    
+    
 }

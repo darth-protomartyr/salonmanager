@@ -43,7 +43,7 @@ public class Workshift {
         this.errorMountShiftReal = 0;
         this.totalMountShift = 0;
         this.totalMountShiftReal = 0;
-        this.activeWorkshift = activeWorkshift;
+        this.activeWorkshift = true;
 
     }
 

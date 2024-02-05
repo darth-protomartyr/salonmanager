@@ -16,12 +16,13 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import salonmanager.entidades.config.Config;
+import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameWindow;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -36,7 +37,7 @@ import salonmanager.utilidades.UtilidadesMensajes;
  *
  * @author Gonzalo
  */
-public class WorkshiftSession extends FrameWindow {
+public class WorkshiftSessionLanding extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -49,7 +50,7 @@ public class WorkshiftSession extends FrameWindow {
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
     Manager manager = null;
-    Config cfg = new Config();
+    ConfigActual cfgAct = new ConfigActual();
 
     User user = new User();
 
@@ -63,12 +64,12 @@ public class WorkshiftSession extends FrameWindow {
     Color viol = new Color(242, 29, 41);
 
 //    Salon salon = null;
-    public WorkshiftSession(Manager man) throws Exception {
+    public WorkshiftSessionLanding(Manager man) throws Exception {
         manager = man;
         sm.addFrame(this);
         user = man.getUser();
 
-        cfg = sm.getConfig();
+        cfgAct = sm.getConfigAct();
         setTitle("Administrar Turnos Y Sesiones");
         PanelPpal panelPpal = new PanelPpal(390, 300);
         panelPpal.setBackground(bluSt);
@@ -103,14 +104,14 @@ public class WorkshiftSession extends FrameWindow {
                 try {
                     inSalon();
                 } catch (Exception ex) {
-                    Logger.getLogger(WorkshiftSession.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(WorkshiftSessionLanding.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
         panelSession.add(butSession);
 
-        if (cfg.isOpenSession()) {
-            labelOpenSession.setText("Hay una sesión abierta el " + cfg.getLastSession());
+        if (cfgAct.isOpenSession()) {
+            labelOpenSession.setText("Hay una sesión abierta el " + cfgAct.getLastSessionOpen());
             butSession.setText("Cerrar Sesión");
         } else {
             labelOpenSession.setText("No hay una sesión abierta actualmente.");
@@ -131,9 +132,9 @@ public class WorkshiftSession extends FrameWindow {
     }
 
     private void inSalon() throws Exception {
-        if (cfg.isOpenSession() && cfg.isOpenWs()) {
-            int wsId = cfg.getOpenIdWs();
-            Workshift ws = daoW.consultarTurnoById(wsId);
+        if (cfgAct.isOpenSession() && cfgAct.isOpenWs()) {
+            int wsId = cfgAct.getOpenIdWs();
+            Workshift ws = daoW.askWorshiftById(wsId);
             ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
             new Salon(tabs, manager);
             dispose();

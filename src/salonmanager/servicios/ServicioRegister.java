@@ -1,17 +1,12 @@
 package salonmanager.servicios;
 
-import salonmanager.Salon;
 import salonmanager.SalonManager;
 import salonmanager.persistencia.DAORegister;
-import salonmanager.entidades.bussiness.Register;
-import salonmanager.entidades.bussiness.User;
 import salonmanager.utilidades.Utilidades;
-import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ServicioRegister {
 
-    UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     DAORegister daoR = new DAORegister();

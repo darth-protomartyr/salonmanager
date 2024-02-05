@@ -1,31 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.entidades.bussiness;
 
-import salonmanager.entidades.bussiness.Workshift;
-import salonmanager.entidades.bussiness.User;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- *
- * @author Gonzalo
- */
 public class Session {
-
     int id;
     User opener;
     User closer;
     Timestamp openSession;
     Timestamp closeSession;
     boolean stateSession;
-    ArrayList<Workshift> sessionWorkshifts;
-    double totalShift;
-    double errorShift;
+    ArrayList<Workshift> sessionWss;
+    double totalSession;
+    double errorSession;
     boolean activeSession;
 
     public Session() {
@@ -38,9 +26,9 @@ public class Session {
         this.openSession = new Timestamp(new Date().getTime());
         this.closeSession = null;
         this.stateSession = true;
-        this.sessionWorkshifts = null;
-        this.totalShift = 0;
-        this.errorShift = 0;
+        this.sessionWss = null;
+        this.totalSession = 0;
+        this.errorSession = 0;
     }
 
     public int getId() {
@@ -91,28 +79,28 @@ public class Session {
         this.stateSession = stateSession;
     }
 
-    public ArrayList<Workshift> getSessionWorkshifts() {
-        return sessionWorkshifts;
+    public ArrayList<Workshift> getSessionWss() {
+        return sessionWss;
     }
 
-    public void setSessionWorkshifts(ArrayList<Workshift> sessionWorkshifts) {
-        this.sessionWorkshifts = sessionWorkshifts;
+    public void setSessionWss(ArrayList<Workshift> sessionWss) {
+        this.sessionWss = sessionWss;
     }
 
-    public double getTotalShift() {
-        return totalShift;
+    public double getTotalSession() {
+        return totalSession;
     }
 
-    public void setTotalShift(double totalShift) {
-        this.totalShift = totalShift;
+    public void setTotalSession(double totalSession) {
+        this.totalSession = totalSession;
     }
 
-    public double getErrorShift() {
-        return errorShift;
+    public double getErrorSession() {
+        return errorSession;
     }
 
-    public void setErrorShift(double errorShift) {
-        this.errorShift = errorShift;
+    public void setErrorSession(double errorSession) {
+        this.errorSession = errorSession;
     }
 
     public boolean isActiveSession() {
@@ -122,5 +110,4 @@ public class Session {
     public void setActiveSession(boolean activeSession) {
         this.activeSession = activeSession;
     }
-
 }

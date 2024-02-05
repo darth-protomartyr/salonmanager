@@ -9,17 +9,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.graphics.FrameFullManager;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigActual;
+import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAOSession;
+import salonmanager.persistencia.DAOUser;
+import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesMensajes;
 
 public class Manager extends FrameFullManager {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
@@ -28,18 +36,30 @@ public class Manager extends FrameFullManager {
     SalonManager sm = new SalonManager();
     User user = null;
     String pass;
-    Workshift actualShift = null;
-    
-    public Manager (User userIn, String passIn) throws Exception {
+    Session actualSess = null;
+    Workshift actualWs = null;
+    DAOConfig daoC = new DAOConfig();
+    DAOWorkshift daoW = new DAOWorkshift();
+    DAOSession daoS = new DAOSession();
+    DAOUser daoU = new DAOUser();
+    ConfigActual cfgAct = new ConfigActual();
+
+    public Manager(User userIn, String passIn) throws Exception {
         sm.addFrame(this);
-//        sm.setUserIn(userIn);
-//        sm.setPassIn(passIn);
+        cfgAct = daoC.askConfigActual();
+        if (cfgAct.isOpenSession()) {
+            actualSess = daoS.askSessionById(cfgAct.getOpenIdSession());
+            if (cfgAct.isOpenWs()) {
+                actualWs = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+                actualWs.setWsCashier(daoU.getCashierByWorkshift(actualWs.getWsId()));
+            }
+        }
         user = userIn;
         pass = passIn;
         setTitle("Salón Manager");
         PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
         add(panelPpal);
-        
+
         JMenuBar menuBar = utiliGraf.navegador(userIn, passIn, this);
         setJMenuBar(menuBar);
 
@@ -52,7 +72,7 @@ public class Manager extends FrameFullManager {
         String route = utili.barrReplaceInverse(userIn.getRouteImage());
         ImageIcon imageIcon = new ImageIcon(route);
         JLabel labelImage = new JLabel(imageIcon);
-        labelImage.setBounds(altoUnit, altoUnit , anchoUnit *8, anchoUnit * 8);
+        labelImage.setBounds(altoUnit, altoUnit, anchoUnit * 8, anchoUnit * 8);
         panelUser.add(labelImage);
 
         JLabel labelName = utiliGraf.labelTitleBacker2(userIn.getName());
@@ -62,7 +82,7 @@ public class Manager extends FrameFullManager {
         JLabel labelRol = utiliGraf.labelTitleBacker2(userIn.getRol());
         labelRol.setBounds(130, 20, 120, 120);
         panelUser.add(labelRol);
-        
+
         JPanel panelSession = new JPanel();
         panelSession.setLayout(null);
         panelSession.setBackground(bluLg);
@@ -72,13 +92,21 @@ public class Manager extends FrameFullManager {
         JLabel labelActualSession = utiliGraf.labelTitleBackerA4("Session Actual");
         labelActualSession.setBounds(altoUnit, altoUnit, anchoUnit * 25, altoUnit * 10);
         panelSession.add(labelActualSession);
-        
+
         JLabel labelActualShift = utiliGraf.labelTitleBacker1("");
         labelActualShift.setBounds(altoUnit, altoUnit * 14, anchoUnit * 25, altoUnit * 50);
-        if (actualShift != null) {
-            labelActualShift.setText("Te encuentras con una sesión activa \ny un turno abierto a tu nombre.");
+        if (actualSess != null) {
+            if (actualWs != null) {
+                if (user.getId().equals(actualWs.getWsCashier().getId())) {
+                    labelActualShift.setText("Te encuentras con una sesión activa \ny un turno abierto a tu nombre.");
+                } else {
+                    labelActualShift.setText("Te encuentras con una sesión activa \ny hay un turno abierto a nombre de " + actualWs.getWsCashier().getName() + " " +actualWs.getWsCashier().getLastName() +".");
+                }
+            } else {
+                labelActualShift.setText("Te encuentras con una sesión activa.");
+            }
         } else {
-            labelActualShift.setText("No hay ningún turno activo.");
+            labelActualShift.setText("No hay una sesión activa.");
         }
         panelSession.add(labelActualShift);
 
@@ -95,31 +123,31 @@ public class Manager extends FrameFullManager {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int confirmacion = JOptionPane.showConfirmDialog( Manager.this ,"¿Estás seguro de que quieres cerrar el programa?", "Confirmar cierre", JOptionPane.YES_NO_OPTION);
-                if (confirmacion == JOptionPane.YES_OPTION) {
+                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                if (confirmation) {
                     sm.frameCloser();
-                    dispose();   
+                    dispose();
                 }
             }
         });
     }
-    
+
     public Workshift getActualWorkShift() {
-        return actualShift;
+        return actualWs;
     }
-    
+
     public User getUser() {
         return user;
     }
-    
+
     public void setUser(User userAux) {
         this.user = userAux;
     }
-    
+
     public String getPass() {
         return pass;
     }
-    
+
     public void setPass(String passAux) {
         this.pass = passAux;
     }
