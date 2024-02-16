@@ -70,7 +70,7 @@ public class CorrectorItem extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Corrector de Ingresos");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("Corrector de Ingresos");
         panelLabel.add(labelTit);
 
         itemsOrder = tab.getOrder();
@@ -121,15 +121,15 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsPayed);
 
-        JLabel labelComboItems1 = utiliGraf.labelTitleBacker2("Seleccione un item");
+        JLabel labelComboItems1 = utiliGraf.labelTitleBacker2W("Seleccione un item");
         labelComboItems1.setBounds(200, 70, 170, 20);
         panelPpal.add(labelComboItems1);
 
-        JLabel labelComboItems2 = utiliGraf.labelTitleBacker2("para quitar de la");
+        JLabel labelComboItems2 = utiliGraf.labelTitleBacker2W("para quitar de la");
         labelComboItems2.setBounds(200, 90, 170, 20);
         panelPpal.add(labelComboItems2);
 
-        labelComboItems = utiliGraf.labelTitleBacker2("lista de pedidos:");
+        labelComboItems = utiliGraf.labelTitleBacker2W("lista de pedidos:");
         labelComboItems.setBounds(200, 110, 170, 20);
         panelPpal.add(labelComboItems);
 

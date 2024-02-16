@@ -43,7 +43,10 @@ import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Register;
+import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
@@ -54,6 +57,8 @@ public class UtilidadesGraficas extends JFrame {
     Color bluLg = new Color(194, 242, 206);
     Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
+    Color narUlg = new Color(255, 255, 176);
+    Color narUlgX = new Color(255, 255, 210);
     Color viol = new Color(242, 29, 41);
     Utilidades utili = new Utilidades();
     ServicioSalon ss = new ServicioSalon();
@@ -62,6 +67,8 @@ public class UtilidadesGraficas extends JFrame {
     Manager manager = null;
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
+    DAOTable daoT = new DAOTable();
+//    DAOConfig daoC = new DAOConfig();
     Toolkit pantalla = Toolkit.getDefaultToolkit();
     Dimension tamanioPantalla = pantalla.getScreenSize();
     int anchoFrame = tamanioPantalla.width;
@@ -189,10 +196,19 @@ public class UtilidadesGraficas extends JFrame {
                                     if (cfgAct.isOpenWs()) {
                                         Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
                                         ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
+                                        ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
                                         if(user.getId().equals(ws.getWsCashier().getId())) {
-//                                            new Salon(null, man);  
+                                            new Salon(tabs, man);
                                         } else {
-//                                            ss.endWorkshift(salon);
+                                            Salon sal = new Salon(tabs, man);
+                                            sal.setEnabled(false);
+                                            boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
+                                            if(newWs) {
+                                                utiliMsg.cargaLateWs();
+                                                ss.endWorkshift(sal, true);
+                                            } else {
+                                                sal.dispose();
+                                            }
                                         }
                                     } else {
                                         new Salon(null, man);
@@ -212,7 +228,6 @@ public class UtilidadesGraficas extends JFrame {
                 }
             });
         }
-//-------------------------------------------
         return menuBar;
     }
 
@@ -299,12 +314,30 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
+    
+    public JLabel labelTitleBackerA4W(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(25f);
+        title.setFont(newFont);
+        title.setForeground(bluLg);
+        return title;
+    }
 
     public JLabel labelTitleBacker1(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(20f);
         title.setFont(newFont);
+        return title;
+    }
+    
+    public JLabel labelTitleBacker1W(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(20f);
+        title.setFont(newFont);
+        title.setForeground(bluLg);
         return title;
     }
 
@@ -316,12 +349,31 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
+    
+    public JLabel labelTitleBacker2W(String tit) {
+        JLabel title = new JLabel();
+        title.setText(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(16f);
+        title.setFont(newFont);
+        title.setForeground(bluLg);
+        return title;
+    }
 
     public JLabel labelTitleBacker3(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(13f);
         title.setFont(newFont);
+        return title;
+    }
+    
+    public JLabel labelTitleBacker3W(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(13f);
+        title.setFont(newFont);
+        title.setForeground(bluLg);
         return title;
     }
 

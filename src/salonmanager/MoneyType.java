@@ -91,14 +91,14 @@ public class MoneyType extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Seleccionar Modo de Pago");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("SELECCIONAR MODO DE PAGO");
         panelLabel.add(labelTit);
 
-        JLabel labelMount = utiliGraf.labelTitleBacker2("Monto a pagar: $" + total);
+        JLabel labelMount = utiliGraf.labelTitleBacker2W("Monto a pagar: $" + total);
         labelMount.setBounds(100, 35, 190, 25);
         panelPpal.add(labelMount);
 
-        JLabel labelComment = utiliGraf.labelTitleBacker3("Ingrese un comentario(opcional): ");
+        JLabel labelComment = utiliGraf.labelTitleBacker3W("Ingrese un comentario(opcional): ");
         labelComment.setBounds(70, 65, 250, 20);
         panelPpal.add(labelComment);
 
@@ -292,6 +292,7 @@ public class MoneyType extends FrameWindow {
             cash = parseDouble(amountCash);
             if (num == 1) {
                 if (cash >= total) {
+                    cash = total;
                     amounts.set(0, cash);
                     utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
                     dispose();
@@ -300,10 +301,14 @@ public class MoneyType extends FrameWindow {
                     fieldAmountCash.setText("");
                 }
             } else if (num == 2) {
+                if (cash < total) {
                 amounts.set(0, cash);
                 amounts.set(1, total - cash);
                 utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
                 dispose();
+                } else {
+                    utiliMsg.errorUnnecesaryOp();
+                }
             }
         } catch (NumberFormatException e) {
             utiliMsg.errorNumerico();

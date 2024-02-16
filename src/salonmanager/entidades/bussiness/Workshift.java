@@ -14,7 +14,6 @@ import java.util.Date;
  * @author Gonzalo
  */
 public class Workshift {
-
     int id;
     User cashier;
     Timestamp openShift;

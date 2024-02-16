@@ -18,6 +18,9 @@ import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.graphics.JButtonBarr;
+import salonmanager.entidades.graphics.JButtonDelivery;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
@@ -37,7 +40,7 @@ public class ServicioSalon {
     DAOItemcard daoIC = new DAOItemcard();
     DAOWorkshift daoW = new DAOWorkshift();
     DAODelivery daoD = new DAODelivery();
-
+    DAOConfig daoC = new DAOConfig();
     ServicioItemMonitor sim = new ServicioItemMonitor();
     ServicioTable st = new ServicioTable();
     Utilidades utili = new Utilidades();
@@ -185,70 +188,107 @@ public class ServicioSalon {
         }
     }
 
-    public boolean openJBTButtonsTester(ArrayList<JButtonTable> tableButtons) {
+    public boolean openJBTButtonsTester(ArrayList<JButtonTable> tableButtons, ArrayList<JButtonBarr> barrButtons, ArrayList<JButtonDelivery> deliButtons) {
         boolean close = true;
         for (JButtonTable jbt : tableButtons) {
             if (jbt.isOpenJBT() == true) {
                 close = false;
             }
         }
+
+        for (JButtonBarr jbb : barrButtons) {
+            if (jbb.isOpenJBB() == true) {
+                close = false;
+            }
+        }
+
+        for (JButtonDelivery jbd : deliButtons) {
+            if (jbd.isOpenJBD() == true) {
+                close = false;
+            }
+        }
+
         return close;
     }
 
-    public void endWorkshift(Salon salon) throws Exception {
+    public void endWorkshift(Salon salon, boolean errorWs) throws Exception {
         salon.setEnabled(true);
-        if (openJBTButtonsTester(salon.getTableButtons()) == true) {
+        if (salon.getBarrButtons().size() > 0) {
+            if (salon.getBarrButtons().get(0).isOpenJBB()) {
+                salon.getBarrButtons().get(0).setOpenJBB(false);
+            }
+        }
+
+        if (salon.getDeliButtons().size() > 0) {
+            if (salon.getDeliButtons().get(0).isOpenJBD()) {
+                salon.getDeliButtons().get(0).setOpenJBD(false);
+            }
+        }
+
+        if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == true || errorWs == false) {
             boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
             if (confirm2 == true) {
-                closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null);
+                closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
                 salon.setEnabled(false);
             }
         } else {
             boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(salon.getUser());
             if (confirm3 == true) {
-                inconcludeWsCutter(salon, salon.getWorkshiftNow());
+                inconcludeWsCutter(salon, salon.getWorkshiftNow(), errorWs);
                 salon.setEnabled(false);
             }
         }
     }
 
     //CLOSE Workshift
-    public void closeWorkshift(Salon salon, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs) throws Exception {
+    public void closeWorkshift(Salon salon, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
         Workshift actualWs = actWs;
         Workshift newWs = nWs;
         ArrayList<Table> actualTabs = actTabs;
         ArrayList<Table> upTabs = nTabs;
         ArrayList<Table> downTabs = ersdTabs;
         ArrayList<Table> toUpdTabs = updTabs;
-        Delivery deli = salon.getDeliButtons().get(0).getDelivery();
-        if (deli.getTab()==null) {
-            daoD.updateDownAct(deli);
+        if (salon.getDeliButtons().size() > 0) {
+            Delivery deli = salon.getDeliButtons().get(0).getDelivery();
+            if (deli.getTab() == null) {
+                daoD.updateDownAct(deli);
+            }
         }
+
         if (nWs == null) {
             actualWs = setWsEnd(actualWs);
             actualTabs = st.workshiftTableslistComplete(actualWs);
         }
-        double mount = 0;
-        double mountError = 0;
-        double mountCash = 0;
-        double mountElectronic = 0;
-        for (int i = 0; i < actualTabs.size(); i++) {
-            if (actualTabs.get(i).isOpen() == false && actualTabs.get(i).isActiveTable() == true) {
-                Table tab = actualTabs.get(i);
-                mount += tab.getTotal();
-                mountError += tab.getError();
-                mountCash += tab.getAmountCash();
-                mountElectronic += tab.getAmountElectronic();
+
+        if (actualTabs.size() == 0) {
+            daoW.updateWorkshiftState(actualWs);
+            daoC.updateCfgActOpenWs(false);
+            daoC.updateCfgActOpenIdWs(0);
+            kjlkjlkjl
+            salon.dispose();
+        } else {
+            double mount = 0;
+            double mountError = 0;
+            double mountCash = 0;
+            double mountElectronic = 0;
+            for (int i = 0; i < actualTabs.size(); i++) {
+                if (actualTabs.get(i).isOpen() == false && actualTabs.get(i).isActiveTable() == true) {
+                    Table tab = actualTabs.get(i);
+                    mount += tab.getTotal();
+                    mountError += tab.getError();
+                    mountCash += tab.getAmountCash();
+                    mountElectronic += tab.getAmountElectronic();
+                }
             }
+            actualWs.setWsTotalMount(mount);
+            actualWs.setWsErrorMount(mountError);
+            actualWs.setWsTotalMountCash(mountCash);
+            actualWs.setWsTotalMountElectronic(mountElectronic);
+            new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
         }
-        actualWs.setWsTotalMount(mount);
-        actualWs.setWsErrorMount(mountError);
-        actualWs.setWsTotalMountCash(mountCash);
-        actualWs.setWsTotalMountElectronic(mountElectronic);
-        new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs);
     }
 
-    public void inconcludeWsCutter(Salon sal, Workshift ws) throws InterruptedException, Exception {
+    public void inconcludeWsCutter(Salon sal, Workshift ws, boolean errorWs) throws InterruptedException, Exception {
         Workshift newWs = new Workshift();
         Workshift actualWs = ws;
         ArrayList<Table> actualTabs = null;
@@ -321,7 +361,7 @@ public class ServicioSalon {
         Timestamp close = new Timestamp(new Date().getTime());
         newWs.setWsClose(close);
         newWs.setWsClose(null);
-        closeWorkshift(sal, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs);
+        closeWorkshift(sal, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
     }
 
     private Workshift setWsEnd(Workshift ws) throws Exception {
@@ -332,11 +372,5 @@ public class ServicioSalon {
         newWs.setWsState(false);
         return newWs;
     }
-    
 
-    
-    
-    
-    
-    
 }

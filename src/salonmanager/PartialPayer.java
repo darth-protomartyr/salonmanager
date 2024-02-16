@@ -83,14 +83,14 @@ public class PartialPayer extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Pago Parcial");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("PAGO PARCIAL");
         panelLabel.add(labelTit);
 
-        JLabel labelItemsTP = utiliGraf.labelTitleBacker3("Items a pagar");
+        JLabel labelItemsTP = utiliGraf.labelTitleBacker3W("Items a pagar");
         labelItemsTP.setBounds(20, 40, 180, 20);
         panelPpal.add(labelItemsTP);
 
-        JLabel labelItemsSel = utiliGraf.labelTitleBacker3("Items Seleccionados");
+        JLabel labelItemsSel = utiliGraf.labelTitleBacker3W("Items Seleccionados");
         labelItemsSel.setBounds(205, 40, 165, 20);
         panelPpal.add(labelItemsSel);
 
@@ -126,7 +126,7 @@ public class PartialPayer extends FrameWindow {
         panelSubTotal.setBounds(145, 170, 100, 30);
         panelPpal.add(panelSubTotal);
 
-        labelSubTotal = utiliGraf.labelTitleBacker2("Subtotal $:");
+        labelSubTotal = utiliGraf.labelTitleBacker2W("Subtotal $:");
         labelSubTotal.setBounds(40, 170, 100, 30);
         panelPpal.add(labelSubTotal);
 
@@ -134,11 +134,11 @@ public class PartialPayer extends FrameWindow {
 //        labelPrice.setBounds(100, 170, 40, 30);
         panelSubTotal.add(labelPrice);
 
-        labelRest = utiliGraf.labelTitleBacker3("Resto $:" + total);
+        labelRest = utiliGraf.labelTitleBacker3W("Resto $:" + total);
         labelRest.setBounds(260, 160, 130, 25);
         panelPpal.add(labelRest);
 
-        labelTip = utiliGraf.labelTitleBacker3("Prop $:" + Math.round(subTotal / 10));
+        labelTip = utiliGraf.labelTitleBacker3W("Prop $:" + Math.round(subTotal / 10));
         labelTip.setBounds(260, 180, 130, 25);
         panelPpal.add(labelTip);
 

@@ -47,6 +47,8 @@ public class ServicioWorkshiftSession {
         daoW.updateWorkshiftMountReal(actualWs);
         daoW.updateWorkshiftState(actualWs);
         daoW.updateWorkshiftTotal(actualWs);
+        daoC.updateCfgActOpenWs(false);
+        daoC.updateCfgActOpenIdWs(0);
         if (newWs != null) {
             daoW.saveWorkshift(newWs);
             for (Table t : toEraseTabs) {
@@ -99,21 +101,19 @@ public class ServicioWorkshiftSession {
                 st.saveTableCompleteChangeWs(t);
             }
         }
-//        dispose();
     }
 
     public Session crearSession(User user) throws Exception {
         Session sess = new Session(user);
         daoS.saveSession(sess);
-
-        int id = daoS.findSessionId(sess.getOpenSession());
+        int id = daoS.askSessionId(sess.getOpenSession());
         sess.setId(id);
         daoU.saveCashierInit(sess);
 //        daoW.listarWsByDate(sess);
-        daoC.upOpenSession();
-        daoC.upOpenSessionId(sess);
-
+//        daoC.upOpenSession();
+//        daoC.upOpenSessionId(sess);
+        daoC.updateCfgActOpenSession(true);
+        daoC.updateCfgActOpenSessionId(id);
         return sess;
     }
-
 }

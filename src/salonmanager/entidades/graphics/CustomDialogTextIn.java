@@ -70,7 +70,7 @@ public class CustomDialogTextIn extends JDialog {
         
 //        String mess = "Ingrese indicaciónes del cliente";
 
-        JLabel labelIText = utiliGraf.labelTitleBacker1(message);
+        JLabel labelIText = utiliGraf.labelTitleBacker1W(message);
         labelIText.setBounds(anchoUnit * 2, altoUnit * 2, anchoUnit * 27, altoUnit * 5);
         panelText.add(labelIText);
 

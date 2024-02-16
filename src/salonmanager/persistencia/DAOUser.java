@@ -2,7 +2,6 @@ package salonmanager.persistencia;
 
 import salonmanager.entidades.bussiness.User;
 import salonmanager.utilidades.Utilidades;
-import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;

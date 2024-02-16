@@ -1,13 +1,15 @@
 package salonmanager.entidades.config;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class ConfigActual {
-    boolean openWs; //
+    boolean openWs;
     int openIdWs;
     boolean openSession;
     int openIdSession;
     Timestamp lastSessionOpen;
+    ArrayList<Integer> arrayDeferWs;
 
     public boolean isOpenWs() {
         return openWs;
@@ -48,4 +50,14 @@ public class ConfigActual {
     public void setLastSessionOpen(Timestamp lastSessionOpen) {
         this.lastSessionOpen = lastSessionOpen;
     }
+
+    public ArrayList<Integer> getArrayDeferWs() {
+        return arrayDeferWs;
+    }
+
+    public void setArrayDeferWs(ArrayList<Integer> arrayDeferWs) {
+        this.arrayDeferWs = arrayDeferWs;
+    }
+    
+    
 }

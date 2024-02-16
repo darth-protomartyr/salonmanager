@@ -314,10 +314,14 @@ public class Salon extends FrameFullManager {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (tableAux.isBill() == false) {
-                        utiliMsg.errorBillUnsend();
+                    if (getItemsTableAux().size() < 1) {
+                        utiliMsg.errorItemsTableNull();
                     } else {
-                        utiliGrafSal.errorTaker(sal);
+                        if (tableAux.isBill() == false) {
+                            utiliMsg.errorBillUnsend();
+                        } else {
+                            utiliGrafSal.errorTaker(sal);
+                        }
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
@@ -327,7 +331,7 @@ public class Salon extends FrameFullManager {
         panelTable.add(butErrorTable);
 //Panel SelItem---------------------------------------------------------
 //Panel Count---------------------------------------------------------
-        
+
         panelCount = utiliGrafSal.returnPanelCount(sal);
         panelTable.add(panelCount);
 
@@ -339,8 +343,7 @@ public class Salon extends FrameFullManager {
                 dispose();
             }
         });
-    }  
-  
+    }
 
     //GETTER && SETTER----------------------------------------------
     //GETTER && SETTER----------------------------------------------
@@ -353,19 +356,19 @@ public class Salon extends FrameFullManager {
     void setItemsMnr(ArrayList<ItemMonitor> newItemsMntr) {
         itemsMntr = newItemsMntr;
     }
-    
+
     public void addItemMonitorList(ItemMonitor im) {
         itemsMntr.add(im);
     }
-    
+
     public User getUser() {
         return user;
     }
 
     public void getUser(User user) {
         this.user = user;
-    }    
-    
+    }
+
     public Table getTableAux() {
         return tableAux;
     }

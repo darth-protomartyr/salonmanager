@@ -245,7 +245,7 @@ public class Table {
     }
 
     public void setError(double error) {
-        this.total = error;
+        this.error = error;
     }
 
     public double getPriceCorrection() {

@@ -57,7 +57,7 @@ public class BillDiscounter extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Elija un porcentaje para descontar");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("Elija un porcentaje para descontar");
         panelLabel.add(labelTit);
 
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 5);
@@ -67,6 +67,7 @@ public class BillDiscounter extends FrameWindow {
         spinnerDiscount.setFont(new Font("Arial", Font.PLAIN, 75)); //
         panelPpal.add(spinnerDiscount);
         JLabel labelPercentage = utiliGraf.labelTitleBackerA1("%");
+        labelPercentage.setForeground(bluLg);
         labelPercentage.setBounds(240, 90, 80, 80);
         panelPpal.add(labelPercentage);
         

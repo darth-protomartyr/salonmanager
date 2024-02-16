@@ -32,11 +32,11 @@ public class ItemcardConsulta extends FrameThird {
     public ItemcardConsulta(Itemcard ic) {
         sm.addFrame(this);
         itemAux = ic;
-        setTitle("Consulta Item Card");
+        setTitle("Consulta Item Carta");
         PanelPpal panelPpal = new PanelPpal(anchoFrameThird, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Consulta Item de la Card");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("Consulta Item de la Carta");
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 

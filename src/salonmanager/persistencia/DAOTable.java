@@ -120,7 +120,9 @@ public class DAOTable extends DAO {
 
     public void updateTableMountCash(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_amount_cash = table_amount_cash + " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
+//            String sql1 = "UPDATE tabs SET table_amount_cash = table_amount_cash + " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_amount_cash = " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
+
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -136,7 +138,9 @@ public class DAOTable extends DAO {
 
     public void updateTableMountElectronic(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_amount_electronic = table_amount_electronic + " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
+//            String sql1 = "UPDATE tabs SET table_amount_electronic = table_amount_electronic + " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_amount_electronic = " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
+
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -166,7 +170,6 @@ public class DAOTable extends DAO {
         }
     }
 
-
     public void updateError(Table tab) throws Exception {
         try {
             String sql1 = "UPDATE tabs SET table_error = " + tab.getError() + " WHERE table_id = '" + tab.getId() + "';";
@@ -182,7 +185,6 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-
 
     public void updateComments(Table tab) throws Exception {
         if (!tab.getComments().equals("Ingrese un comentario(opcional): ") || !tab.getComments().equals("Causa del Error (obligatorio): ")) {
@@ -287,7 +289,6 @@ public class DAOTable extends DAO {
 //            desconectarBase();
 //        }
 //    }
-
     public void downActiveTable(Table t) throws Exception {
         try {
             String sql1 = "UPDATE tabs SET table_active = false WHERE table_id = '" + t.getId() + "';";
@@ -303,8 +304,7 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
-    
+
     public void upActiveTable(Table t) throws Exception {
         try {
             String sql1 = "UPDATE tabs SET table_active = true WHERE table_id = '" + t.getId() + "';";

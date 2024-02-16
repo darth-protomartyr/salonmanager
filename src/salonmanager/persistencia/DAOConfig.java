@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import salonmanager.entidades.config.ConfigGeneral;
-import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -51,7 +50,7 @@ public class DAOConfig extends DAO {
             desconectarBase();
         }
     }
-    
+
     public ConfigGeneral askConfigGeneral() throws Exception {
         String sql = "SELECT * FROM config_general;";
         consultarBase(sql);
@@ -66,7 +65,7 @@ public class DAOConfig extends DAO {
         desconectarBase();
         return cfnGen;
     }
-    
+
     public ConfigActual askConfigActual() throws Exception {
         String sql = "SELECT * FROM config_actual;";
         consultarBase(sql);
@@ -77,21 +76,133 @@ public class DAOConfig extends DAO {
             cfnAct.setOpenSession(resultado.getBoolean(3));
             cfnAct.setOpenIdSession(resultado.getInt(4));
             cfnAct.setLastSessionOpen(resultado.getTimestamp(5));
+            cfnAct.setArrayDeferWs(utili.strToArrayInt(resultado.getString(6)));
         }
         desconectarBase();
         return cfnAct;
     }
+
+//    public void upOpenSession() {
+//        
+//    }
+//
+//    public void upOpenSessionId(Session sess) {
+//        
+//    }
+    public void updateCfgActOpenWs(boolean bool) throws Exception {
+        try {
+            String sql1 = "UPDATE config_actual SET config_open_ws = " + bool + ";";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public void updateCfgActOpenIdWs(int idWs) throws Exception {
+        try {
+            String sql1 = "UPDATE config_actual SET config_open_ws_id = '" + idWs + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public void updateCfgActOpenSession(boolean bool) throws Exception {
+        try {
+            String sql1 = "UPDATE config_actual SET config_open_session = " + bool + ";";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public void updateCfgActOpenSessionId(int idSess) throws Exception {
+        try {
+            String sql1 = "UPDATE config_actual SET config_open_session_id = '" + idSess + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public void updateCfgActLastSessionOpen(Timestamp ts) throws Exception {
+        try {
+            String sql1 = "UPDATE config_actual SET config_last_session_time = '" + ts + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
+    public void updateCfgAct(ArrayList<Integer> arrayDeferWs) throws Exception {
+            String stArray =  utili.arrayIntToStr(arrayDeferWs);
+        try {
+            String sql1 = "UPDATE config_actual SET congif_defer_close_ws = '" + stArray + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }   
+    }
     
     
 
-    public void upOpenSession() {
-        
-    }
-
-    public void upOpenSessionId(Session sess) {
-        
-    }
-    
-    
-    
+//    public int askOpenIdSession(Timestamp openSession) throws Exception {
+//        try {
+//            String sql = "SELECT  FROM sessions WHERE session_open = '" + openSession + "';";
+//            System.out.println(sql);
+//            consultarBase(sql);
+//            int id = 0;
+//            while (resultado.next()) {
+//                id = resultado.getInt(1);
+//            }
+//            return id;
+//        } catch (Exception e) {
+//            throw e;
+//        } finally {
+//            desconectarBase();
+//        }
+//    }
 }

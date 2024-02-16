@@ -56,7 +56,7 @@ public class Ingresar extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 50);
         panelPpal.add(panelLabel);
 
-        JLabel labelIngreso = utiliGraf.labelTitleBacker1("Log In");
+        JLabel labelIngreso = utiliGraf.labelTitleBacker1W("Log In");
         panelLabel.add(labelIngreso);
 
         JPanel panelData1 = utiliGraf.dataPanelBacker("Mail:", 16);

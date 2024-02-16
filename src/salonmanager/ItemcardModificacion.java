@@ -62,12 +62,12 @@ public class ItemcardModificacion extends FrameHalf {
         itemAux= ic;
         sm.addFrame(this);
         item = ic;
-        setTitle("Modificación Item de Card");
+        setTitle("Modificación Item de la Carta");
         itemsCardDB = daoIC.listarItemsCard();
         PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Ingresar Items a la Card");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("MODIFICAR ITEMS DEL MENÚ");
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 

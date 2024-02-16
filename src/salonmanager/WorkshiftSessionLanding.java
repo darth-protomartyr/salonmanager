@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameWindow;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
@@ -80,7 +79,7 @@ public class WorkshiftSessionLanding extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
 
-        JLabel labelSalon = utiliGraf.labelTitleBackerA4("Administrador del Salón");
+        JLabel labelSalon = utiliGraf.labelTitleBackerA4W("ADMINISTRADOR DEL SALON");
         panelLabel.add(labelSalon);
 
         JPanel panelSession = new JPanel();

@@ -35,8 +35,7 @@ public class DAOSession extends DAO {
         }
     }
 
-
-    public int findSessionId(Timestamp openSession) throws Exception {
+    public int askSessionId(Timestamp openSession) throws Exception {
         int id = 0;
         try {
             String sql = "SELECT session_id FROM sessions WHERE session_open = '" + openSession + "';";
@@ -66,9 +65,27 @@ public class DAOSession extends DAO {
                 sess.setStateSession(resultado.getBoolean(4));
                 sess.setTotalSession(resultado.getDouble(5));
                 sess.setErrorSession(resultado.getDouble(6));
-                sess.setActiveSession(resultado.getBoolean(7));       
+                sess.setActiveSession(resultado.getBoolean(7));
             }
             return sess;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    
+    public int findLastSessID() throws Exception {
+        int id = 0;
+        try {
+            String sql = "SELECT MAX(session_id) FROM sessions;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                id = resultado.getInt(1);
+            }
+            return id;
         } catch (Exception e) {
             throw e;
         } finally {

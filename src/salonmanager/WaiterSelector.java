@@ -69,12 +69,12 @@ public class WaiterSelector extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
 
-        JLabel labelTit = utiliGraf.labelTitleBackerA4("");
+        JLabel labelTit = utiliGraf.labelTitleBackerA4W("");
         panelLabel.add(labelTit);
         if (i == 0) {
-            labelTit.setText("Seleccione un mozo");
+            labelTit.setText("SELECCIONE UN MOZO");
         } else {
-            labelTit.setText("Modifique el mozo");
+            labelTit.setText("MODIFIQUE EL MOZO");
         }
 
         comboWaiters.setModel(utili.userComboModelReturnWNull(waiters));

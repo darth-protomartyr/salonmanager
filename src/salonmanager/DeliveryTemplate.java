@@ -100,9 +100,9 @@ public class DeliveryTemplate extends FrameHalf {
 
         String title = "";
         if (deliFull == null) {
-            title = "Iniciar Envío";
+            title = "INICIAR ENVIO";
         } else {
-            title = "Datos Envío";
+            title = "DATOS ENVIO";
         }
 
         setTitle(title);
@@ -112,7 +112,7 @@ public class DeliveryTemplate extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(anchoFrame / 2, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1(title);
+        JLabel labelTit = utiliGraf.labelTitleBacker1W(title);
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 

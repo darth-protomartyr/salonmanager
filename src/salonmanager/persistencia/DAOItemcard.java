@@ -189,6 +189,19 @@ public class DAOItemcard extends DAO {
             desconectarBase();
         }
     }
+    
+    public void upActiveItemOrderTableAll(Table t) throws Exception {
+        try {
+            String sql = "UPDATE itemcard_order_tabs SET itemcard_order_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_order_tabs_active = true;";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+            desconectarBase();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
 
     public ArrayList<Itemcard> listarItemcardOrder(String tabId) throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();

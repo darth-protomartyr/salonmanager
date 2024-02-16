@@ -45,7 +45,7 @@ public class TableResumePanel extends FrameThird {
         PanelPpal panelPpal = new PanelPpal(anchoFrameThird, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBackerA4("Consulta Mesa");
+        JLabel labelTit = utiliGraf.labelTitleBackerA4W("CONSULTA MESA");
         labelTit.setBounds(20, 20, 300, 30);
         panelPpal.add(labelTit);
 

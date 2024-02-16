@@ -242,8 +242,29 @@ public class DAOWorkshift extends DAO {
         } finally {
             desconectarBase();
         }
-
     }
+    
+    
+    
+    public int findLastWsID() throws Exception {
+        int id = 0;
+        try {
+            String sql = "SELECT MAX(workshift_id) FROM workshifts;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                id = resultado.getInt(1);
+            }
+            return id;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
+    
 
     public void updateWorkshiftErrorReal(Workshift ws) throws Exception {
         try {

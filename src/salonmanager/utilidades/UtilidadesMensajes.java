@@ -230,7 +230,24 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
+    
+    
+    public boolean cargaConfirmErrorPriceNull() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres que el precio de venta sea 0?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
 
+    
+    public boolean cargaConfirmCloseWSByOtherUser() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay un turno abierto por otro cajero. Confirme si desea cerrarlo para iniciar uno nuevo a su nombre.");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+    
+    
     public boolean cargaConfirmarFacturacion(double realMount, double error) {
         String mess = "";
 //        double error = realMount - total;
@@ -248,7 +265,7 @@ public class UtilidadesMensajes extends JFrame {
     }
     
     public boolean cargaConfirmarMontoError(double in, double out) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que el monto ingresado es de $" + in + " y el faltante de $" + out + "?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que el monto ingresado es de $" + in + " y el faltante  es de $" + out + "?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -256,13 +273,6 @@ public class UtilidadesMensajes extends JFrame {
     
     public boolean cargaConfirmarCierre() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma el cierre de órdenes, no podrá agregar obsequios ni descuentos.");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-    
-    public boolean cargaConfirmErrorPriceNull() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres que el precio de venta sea 0?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -285,6 +295,11 @@ public class UtilidadesMensajes extends JFrame {
     
     public void cargaGift(String item) {
         CustomDialog cm = new CustomDialog("Se ingresó " + item + " a la lista de obsequios.", 1);
+        cm.setVisible(true);
+    }
+    
+    public void cargaLateWs() {
+        CustomDialog cm = new CustomDialog("Si no tiene los datos de cierre de caja del turno anterior, cierre la ventana. El administrador los podrá cargar luego.", 1);
         cm.setVisible(true);
     }
 
@@ -379,6 +394,21 @@ public class UtilidadesMensajes extends JFrame {
 
     public void errorNullDeli() {
         CustomDialog cm = new CustomDialog("Error: Aún no hay se han asignado datos al envío.", 2);
+        cm.setVisible(true); 
+    }
+
+    public void cargaWsDefer() {
+        CustomDialog cm = new CustomDialog("La carga de datos de cierre de turno fue almacenada para el posterior arbitraje del administrador.", 1);
+        cm.setVisible(true);
+    }
+
+    public void cargaAdvertNoData() {
+        CustomDialog cm = new CustomDialog("Si posee los datos de cierre de turno presione el botón ARBITRAR para que luego el administrador lo haga.", 1);
+        cm.setVisible(true);
+    }
+
+    public void errorUnnecesaryOp() {
+        CustomDialog cm = new CustomDialog("Error: es innecesario hacer el pago mixto.", 2);
         cm.setVisible(true); 
     }
 }

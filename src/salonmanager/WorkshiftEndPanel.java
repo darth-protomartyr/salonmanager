@@ -27,6 +27,8 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigActual;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
@@ -40,6 +42,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     Utilidades utili = new Utilidades();
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
+    DAOConfig daoC = new DAOConfig();
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
@@ -68,7 +71,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     double electronic = 0;
     double error = 0;
 
-    public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs) throws Exception {
+    public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
         actualWs = ws1;
         newWs = ws2;
         actualTabs = filterClose(actTabs);
@@ -91,13 +94,9 @@ public class WorkshiftEndPanel extends FrameHalf {
             toUpdTabs = updTabs;
         }
 
-//        tabs = daoT.listarTablesByTimestamp(ws);
-
         salon = sal;
         sm.addFrame(this);
         User cashier = actualWs.getWsCashier();
-//        User cashier = tabs.get(0).getWaiter();
-
         setTitle("Cierre de turno");
         PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
         add(panelPpal);
@@ -106,25 +105,23 @@ public class WorkshiftEndPanel extends FrameHalf {
         panelLabel.setBackground(bluSt);
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
-//        String nomCashier = cashier.getName();
-//        String pronomCashier = cashier.getApellido();
-        String nomCashier = "Gonzalo";
-        String pronomCashier = "Di Nasso";
+        String nomCashier = cashier.getName();
+        String pronomCashier = cashier.getLastName();
         String tsInit = actualWs.getWsOpen() + "";
         String tsClose = actualWs.getWsClose() + "";
 
-        JLabel labelTit = utiliGraf.labelTitleBackerA4("Cierre de Turno");
+        JLabel labelTit = utiliGraf.labelTitleBackerA4W("CIERRE DE TURNO");
         panelLabel.add(labelTit);
 
-        JLabel labelCashier = utiliGraf.labelTitleBacker2("Titular caja: " + nomCashier.toUpperCase() + " " + pronomCashier.toUpperCase());
+        JLabel labelCashier = utiliGraf.labelTitleBacker2W("Titular caja: " + nomCashier.toUpperCase() + " " + pronomCashier.toUpperCase());
         labelCashier.setBounds(50, 50, 300, 25);
         panelPpal.add(labelCashier);
 
-        JLabel labelOpen = utiliGraf.labelTitleBacker2("Inicio: " + tsInit);
+        JLabel labelOpen = utiliGraf.labelTitleBacker2W("Inicio: " + tsInit);
         labelOpen.setBounds(380, 50, 300, 25);
         panelPpal.add(labelOpen);
 
-        JLabel labelClose = utiliGraf.labelTitleBacker2("Cierre: " + tsClose);
+        JLabel labelClose = utiliGraf.labelTitleBacker2W("Cierre: " + tsClose);
         labelClose.setBounds(380, 70, 300, 25);
         panelPpal.add(labelClose);
 
@@ -231,6 +228,23 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         });
         panelRealAmount.add(buttonConfirm);
+        
+        JButton buttonDeferWsClose = utiliGraf.button2("Arbritrar", 330, 35, 120);
+        buttonDeferWsClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    buttonDeferWsCloseAction();
+                } catch (Exception ex) {
+                    Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        if (errorWs) {
+            panelRealAmount.add(buttonConfirm);
+            utiliMsg.cargaAdvertNoData();
+        }
+        
 
         JPanel panelTabs = new JPanel();
         panelTabs.setLayout(null);
@@ -269,7 +283,6 @@ public class WorkshiftEndPanel extends FrameHalf {
             double realError = realAmount - total;
             boolean confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
             if (confirm) {
-                
                 realAmount = parseDouble(real);
                 actualWs.setWsTotalMountReal(realAmount);
                 actualWs.setWsErrorMountReal(realError);
@@ -278,9 +291,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                 } else if (realError > 0) {
                     realError = 0;
                 }
-                
                 sws.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs);
- 
                 dispose();
             }
         } catch (NumberFormatException e) {
@@ -312,5 +323,14 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         }
         return closeTabs;
+    }
+    
+    private void buttonDeferWsCloseAction() throws Exception {
+        ConfigActual cfgGen = daoC.askConfigActual();
+        ArrayList<Integer> deferWsArray = cfgGen.getArrayDeferWs();
+        deferWsArray.add(actualWs.getWsId());
+        deferWsArray.add(actualWs.getWsId());
+        daoC.updateCfgAct(deferWsArray);
+        utiliMsg.cargaWsDefer();
     }
 }

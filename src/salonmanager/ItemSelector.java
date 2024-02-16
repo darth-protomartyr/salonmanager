@@ -60,9 +60,9 @@ public class ItemSelector extends FrameWindow {
         panelPpal.add(panelLabel);
 
         if (s.equals("m")) {
-            labelIngreso = utiliGraf.labelTitleBacker1("Seleccione el item que desea modificar");
+            labelIngreso = utiliGraf.labelTitleBacker1W("Seleccione el item que desea modificar");
         } else {
-            labelIngreso = utiliGraf.labelTitleBacker1("Seleccione el item que desea consultar");
+            labelIngreso = utiliGraf.labelTitleBacker1W("Seleccione el item que desea consultar");
         }
         panelLabel.add(labelIngreso);
 

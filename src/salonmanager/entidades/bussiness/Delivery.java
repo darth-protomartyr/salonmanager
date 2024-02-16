@@ -2,8 +2,6 @@ package salonmanager.entidades.bussiness;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import salonmanager.entidades.bussiness.User;
-import salonmanager.entidades.bussiness.Table;
 import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -15,7 +13,6 @@ public class Delivery {
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
     Utilidades utili = new Utilidades();
-    
     String id;
     DeliveryConsumer consumer;
     Table tab;

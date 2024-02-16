@@ -66,7 +66,7 @@ public class GiftSelector extends FrameWindow {
         panelLabel.setBounds(0, 0, 390, 40);
         panelPpal.add(panelLabel);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Selecione un item para obsequiar");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("Selecione un item para obsequiar");
         panelLabel.add(labelTit);
 
         aIC = tab.getOrder();

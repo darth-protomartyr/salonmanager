@@ -78,7 +78,7 @@ public class UserExpressTemplate extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(anchoFrame / 2, alturaFrame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1(tit);
+        JLabel labelTit = utiliGraf.labelTitleBacker1W(tit.toUpperCase());
         labelTit.setBounds(10, 15, 300, 30);
         panelPpal.add(labelTit);
 

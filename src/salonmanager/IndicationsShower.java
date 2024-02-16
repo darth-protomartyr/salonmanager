@@ -44,6 +44,8 @@ public class IndicationsShower extends FrameWindow{
 
     
     public IndicationsShower(ItemMonitor im) {
+//            public IndicationsShower() {
+
         PanelPpal panelPpal = new PanelPpal(390, 300);
         add(panelPpal);
 
@@ -52,7 +54,7 @@ public class IndicationsShower extends FrameWindow{
         panelLabel.setBounds(0, 10, 390, 40);
         panelPpal.add(panelLabel);
         
-        JLabel labelTit = utiliGraf.labelTitleBacker1("Indicaciones del Cliente");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("Indicaciones del Cliente");
         labelTit.setBounds(10, 10, 200, 20);
         panelLabel.add(labelTit);
      
@@ -74,11 +76,6 @@ public class IndicationsShower extends FrameWindow{
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setBounds(20, 65, 340, 190);
         panelPpal.add(scrollPane);
-        
-        
-        
-        
-        
         
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
