@@ -35,7 +35,7 @@ public class DAOSession extends DAO {
         }
     }
 
-    public int askSessionId(Timestamp openSession) throws Exception {
+    public int askSessionByTs(Timestamp openSession) throws Exception {
         int id = 0;
         try {
             String sql = "SELECT session_id FROM sessions WHERE session_open = '" + openSession + "';";

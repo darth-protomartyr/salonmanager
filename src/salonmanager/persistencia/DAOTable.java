@@ -3,6 +3,7 @@ package salonmanager.persistencia;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -204,16 +205,21 @@ public class DAOTable extends DAO {
         }
     }
 
+    
+    
     public ArrayList<Table> listarTablesByTimestamp(Workshift ws) throws Exception {
         ArrayList<Table> tables = new ArrayList<Table>();
         Timestamp open = ws.getWsOpen();
         Timestamp close = ws.getWsClose();
+        if (close == null) {
+            close = new Timestamp(new Date().getTime());
+        }
 
         try {
             String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
-            if (ws.getWsClose() == null) {
-                sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= " + close + " AND table_active = true;";
-            }
+//            if (close == null) {
+//                sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= " + close + " AND table_active = true;";
+//            }
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {

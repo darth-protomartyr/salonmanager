@@ -29,17 +29,17 @@ public class JButtonTable extends JButton {
         this.openJBT = false;
     }
 
-    public JButtonTable(String pos, int num, int marginW, int marginH, int width, int height, Table table, String text, boolean openJBT) {
-        this.pos = pos;
-        this.num = num;
-        this.marginW = marginW;
-        this.marginH = marginH;
-        this.width = width;
-        this.height = height;
-        this.table = table;
-        this.text = text;
-        this.openJBT = openJBT;
-    }
+//    public JButtonTable(String pos, int num, int marginW, int marginH, int width, int height, Table table, String text, boolean openJBT) {
+//        this.pos = pos;
+//        this.num = num;
+//        this.marginW = marginW;
+//        this.marginH = marginH;
+//        this.width = width;
+//        this.height = height;
+//        this.table = table;
+//        this.text = text;
+//        this.openJBT = openJBT;
+//    }
 
     public String getPos() {
         return pos;

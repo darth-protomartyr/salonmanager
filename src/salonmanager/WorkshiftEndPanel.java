@@ -291,7 +291,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                 } else if (realError > 0) {
                     realError = 0;
                 }
-                sws.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs);
+                sws.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
                 dispose();
             }
         } catch (NumberFormatException e) {
@@ -330,7 +330,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         ArrayList<Integer> deferWsArray = cfgGen.getArrayDeferWs();
         deferWsArray.add(actualWs.getWsId());
         deferWsArray.add(actualWs.getWsId());
-        daoC.updateCfgAct(deferWsArray);
+        daoC.updateCfgActDeferWs(deferWsArray);
         utiliMsg.cargaWsDefer();
     }
 }

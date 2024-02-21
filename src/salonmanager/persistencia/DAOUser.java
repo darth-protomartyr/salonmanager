@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.Workshift;
 
 public class DAOUser extends DAO {
 
@@ -312,13 +313,11 @@ public class DAOUser extends DAO {
         String password = userAux.getPassword();
         String phone = userAux.getPhone();
         boolean activeUser = userAux.isActiveUser();
-
         try {
             String sql1 = "UPDATE users SET user_name = '" + name + "', user_last_name ='" + lastName + "', user_mail = '" + mail
                     + "', user_role = '" + rol + "', user_image_route = '" + routeImage + "', user_image_name = '" + nameImage
                     + "', user_password = '" + password + "', user_phone = '" + phone + "', user_active = " + activeUser
                     + " WHERE user_id = '" + id + "';";
-
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -336,7 +335,7 @@ public class DAOUser extends DAO {
         User cashier = null;
         String cashierId = "";
         try {
-            String sql = "SELECT cashier_id_fkey FROM cashier_tabs WHERE workshift_id_fkey = '" + wsId + "';";
+            String sql = "SELECT cashier_id_fkey FROM cashier_workshifts WHERE workshift_id_fkey = '" + wsId + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -351,5 +350,23 @@ public class DAOUser extends DAO {
             }
         }
         return cashier;
+    }
+
+    public void saveCashierWorkshift(Workshift ws) throws Exception {
+        try {
+            String sql = "INSERT INTO cashier_workshifts(cashier_workshift_active, cashier_id_fkey, workshift_id_fkey) ";
+            String parcialA = "VALUES( " + true + ", '" + ws.getWsCashier().getId() + "', " + ws.getWsId() + ");";
+            sql += parcialA;
+            System.out.println(sql);
+            insertarModificarEliminar(sql.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
     }
 }

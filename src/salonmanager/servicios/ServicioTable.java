@@ -1,15 +1,17 @@
 package salonmanager.servicios;
 
 import java.util.ArrayList;
+import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 
 public class ServicioTable {
-
+    DAODelivery daoD = new DAODelivery();
     DAOTable daoT = new DAOTable();
     DAOItemcard daoI = new DAOItemcard();
     DAOUser daoU = new DAOUser();
@@ -68,9 +70,13 @@ public class ServicioTable {
         return tab;
     }
 
-    public void saveTableCompleteChangeWs(Table tab) throws Exception {
+    public void saveTableCompleteChangeWs(Table tab, Salon salon) throws Exception {
         daoT.saveTable(tab);
         daoU.saveWaiterTable(tab);
+        if (tab.getPos().equals("delivery")) {
+            String deli = salon.getJbdAux().getDelivery().getId();
+            daoD.updateDeliveryTable(tab.getId(), deli);
+        }
 
         for (int i = 0; i < tab.getOrder().size(); i++) {
             daoI.saveItemOrderTable(tab.getOrder().get(i), tab);

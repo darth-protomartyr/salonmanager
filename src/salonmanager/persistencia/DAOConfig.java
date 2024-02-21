@@ -170,7 +170,7 @@ public class DAOConfig extends DAO {
     }
     
     
-    public void updateCfgAct(ArrayList<Integer> arrayDeferWs) throws Exception {
+    public void updateCfgActDeferWs(ArrayList<Integer> arrayDeferWs) throws Exception {
             String stArray =  utili.arrayIntToStr(arrayDeferWs);
         try {
             String sql1 = "UPDATE config_actual SET congif_defer_close_ws = '" + stArray + "';";

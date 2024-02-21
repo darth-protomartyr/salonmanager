@@ -5,11 +5,9 @@
  */
 package salonmanager.servicios;
 
-import java.awt.event.ItemEvent;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.swing.border.LineBorder;
 import salonmanager.Salon;
 import salonmanager.WorkshiftEndPanel;
 import salonmanager.entidades.bussiness.Delivery;
@@ -264,8 +262,10 @@ public class ServicioSalon {
             daoW.updateWorkshiftState(actualWs);
             daoC.updateCfgActOpenWs(false);
             daoC.updateCfgActOpenIdWs(0);
-            kjlkjlkjl
-            salon.dispose();
+            utiliMsg.workshiftEmpty();
+            salon.setWorkshiftNow(null);
+            salon.getLabelWorkshift().setText("Turno no iniciado.");
+            salon.getButInitWorkshift().setText("ABRIR TURNO");
         } else {
             double mount = 0;
             double mountError = 0;
@@ -372,5 +372,5 @@ public class ServicioSalon {
         newWs.setWsState(false);
         return newWs;
     }
-
 }
+

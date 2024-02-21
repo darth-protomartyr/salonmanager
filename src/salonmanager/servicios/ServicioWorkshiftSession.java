@@ -6,6 +6,7 @@
 package salonmanager.servicios;
 
 import java.util.ArrayList;
+import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.bussiness.Table;
@@ -32,7 +33,7 @@ public class ServicioWorkshiftSession {
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioTable st = new ServicioTable();
     
-    public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs) throws Exception {
+    public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs, Salon salon) throws Exception {
         boolean isTabs = false;
 
         if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
@@ -98,7 +99,7 @@ public class ServicioWorkshiftSession {
             }
 
             for (Table t : newTabs) {
-                st.saveTableCompleteChangeWs(t);
+                st.saveTableCompleteChangeWs(t, salon);
             }
         }
     }
@@ -106,12 +107,10 @@ public class ServicioWorkshiftSession {
     public Session crearSession(User user) throws Exception {
         Session sess = new Session(user);
         daoS.saveSession(sess);
-        int id = daoS.askSessionId(sess.getOpenSession());
+        int id = daoS.findLastSessID();
         sess.setId(id);
         daoU.saveCashierInit(sess);
-//        daoW.listarWsByDate(sess);
-//        daoC.upOpenSession();
-//        daoC.upOpenSessionId(sess);
+
         daoC.updateCfgActOpenSession(true);
         daoC.updateCfgActOpenSessionId(id);
         return sess;

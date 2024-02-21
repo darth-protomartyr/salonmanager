@@ -45,11 +45,11 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
-import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
+import salonmanager.servicios.ServicioTable;
 
 public class UtilidadesGraficas extends JFrame {
 
@@ -62,6 +62,7 @@ public class UtilidadesGraficas extends JFrame {
     Color viol = new Color(242, 29, 41);
     Utilidades utili = new Utilidades();
     ServicioSalon ss = new ServicioSalon();
+    ServicioTable st = new ServicioTable();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
@@ -91,7 +92,9 @@ public class UtilidadesGraficas extends JFrame {
         JMenuItem itemSesion = new JMenuItem("Sesiones");
         JMenuItem itemTurno = new JMenuItem("Turnos");
         JMenuItem itemSalon = new JMenuItem("Salón");
+        
 
+        
         if (sm.rolPermission(2)) {
             menuInicio.add(itemAdministrador);
         }
@@ -196,11 +199,12 @@ public class UtilidadesGraficas extends JFrame {
                                     if (cfgAct.isOpenWs()) {
                                         Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
                                         ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
-                                        ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
+//                                        ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
+                                        ArrayList<Table> tabs = st.workshiftTableslistComplete(ws);
                                         if(user.getId().equals(ws.getWsCashier().getId())) {
-                                            new Salon(tabs, man);
+                                            new Salon(tabs, man, cfgAct);
                                         } else {
-                                            Salon sal = new Salon(tabs, man);
+                                            Salon sal = new Salon(tabs, man, cfgAct);
                                             sal.setEnabled(false);
                                             boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
                                             if(newWs) {
@@ -211,7 +215,7 @@ public class UtilidadesGraficas extends JFrame {
                                             }
                                         }
                                     } else {
-                                        new Salon(null, man);
+                                        new Salon(null, man, cfgAct);
                                     }
                                 } else {
                                     new WorkshiftSessionLanding(manager);

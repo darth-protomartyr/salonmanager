@@ -411,4 +411,9 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: es innecesario hacer el pago mixto.", 2);
         cm.setVisible(true); 
     }
+
+    public void workshiftEmpty() {
+        CustomDialog cm = new CustomDialog("Error: El turno no posee operaciones y será descartado.", 2);
+        cm.setVisible(true); 
+    }
 }

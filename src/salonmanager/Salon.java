@@ -27,6 +27,7 @@ import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.graphics.FrameFullManager;
 import salonmanager.entidades.bussiness.ItemMonitor;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonTable;
@@ -34,6 +35,7 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -113,6 +115,7 @@ public class Salon extends FrameFullManager {
     User waiterAux = null; // mozo actual
     Table tableAux = null; // mesa actual
     Workshift workshiftNow = null;
+    Session sessionNow = null;
     Delivery deliOrderAux = null;
 
     int discount = 0; //porcentaje de descuento
@@ -121,6 +124,9 @@ public class Salon extends FrameFullManager {
     double amountElectronic = 0; //dinero electrónico
     double total = 0; // total a pagar(pago parcial restado)
     double error = 0; // dinero faltante a pagar;
+
+    JLabel labelSession = new JLabel();
+    JLabel labelWorkshift = new JLabel();
 
     //Botonera
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
@@ -173,8 +179,9 @@ public class Salon extends FrameFullManager {
 
     Salon sal = null;
     Manager manager = null;
+    ConfigActual cfgAct = null;
 
-    public Salon(ArrayList<Table> tables, Manager man) throws Exception {
+    public Salon(ArrayList<Table> tables, Manager man, ConfigActual cfgA) throws Exception {
         manager = man;
         sm.addFrame(this);
         user = man.getUser();
@@ -190,7 +197,8 @@ public class Salon extends FrameFullManager {
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
         tablePanCh = cfgGen.getTablePanCh();
-
+        cfgAct = cfgA;
+        
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
@@ -225,20 +233,21 @@ public class Salon extends FrameFullManager {
         panelBDButtons.setVisible(false);
         panelA.add(panelBDButtons);
 
-//Panel Barra-----------------------------------------------------------
+//PANEL BARRBUTTONS---------------------------------------------------------------------------------------------------
+//PANEL BARRBUTTONS---------------------------------------------------------------------------------------------------
         JPanel panelBarr = utiliGrafSal.returnPanelBarr(sal);
         panelBDButtons.add(panelBarr);
 
-//Panel Delivery--------------------------------------------------------        
+//PANEL DELIBUTTONS---------------------------------------------------------------------------------------------------
+//PANEL DELIBUTTONS---------------------------------------------------------------------------------------------------
         JPanel panelDeli = utiliGrafSal.returnPanelDeli(sal);
         panelBDButtons.add(panelDeli);
 
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
-//PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
-//PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
         utiliGrafSal.returnTabbedPanes(sal);
-
+        
+        
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
@@ -337,6 +346,16 @@ public class Salon extends FrameFullManager {
 
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
+//EXTRAS--------------------------------------------------------------------------------------------------------------
+//EXTRAS--------------------------------------------------------------------------------------------------------------
+
+//FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
+//FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
+        if (tables != null) {
+            utiliGrafSal.tableManager(tables, sal);
+        }
+
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -1040,4 +1059,32 @@ public class Salon extends FrameFullManager {
     public void setHUnit(int wUnit) {
         this.hUnit = wUnit;
     }
+
+    public JLabel getLabelSession() {
+        return labelSession;
+    }
+
+    public void setLabelSession(JLabel labelSession) {
+        this.labelSession = labelSession;
+    }
+
+    public JLabel getLabelWorkshift() {
+        return labelWorkshift;
+    }
+
+    public void setLabelWorkshift(JLabel labelWorkshift) {
+        this.labelWorkshift = labelWorkshift;
+    }
+
+    public Session getSessionNow() {
+        return sessionNow;
+    }
+
+    public void setSessionNow(Session sessionNow) {
+        this.sessionNow = sessionNow;
+    }
+    
+    
+    
+    
 }

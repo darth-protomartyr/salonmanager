@@ -121,8 +121,10 @@ public class WorkshiftSessionLanding extends FrameWindow {
         labelOpenWs.setBounds(15, 175, 350, 25);
         panelSession.add(labelOpenWs);
 
-        labelOpenWs.setText("TURNO: Hay un turno abierto.");
-
+        if (cfgAct.isOpenWs()) {
+            labelOpenWs.setText("TURNO: Hay un turno abierto.");
+        }
+        
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -134,12 +136,12 @@ public class WorkshiftSessionLanding extends FrameWindow {
         if (cfgAct.isOpenSession() && cfgAct.isOpenWs()) {
             int wsId = cfgAct.getOpenIdWs();
             Workshift ws = daoW.askWorshiftById(wsId);
-            ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
-            new Salon(tabs, manager);
+            ArrayList<Table> tabs = st.workshiftTableslistComplete(ws);
+            new Salon(tabs, manager, cfgAct);
             dispose();
         } else {
             sses.crearSession(user);
-            new Salon(null, manager);
+            new Salon(null, manager, cfgAct);
             dispose();
         }
     }
