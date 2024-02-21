@@ -1227,7 +1227,7 @@ public class UtilidadesGraficasSalon {
                 if (perm) {
                     if (filaSeleccionada <= salon.getRowsItems()) {
                         itemCorrector(salon);
-                        setTableItems(salon);
+//                        setTableItems(salon);
                     }
                 }
             }
@@ -1614,7 +1614,7 @@ public class UtilidadesGraficasSalon {
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------         
-    public void resetTableValues(Salon salon) throws Exception {
+    public void resetTableValu(Salon salon) throws Exception {
         salon.setItemsTableAux(new ArrayList<Itemcard>());//items a cobrar de la mesa
         salon.setItemsGift(new ArrayList<Itemcard>()); //items obsequiados
         salon.setItemsPartialPaid(new ArrayList<Itemcard>()); // items cobrados por pago parcial
