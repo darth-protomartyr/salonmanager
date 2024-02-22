@@ -207,7 +207,7 @@ public class DAOTable extends DAO {
 
     
     
-    public ArrayList<Table> listarTablesByTimestamp(Workshift ws) throws Exception {
+    public ArrayList<Table> listarTablesByWorkshift(Workshift ws) throws Exception {
         ArrayList<Table> tables = new ArrayList<Table>();
         Timestamp open = ws.getWsOpen();
         Timestamp close = ws.getWsClose();
@@ -248,6 +248,48 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
+    
+    
+        public ArrayList<Table> listarTablesOpenByWorkshift(Workshift ws) throws Exception {
+        ArrayList<Table> tables = new ArrayList<Table>();
+        Timestamp open = ws.getWsOpen();
+        Timestamp close = ws.getWsClose();
+        if (close == null) {
+            close = new Timestamp(new Date().getTime());
+        }
+        
+        try {
+            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_open = true AND table_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                Table tab = new Table();
+                tab.setNum(resultado.getInt(1));
+                tab.setPos(resultado.getString(2));
+                tab.setOpenTime(resultado.getTimestamp(3));
+                tab.setId(resultado.getString(4));
+                tab.setOpen(resultado.getBoolean(5));
+                tab.setBill(resultado.getBoolean(6));
+                tab.setToPay(resultado.getBoolean(7));
+                tab.setDiscount(resultado.getInt(8));
+                tab.setError(resultado.getDouble(9));
+                tab.setPriceCorrection(resultado.getDouble(10));
+                tab.setAmountCash(resultado.getDouble(11));
+                tab.setAmountElectronic(resultado.getDouble(12));
+                tab.setTotal(resultado.getDouble(13));
+                tab.setComments(resultado.getString(14));
+                tab.setActiveTable(resultado.getBoolean(15));
+                tables.add(tab);
+            }
+            return tables;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
 
     public Table getTableById(String st) throws Exception {
         Table tab = new Table();

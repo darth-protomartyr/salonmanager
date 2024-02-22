@@ -335,13 +335,13 @@ public class UtilidadesGraficasSalon {
                 if (salon.getWorkshiftNow() != null) {
                     if (salon.getJbtAux() != null) {
                         salon.getJbtAux().setBorder(null);
-                        if (salon.getJbtAux().isOpenJBT() == true) {
-                            try {
-                                resetTableValues(salon);
-                            } catch (Exception ex) {
-                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
+//                        if (salon.getJbtAux().isOpenJBT() == true) {
+//                            try {
+//                                resetTableValues(salon);
+//                            } catch (Exception ex) {
+//                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        }
                     }
                     JButtonTable butClicked = (JButtonTable) e.getSource();
                     for (int i = 0; i < salon.getTableButtons().size(); i++) {
@@ -1110,20 +1110,16 @@ public class UtilidadesGraficasSalon {
     }
 
     public void setTableItems(Salon salon) {
-        HashSet<Itemcard> itemsSet = new HashSet<Itemcard>(salon.getItemsTableAux());
-        ArrayList<Itemcard> itemsAux = new ArrayList<Itemcard>(itemsSet);
 
-        HashSet<Itemcard> partialSet = new HashSet<Itemcard>(salon.getItemsPartialPaid());
-        ArrayList<Itemcard> partials = new ArrayList<Itemcard>(partialSet);
+        ArrayList<Itemcard> itemsAux = utili.unRepeatItems(salon.getItemsTableAux());
 
-        HashSet<Itemcard> partialSetND = new HashSet<Itemcard>(salon.getItemsPartialPaidNoDiscount());
-        ArrayList<Itemcard> partialsND = new ArrayList<Itemcard>(partialSetND);
+        ArrayList<Itemcard> partials =  utili.unRepeatItems(salon.getItemsPartialPaid());
 
-        HashSet<Itemcard> giftSet = new HashSet<Itemcard>(salon.getItemsGift());
-        ArrayList<Itemcard> gifts = new ArrayList<Itemcard>(giftSet);
+        ArrayList<Itemcard> partialsND =  utili.unRepeatItems(salon.getItemsPartialPaidNoDiscount());
 
-        HashSet<Itemcard> totalSet = new HashSet<Itemcard>(itemsAux);
-        ArrayList<Itemcard> totalItems = new ArrayList<Itemcard>(totalSet);
+        ArrayList<Itemcard> gifts =  utili.unRepeatItems(salon.getItemsGift());
+
+        ArrayList<Itemcard> totalItems =  utili.unRepeatItems(itemsAux);
 
         totalItems.addAll(partials);
         totalItems.addAll(partialsND);
@@ -1614,7 +1610,7 @@ public class UtilidadesGraficasSalon {
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------         
-    public void resetTableValu(Salon salon) throws Exception {
+    public void resetTableValues(Salon salon) throws Exception {
         salon.setItemsTableAux(new ArrayList<Itemcard>());//items a cobrar de la mesa
         salon.setItemsGift(new ArrayList<Itemcard>()); //items obsequiados
         salon.setItemsPartialPaid(new ArrayList<Itemcard>()); // items cobrados por pago parcial
@@ -1628,7 +1624,6 @@ public class UtilidadesGraficasSalon {
         setTableItems(salon);
         salon.getCheckBoxIndic().setSelected(false);
         salon.getSpinnerUnitsItem().setValue(1);
-//        comboItems.setSelectedIndex(itemsDB.size());
         salon.getLabelTotalParcial().setText("Parcial $:");
         salon.getLabelCuenta().setText("0.00");
         salon.getLabelTip().setText("Prop: $0.00");

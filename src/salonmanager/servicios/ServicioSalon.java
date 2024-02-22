@@ -255,7 +255,7 @@ public class ServicioSalon {
 
         if (nWs == null) {
             actualWs = setWsEnd(actualWs);
-            actualTabs = st.workshiftTableslistComplete(actualWs);
+            actualTabs = st.workshiftTableslistComplete(actualWs, 1);
         }
 
         if (actualTabs.size() == 0) {
@@ -296,7 +296,7 @@ public class ServicioSalon {
         ArrayList<Table> downTabs = new ArrayList<Table>();
         ArrayList<Table> toUpdTabs = new ArrayList<Table>();
         actualWs = setWsEnd(ws);
-        actualTabs = st.workshiftTableslistComplete(actualWs);
+        actualTabs = st.workshiftTableslistComplete(actualWs, 1);
         Thread.sleep(100);
         newWs.setWsCashier(null);
         newWs.setWsOpen(new Timestamp(new Date().getTime()));

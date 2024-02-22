@@ -594,4 +594,23 @@ public class Utilidades {
         hour = "Hora: " + horaFormateada;
         return hour;
     }
+
+    ArrayList<Itemcard> unRepeatItems(ArrayList<Itemcard> items) {
+        ArrayList<Itemcard> unRepeatItems = new ArrayList<Itemcard>();
+        ArrayList<Integer> ints = new ArrayList<Integer>();
+        for (Itemcard item : items) {
+            boolean repeat = false;
+            for (Integer inte : ints) {
+                if (item.getId() == inte) {
+                    repeat = true;
+                    break;
+                }
+            }    
+            if (repeat == false) {
+                ints.add(item.getId());
+                unRepeatItems.add(item);
+            }
+        }
+        return unRepeatItems;
+    }
 }

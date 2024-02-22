@@ -48,18 +48,24 @@ public class ServicioTable {
         return units;
     }
 
-    public ArrayList<Table> workshiftTableslistComplete(Workshift ws) throws Exception {
-        ArrayList<Table> wsTabs = new ArrayList<Table>();
-        ArrayList<Table> workshiftTabs = daoT.listarTablesByTimestamp(ws);
-        for (Table tab : workshiftTabs) {
+    public ArrayList<Table> workshiftTableslistComplete(Workshift ws, int opt) throws Exception {
+        ArrayList<Table> workshiftTabsNew = new ArrayList<Table>();
+        ArrayList<Table> workshiftTabsOld = new ArrayList<Table>();
+
+        if (opt == 1) {
+            workshiftTabsOld = daoT.listarTablesByWorkshift(ws);
+        } else if (opt == 2) {
+            workshiftTabsOld = daoT.listarTablesOpenByWorkshift(ws);
+        }
+        for (Table tab : workshiftTabsOld) {
             tab.setOrder(daoI.listarItemcardOrder(tab.getId()));
             tab.setGifts(daoI.listarItemcardGifts(tab.getId()));
             tab.setPartialPayed(daoI.listarItemcardPartialPayed(tab.getId()));
             tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(tab.getId()));
             tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
-            wsTabs.add(tab);
+            workshiftTabsNew.add(tab);
         }
-        return wsTabs;
+        return workshiftTabsNew;
     }
 
     public Table tableItemsByTab(Table table) throws Exception {
