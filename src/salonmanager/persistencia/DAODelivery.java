@@ -41,13 +41,17 @@ public class DAODelivery extends DAO {
         try {
             String orderId = deli.getId();
             String cmrPhone = deli.getConsumer().getPhone();
-            String tabId = deli.getTab().getId();
+            String tabId = "";
+            if (deli.getTab() != null) {
+                tabId = deli.getTab().getId();
+            }
             String deliId = deli.getDeli().getId();
             boolean open = deli.isOpen();
             boolean active = deli.isActive();
-            String sql1 = "UPDATE deliverys SET delivery_consumer_phone = " + cmrPhone + ", delivery_tab_id = '" + tabId + "', delivery_user_id = '" + deliId
-                    + "', delivery_open = '" + open + "', delivery_active = '" + active + "'"
-                    + " WHERE delivery_id = " + orderId + ";";
+            String sql1 = "UPDATE deliverys SET delivery_consumer_phone = " + cmrPhone
+                    + ", delivery_tab_id = '" + tabId + "', delivery_user_id = '" + deliId
+                    + "', delivery_open = " + open + ", delivery_active = " + active 
+                    + " WHERE delivery_id = '" + orderId + "';";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -91,14 +95,14 @@ public class DAODelivery extends DAO {
             String deliId = "";
             boolean open = false;
             boolean active = false;
-            
+
             while (resultado.next()) {
                 id = resultado.getString(1);
                 phone = resultado.getString(2);
                 tab = resultado.getString(3);
                 deliId = resultado.getString(4);
                 open = resultado.getBoolean(5);
-                active =  resultado.getBoolean(6);
+                active = resultado.getBoolean(6);
             }
             deli = new Delivery(id, phone, tab, deliId, open, active);
             return deli;
@@ -122,6 +126,6 @@ public class DAODelivery extends DAO {
             }
         } finally {
             desconectarBase();
-        }        
+        }
     }
 }

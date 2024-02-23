@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import salonmanager.Salon;
 import salonmanager.entidades.bussiness.DeliveryConsumer;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
 import salonmanager.entidades.bussiness.Delivery;

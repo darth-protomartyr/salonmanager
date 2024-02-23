@@ -144,9 +144,10 @@ public class Salon extends FrameFullManager {
     JButtonBarr jbbAux = null;
     JButtonDelivery jbdAux = null;
     JButtonDeliverySee jbdSAux = null;
-
-    JTabbedPane tabbedPane = new JTabbedPane();
     JButtonTable jbtAux = null; //boton de mesa actual
+    
+    JTabbedPane tabbedPane = new JTabbedPane();
+
 
     //Menu Lateral
     int rowsItems = 0; //nro filas de la tabla

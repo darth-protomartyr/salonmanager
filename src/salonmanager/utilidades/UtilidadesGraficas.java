@@ -200,7 +200,7 @@ public class UtilidadesGraficas extends JFrame {
                                         Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
                                         ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
 //                                        ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
-                                        ArrayList<Table> tabs = st.workshiftTableslistComplete(ws);
+                                        ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
                                         if(user.getId().equals(ws.getWsCashier().getId())) {
                                             new Salon(tabs, man, cfgAct);
                                         } else {

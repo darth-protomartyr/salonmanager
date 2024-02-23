@@ -136,7 +136,7 @@ public class WorkshiftSessionLanding extends FrameWindow {
         if (cfgAct.isOpenSession() && cfgAct.isOpenWs()) {
             int wsId = cfgAct.getOpenIdWs();
             Workshift ws = daoW.askWorshiftById(wsId);
-            ArrayList<Table> tabs = st.workshiftTableslistComplete(ws);
+            ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
             new Salon(tabs, manager, cfgAct);
             dispose();
         } else {

@@ -20,8 +20,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -751,7 +749,6 @@ public class UtilidadesGraficasSalon {
                 salon.getDeliButtonsSees().get(i).setBackground(narUlgX);
                 salon.getDeliButtonsSees().get(i).setEnabled(false);
             }
-
             salon.getPanelDeliBut().add(butSelDelivery);
         }
         salon.revalidate();
@@ -1822,15 +1819,21 @@ public class UtilidadesGraficasSalon {
                 String text = tab.getPos() + " " + tab.getNum();
                 Delivery deli = daoD.findDeliveryByTableId(tab.getId());
                 JButtonDelivery d = new JButtonDelivery(tab.getPos(), tab.getNum(), tab, text, tab.isOpen(), deli);
-                salon.getDeliButtons().add(d);
-
+                salon.getDeliButtons().add(0, d);
+                JButtonDeliverySee butSee = new JButtonDeliverySee(tab.getNum(), deli);
+                salon.getDeliButtonsSees().add(0, butSee);
                 salon.setJbdAux(d);
                 salon.getJbdAux().setOpenJBD(true);
+                salon.setJbdSAux(butSee);
+                
                 if (salon.getJbdAux().getTable().isBill()) {
                     salon.getJbdAux().setBackground(red);
+                    salon.getJbdSAux().setBackground(red);
                 } else {
                     salon.getJbdAux().setBackground(green);
+                    salon.getJbdSAux().setBackground(green);
                 }
+                salon.getDeliButtons().set(0, d);
             } else {
                 for (int j = 0; j < salon.getTableButtons().size(); j++) {
                     if (tab.getNum() == salon.getTableButtons().get(j).getNum()) {
@@ -1839,6 +1842,8 @@ public class UtilidadesGraficasSalon {
                         salon.getJbtAux().setOpenJBT(true);
                         if (salon.getJbtAux().getTable().isBill()) {
                             salon.getJbtAux().setBackground(red);
+                        } else if (tab.isToPay()) {
+                            salon.getJbtAux().setBackground(viol);
                         } else {
                             salon.getJbtAux().setBackground(green);
                         }
@@ -1852,11 +1857,7 @@ public class UtilidadesGraficasSalon {
         }
 
         if (salon.getDeliButtons().size() > 0) {
-            barrButUpdater(salon);
-        }
-
-        if (salon.getTableButtons().size() > 0) {
-            barrButUpdater(salon);
+            deliButUpdater(salon);
         }
     }
 }
