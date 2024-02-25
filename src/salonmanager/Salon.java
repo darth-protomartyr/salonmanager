@@ -5,6 +5,7 @@ import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -226,6 +227,8 @@ public class Salon extends FrameFullManager {
         panelA.setLayout(null);
         panelA.setBounds(20, altoUnit * 18, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
         panelA.setBackground(bluLg);
+        JLabel labelLegal = utiliGraf.labelLegal(anchoPane + anchoUnit * 2, alturaPane + altoUnit * 7, 2, 13);
+        panelA.add(labelLegal);
         panelPpal.add(panelA);
         panelBDButtons = new JPanel();
         panelBDButtons.setLayout(null);
@@ -356,7 +359,6 @@ public class Salon extends FrameFullManager {
             utiliGrafSal.tableManager(tables, sal);
         }
 
-        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

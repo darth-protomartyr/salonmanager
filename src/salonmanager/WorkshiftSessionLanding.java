@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager;
 
 import java.awt.Color;
@@ -10,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,10 +28,6 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-/**
- *
- * @author Gonzalo
- */
 public class WorkshiftSessionLanding extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
@@ -61,6 +53,9 @@ public class WorkshiftSessionLanding extends FrameWindow {
     Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
+    
+    Timestamp openSessiónAux = null;
+    Timestamp closeSessionAux = null;
 
 //    Salon salon = null;
     public WorkshiftSessionLanding(Manager man) throws Exception {
@@ -69,7 +64,7 @@ public class WorkshiftSessionLanding extends FrameWindow {
         user = man.getUser();
 
         cfgAct = sm.getConfigAct();
-        setTitle("Administrar Turnos Y Sesiones");
+        setTitle("Administrar Sesiones");
         PanelPpal panelPpal = new PanelPpal(390, 300);
         panelPpal.setBackground(bluSt);
         add(panelPpal);
@@ -111,19 +106,21 @@ public class WorkshiftSessionLanding extends FrameWindow {
 
         if (cfgAct.isOpenSession()) {
             labelOpenSession.setText("Hay una sesión abierta el " + cfgAct.getLastSessionOpen());
-            butSession.setText("Cerrar Sesión");
+            butSession.setText("CERRAR SESIÖN");
         } else {
             labelOpenSession.setText("No hay una sesión abierta actualmente.");
-            butSession.setText("Abrir Sesión");
+            butSession.setText("ABRIR SESION");
         }
+        
+        
 
-        JLabel labelOpenWs = utiliGraf.labelTitleBacker2("");
-        labelOpenWs.setBounds(15, 175, 350, 25);
-        panelSession.add(labelOpenWs);
-
-        if (cfgAct.isOpenWs()) {
-            labelOpenWs.setText("TURNO: Hay un turno abierto.");
-        }
+//        JLabel labelOpenWs = utiliGraf.labelTitleBacker2("");
+//        labelOpenWs.setBounds(15, 175, 350, 25);
+//        panelSession.add(labelOpenWs);
+//
+//        if (cfgAct.isOpenWs()) {
+//            labelOpenWs.setText("TURNO: Hay un turno abierto.");
+//        }
         
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -137,11 +134,13 @@ public class WorkshiftSessionLanding extends FrameWindow {
             int wsId = cfgAct.getOpenIdWs();
             Workshift ws = daoW.askWorshiftById(wsId);
             ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
-            new Salon(tabs, manager, cfgAct);
+            manager.salonFrameManager(tabs, cfgAct);
+//            new Salon(tabs, manager, cfgAct);
             dispose();
         } else {
             sses.crearSession(user);
-            new Salon(null, manager, cfgAct);
+            manager.salonFrameManager(null, cfgAct);
+//            new Salon(null, manager, cfgAct);
             dispose();
         }
     }

@@ -5,12 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import salonmanager.entidades.bussiness.Session;
+import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.graphics.FrameFullManager;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
@@ -43,6 +45,7 @@ public class Manager extends FrameFullManager {
     DAOSession daoS = new DAOSession();
     DAOUser daoU = new DAOUser();
     ConfigActual cfgAct = new ConfigActual();
+    Salon salon = null;
 
     public Manager(User userIn, String passIn) throws Exception {
         sm.addFrame(this);
@@ -63,6 +66,9 @@ public class Manager extends FrameFullManager {
         JMenuBar menuBar = utiliGraf.navegador(userIn, passIn, this);
         setJMenuBar(menuBar);
 
+        JLabel labelLegal = utiliGraf.labelLegal(anchoFrame, alturaFrame, 1, 70);
+        panelPpal.add(labelLegal);
+        
         JPanel panelUser = new JPanel();
         panelUser.setLayout(null);
         panelUser.setBounds(anchoUnit * 87, altoUnit, anchoUnit * 17, altoUnit * 17);
@@ -132,6 +138,18 @@ public class Manager extends FrameFullManager {
         });
     }
 
+
+    public void salonFrameManager(ArrayList<Table> tabs, ConfigActual cfgAct) throws Exception {
+        Manager man = this;
+        if (salon == null) {
+            salon =  new Salon(tabs, man, cfgAct);
+        } else {
+            salon.setVisible(true);
+            salon.toFront();
+        }
+    }
+
+
     public Workshift getActualWorkShift() {
         return actualWs;
     }
@@ -151,4 +169,14 @@ public class Manager extends FrameFullManager {
     public void setPass(String passAux) {
         this.pass = passAux;
     }
+
+    public Salon getSalon() {
+        return salon;
+    }
+
+    public void setSalon(Salon salon) {
+        this.salon = salon;
+    }
+    
+    
 }

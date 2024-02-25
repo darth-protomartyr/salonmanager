@@ -120,10 +120,6 @@ public class CustomDialogConfirm extends JDialog {
         }
         );
         contentPane.add(acceptButton);
-        
-
-        
-        
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

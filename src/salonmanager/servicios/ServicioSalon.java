@@ -226,14 +226,14 @@ public class ServicioSalon {
         if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == true || errorWs == false) {
             boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
             if (confirm2 == true) {
-                closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
                 salon.setEnabled(false);
+                closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
             }
         } else {
             boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(salon.getUser());
             if (confirm3 == true) {
-                inconcludeWsCutter(salon, salon.getWorkshiftNow(), errorWs);
                 salon.setEnabled(false);
+                inconcludeWsCutter(salon, salon.getWorkshiftNow(), errorWs);
             }
         }
     }
@@ -259,13 +259,16 @@ public class ServicioSalon {
         }
 
         if (actualTabs.size() == 0) {
-            daoW.updateWorkshiftState(actualWs);
-            daoC.updateCfgActOpenWs(false);
-            daoC.updateCfgActOpenIdWs(0);
-            utiliMsg.workshiftEmpty();
-            salon.setWorkshiftNow(null);
-            salon.getLabelWorkshift().setText("Turno no iniciado.");
-            salon.getButInitWorkshift().setText("ABRIR TURNO");
+            boolean confirm = utiliMsg.cargaWorkshiftEmpty();
+            if (confirm) {
+                daoW.updateWorkshiftState(actualWs);
+                daoC.updateCfgActOpenWs(false);
+                daoC.updateCfgActOpenIdWs(0);
+                salon.setWorkshiftNow(null);
+                salon.getLabelWorkshift().setText("Turno no iniciado.");
+                salon.getButInitWorkshift().setText("ABRIR TURNO");
+                salon.setEnabled(true);
+            }
         } else {
             double mount = 0;
             double mountError = 0;
@@ -373,4 +376,3 @@ public class ServicioSalon {
         return newWs;
     }
 }
-

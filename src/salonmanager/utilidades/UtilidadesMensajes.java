@@ -14,7 +14,6 @@ public class UtilidadesMensajes extends JFrame {
     public void errorRegistroFallido() {
         CustomDialog cm = new CustomDialog("Error: No pudo realizarse el registro.", 2);
         cm.setVisible(true);
-
     }
 
     public void errorCantCharName() {
@@ -412,8 +411,10 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true); 
     }
 
-    public void workshiftEmpty() {
-        CustomDialog cm = new CustomDialog("Error: El turno no posee operaciones y será descartado.", 2);
-        cm.setVisible(true); 
+    public boolean cargaWorkshiftEmpty() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno no registra movimientos. Confirme si quiere descartarlo");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 }

@@ -333,13 +333,6 @@ public class UtilidadesGraficasSalon {
                 if (salon.getWorkshiftNow() != null) {
                     if (salon.getJbtAux() != null) {
                         salon.getJbtAux().setBorder(null);
-//                        if (salon.getJbtAux().isOpenJBT() == true) {
-//                            try {
-//                                resetTableValues(salon);
-//                            } catch (Exception ex) {
-//                                Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
                     }
                     JButtonTable butClicked = (JButtonTable) e.getSource();
                     for (int i = 0; i < salon.getTableButtons().size(); i++) {
@@ -696,7 +689,6 @@ public class UtilidadesGraficasSalon {
             }
             );
 
-            //Test
             JButtonDeliverySee butSee = salon.getDeliButtonsSees().get(i);
             butSee.setBackground(narUlg);
             butSee.setBorder(new LineBorder(narLg, 8));
@@ -1834,6 +1826,8 @@ public class UtilidadesGraficasSalon {
                     salon.getJbdSAux().setBackground(green);
                 }
                 salon.getDeliButtons().set(0, d);
+                salon.getJbdAux().setVisible(true);
+                salon.getJbdAux().setVisible(true);
             } else {
                 for (int j = 0; j < salon.getTableButtons().size(); j++) {
                     if (tab.getNum() == salon.getTableButtons().get(j).getNum()) {
@@ -1857,6 +1851,7 @@ public class UtilidadesGraficasSalon {
         }
 
         if (salon.getDeliButtons().size() > 0) {
+            panelDeliContainerSetter(salon);
             deliButUpdater(salon);
         }
     }

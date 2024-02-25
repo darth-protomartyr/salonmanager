@@ -28,6 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -60,6 +61,8 @@ public class UtilidadesGraficas extends JFrame {
     Color narUlg = new Color(255, 255, 176);
     Color narUlgX = new Color(255, 255, 210);
     Color viol = new Color(242, 29, 41);
+    Color white = new Color(255, 255, 255);
+
     Utilidades utili = new Utilidades();
     ServicioSalon ss = new ServicioSalon();
     ServicioTable st = new ServicioTable();
@@ -92,9 +95,7 @@ public class UtilidadesGraficas extends JFrame {
         JMenuItem itemSesion = new JMenuItem("Sesiones");
         JMenuItem itemTurno = new JMenuItem("Turnos");
         JMenuItem itemSalon = new JMenuItem("Salón");
-        
 
-        
         if (sm.rolPermission(2)) {
             menuInicio.add(itemAdministrador);
         }
@@ -191,38 +192,9 @@ public class UtilidadesGraficas extends JFrame {
             itemSalon.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
+
                         if (user.getPassword().equals(pass)) {
-                            ConfigGeneral cfgGen = sm.getConfigGen();
-                            if (cfgGen.isActiveConfig()) {
-                                ConfigActual cfgAct = sm.getConfigAct();
-                                if (cfgAct.isOpenSession()) {
-                                    if (cfgAct.isOpenWs()) {
-                                        Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-                                        ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
-//                                        ArrayList<Table> tabs = daoT.listarTablesByTimestamp(ws);
-                                        ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
-                                        if(user.getId().equals(ws.getWsCashier().getId())) {
-                                            new Salon(tabs, man, cfgAct);
-                                        } else {
-                                            Salon sal = new Salon(tabs, man, cfgAct);
-                                            sal.setEnabled(false);
-                                            boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
-                                            if(newWs) {
-                                                utiliMsg.cargaLateWs();
-                                                ss.endWorkshift(sal, true);
-                                            } else {
-                                                sal.dispose();
-                                            }
-                                        }
-                                    } else {
-                                        new Salon(null, man, cfgAct);
-                                    }
-                                } else {
-                                    new WorkshiftSessionLanding(manager);
-                                }
-                            } else {
-                                utiliMsg.configNull();
-                            }
+                            salonOpener(user);
                         } else {
                             sm.salir();
                         }
@@ -235,6 +207,42 @@ public class UtilidadesGraficas extends JFrame {
         return menuBar;
     }
 
+    private void salonOpener(User user) throws Exception {
+        ConfigGeneral cfgGen = sm.getConfigGen();
+        if (cfgGen.isActiveConfig()) {
+            ConfigActual cfgAct = sm.getConfigAct();
+            if (cfgAct.isOpenSession()) {
+                if (cfgAct.isOpenWs()) {
+                    Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+                    ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
+                    ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
+                    if (user.getId().equals(ws.getWsCashier().getId())) {
+                        manager.salonFrameManager(tabs, cfgAct);
+                    } else {
+                        manager.salonFrameManager(tabs, cfgAct);
+                        manager.getSalon().setEnabled(false);
+                        boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
+                        if (newWs) {
+                            utiliMsg.cargaLateWs();
+                            ss.endWorkshift(manager.getSalon(), true);
+                        } else {
+                            manager.getSalon().dispose();
+                        }
+                    }
+                } else {
+//                    new WorkshiftSessionLanding(manager);
+                    manager.salonFrameManager(null, cfgAct);
+                }
+            } else {
+                new WorkshiftSessionLanding(manager);
+            }
+        } else {
+            utiliMsg.configNull();
+        }
+    }
+
+    
+    
     public JPanel dataPanelBacker(String labelData, int font) {
         javax.swing.border.Border bordeInterior = BorderFactory.createEmptyBorder(altoUnit, anchoUnit, altoUnit, anchoUnit);
         JPanel panelData = new JPanel();
@@ -318,13 +326,13 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBackerA4W(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(25f);
         title.setFont(newFont);
-        title.setForeground(bluLg);
+        title.setForeground(white);
         return title;
     }
 
@@ -335,13 +343,13 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBacker1W(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(20f);
         title.setFont(newFont);
-        title.setForeground(bluLg);
+        title.setForeground(white);
         return title;
     }
 
@@ -353,14 +361,14 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBacker2W(String tit) {
         JLabel title = new JLabel();
         title.setText(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(16f);
         title.setFont(newFont);
-        title.setForeground(bluLg);
+        title.setForeground(white);
         return title;
     }
 
@@ -371,13 +379,13 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBacker3W(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(13f);
         title.setFont(newFont);
-        title.setForeground(bluLg);
+        title.setForeground(white);
         return title;
     }
 
@@ -389,6 +397,21 @@ public class UtilidadesGraficas extends JFrame {
         return title;
     }
 
+    public JLabel labelLegal(int width, int height, int col, int hLess) {
+        String tit = "SALOON MANAGER - 2024 - Software Services";
+        JLabel title = new JLabel();
+        title.setText(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(12f);
+        title.setFont(newFont);
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        if (col == 1) {
+            title.setForeground(white);
+        }
+        title.setBounds((width - 300) / 2, height - hLess, 320, 10);
+        return title;
+    }
+
     public JButton button1(String text, int mWidth, int mHeight, int width) {
         JButton bot = new JButton();
         text = text.toUpperCase();
@@ -396,7 +419,6 @@ public class UtilidadesGraficas extends JFrame {
         bot.setFont(font); // Establecer la fuente en el botón
         bot.setText(text);
         bot.setBorder(new EmptyBorder(10, 10, 10, 10));
-//        bot.setBounds(mWidth, mHeight, width, 40);
         bot.setBounds(mWidth, mHeight, width, altoUnit * 7);
 
         return bot;
