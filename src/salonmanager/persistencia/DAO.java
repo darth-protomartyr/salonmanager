@@ -19,7 +19,7 @@ public class DAO {
     private final String user = "root";
     private final String pass = "root";
     private final String db = "salonmanager";
-    private final String driver = "com.mysql.jdbc.Driver";
+    private final String driver = "com.mysql.cj.jdbc.Driver";
     
     
     protected void conectarBase() throws Exception {

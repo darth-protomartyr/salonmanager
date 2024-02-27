@@ -214,7 +214,7 @@ public class CreateAccount extends FrameHalf {
         }
 
         if (routeImage == "") {
-            routeImage = "C:|Users|ferlo|Documents|imagenes_salon|avatar.jpg";
+            routeImage = "C:|Users|Gonzalo|Documents|NetbeansProject|SalonManager|resources|images|avatar.jpg";
             nameImage = "avatar.jpg";
         }
 
