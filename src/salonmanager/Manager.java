@@ -22,6 +22,7 @@ import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOSession;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
+import salonmanager.servicios.ServicioWorkshiftSession;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -31,6 +32,7 @@ public class Manager extends FrameFullManager {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
+    ServicioWorkshiftSession sws = new ServicioWorkshiftSession();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
@@ -68,7 +70,7 @@ public class Manager extends FrameFullManager {
 
         JLabel labelLegal = utiliGraf.labelLegal(anchoFrame, alturaFrame, 1, 70);
         panelPpal.add(labelLegal);
-        
+
         JPanel panelUser = new JPanel();
         panelUser.setLayout(null);
         panelUser.setBounds(anchoUnit * 87, altoUnit, anchoUnit * 17, altoUnit * 17);
@@ -106,7 +108,7 @@ public class Manager extends FrameFullManager {
                 if (user.getId().equals(actualWs.getWsCashier().getId())) {
                     labelActualShift.setText("Te encuentras con una sesión activa \ny un turno abierto a tu nombre.");
                 } else {
-                    labelActualShift.setText("Te encuentras con una sesión activa \ny hay un turno abierto a nombre de " + actualWs.getWsCashier().getName() + " " +actualWs.getWsCashier().getLastName() +".");
+                    labelActualShift.setText("Te encuentras con una sesión activa \ny hay un turno abierto a nombre de " + actualWs.getWsCashier().getName() + " " + actualWs.getWsCashier().getLastName() + ".");
                 }
             } else {
                 labelActualShift.setText("Te encuentras con una sesión activa.");
@@ -138,17 +140,20 @@ public class Manager extends FrameFullManager {
         });
     }
 
-
     public void salonFrameManager(ArrayList<Table> tabs, ConfigActual cfgAct) throws Exception {
         Manager man = this;
         if (salon == null) {
-            salon =  new Salon(tabs, man, cfgAct);
+            boolean confirm = utiliMsg.cargaConfirmarCloseSession();
+            if (confirm) {
+                sws.closeSession(salon);
+            } else {
+                salon = new Salon(tabs, man, cfgAct);
+            }
         } else {
             salon.setVisible(true);
             salon.toFront();
         }
     }
-
 
     public Workshift getActualWorkShift() {
         return actualWs;
@@ -177,6 +182,5 @@ public class Manager extends FrameFullManager {
     public void setSalon(Salon salon) {
         this.salon = salon;
     }
-    
-    
+
 }

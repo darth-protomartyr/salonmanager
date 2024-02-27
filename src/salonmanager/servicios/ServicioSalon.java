@@ -288,6 +288,7 @@ public class ServicioSalon {
             actualWs.setWsTotalMountCash(mountCash);
             actualWs.setWsTotalMountElectronic(mountElectronic);
             new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
+            salon.setEnabled(false);
         }
     }
 

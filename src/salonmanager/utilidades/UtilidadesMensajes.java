@@ -417,4 +417,11 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
+
+    public boolean cargaConfirmarCloseSession() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar la actual sesión presione aceptar.");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
 }

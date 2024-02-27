@@ -115,4 +115,9 @@ public class ServicioWorkshiftSession {
         daoC.updateCfgActOpenSessionId(id);
         return sess;
     }
+
+    public void closeSession(Salon salon) {
+        
+
+    }
 }

@@ -230,8 +230,9 @@ public class UtilidadesGraficas extends JFrame {
                         }
                     }
                 } else {
-//                    new WorkshiftSessionLanding(manager);
+                    new WorkshiftSessionLanding(manager);
                     manager.salonFrameManager(null, cfgAct);
+                    
                 }
             } else {
                 new WorkshiftSessionLanding(manager);
