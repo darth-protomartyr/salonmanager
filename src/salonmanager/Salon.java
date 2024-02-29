@@ -28,7 +28,6 @@ import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.graphics.FrameFullManager;
 import salonmanager.entidades.bussiness.ItemMonitor;
 import salonmanager.entidades.bussiness.Itemcard;
-import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonTable;
@@ -116,7 +115,6 @@ public class Salon extends FrameFullManager {
     User waiterAux = null; // mozo actual
     Table tableAux = null; // mesa actual
     Workshift workshiftNow = null;
-    Session sessionNow = null;
     Delivery deliOrderAux = null;
 
     int discount = 0; //porcentaje de descuento
@@ -126,7 +124,6 @@ public class Salon extends FrameFullManager {
     double total = 0; // total a pagar(pago parcial restado)
     double error = 0; // dinero faltante a pagar;
 
-    JLabel labelSession = new JLabel();
     JLabel labelWorkshift = new JLabel();
 
     //Botonera
@@ -1063,31 +1060,11 @@ public class Salon extends FrameFullManager {
         this.hUnit = wUnit;
     }
 
-    public JLabel getLabelSession() {
-        return labelSession;
-    }
-
-    public void setLabelSession(JLabel labelSession) {
-        this.labelSession = labelSession;
-    }
-
     public JLabel getLabelWorkshift() {
         return labelWorkshift;
     }
 
     public void setLabelWorkshift(JLabel labelWorkshift) {
         this.labelWorkshift = labelWorkshift;
-    }
-
-    public Session getSessionNow() {
-        return sessionNow;
-    }
-
-    public void setSessionNow(Session sessionNow) {
-        this.sessionNow = sessionNow;
-    }
-    
-    
-    
-    
+    }    
 }

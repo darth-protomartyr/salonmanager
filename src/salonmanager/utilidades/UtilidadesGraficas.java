@@ -37,7 +37,6 @@ import salonmanager.ItemcardInn;
 import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
 import salonmanager.Manager;
-import salonmanager.WorkshiftSessionLanding;
 import salonmanager.Admin;
 import salonmanager.Salon;
 import salonmanager.entidades.config.ConfigActual;
@@ -72,7 +71,6 @@ public class UtilidadesGraficas extends JFrame {
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOTable daoT = new DAOTable();
-//    DAOConfig daoC = new DAOConfig();
     Toolkit pantalla = Toolkit.getDefaultToolkit();
     Dimension tamanioPantalla = pantalla.getScreenSize();
     int anchoFrame = tamanioPantalla.width;
@@ -92,7 +90,6 @@ public class UtilidadesGraficas extends JFrame {
         JMenuItem itemIngresoItemcard = new JMenuItem("Ingreso Itemcarta");
         JMenuItem itemModificacionItemcard = new JMenuItem("Modificación Itemcarta");
         JMenuItem itemConsultaItemcard = new JMenuItem("Consulta Itemcarta");
-        JMenuItem itemSesion = new JMenuItem("Sesiones");
         JMenuItem itemTurno = new JMenuItem("Turnos");
         JMenuItem itemSalon = new JMenuItem("Salón");
 
@@ -103,7 +100,6 @@ public class UtilidadesGraficas extends JFrame {
         menuCard.add(itemIngresoItemcard);
         menuCard.add(itemModificacionItemcard);
         menuCard.add(itemConsultaItemcard);
-        menuFacturacion.add(itemSesion);
         menuFacturacion.add(itemTurno);
         menuSalon.add(itemSalon);
 
@@ -211,39 +207,31 @@ public class UtilidadesGraficas extends JFrame {
         ConfigGeneral cfgGen = sm.getConfigGen();
         if (cfgGen.isActiveConfig()) {
             ConfigActual cfgAct = sm.getConfigAct();
-            if (cfgAct.isOpenSession()) {
-                if (cfgAct.isOpenWs()) {
-                    Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-                    ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
-                    ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
-                    if (user.getId().equals(ws.getWsCashier().getId())) {
-                        manager.salonFrameManager(tabs, cfgAct);
-                    } else {
-                        manager.salonFrameManager(tabs, cfgAct);
-                        manager.getSalon().setEnabled(false);
-                        boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
-                        if (newWs) {
-                            utiliMsg.cargaLateWs();
-                            ss.endWorkshift(manager.getSalon(), true);
-                        } else {
-                            manager.getSalon().dispose();
-                        }
-                    }
+            if (cfgAct.isOpenWs()) {
+                Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+                ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
+                ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
+                if (user.getId().equals(ws.getWsCashier().getId())) {
+                    manager.salonFrameManager(tabs, cfgAct);
                 } else {
-                    new WorkshiftSessionLanding(manager);
-                    manager.salonFrameManager(null, cfgAct);
-                    
+                    manager.salonFrameManager(tabs, cfgAct);
+                    manager.getSalon().setEnabled(false);
+                    boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
+                    if (newWs) {
+                        utiliMsg.cargaLateWs();
+                        ss.endWorkshift(manager.getSalon(), true);
+                    } else {
+                        manager.getSalon().dispose();
+                    }
                 }
             } else {
-                new WorkshiftSessionLanding(manager);
+                manager.salonFrameManager(null, cfgAct);
             }
         } else {
             utiliMsg.configNull();
         }
     }
 
-    
-    
     public JPanel dataPanelBacker(String labelData, int font) {
         javax.swing.border.Border bordeInterior = BorderFactory.createEmptyBorder(altoUnit, anchoUnit, altoUnit, anchoUnit);
         JPanel panelData = new JPanel();

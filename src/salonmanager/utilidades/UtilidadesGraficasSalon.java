@@ -59,7 +59,6 @@ import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
-import salonmanager.persistencia.DAOSession;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -72,7 +71,6 @@ import salonmanager.servicios.ServicioTable;
  * @author Gonzalo
  */
 public class UtilidadesGraficasSalon {
-
     Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -83,7 +81,6 @@ public class UtilidadesGraficasSalon {
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     DAODelivery daoD = new DAODelivery();
-    DAOSession daoS = new DAOSession();
     ServicioSalon ss = new ServicioSalon();
     ServicioTable st = new ServicioTable();
     ServicioItemMonitor sim = new ServicioItemMonitor();
@@ -114,7 +111,6 @@ public class UtilidadesGraficasSalon {
 //PANEL ACTUAL.........................................................................................................
     public JPanel panelActualBacker(Salon salon) throws Exception {
         ConfigActual cfgAct = daoC.askConfigActual();
-        salon.setSessionNow(daoS.askSessionById(cfgAct.getOpenIdSession()));
         if (cfgAct.isOpenWs()) {
             salon.setWorkshiftNow(daoW.askWorshiftById(cfgAct.getOpenIdWs()));
             salon.getWorkshiftNow().setWsCashier(daoU.getCashierByWorkshift(salon.getWorkshiftNow().getWsId()));
@@ -129,11 +125,6 @@ public class UtilidadesGraficasSalon {
         labelUser.setBounds(altoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
         panelActual.add(labelUser);
 
-        salon.setLabelSession(utiliGraf.labelTitleBacker3("Inicio Sesion: " + utili.friendlyDate(salon.getSessionNow().getOpenSession())));
-
-        salon.getLabelSession().setBounds(altoUnit, altoUnit * 4, anchoUnit * 17, altoUnit * 2);
-        panelActual.add(salon.getLabelSession());
-
         salon.setLabelWorkshift(utiliGraf.labelTitleBacker3(""));
         if (salon.getWorkshiftNow() != null) {
             Timestamp timeInitWork = salon.getWorkshiftNow().getWsOpen();
@@ -141,10 +132,10 @@ public class UtilidadesGraficasSalon {
         } else {
             salon.getLabelWorkshift().setText("Turno no iniciado.");
         }
-        salon.getLabelWorkshift().setBounds(altoUnit, altoUnit * 7, anchoUnit * 17, altoUnit * 2);
+        salon.getLabelWorkshift().setBounds(altoUnit, altoUnit * 3, anchoUnit * 17, altoUnit * 2);
         panelActual.add(salon.getLabelWorkshift());
 
-        salon.setButInitWorkshift(utiliGraf.button2("ABRIR TURNO", anchoUnit * 3, altoUnit * 9, anchoUnit * 11));
+        salon.setButInitWorkshift(utiliGraf.button1("ABRIR TURNO", anchoUnit * 2, altoUnit * 6, anchoUnit * 13));
         if (cfgAct.isOpenWs()) {
             salon.getButInitWorkshift().setText("CERRAR TURNO");
         }

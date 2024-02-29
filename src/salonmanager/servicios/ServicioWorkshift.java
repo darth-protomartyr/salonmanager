@@ -8,13 +8,11 @@ package salonmanager.servicios;
 import java.util.ArrayList;
 import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
-import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
-import salonmanager.persistencia.DAOSession;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -23,10 +21,9 @@ import salonmanager.persistencia.DAOWorkshift;
  *
  * @author Gonzalo
  */
-public class ServicioWorkshiftSession {
+public class ServicioWorkshift {
 
     DAOConfig daoC = new DAOConfig();
-    DAOSession daoS = new DAOSession();
     DAOItemcard daoI = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
@@ -102,22 +99,5 @@ public class ServicioWorkshiftSession {
                 st.saveTableCompleteChangeWs(t, salon);
             }
         }
-    }
-
-    public Session crearSession(User user) throws Exception {
-        Session sess = new Session(user);
-        daoS.saveSession(sess);
-        int id = daoS.findLastSessID();
-        sess.setId(id);
-        daoU.saveCashierInit(sess);
-
-        daoC.updateCfgActOpenSession(true);
-        daoC.updateCfgActOpenSessionId(id);
-        return sess;
-    }
-
-    public void closeSession(Salon salon) {
-        
-
     }
 }

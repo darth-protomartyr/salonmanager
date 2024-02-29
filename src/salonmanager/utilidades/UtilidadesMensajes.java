@@ -325,7 +325,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     void configNull() {
-        CustomDialog cm = new CustomDialog("Error: No hay una configuración habilitada para esta sesión.", 2);
+        CustomDialog cm = new CustomDialog("Error: No hay una configuración habilitada.", 2);
         cm.setVisible(true);        
     }
 
@@ -413,13 +413,6 @@ public class UtilidadesMensajes extends JFrame {
 
     public boolean cargaWorkshiftEmpty() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("El turno no registra movimientos. Confirme si quiere descartarlo");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-
-    public boolean cargaConfirmarCloseSession() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar la actual sesión presione aceptar.");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;

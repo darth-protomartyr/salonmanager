@@ -5,7 +5,6 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 
@@ -238,42 +237,6 @@ public class DAOUser extends DAO {
             }
         }
         return waiter;
-    }
-
-    public void saveCashierInit(Session sess) throws Exception {
-        try {
-            String sql = "INSERT INTO cashier_session_init(cashier_init_id_fkey, session_init_id_fkey, cashier_session_init_active) ";
-            String parcialA = "VALUES('" + sess.getOpener().getId() + "', " + sess.getId() + ", " + true + ");";
-            sql += parcialA;
-            System.out.println(sql);
-            insertarModificarEliminar(sql.trim());
-        } catch (SQLException e) {
-            if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
-            } else {
-                e.printStackTrace();
-            }
-        } finally {
-            desconectarBase();
-        }
-    }
-
-    public void saveCashierEnds(Session sess) throws Exception {
-        try {
-            String sql = "INSERT INTO cashier_session_ends(cashier_ends_id_fkey, session_ends_id_fkey, cashier_session_init_active) ";
-            String parcialA = "VALUES('" + sess.getCloser().getId() + "', " + sess.getId() + ", " + true + ");";
-            sql += parcialA;
-            System.out.println(sql);
-            insertarModificarEliminar(sql.trim());
-        } catch (SQLException e) {
-            if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
-            } else {
-                e.printStackTrace();
-            }
-        } finally {
-            desconectarBase();
-        }
     }
 
     public User getUserById(String deliId) throws Exception {

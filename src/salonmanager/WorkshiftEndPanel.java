@@ -33,7 +33,7 @@ import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
-import salonmanager.servicios.ServicioWorkshiftSession;
+import salonmanager.servicios.ServicioWorkshift;
 
 public class WorkshiftEndPanel extends FrameHalf {
 
@@ -46,7 +46,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
-    ServicioWorkshiftSession sws = new ServicioWorkshiftSession();
+    ServicioWorkshift sw = new ServicioWorkshift();
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -291,7 +291,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                 } else if (realError > 0) {
                     realError = 0;
                 }
-                sws.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
+                sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
                 dispose();
             }
         } catch (NumberFormatException e) {

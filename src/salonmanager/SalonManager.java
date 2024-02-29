@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import javax.swing.JFrame;
 import salonmanager.entidades.config.ConfigGeneral;
-import salonmanager.entidades.bussiness.Session;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.persistencia.DAOConfig;
 
@@ -23,7 +22,6 @@ public class SalonManager {
     private static String passIn = "";
     private static final String SECRET_KEY = "HappyWhenItRains";
     private static Workshift workshiftActual = null;
-    private static Session sessionActual = null;
     private static DAOConfig daoC = new DAOConfig();
 //  FrameGeneral fg = new FrameGeneral();
     
@@ -161,15 +159,7 @@ public class SalonManager {
     public void workshiftEraser() {
         workshiftActual = null;
     }
-    
-    public void sessionBacker(Session ses) {
-        sessionActual = ses;
-    }
-    
-    public void sessionEraser() {
-        sessionActual = null;
-    }
-    
+        
     public ConfigGeneral getConfigGen() throws Exception {
         cfgGen = daoC.askConfigGeneral();
         return cfgGen;
