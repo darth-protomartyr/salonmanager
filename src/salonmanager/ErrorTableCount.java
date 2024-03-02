@@ -15,7 +15,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -329,7 +328,8 @@ public class ErrorTableCount extends FrameWindow {
             if (confirm) {
                 salon.setTotal(total);
                 salon.getTableAux().setTotal(salon.getTotal());
-                utiliGrafSal.errorMountBacker(wrong, cause, salon, amountCash, amountElec);
+                ss.errorMountBacker(wrong, cause, salon, amountCash, amountElec);
+                utiliGrafSal.tablePaid(salon);
                 dispose();
             }
         } else {

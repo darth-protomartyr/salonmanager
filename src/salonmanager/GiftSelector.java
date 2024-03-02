@@ -117,7 +117,9 @@ public class GiftSelector extends FrameWindow {
     private void butInGiftActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
         Itemcard ic = aIC.get(i);
-        utiliGrafSal.giftBacker(ic, salon);
+        ss.giftBacker(ic, salon);
+        utiliGrafSal.setTableItems(salon);
+        utiliGrafSal.jButExtSetter(salon);
         dispose();
     }
 }

@@ -185,17 +185,19 @@ public class CorrectorItem extends FrameWindow {
         switch (numArray) {
             case 1:
                 ic = itemsOrder.get(i);
-                utiliGrafSal.correctItems(ic, numArray, salon);
+                ss.correctItems(ic, numArray, salon);
                 break;
             case 2:
                 ic = itemsGift.get(i);
-                utiliGrafSal.correctItems(ic, numArray, salon);
+                ss.correctItems(ic, numArray, salon);
                 break;
             case 3:
                 ic = itemsPayed.get(i);
-                utiliGrafSal.correctItems(ic, numArray, salon);
+                ss.correctItems(ic, numArray, salon);
                 break;
         }
+        utiliGrafSal.jButExtSetter(salon);
+        utiliGrafSal.setTableItems(salon);
         dispose();
     }
 

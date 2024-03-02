@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -63,6 +62,7 @@ import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioItemMonitor;
+import salonmanager.servicios.ServicioItemSale;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 
@@ -74,6 +74,7 @@ public class UtilidadesGraficasSalon {
     Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    ServicioItemSale sis = new ServicioItemSale();
     SalonManager sm = new SalonManager();
     DAOConfig daoC = new DAOConfig();
     DAOUser daoU = new DAOUser();
@@ -1092,13 +1093,9 @@ public class UtilidadesGraficasSalon {
     public void setTableItems(Salon salon) {
 
         ArrayList<Itemcard> itemsAux = utili.unRepeatItems(salon.getItemsTableAux());
-
         ArrayList<Itemcard> partials =  utili.unRepeatItems(salon.getItemsPartialPaid());
-
         ArrayList<Itemcard> partialsND =  utili.unRepeatItems(salon.getItemsPartialPaidNoDiscount());
-
         ArrayList<Itemcard> gifts =  utili.unRepeatItems(salon.getItemsGift());
-
         ArrayList<Itemcard> totalItems =  utili.unRepeatItems(itemsAux);
 
         totalItems.addAll(partials);
@@ -1219,35 +1216,6 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    public void correctItems(Itemcard ic, int num, Salon salon) throws Exception {
-        switch (num) {
-            case 1:
-                salon.setItemsTableAux(ss.itemTableLesser(salon.getItemsTableAux(), ic));
-                salon.getTableAux().setOrder(salon.getItemsTableAux());
-                daoI.downActiveItemOrderTable(ic, salon.getTableAux());
-                break;
-            case 2:
-                salon.setItemsGift(ss.itemTableLesser(salon.getItemsGift(), ic));
-                salon.getTableAux().setGifts(salon.getItemsGift());
-                salon.getItemsTableAux().add(ic);
-                salon.getTableAux().setOrder(salon.getItemsTableAux());
-                daoI.downActiveItemGiftTable(ic, salon.getTableAux());
-                daoI.upActiveItemOrderTable(ic, salon.getTableAux());
-                break;
-            case 3:
-                salon.setItemsPartialPaid(ss.itemTableLesser(salon.getItemsPartialPaid(), ic));
-                salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
-                salon.getItemsTableAux().add(ic);
-                salon.getTableAux().setOrder(salon.getItemsTableAux());
-                daoI.downActiveItemPayedTable(ic, salon.getTableAux());
-                daoI.upActiveItemOrderTable(ic, salon.getTableAux());
-                break;
-        }
-        jButExtSetter(salon);
-        setTableItems(salon);
-        salon.setEnabled(true);
-    }
-
 //GIFTS................................................................................................................
 //GIFTS................................................................................................................
     public void actionButtonGift(Salon salon) {
@@ -1274,22 +1242,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    public void giftBacker(Itemcard ic, Salon salon) throws Exception {
-        salon.getItemsGift().add(ic);
-        salon.getTableAux().setGifts(salon.getItemsGift());
-        salon.setItemsTableAux(ss.itemTableLesser(salon.getTableAux().getOrder(), ic));
-        salon.getTableAux().setOrder(salon.getItemsTableAux());
-        utiliMsg.cargaGift(ic.getName());
-        setTableItems(salon);
-        salon.setTotal(ss.countBill(salon.getTableAux()));
-        salon.getTableAux().setTotal(salon.getTotal());
-        daoI.downActiveItemOrderTable(ic, salon.getTableAux());
-        daoI.saveItemGiftTable(ic, salon.getTableAux());
-        daoT.updateTableTotal(salon.getTableAux());
-        jButExtSetter(salon);
-        salon.getLabelCuenta().setText(salon.getTotal() + "");
-        salon.setEnabled(true);
-    }
+
 
 //DISCOUNT.............................................................................................................
 //DISCOUNT.............................................................................................................    
@@ -1326,18 +1279,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    public void discountBacker(int disc, Salon salon) throws Exception {
-        salon.setDiscount(disc);
-        salon.getTableAux().setDiscount(disc);
-        salon.setTotal(ss.countBill(salon.getTableAux()));
-        salon.getTableAux().setTotal(salon.getTotal());
-        daoT.updateTableTotal(salon.getTableAux());
-        daoT.updateTableDiscount(salon.getTableAux());
-        jButExtSetter(salon);
-        salon.getLabelCuenta().setText(salon.getTotal() + "");
-        setTableItems(salon);
-        salon.setEnabled(true);
-    }
+
 
 //PARTIAL PAY..........................................................................................................
 //PARTIAL PAY..........................................................................................................
@@ -1377,50 +1319,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    public void partialPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
-        salon.getJbtAux().setBackground(viol);
-        for (int i = 0; i < itemsPayed.size(); i++) {
-            salon.setItemsTableAux(ss.itemTableLesser(salon.getItemsTableAux(), itemsPayed.get(i)));
-        }
-        salon.getItemsPartialPaid().addAll(itemsPayed);
-        salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
-        salon.getTableAux().setOrder(salon.getItemsTableAux());
-        salon.setTotal(ss.countBill(salon.getTableAux()));
-        salon.getTableAux().setTotal(salon.getTotal());
-        daoT.updateTableTotal(salon.getTableAux());
-        salon.getTableAux().setToPay(true);
-        daoT.updateToPay(salon.getTableAux());
-        for (Itemcard ic : itemsPayed) {
-            daoI.saveItemPayedTable(ic, salon.getTableAux());
-            daoI.downActiveItemOrderTable(ic, salon.getTableAux());
-        }
-        salon.getLabelCuenta().setText(salon.getTotal() + "");
-        double payed = ss.partialBillPayed(salon.getTableAux());
-        salon.getLabelPartialPay().setText("Pagado: $" + (payed));
-        jButExtSetter(salon);
-        setTableItems(salon);
-        salon.setEnabled(true);
-    }
 
-    public void totalPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
-        salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
-        salon.getTableAux().setOrder(salon.getItemsTableAux());
-        salon.setItemsPartialPaid(new ArrayList<Itemcard>());
-        salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
-        daoI.downActiveItemPayedTableAll(salon.getTableAux());
-        daoI.upActiveItemOrderTableAll(salon.getTableAux());
-
-        salon.setTotal(ss.countBill(salon.getTableAux()));
-        salon.getTableAux().setTotal(salon.getTotal());
-        daoT.updateTableTotal(salon.getTableAux());
-
-        salon.getTableAux().setOpen(false);
-        daoT.updateTableOpen(salon.getTableAux());
-        salon.getTableAux().setToPay(false);
-        daoT.updateToPay(salon.getTableAux());
-        salon.getLabelCuenta().setText(salon.getTotal() + "");
-        salon.setEnabled(true);
-    }
 
 //TABLE CLOSER.........................................................................................................
 //TABLE CLOSER.........................................................................................................
@@ -1462,6 +1361,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
+    
     public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
@@ -1472,13 +1372,16 @@ public class UtilidadesGraficasSalon {
 
         if (itemsPayed != null) {
             if (endex == true) {
-                totalPayTaker(itemsPayed, salon);
+                ss.totalPayTaker(itemsPayed, salon);
             } else {
-                partialPayTaker(itemsPayed, salon);
+                salon.getJbtAux().setBackground(viol);
+                ss.partialPayTaker(itemsPayed, salon);
+                jButExtSetter(salon);
+                setTableItems(salon);
             }
         } else {
             salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
-//            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+            sis.createItemSale(salon);
             salon.getTableAux().setOrder(salon.getItemsTableAux());
             salon.setTotal(ss.countBill(salon.getTableAux()));
 
@@ -1502,6 +1405,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(true);
     }
 
+
 //Pago de cuenta y cierre de mesa
     public void tablePaid(Salon salon) throws Exception {
         jButExtSetter(salon);
@@ -1518,46 +1422,6 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-//------------------------------------------------------------------------------------------------------------------
-//Monto faltante por cash
-    public void errorMountBacker(double errorBack, String cause, Salon salon, double cash, double elec) throws Exception {
-        if (salon.getItemsPartialPaid().size() > 0) {
-            salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
-            salon.getTableAux().setOrder(salon.getItemsTableAux());
-            salon.setItemsPartialPaid(new ArrayList<Itemcard>());
-            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
-            daoI.downActiveItemPayedTableAll(salon.getTableAux());
-            daoI.upActiveItemOrderTableAll(salon.getTableAux());
-            salon.getTableAux().setToPay(false);
-            daoT.updateToPay(salon.getTableAux());
-        }
-
-//        salon.setAmoutnCash(cash);
-        salon.getTableAux().setAmountCash(salon.getTableAux().getAmountCash() + cash);
-        daoT.updateTableMountCash(salon.getTableAux());
-
-//        salon.setAmountElectronic(elec);
-        salon.getTableAux().setAmountElectronic(salon.getAmountElectronic() + elec);
-        daoT.updateTableMountElectronic(salon.getTableAux());
-
-        salon.setTotal(ss.countBill(salon.getTableAux()));
-        salon.getTableAux().setTotal(salon.getTotal() - errorBack);
-        daoT.updateTableTotal(salon.getTableAux());
-
-        salon.setError(errorBack);
-        salon.getTableAux().setError(salon.getError());
-        daoT.updateError(salon.getTableAux());
-
-        salon.getTableAux().setComments(cause);
-        daoT.updateComments(salon.getTableAux());
-
-        salon.getTableAux().setOpen(false);
-        daoT.updateTableOpen(salon.getTableAux());
-
-        tablePaid(salon);
-        utiliMsg.cargaError();
-        salon.setEnabled(true);
-    }
 
 //PANEL COUNT..........................................................................................................    
 //PANEL COUNT..........................................................................................................

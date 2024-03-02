@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.servicios;
 
 import java.sql.Timestamp;
@@ -40,9 +35,11 @@ public class ServicioSalon {
     DAODelivery daoD = new DAODelivery();
     DAOConfig daoC = new DAOConfig();
     ServicioItemMonitor sim = new ServicioItemMonitor();
+    ServicioItemSale sis = new ServicioItemSale();
     ServicioTable st = new ServicioTable();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+//    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     Salon salon = null;
 
     public ArrayList<Integer> salonConfigValues(Integer tab, int anchoPane, int alturaPane) {
@@ -209,6 +206,162 @@ public class ServicioSalon {
         return close;
     }
 
+    //GIFT---------------------------------------------------------------------------------------------
+    //GIFT---------------------------------------------------------------------------------------------
+    //GIFT---------------------------------------------------------------------------------------------
+    //GIFT---------------------------------------------------------------------------------------------
+    public void giftBacker(Itemcard ic, Salon salon) throws Exception {
+        salon.getItemsGift().add(ic);
+        salon.getTableAux().setGifts(salon.getItemsGift());
+        salon.setItemsTableAux(itemTableLesser(salon.getTableAux().getOrder(), ic));
+        salon.getTableAux().setOrder(salon.getItemsTableAux());
+        utiliMsg.cargaGift(ic.getName());
+        salon.setTotal(countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
+        daoIC.saveItemGiftTable(ic, salon.getTableAux());
+        daoT.updateTableTotal(salon.getTableAux());
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        salon.setEnabled(true);
+    }
+
+    //DISCOUNT-----------------------------------------------------------------------------------------
+    //DISCOUNT-----------------------------------------------------------------------------------------
+    //DISCOUNT-----------------------------------------------------------------------------------------
+    //DISCOUNT-----------------------------------------------------------------------------------------
+    public void discountBacker(int disc, Salon salon) throws Exception {
+        salon.setDiscount(disc);
+        salon.getTableAux().setDiscount(disc);
+        salon.setTotal(countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoT.updateTableTotal(salon.getTableAux());
+        daoT.updateTableDiscount(salon.getTableAux());
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        salon.setEnabled(true);
+    }
+
+    //ERROR--------------------------------------------------------------------------------------------
+    //ERROR--------------------------------------------------------------------------------------------
+    //ERROR--------------------------------------------------------------------------------------------
+    //ERROR--------------------------------------------------------------------------------------------
+    public void errorMountBacker(double errorBack, String cause, Salon salon, double cash, double elec) throws Exception {
+        if (salon.getItemsPartialPaid().size() > 0) {
+            salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
+            salon.getTableAux().setOrder(salon.getItemsTableAux());
+            salon.setItemsPartialPaid(new ArrayList<Itemcard>());
+            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+            daoIC.downActiveItemPayedTableAll(salon.getTableAux());
+            daoIC.upActiveItemOrderTableAll(salon.getTableAux());
+            salon.getTableAux().setToPay(false);
+            daoT.updateToPay(salon.getTableAux());
+        }
+
+        salon.getTableAux().setAmountCash(salon.getTableAux().getAmountCash() + cash);
+        daoT.updateTableMountCash(salon.getTableAux());
+
+        salon.getTableAux().setAmountElectronic(salon.getAmountElectronic() + elec);
+        daoT.updateTableMountElectronic(salon.getTableAux());
+
+        salon.setTotal(countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal() - errorBack);
+        daoT.updateTableTotal(salon.getTableAux());
+
+        salon.setError(errorBack);
+        salon.getTableAux().setError(salon.getError());
+        daoT.updateError(salon.getTableAux());
+
+        salon.getTableAux().setComments(cause);
+        daoT.updateComments(salon.getTableAux());
+
+        salon.getTableAux().setOpen(false);
+        daoT.updateTableOpen(salon.getTableAux());
+
+        utiliMsg.cargaError();
+        salon.setEnabled(true);
+    }
+
+    //CORRECTOR----------------------------------------------------------------------------------------
+    //CORRECTOR----------------------------------------------------------------------------------------
+    //CORRECTOR----------------------------------------------------------------------------------------
+    //CORRECTOR----------------------------------------------------------------------------------------    
+    public void correctItems(Itemcard ic, int num, Salon salon) throws Exception {
+        switch (num) {
+            case 1:
+                salon.setItemsTableAux(itemTableLesser(salon.getItemsTableAux(), ic));
+                salon.getTableAux().setOrder(salon.getItemsTableAux());
+                daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
+                break;
+            case 2:
+                salon.setItemsGift(itemTableLesser(salon.getItemsGift(), ic));
+                salon.getTableAux().setGifts(salon.getItemsGift());
+                salon.getItemsTableAux().add(ic);
+                salon.getTableAux().setOrder(salon.getItemsTableAux());
+                daoIC.downActiveItemGiftTable(ic, salon.getTableAux());
+                daoIC.upActiveItemOrderTable(ic, salon.getTableAux());
+                break;
+            case 3:
+                salon.setItemsPartialPaid(itemTableLesser(salon.getItemsPartialPaid(), ic));
+                salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+                salon.getItemsTableAux().add(ic);
+                salon.getTableAux().setOrder(salon.getItemsTableAux());
+                daoIC.downActiveItemPayedTable(ic, salon.getTableAux());
+                daoIC.upActiveItemOrderTable(ic, salon.getTableAux());
+                break;
+        }
+        salon.setEnabled(true);
+    }
+
+    //PARTIAL PAY--------------------------------------------------------------------------------------
+    //PARTIAL PAY--------------------------------------------------------------------------------------
+    //PARTIAL PAY--------------------------------------------------------------------------------------
+    //PARTIAL PAY--------------------------------------------------------------------------------------
+    public void partialPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
+        for (int i = 0; i < itemsPayed.size(); i++) {
+            salon.setItemsTableAux(itemTableLesser(salon.getItemsTableAux(), itemsPayed.get(i)));
+        }
+        salon.getItemsPartialPaid().addAll(itemsPayed);
+        salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+        salon.getTableAux().setOrder(salon.getItemsTableAux());
+        salon.setTotal(countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoT.updateTableTotal(salon.getTableAux());
+        salon.getTableAux().setToPay(true);
+        daoT.updateToPay(salon.getTableAux());
+        for (Itemcard ic : itemsPayed) {
+            daoIC.saveItemPayedTable(ic, salon.getTableAux());
+            daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
+        }
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        double payed = partialBillPayed(salon.getTableAux());
+        salon.getLabelPartialPay().setText("Pagado: $" + (payed));
+        salon.setEnabled(true);
+    }
+
+    public void totalPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
+        salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
+        salon.getTableAux().setOrder(salon.getItemsTableAux());
+        salon.setItemsPartialPaid(new ArrayList<Itemcard>());
+        salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+        sis.createItemSale(salon);
+        daoIC.downActiveItemPayedTableAll(salon.getTableAux());
+        daoIC.upActiveItemOrderTableAll(salon.getTableAux());
+
+        salon.setTotal(countBill(salon.getTableAux()));
+        salon.getTableAux().setTotal(salon.getTotal());
+        daoT.updateTableTotal(salon.getTableAux());
+
+        salon.getTableAux().setOpen(false);
+        daoT.updateTableOpen(salon.getTableAux());
+        salon.getTableAux().setToPay(false);
+        daoT.updateToPay(salon.getTableAux());
+        salon.getLabelCuenta().setText(salon.getTotal() + "");
+        salon.setEnabled(true);
+    }
+
+    //CLOSE WORKSHIFT----------------------------------------------------------------------------------
+    //CLOSE WORKSHIFT----------------------------------------------------------------------------------
+    //CLOSE WORKSHIFT----------------------------------------------------------------------------------
+    //CLOSE WORKSHIFT----------------------------------------------------------------------------------
     public void endWorkshift(Salon salon, boolean errorWs) throws Exception {
         salon.setEnabled(true);
         if (salon.getBarrButtons().size() > 0) {
@@ -238,7 +391,6 @@ public class ServicioSalon {
         }
     }
 
-    //CLOSE Workshift
     public void closeWorkshift(Salon salon, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
         Workshift actualWs = actWs;
         Workshift newWs = nWs;

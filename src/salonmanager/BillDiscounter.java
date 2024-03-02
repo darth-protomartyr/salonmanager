@@ -99,7 +99,9 @@ public class BillDiscounter extends FrameWindow {
 
     private void butDiscounterActionPerformed() throws Exception {
         int u = (int) spinnerDiscount.getValue();
-        utiliGrafSal.discountBacker(u, salon);
+        ss.discountBacker(u, salon);
+        utiliGrafSal.setTableItems(salon);
+        utiliGrafSal.jButExtSetter(salon);
         dispose();
     }
 }
