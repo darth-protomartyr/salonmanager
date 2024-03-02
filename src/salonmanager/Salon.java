@@ -25,7 +25,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Delivery;
-import salonmanager.entidades.graphics.FrameFullManager;
 import salonmanager.entidades.bussiness.ItemMonitor;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonBarr;
@@ -36,6 +35,7 @@ import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
+import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -48,7 +48,7 @@ import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class Salon extends FrameFullManager {
+public class Salon extends FrameFull {
 
     Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();

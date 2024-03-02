@@ -12,11 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.graphics.FrameFullManager;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
+import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -24,7 +24,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class Manager extends FrameFullManager {
+public class Manager extends FrameFull {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
