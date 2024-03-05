@@ -42,7 +42,7 @@ public class TableResumePanel extends FrameThird {
         tabAux = tab;
 //        tabAux = st.tableItemsByTab(tabAux);
         setTitle("Consulta Mesa");
-        PanelPpal panelPpal = new PanelPpal(anchoFrameThird, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("CONSULTA MESA");

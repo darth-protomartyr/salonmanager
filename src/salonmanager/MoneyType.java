@@ -83,7 +83,7 @@ public class MoneyType extends FrameWindow {
         amounts.add(cash);
         amounts.add(electronic);
         setTitle("Modos de Pago");
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

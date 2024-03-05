@@ -58,7 +58,7 @@ public class CreateAccount extends FrameHalf {
     public CreateAccount() throws Exception {
         frame = this;
         setTitle("Registrar");
-        JPanel panelPpal = new PanelPpal(anchoFrame, alturaFrame);
+        JPanel panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("REGISTRAR");

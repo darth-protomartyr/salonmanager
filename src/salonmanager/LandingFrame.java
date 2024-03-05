@@ -28,7 +28,7 @@ public class LandingFrame extends FrameGeneral {
     public LandingFrame() {
         setBounds(3, 3, anchoFrame, alturaFrame);
         setTitle("Ingreso");
-        PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelTitle = new JPanel();

@@ -1,15 +1,15 @@
 package salonmanager.entidades.graphics;
 
 import java.awt.Color;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class PanelPpal extends JPanel {
     Color bluSt = new Color(3, 166, 136);
 
-    public PanelPpal(int anchoPanel, int alturaPanel) {
+    public PanelPpal(JFrame frame) {
         setBackground(bluSt);
         setLayout(null);
-        setVisible(true);
-        setBounds(0,0, anchoPanel, alturaPanel);
+        setSize(frame.getSize());
     }
 }

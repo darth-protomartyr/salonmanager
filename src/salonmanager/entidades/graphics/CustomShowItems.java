@@ -5,9 +5,6 @@ import salonmanager.entidades.graphics.PanelPpal;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.TextArea;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -17,16 +14,11 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import static salonmanager.entidades.graphics.FrameGeneral.alturaFrame;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
@@ -64,7 +56,8 @@ public class CustomShowItems extends JDialog {
         setSize(anchoUnit * 30, altoUnit * 40);
         setLocationRelativeTo(null); // Centrar en la pantalla
 
-        PanelPpal panelPpal = new PanelPpal(anchoUnit * 30, altoUnit * 40);
+        JPanel panelPpal = new JPanel();
+        panelPpal.setBounds(0, 0, anchoUnit*30, altoUnit*40);
         panelPpal.setBackground(viol);
         add(panelPpal);
 
@@ -85,23 +78,9 @@ public class CustomShowItems extends JDialog {
                 break;
         }
 
-
         JLabel labelTit = utiliGraf.labelTitleBacker3(st);
         labelTit.setBounds(20, 20, 300, 30);
         panelPpal.add(labelTit);
-
-        
-
-
-//        JPanel panelText = new JPanel();
-//        panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 26);
-//        Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
-//        panelText.setBorder(bordeInterno);
-//        contentPane.add(panelText);
-
-//        textAreaRecList.setBounds(10, 60, 280, 150);
-
-
 
         JButton closeButton = utiliGraf.button2("Cerrar", anchoUnit * 10, altoUnit * 28, anchoUnit * 10);
         closeButton.addActionListener(new ActionListener() {
@@ -124,8 +103,4 @@ public class CustomShowItems extends JDialog {
         }
         );
     }
-
-//    public CustomShowItems(ArrayList<Itemcard> items, int i) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 }

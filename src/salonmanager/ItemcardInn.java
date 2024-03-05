@@ -61,7 +61,7 @@ public class ItemcardInn extends FrameHalf {
         sm.addFrame(this);        
         setTitle("Ingreso Item de Carta");
         itemsCardDB = daoIC.listarItemsCard();
-        PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("INGRESAR ITEMS AL MENÚ");

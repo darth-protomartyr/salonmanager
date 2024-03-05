@@ -70,7 +70,7 @@ public class ErrorTableCount extends FrameWindow {
         salon.setTotal(ss.countBill(salon.getTableAux()));
         total = salon.getTotal();
         setTitle("Error Mesa");
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 //        itemsToPay = new ArrayList<Itemcard>(salon.getItemsTableAux());
         JPanel panelLabel = new JPanel();

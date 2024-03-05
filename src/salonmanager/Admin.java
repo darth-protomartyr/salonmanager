@@ -29,7 +29,7 @@ public class Admin extends FrameGeneral {
     
     public Admin(User user) {
         setTitle("Administrador");
-        PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);         
     }
 }

@@ -188,7 +188,7 @@ public class Salon extends FrameFull {
         sal = this;
         itemsDB = daoI.listarItemsCard();
         waiters = daoU.listUserByRol("MOZO");
-        PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         ConfigGeneral cfgGen = daoC.askConfigGeneral();

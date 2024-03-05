@@ -58,7 +58,7 @@ public class GiftSelector extends FrameWindow {
         sm.addFrame(this);
         tab = salon.getTableAux();
         setTitle("Selector de Obsequios");
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

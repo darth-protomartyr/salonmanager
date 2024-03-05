@@ -98,7 +98,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         sm.addFrame(this);
         User cashier = actualWs.getWsCashier();
         setTitle("Cierre de turno");
-        PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

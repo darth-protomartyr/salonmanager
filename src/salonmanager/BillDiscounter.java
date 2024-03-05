@@ -49,7 +49,7 @@ public class BillDiscounter extends FrameWindow {
         salon = sal;
         sm.addFrame(this);
         setTitle("Descuento");
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

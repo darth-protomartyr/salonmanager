@@ -33,7 +33,7 @@ public class ItemcardConsulta extends FrameThird {
         sm.addFrame(this);
         itemAux = ic;
         setTitle("Consulta Item Carta");
-        PanelPpal panelPpal = new PanelPpal(anchoFrameThird, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Consulta Item de la Carta");

@@ -54,7 +54,7 @@ public class Manager extends FrameFull {
         user = userIn;
         pass = passIn;
         setTitle("Salón Manager");
-        PanelPpal panelPpal = new PanelPpal(anchoFrame, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JMenuBar menuBar = utiliGraf.navegador(userIn, passIn, this);

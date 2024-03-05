@@ -108,7 +108,7 @@ public class DeliveryTemplate extends FrameHalf {
 
         setBounds(0, 0, anchoFrame / 2, alturaFrame);
 
-        PanelPpal panelPpal = new PanelPpal(anchoFrame / 2, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W(title);

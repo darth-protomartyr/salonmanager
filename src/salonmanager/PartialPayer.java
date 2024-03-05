@@ -75,7 +75,7 @@ public class PartialPayer extends FrameWindow {
         ArrayList<Itemcard> itemsAux = tab.getOrder();
         itemsToPay = new ArrayList<Itemcard>(itemsAux);
         setTitle("Pago Parcial");
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

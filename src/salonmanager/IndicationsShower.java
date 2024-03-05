@@ -46,7 +46,7 @@ public class IndicationsShower extends FrameWindow{
     public IndicationsShower(ItemMonitor im) {
 //            public IndicationsShower() {
 
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

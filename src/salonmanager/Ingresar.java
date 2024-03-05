@@ -48,7 +48,7 @@ public class Ingresar extends FrameWindow {
         landing = landing1;
         setTitle("Registrar");
 
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

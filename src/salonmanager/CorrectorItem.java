@@ -62,7 +62,7 @@ public class CorrectorItem extends FrameWindow {
         sm.addFrame(this);
         tab = new Table(salon.getTableAux());
         setTitle("Corrector de Items");
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();

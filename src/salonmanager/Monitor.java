@@ -79,7 +79,7 @@ public class Monitor extends FrameHalf {
 
         sm.addFrame(this);
         setTitle("Seguimiento");
-        PanelPpal panelPpal = new PanelPpal(anchoFrameHalf, alturaFrame);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("SEGUIMIENTO DE ÓRDENES");

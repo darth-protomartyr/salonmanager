@@ -28,7 +28,6 @@ public class FrameGeneral extends JFrame {
         setIconImage(icono.getImage());
         setBounds(3, 3, anchoFrame, alturaFrame);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(false);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(null);

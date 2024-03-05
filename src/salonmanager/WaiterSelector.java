@@ -5,7 +5,6 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,7 +59,7 @@ public class WaiterSelector extends FrameWindow {
         sm.addFrame(this);
         setTitle("Selector de Mozos");
 
-        PanelPpal panelPpal = new PanelPpal(390, 300);
+        PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
         waiters = daoU.listUserByRol("MOZO");
 
