@@ -148,5 +148,4 @@ public class Manager extends FrameFull {
     public void setSalon(Salon salon) {
         this.salon = salon;
     }
-
 }

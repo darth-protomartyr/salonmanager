@@ -2,14 +2,11 @@ package salonmanager.entidades.graphics;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class FrameGeneral extends JFrame {
 
-//    UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     static protected int anchoFrame;
     static protected int alturaFrame;
     static protected int anchoUnit;
@@ -26,7 +23,6 @@ public class FrameGeneral extends JFrame {
         altoUnit = alturaFrame / 100;
         ImageIcon icono = new ImageIcon("menu.png");
         setIconImage(icono.getImage());
-        setBounds(3, 3, anchoFrame, alturaFrame);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
