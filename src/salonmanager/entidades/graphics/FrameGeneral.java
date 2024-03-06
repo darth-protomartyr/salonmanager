@@ -1,6 +1,9 @@
 package salonmanager.entidades.graphics;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -17,14 +20,17 @@ public class FrameGeneral extends JFrame {
         frame = this;
         Toolkit pantalla = Toolkit.getDefaultToolkit();
         Dimension tamanioPantalla = pantalla.getScreenSize();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Rectangle bounds = ge.getMaximumWindowBounds();
+        Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(ge.getDefaultScreenDevice().getDefaultConfiguration());
+        int taskBarHeight = insets.bottom;
         anchoFrame = tamanioPantalla.width;
-        alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
+        alturaFrame = tamanioPantalla.height - taskBarHeight;
         anchoUnit = anchoFrame / 100;
         altoUnit = alturaFrame / 100;
         ImageIcon icono = new ImageIcon("menu.png");
         setIconImage(icono.getImage());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(null);
     }

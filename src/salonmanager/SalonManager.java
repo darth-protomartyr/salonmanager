@@ -23,7 +23,6 @@ public class SalonManager {
     private static final String SECRET_KEY = "HappyWhenItRains";
     private static Workshift workshiftActual = null;
     private static DAOConfig daoC = new DAOConfig();
-//  FrameGeneral fg = new FrameGeneral();
     
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
@@ -40,18 +39,12 @@ public class SalonManager {
         }
     }
 
-//    public User getUserIn() {
-//        return userIn;
-//    }
 
     public void setUserIn(User userIn) {
         this.userIn = userIn;
     }
-//
-//    public String getPassIn() {
-//        return passIn;
-//    }
-//
+
+
     public void setPassIn(String passIn) {
         this.passIn = passIn;
     }
@@ -168,7 +161,4 @@ public class SalonManager {
         cfgAct = daoC.askConfigActual();
         return cfgAct;
     }    
-    
-    
-    
 }
