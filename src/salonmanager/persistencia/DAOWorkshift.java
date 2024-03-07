@@ -26,12 +26,12 @@ public class DAOWorkshift extends DAO {
 
         if (error == false) {
             try {
-                if (ws.getWsClose() == null) {
+                if (ws.getCloseWs() == null) {
                     sql = "INSERT INTO workshifts(workshift_open_shift, workshift_close_shift, workshift_state_shift, workshift_mount_cash, workshift_mount_electronic, workshift_error_mount, workshift_error_mount_real, workshift_total_mount, workshift_total_mount_real, workshift_active) "
-                            + "VALUES( '" + ws.getWsOpen() + "', " + ws.getWsClose() + ", " + ws.isWsState() + ", " + ws.getWsTotalMountCash() + ", " + ws.getWsTotalMountElectronic() + ", " + ws.getWsErrorMount() + ", " + ws.getWsErrorMountReal() + ", " + ws.getWsTotalMount() + ", " + ws.getWsTotalMountReal() + ", " + true + ");";
+                            + "VALUES( '" + ws.getOpenWs() + "', " + ws.getCloseWs() + ", " + ws.isStateWs() + ", " + ws.getTotalMountCashWs() + ", " + ws.getTotalMountElectronicWs() + ", " + ws.getErrorMountWs() + ", " + ws.getErrorMountRealWs() + ", " + ws.getTotalMountWs() + ", " + ws.getTotalMountRealWs() + ", " + true + ");";
                 } else {
                     sql = "INSERT INTO workshifts(workshift_open_shift, workshift_close_shift, workshift_state_shift, workshift_mount_cash, workshift_mount_electronic, workshift_error_mount, workshift_error_mount_real, workshift_total_mount, workshift_total_mount_real, workshift_active) "
-                            + "VALUES( '" + ws.getWsOpen() + "', '" + ws.getWsClose() + "', " + ws.isWsState() + ", " + ws.getWsTotalMountCash() + ", " + ws.getWsTotalMountElectronic() + ", " + ws.getWsErrorMount() + ", " + ws.getWsErrorMountReal() + ", " + ws.getWsTotalMount() + ", " + ws.getWsTotalMountReal() + true +");";
+                            + "VALUES( '" + ws.getOpenWs() + "', '" + ws.getCloseWs() + "', " + ws.isStateWs() + ", " + ws.getTotalMountCashWs() + ", " + ws.getTotalMountElectronicWs() + ", " + ws.getErrorMountWs() + ", " + ws.getErrorMountRealWs() + ", " + ws.getTotalMountWs() + ", " + ws.getTotalMountRealWs() + true +");";
                 }
 
                 System.out.println(sql);
@@ -54,7 +54,7 @@ public class DAOWorkshift extends DAO {
                 downWorkshiftActive(ws);
             }
             
-            String sql1 = "UPDATE workshifts SET workshift_close_shift = '" + ws.getWsClose() + "' WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_close_shift = '" + ws.getCloseWs() + "' WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -70,7 +70,7 @@ public class DAOWorkshift extends DAO {
 
     public void updateWorkshiftState(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_state_shift = " + ws.isWsState() + " WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_state_shift = " + ws.isStateWs() + " WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -86,7 +86,7 @@ public class DAOWorkshift extends DAO {
 
     public void updateWorkshiftTotal(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_total_mount = '" + ws.getWsTotalMount() + "' WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_total_mount = '" + ws.getTotalMountWs() + "' WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -102,7 +102,7 @@ public class DAOWorkshift extends DAO {
 
     public void updateWorkshiftError(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_error_mount = '" + ws.getWsErrorMount() + "' WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_error_mount = '" + ws.getErrorMountWs() + "' WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -118,7 +118,7 @@ public class DAOWorkshift extends DAO {
 
     public void updateWorkshiftCash(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_mount_cash = '" + ws.getWsTotalMountCash() + "' WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_mount_cash = '" + ws.getTotalMountCashWs() + "' WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -134,7 +134,7 @@ public class DAOWorkshift extends DAO {
 
     public void updateWorkshiftElectronic(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_mount_electronic = '" + ws.getWsTotalMountElectronic() + "' WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_mount_electronic = '" + ws.getTotalMountElectronicWs() + "' WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -150,7 +150,7 @@ public class DAOWorkshift extends DAO {
     
     public void downWorkshiftActive(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_active = " + false + " WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_active = " + false + " WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -176,16 +176,16 @@ public class DAOWorkshift extends DAO {
             consultarBase(sql);
             while (resultado.next()) {
                 Workshift ws = new Workshift();
-                ws.setWsId(resultado.getInt(1));
-                ws.setWsOpen(resultado.getTimestamp(2));
-                ws.setWsClose(resultado.getTimestamp(3));
-                ws.setWsState(resultado.getBoolean(4));
-                ws.setWsTotalMountCash(resultado.getDouble(5));
-                ws.setWsTotalMountElectronic(resultado.getDouble(6));
-                ws.setWsTotalMount(resultado.getDouble(7));
-                ws.setWsTotalMountReal(resultado.getDouble(8));
-                ws.setWsErrorMount(resultado.getDouble(9));
-                ws.setWsErrorMountReal(resultado.getDouble(10));
+                ws.setId(resultado.getInt(1));
+                ws.setOpenWs(resultado.getTimestamp(2));
+                ws.setCloseWs(resultado.getTimestamp(3));
+                ws.setStateWs(resultado.getBoolean(4));
+                ws.setTotalMountCashWs(resultado.getDouble(5));
+                ws.setTotalMountElectronicWs(resultado.getDouble(6));
+                ws.setTotalMountWs(resultado.getDouble(7));
+                ws.setTotalMountRealWs(resultado.getDouble(8));
+                ws.setErrorMountWs(resultado.getDouble(9));
+                ws.setErrorMountRealWs(resultado.getDouble(10));
                 ws.setActiveWs(resultado.getBoolean(11));
                 wss.add(ws);
             }
@@ -206,16 +206,16 @@ public class DAOWorkshift extends DAO {
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                ws.setWsId(resultado.getInt(1));
-                ws.setWsOpen(resultado.getTimestamp(2));
-                ws.setWsClose(resultado.getTimestamp(3));
-                ws.setWsState(resultado.getBoolean(4));
-                ws.setWsTotalMountCash(resultado.getDouble(5));
-                ws.setWsTotalMountElectronic(resultado.getDouble(6));
-                ws.setWsTotalMount(resultado.getDouble(7));
-                ws.setWsTotalMountReal(resultado.getDouble(8));
-                ws.setWsErrorMount(resultado.getDouble(9));
-                ws.setWsErrorMountReal(resultado.getDouble(10));
+                ws.setId(resultado.getInt(1));
+                ws.setOpenWs(resultado.getTimestamp(2));
+                ws.setCloseWs(resultado.getTimestamp(3));
+                ws.setStateWs(resultado.getBoolean(4));
+                ws.setTotalMountCashWs(resultado.getDouble(5));
+                ws.setTotalMountElectronicWs(resultado.getDouble(6));
+                ws.setTotalMountWs(resultado.getDouble(7));
+                ws.setTotalMountRealWs(resultado.getDouble(8));
+                ws.setErrorMountWs(resultado.getDouble(9));
+                ws.setErrorMountRealWs(resultado.getDouble(10));
                 ws.setActiveWs(resultado.getBoolean(11));
             }
             return ws;
@@ -264,11 +264,9 @@ public class DAOWorkshift extends DAO {
     }
     
     
-    
-
     public void updateWorkshiftErrorReal(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_error_mount_real = '" + ws.getWsErrorMountReal() + "' WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_error_mount_real = '" + ws.getErrorMountRealWs() + "' WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -282,9 +280,10 @@ public class DAOWorkshift extends DAO {
         }
     }
 
+    
     public void updateWorkshiftMountReal(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_total_mount_real = '" + ws.getWsTotalMountReal() + "' WHERE workshift_id = '" + ws.getWsId() + "';";
+            String sql1 = "UPDATE workshifts SET workshift_total_mount_real = '" + ws.getTotalMountRealWs() + "' WHERE workshift_id = '" + ws.getId() + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -297,20 +296,4 @@ public class DAOWorkshift extends DAO {
             desconectarBase();
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

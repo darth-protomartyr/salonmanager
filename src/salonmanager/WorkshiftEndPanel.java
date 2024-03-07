@@ -96,7 +96,7 @@ public class WorkshiftEndPanel extends FrameHalf {
 
         salon = sal;
         sm.addFrame(this);
-        User cashier = actualWs.getWsCashier();
+        User cashier = actualWs.getCashierWs();
         setTitle("Cierre de turno");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -107,8 +107,8 @@ public class WorkshiftEndPanel extends FrameHalf {
         panelPpal.add(panelLabel);
         String nomCashier = cashier.getName();
         String pronomCashier = cashier.getLastName();
-        String tsInit = actualWs.getWsOpen() + "";
-        String tsClose = actualWs.getWsClose() + "";
+        String tsInit = actualWs.getOpenWs() + "";
+        String tsClose = actualWs.getCloseWs() + "";
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("CIERRE DE TURNO");
         panelLabel.add(labelTit);
@@ -131,10 +131,10 @@ public class WorkshiftEndPanel extends FrameHalf {
         panelMounts.setBackground(bluLg);
         panelPpal.add(panelMounts);
 
-        total = actualWs.getWsTotalMount();
-        cash = actualWs.getWsTotalMountCash();
-        electronic = actualWs.getWsTotalMountElectronic();
-        error = actualWs.getWsErrorMount();
+        total = actualWs.getTotalMountWs();
+        cash = actualWs.getTotalMountCashWs();
+        electronic = actualWs.getTotalMountElectronicWs();
+        error = actualWs.getErrorMountWs();
 
         //Facturación
         JPanel panelTotal = new JPanel();
@@ -284,8 +284,8 @@ public class WorkshiftEndPanel extends FrameHalf {
             boolean confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
             if (confirm) {
                 realAmount = parseDouble(real);
-                actualWs.setWsTotalMountReal(realAmount);
-                actualWs.setWsErrorMountReal(realError);
+                actualWs.setTotalMountRealWs(realAmount);
+                actualWs.setErrorMountRealWs(realError);
                 if (realError < 0) {
                     realError = realError * (-1);
                 } else if (realError > 0) {
@@ -328,8 +328,8 @@ public class WorkshiftEndPanel extends FrameHalf {
     private void buttonDeferWsCloseAction() throws Exception {
         ConfigActual cfgGen = daoC.askConfigActual();
         ArrayList<Integer> deferWsArray = cfgGen.getArrayDeferWs();
-        deferWsArray.add(actualWs.getWsId());
-        deferWsArray.add(actualWs.getWsId());
+        deferWsArray.add(actualWs.getId());
+        deferWsArray.add(actualWs.getId());
         daoC.updateCfgActDeferWs(deferWsArray);
         utiliMsg.cargaWsDefer();
     }

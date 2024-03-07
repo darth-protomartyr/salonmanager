@@ -318,7 +318,7 @@ public class DAOUser extends DAO {
     public void saveCashierWorkshift(Workshift ws) throws Exception {
         try {
             String sql = "INSERT INTO cashier_workshifts(cashier_workshift_active, cashier_id_fkey, workshift_id_fkey) ";
-            String parcialA = "VALUES( " + true + ", '" + ws.getWsCashier().getId() + "', " + ws.getWsId() + ");";
+            String parcialA = "VALUES( " + true + ", '" + ws.getCashierWs().getId() + "', " + ws.getId() + ");";
             sql += parcialA;
             System.out.println(sql);
             insertarModificarEliminar(sql.trim());

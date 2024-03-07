@@ -9,152 +9,169 @@ import salonmanager.entidades.bussiness.User;
 import java.sql.Timestamp;
 import java.util.Date;
 
-/**
- *
- * @author Gonzalo
- */
 public class Workshift {
     int id;
-    User cashier;
-    Timestamp openShift;
-    Timestamp closeShift;
-    boolean stateWorkshift;
-    double totalMountShiftCash;
-    double totalMountShiftElectronic;
-    double totalMountShift;
-    double totalMountShiftReal;
-    double errorMountShift;
-    double errorMountShiftReal;
-    boolean activeWorkshift;
+    User cashierWs;
+    Timestamp openWs;
+    Timestamp closeWs;
+    boolean stateWs;
+    double totalMountCashWs;
+    double totalMountElectronicWs;
+    double totalMountWs;
+    double totalMountRealWs;
+    double errorMountWs;
+    double errorMountRealWs;
+    double cashFlowWs;
+    String commentWs;
+    boolean activeWs;
 
     public Workshift() {
     }
 
     //Crear Turno
     public Workshift(User cashier) {
-        this.cashier = cashier;
-        this.openShift = new Timestamp(new Date().getTime());
-        this.closeShift = null;
-        this.stateWorkshift = true;
-        this.totalMountShiftCash = 0;
-        this.totalMountShiftElectronic = 0;
-        this.errorMountShift = 0;
-        this.errorMountShiftReal = 0;
-        this.totalMountShift = 0;
-        this.totalMountShiftReal = 0;
-        this.activeWorkshift = true;
-
+        this.cashierWs = cashier;
+        this.openWs = new Timestamp(new Date().getTime());
+        this.closeWs = null;
+        this.stateWs = true;
+        this.totalMountCashWs = 0;
+        this.totalMountElectronicWs = 0;
+        this.errorMountWs = 0;
+        this.errorMountRealWs = 0;
+        this.totalMountWs = 0;
+        this.totalMountRealWs = 0;
+        this.cashFlowWs = 0;
+        this.commentWs = "";
+        this.activeWs = true;
     }
 
     //Consulta Turno
-    public Workshift(int id, User cashier, Timestamp openShift, Timestamp closeShift, boolean stateWorkshift, double totalMountShiftCash, double totalMountShiftElectronic, double giftShift, double errorShift, double errorShiftReal, double totalShift, double totalShiftReal, boolean activeWorkshift) {
+    public Workshift(int id, User cashierWs, Timestamp openWs, Timestamp closeWs, boolean stateWs, double totalMountCashWs, double totalMountElectronicWs, double errorWs, double errorRealWs, double totalWs, double totalRealWs, double cashFlowWs, String commentWs, boolean activeWs) {
         this.id = id;
-        this.cashier = cashier;
-        this.openShift = openShift;
-        this.closeShift = closeShift;
-        this.stateWorkshift = stateWorkshift;
-        this.totalMountShiftCash = totalMountShiftCash;
-        this.totalMountShiftElectronic = totalMountShiftElectronic;
-        this.errorMountShift = errorShift;
-        this.errorMountShiftReal = errorShiftReal;
-        this.totalMountShift = totalShift;
-        this.totalMountShiftReal = totalShiftReal;
-        this.activeWorkshift = activeWorkshift;
+        this.cashierWs = cashierWs;
+        this.openWs = openWs;
+        this.closeWs = closeWs;
+        this.stateWs = stateWs;
+        this.totalMountCashWs = totalMountCashWs;
+        this.totalMountElectronicWs = totalMountElectronicWs;
+        this.errorMountWs = errorWs;
+        this.errorMountRealWs = errorRealWs;
+        this.totalMountWs = totalWs;
+        this.totalMountRealWs = totalRealWs;
+        this.cashFlowWs = cashFlowWs;
+        this.commentWs = commentWs;
+        this.activeWs = activeWs;
     }
 
-    public int getWsId() {
+    public int getId() {
         return id;
     }
 
-    public void setWsId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public User getWsCashier() {
-        return cashier;
+    public User getCashierWs() {
+        return cashierWs;
     }
 
-    public void setWsCashier(User cashier) {
-        this.cashier = cashier;
+    public void setCashierWs(User cashierWs) {
+        this.cashierWs = cashierWs;
     }
 
-    public Timestamp getWsOpen() {
-        return openShift;
+    public Timestamp getOpenWs() {
+        return openWs;
     }
 
-    public void setWsOpen(Timestamp openShift) {
-        this.openShift = openShift;
+    public void setOpenWs(Timestamp openWs) {
+        this.openWs = openWs;
     }
 
-    public Timestamp getWsClose() {
-        return closeShift;
+    public Timestamp getCloseWs() {
+        return closeWs;
     }
 
-    public void setWsClose(Timestamp closeShift) {
-        this.closeShift = closeShift;
+    public void setCloseWs(Timestamp closeWs) {
+        this.closeWs = closeWs;
     }
 
-    public boolean isWsState() {
-        return stateWorkshift;
+    public boolean isStateWs() {
+        return stateWs;
     }
 
-    public void setWsState(boolean stateWorkshift) {
-        this.stateWorkshift = stateWorkshift;
+    public void setStateWs(boolean stateWs) {
+        this.stateWs = stateWs;
+    }
+
+    public double getTotalMountCashWs() {
+        return totalMountCashWs;
+    }
+
+    public void setTotalMountCashWs(double totalMountCashWs) {
+        this.totalMountCashWs = totalMountCashWs;
+    }
+
+    public double getTotalMountElectronicWs() {
+        return totalMountElectronicWs;
+    }
+
+    public void setTotalMountElectronicWs(double totalMountElectronicWs) {
+        this.totalMountElectronicWs = totalMountElectronicWs;
+    }
+
+    public double getTotalMountWs() {
+        return totalMountWs;
+    }
+
+    public void setTotalMountWs(double totalMountWs) {
+        this.totalMountWs = totalMountWs;
+    }
+
+    public double getTotalMountRealWs() {
+        return totalMountRealWs;
+    }
+
+    public void setTotalMountRealWs(double totalMountRealWs) {
+        this.totalMountRealWs = totalMountRealWs;
+    }
+
+    public double getErrorMountWs() {
+        return errorMountWs;
+    }
+
+    public void setErrorMountWs(double errorMountWs) {
+        this.errorMountWs = errorMountWs;
+    }
+
+    public double getErrorMountRealWs() {
+        return errorMountRealWs;
+    }
+
+    public void setErrorMountRealWs(double errorMountRealWs) {
+        this.errorMountRealWs = errorMountRealWs;
+    }
+
+    public double getCashFlowWs() {
+        return cashFlowWs;
+    }
+
+    public void setCashFlowWs(double cashFlowWs) {
+        this.cashFlowWs = cashFlowWs;
+    }
+
+    public String getCommentWs() {
+        return commentWs;
+    }
+
+    public void setCommentWs(String commentWs) {
+        this.commentWs = commentWs;
     }
 
     public boolean isActiveWs() {
-        return activeWorkshift;
+        return activeWs;
     }
 
-    public void setActiveWs(boolean activeWorkshift) {
-        this.activeWorkshift = activeWorkshift;
-    }
-
-    public double getWsTotalMountCash() {
-        return totalMountShiftCash;
-    }
-
-    public void setWsTotalMountCash(double totalMountShiftCash) {
-        this.totalMountShiftCash = totalMountShiftCash;
-    }
-
-    public double getWsTotalMountElectronic() {
-        return totalMountShiftElectronic;
-    }
-
-    public void setWsTotalMountElectronic(double totalMountShiftElectronic) {
-        this.totalMountShiftElectronic = totalMountShiftElectronic;
-    }
-
-    public double getWsTotalMount() {
-        return totalMountShift;
-    }
-
-    public void setWsTotalMount(double totalMountShift) {
-        this.totalMountShift = totalMountShift;
-    }
-
-    public double getWsTotalMountReal() {
-        return totalMountShiftReal;
-    }
-
-    public void setWsTotalMountReal(double totalMountShiftReal) {
-        this.totalMountShiftReal = totalMountShiftReal;
-    }
-
-    public double getWsErrorMount() {
-        return errorMountShift;
-    }
-
-    public void setWsErrorMount(double errorMountShift) {
-        this.errorMountShift = errorMountShift;
-    }
-
-    public double getWsErrorMountReal() {
-        return errorMountShiftReal;
-    }
-
-    public void setWsErrorMountReal(double errorMountShiftReal) {
-        this.errorMountShiftReal = errorMountShiftReal;
+    public void setActiveWs(boolean activeWs) {
+        this.activeWs = activeWs;
     }
 }

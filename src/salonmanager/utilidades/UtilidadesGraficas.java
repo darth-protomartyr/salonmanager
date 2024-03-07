@@ -209,9 +209,9 @@ public class UtilidadesGraficas extends JFrame {
             ConfigActual cfgAct = sm.getConfigAct();
             if (cfgAct.isOpenWs()) {
                 Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-                ws.setWsCashier(daoU.getCashierByWorkshift(ws.getWsId()));
+                ws.setCashierWs(daoU.getCashierByWorkshift(ws.getId()));
                 ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
-                if (user.getId().equals(ws.getWsCashier().getId())) {
+                if (user.getId().equals(ws.getCashierWs().getId())) {
                     manager.salonFrameManager(tabs, cfgAct);
                 } else {
                     manager.salonFrameManager(tabs, cfgAct);

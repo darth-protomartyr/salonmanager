@@ -77,8 +77,10 @@ public class Salon extends FrameFull {
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
     ArrayList<String> configSalon = new ArrayList<String>(); //Configuración de l salón
-    int anchoPane = (anchoFrame * 7 / 10);
-    int alturaPane = (alturaFrame * 7 / 10);
+//    int anchoPane = (anchoFrame * 7 / 10);
+//    int alturaPane = (alturaFrame * 7 / 10);
+    int anchoPane = anchoUnit * 72;
+    int alturaPane = altoUnit * 72;
     int totalTable = 0;
     int numBut = 1;
     int rowsButtons = 0;
@@ -93,7 +95,7 @@ public class Salon extends FrameFull {
     int f2 = (int) Math.round(anchoUnit * 2.3);
     Font font2 = new Font("Arial", Font.BOLD, f2);
     int f3 = (int) Math.round(anchoUnit * 1.6);
-    Font font3 = new Font("Arial", Font.BOLD, f2);
+    Font font3 = new Font("Arial", Font.BOLD, f3);
     JScrollPane scrPaneBarr = new JScrollPane();
     JPanel panelBarrBut = new JPanel();
     JPanel panelDeliBut = new JPanel();
@@ -222,7 +224,7 @@ public class Salon extends FrameFull {
 //PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
         panelA = new JPanel();
         panelA.setLayout(null);
-        panelA.setBounds(20, altoUnit * 18, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
+        panelA.setBounds(anchoUnit, altoUnit * 20, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
         panelA.setBackground(bluLg);
         JLabel labelLegal = utiliGraf.labelLegal(anchoPane + anchoUnit * 2, alturaPane + altoUnit * 7, 2, 13);
         panelA.add(labelLegal);
@@ -256,7 +258,7 @@ public class Salon extends FrameFull {
         JPanel panelLateral = new JPanel();
         panelLateral.setBackground(bluLg);
         panelLateral.setLayout(null);
-        panelLateral.setBounds((anchoFrame * 7 / 10) + anchoUnit * 5, altoUnit * 3, anchoFrame - (anchoPane + anchoUnit * 7), (alturaPane + altoUnit * 22));
+        panelLateral.setBounds(anchoPane + anchoUnit * 5, altoUnit * 3, anchoFrame - (anchoPane + anchoUnit * 7), (alturaPane + altoUnit * 22));
         panelPpal.add(panelLateral);
 
 //Panel Table-----------------------------------------------------------

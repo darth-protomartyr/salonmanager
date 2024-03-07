@@ -48,7 +48,7 @@ public class Manager extends FrameFull {
         cfgAct = daoC.askConfigActual();
         if (cfgAct.isOpenWs()) {
             actualWs = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-            actualWs.setWsCashier(daoU.getCashierByWorkshift(actualWs.getWsId()));
+            actualWs.setCashierWs(daoU.getCashierByWorkshift(actualWs.getId()));
         }
 
         user = userIn;

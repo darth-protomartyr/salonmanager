@@ -209,8 +209,8 @@ public class DAOTable extends DAO {
     
     public ArrayList<Table> listarTablesByWorkshift(Workshift ws) throws Exception {
         ArrayList<Table> tables = new ArrayList<Table>();
-        Timestamp open = ws.getWsOpen();
-        Timestamp close = ws.getWsClose();
+        Timestamp open = ws.getOpenWs();
+        Timestamp close = ws.getCloseWs();
         if (close == null) {
             close = new Timestamp(new Date().getTime());
         }
@@ -252,8 +252,8 @@ public class DAOTable extends DAO {
     
         public ArrayList<Table> listarTablesOpenByWorkshift(Workshift ws) throws Exception {
         ArrayList<Table> tables = new ArrayList<Table>();
-        Timestamp open = ws.getWsOpen();
-        Timestamp close = ws.getWsClose();
+        Timestamp open = ws.getOpenWs();
+        Timestamp close = ws.getCloseWs();
         if (close == null) {
             close = new Timestamp(new Date().getTime());
         }

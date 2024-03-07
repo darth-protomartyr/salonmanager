@@ -114,7 +114,7 @@ public class UtilidadesGraficasSalon {
         ConfigActual cfgAct = daoC.askConfigActual();
         if (cfgAct.isOpenWs()) {
             salon.setWorkshiftNow(daoW.askWorshiftById(cfgAct.getOpenIdWs()));
-            salon.getWorkshiftNow().setWsCashier(daoU.getCashierByWorkshift(salon.getWorkshiftNow().getWsId()));
+            salon.getWorkshiftNow().setCashierWs(daoU.getCashierByWorkshift(salon.getWorkshiftNow().getId()));
         }
 
         JPanel panelActual = new JPanel();
@@ -128,7 +128,7 @@ public class UtilidadesGraficasSalon {
 
         salon.setLabelWorkshift(utiliGraf.labelTitleBacker3(""));
         if (salon.getWorkshiftNow() != null) {
-            Timestamp timeInitWork = salon.getWorkshiftNow().getWsOpen();
+            Timestamp timeInitWork = salon.getWorkshiftNow().getOpenWs();
             salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate(timeInitWork));
         } else {
             salon.getLabelWorkshift().setText("Turno no iniciado.");
@@ -149,11 +149,11 @@ public class UtilidadesGraficasSalon {
                         if (confirm1 == true) {
                             salon.setWorkshiftNow(new Workshift(salon.getUser()));
                             daoW.saveWorkshift(salon.getWorkshiftNow());
-                            salon.getWorkshiftNow().setWsId(daoW.findLastWsID());
-                            salon.getWorkshiftNow().setWsCashier(salon.getUser());
+                            salon.getWorkshiftNow().setId(daoW.findLastWsID());
+                            salon.getWorkshiftNow().setCashierWs(salon.getUser());
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                             sm.workshiftBacker(salon.getWorkshiftNow());
-                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate(salon.getWorkshiftNow().getWsOpen()));
+                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate(salon.getWorkshiftNow().getOpenWs()));
                             salon.getButInitWorkshift().setText("CERRAR TURNO");
                             daoC.updateCfgActOpenWs(true);
                             int id = daoW.findLastWsID();
@@ -175,15 +175,14 @@ public class UtilidadesGraficasSalon {
 //PANEL BARRDELI.......................................................................................................
     public JPanel panelBarrDeliBacker(Salon salon) {
         JPanel panelBarrDeli = new JPanel();
-        panelBarrDeli.setBounds(anchoUnit * 52, altoUnit * 3, anchoUnit * 25, altoUnit * 14);
-        panelBarrDeli.setBackground(narLg);
+        panelBarrDeli.setBounds(anchoUnit * 55, altoUnit * 12, anchoUnit * 20, altoUnit * 8);
+        panelBarrDeli.setBackground(bluLg);
         panelBarrDeli.setLayout(null);
 
         salon.setButBarrDeli(new JButton());
-        salon.getButBarrDeli().setBackground(narUlg);
-        salon.getButBarrDeli().setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 23, altoUnit * 10);
+        salon.getButBarrDeli().setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 7);
         salon.getButBarrDeli().setBorder(null);
-        salon.getButBarrDeli().setFont(salon.getFont1());
+        salon.getButBarrDeli().setFont(salon.getFont2());
         salon.getButBarrDeli().setText("Barra - Delivery");
         salon.getButBarrDeli().addActionListener(new ActionListener() {
             @Override
@@ -198,7 +197,6 @@ public class UtilidadesGraficasSalon {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
         });
         panelBarrDeli.add(salon.getButBarrDeli());
         return panelBarrDeli;
@@ -208,16 +206,16 @@ public class UtilidadesGraficasSalon {
 //PANEL MONITOR........................................................................................................
     public JPanel panelMonitor(Salon salon) {
         JPanel panelMonitor = new JPanel();
-        panelMonitor.setBounds(anchoUnit * 29, altoUnit * 3, anchoUnit * 22, altoUnit * 14);
+        panelMonitor.setBounds(anchoUnit * 55, altoUnit * 2, anchoUnit * 20, altoUnit * 7);
         panelMonitor.setBackground(narLg);
         panelMonitor.setLayout(null);
 
         JButton butMonitor = new JButton();
-        butMonitor.setBackground(narUlg);
-        butMonitor.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 20, altoUnit * 10);
+//        butMonitor.setBackground(narUlg);
+        butMonitor.setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 5);
         butMonitor.setBorder(null);
-        butMonitor.setFont(salon.getFont1());
-        butMonitor.setText("Seguimiento");
+        butMonitor.setFont(salon.getFont3());
+        butMonitor.setText("Seguimiento Ordenes");
         butMonitor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

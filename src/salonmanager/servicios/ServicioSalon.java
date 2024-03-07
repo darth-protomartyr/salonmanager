@@ -91,7 +91,7 @@ public class ServicioSalon {
             if (ic.equals(itemsTableAux.get(i))) {
                 rep = i;
             }
-        };
+        }
         return rep;
     }
 
@@ -435,10 +435,10 @@ public class ServicioSalon {
                     mountElectronic += tab.getAmountElectronic();
                 }
             }
-            actualWs.setWsTotalMount(mount);
-            actualWs.setWsErrorMount(mountError);
-            actualWs.setWsTotalMountCash(mountCash);
-            actualWs.setWsTotalMountElectronic(mountElectronic);
+            actualWs.setTotalMountWs(mount);
+            actualWs.setErrorMountWs(mountError);
+            actualWs.setTotalMountCashWs(mountCash);
+            actualWs.setTotalMountElectronicWs(mountElectronic);
             new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
             salon.setEnabled(false);
         }
@@ -454,16 +454,16 @@ public class ServicioSalon {
         actualWs = setWsEnd(ws);
         actualTabs = st.workshiftTableslistComplete(actualWs, 1);
         Thread.sleep(100);
-        newWs.setWsCashier(null);
-        newWs.setWsOpen(new Timestamp(new Date().getTime()));
-        newWs.setWsClose(null);
-        newWs.setWsState(true);
-        newWs.setWsTotalMountCash(0);
-        newWs.setWsTotalMountElectronic(0);
-        newWs.setWsTotalMount(0);
-        newWs.setWsTotalMountReal(0);
-        newWs.setWsErrorMount(0);
-        newWs.setWsErrorMountReal(0);
+        newWs.setCashierWs(null);
+        newWs.setOpenWs(new Timestamp(new Date().getTime()));
+        newWs.setCloseWs(null);
+        newWs.setStateWs(true);
+        newWs.setTotalMountCashWs(0);
+        newWs.setTotalMountElectronicWs(0);
+        newWs.setTotalMountWs(0);
+        newWs.setTotalMountRealWs(0);
+        newWs.setErrorMountWs(0);
+        newWs.setErrorMountRealWs(0);
         for (int i = 0; i < actualTabs.size(); i++) {
             Table tab = actualTabs.get(i);
             if (tab.isOpen() == true) {
@@ -515,17 +515,17 @@ public class ServicioSalon {
         }
         Thread.sleep(100);
         Timestamp close = new Timestamp(new Date().getTime());
-        newWs.setWsClose(close);
-        newWs.setWsClose(null);
+        newWs.setCloseWs(close);
+        newWs.setCloseWs(null);
         closeWorkshift(sal, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
     }
 
     private Workshift setWsEnd(Workshift ws) throws Exception {
         Workshift newWs = ws;
-        int id = daoW.findId(newWs.getWsOpen());
-        newWs.setWsId(id);
-        newWs.setWsClose(new Timestamp(new Date().getTime()));
-        newWs.setWsState(false);
+        int id = daoW.findId(newWs.getOpenWs());
+        newWs.setId(id);
+        newWs.setCloseWs(new Timestamp(new Date().getTime()));
+        newWs.setStateWs(false);
         return newWs;
     }
 }
