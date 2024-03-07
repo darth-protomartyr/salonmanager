@@ -3,11 +3,11 @@ package salonmanager;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import salonmanager.entidades.graphics.FrameThird;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.servicios.ServicioItemcard;
@@ -85,7 +85,7 @@ public class ItemcardConsulta extends FrameThird {
         labelTipItem.setBounds(10, 430, 345, 40);
         panelB.add(labelTipItem);
 
-        JButton butSalir = utiliGraf.buttonSalir(400);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(400);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

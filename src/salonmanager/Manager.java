@@ -7,12 +7,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
@@ -89,7 +89,7 @@ public class Manager extends FrameFull {
         panelWorkshift.setBounds(anchoUnit * 54, altoUnit * 21, anchoUnit * 50, altoUnit * 65);
         panelPpal.add(panelWorkshift);
 
-        JButton butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

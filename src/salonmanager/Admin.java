@@ -7,9 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JButton;
 import salonmanager.SalonManager;
 import salonmanager.entidades.graphics.FrameFull;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -33,7 +33,7 @@ public class Admin extends FrameFull {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
-        JButton butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

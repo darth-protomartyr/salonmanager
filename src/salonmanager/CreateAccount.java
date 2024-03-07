@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 
 public class CreateAccount extends FrameHalf {
@@ -45,14 +45,14 @@ public class CreateAccount extends FrameHalf {
     File selectedFile = null;
 
     JLabel labelImage = new JLabel("Imagen: Ninguna");
-    JButton butSelImage = new JButton();
+    JButtonMetalBlu butSelImage = new JButtonMetalBlu();
     JTextField fieldName = new JTextField();
     JTextField fieldLastName = new JTextField();
     JTextField fieldMail = new JTextField();
     JTextField fieldPhone = new JTextField();
     JPasswordField fieldPass1 = new JPasswordField();
     JPasswordField fieldPass2 = new JPasswordField();
-    JButton butCreateUser;
+    JButtonMetalBlu butCreateUser;
     JFrame frame = null;
 
     public CreateAccount() throws Exception {
@@ -141,7 +141,7 @@ public class CreateAccount extends FrameHalf {
         });
         panelPpal.add(butCreateUser);
 
-        JButton butSalir = utiliGraf.buttonSalir(anchoFrame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

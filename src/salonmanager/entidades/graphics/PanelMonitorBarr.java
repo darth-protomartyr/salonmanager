@@ -232,7 +232,7 @@ public class PanelMonitorBarr extends JPanel {
             labelWaiter.setText("Delivery: " + im.getTableIMon().getWaiter().getName() + " " + utili.strShorter(im.getTableIMon().getWaiter().getLastName(), 1) + ".");
         }
 
-        JButton butIndi = utiliGraf.button3("Indicaciones", 480, 13, 85);
+        JButtonMetalBlu butIndi = utiliGraf.button3("Indicaciones", 480, 13, 85);
         butIndi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

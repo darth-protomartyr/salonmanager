@@ -17,7 +17,6 @@ import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
@@ -219,7 +219,7 @@ public class ErrorTableCount extends FrameWindow {
         scrollPane.setBounds(70, 160, 250, 55);
         panelPpal.add(scrollPane);
 
-        JButton butErrorMount = utiliGraf.button2("Confirmar Error", 90, 185, 160);
+        JButtonMetalBlu butErrorMount = utiliGraf.button2("Confirmar Error", 90, 185, 160);
         butErrorMount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

@@ -1,6 +1,7 @@
 package salonmanager;
 
 import salonmanager.entidades.graphics.FrameWindow;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.servicios.ServicioUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -12,7 +13,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -38,7 +38,7 @@ public class ItemSelector extends FrameWindow {
     Itemcard itemAux = null;
     JLabel labelIngreso = null;
     JList listItem = new JList();
-    JButton butSelItem = new JButton();
+    JButtonMetalBlu butSelItem = new JButtonMetalBlu();
     String sel = "";
 
     public ItemSelector(String s) throws Exception {

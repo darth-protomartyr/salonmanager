@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +17,7 @@ import salonmanager.entidades.bussiness.DeliveryConsumer;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.graphics.FrameHalf;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAODeliveryConsumer;
@@ -75,12 +75,12 @@ public class DeliveryTemplate extends FrameHalf {
     ArrayList<String> consumers = new ArrayList<String>();
     ArrayList<User> deliverys = new ArrayList<User>();
 
-    JButton butOpConsumer = null;
-    JButton butOpDeliUser = null;
-    JButton butUpdateConsumer = null;
-    JButton butUpdateDeliUser = null;
+    JButtonMetalBlu butOpConsumer = null;
+    JButtonMetalBlu butOpDeliUser = null;
+    JButtonMetalBlu butUpdateConsumer = null;
+    JButtonMetalBlu butUpdateDeliUser = null;
 
-    JButton butOpDelivery = null;
+    JButtonMetalBlu butOpDelivery = null;
 
     DeliveryConsumer cmrAux = null;
     User deliAux = null;

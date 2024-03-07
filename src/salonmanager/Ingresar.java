@@ -1,6 +1,7 @@
 package salonmanager;
 
 import salonmanager.entidades.graphics.FrameWindow;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.servicios.ServicioUser;
@@ -14,7 +15,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,7 +39,7 @@ public class Ingresar extends FrameWindow {
     String pass = "";
     User userAux = new User();
 
-    JButton butInUser = new JButton();
+    JButtonMetalBlu butInUser = new JButtonMetalBlu();
     JTextField fieldMail = new JTextField();
     JPasswordField fieldPass = new JPasswordField();
     JFrame landing = null;

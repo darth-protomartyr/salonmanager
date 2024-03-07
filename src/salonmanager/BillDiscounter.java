@@ -12,11 +12,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;                                                                                                                                                                                                                                                                                                                                                                            
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
@@ -41,7 +41,7 @@ public class BillDiscounter extends FrameWindow {
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     
-    JButton butInGift = new JButton();
+    JButtonMetalBlu butInGift = new JButtonMetalBlu();
     JSpinner spinnerDiscount = null;
     Salon salon = null;
     

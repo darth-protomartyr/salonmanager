@@ -41,10 +41,10 @@ public class ContainerAlpha {
     JLabel labelPartialPay;
     JLabel labelOrder;
     JLabel labelWaiter;
-    JButton butCloseTable;
+    JButtonMetalBlu butCloseTable;
     JButtonTable jbtAux;
 
-    public ContainerAlpha(ArrayList<Itemcard> itemsTableAux, ArrayList<Itemcard> itemsGift, ArrayList<Itemcard> itemsPartialPaid, ArrayList<Itemcard> itemsPartialPaidNoDiscount, User waiterAux, Table tableAux, double total, double error, double discount, double priceCorrection, JCheckBox checkBoxIndic, JSpinner spinnerUnitsItem, JComboBox comboItems, JLabel labelTotalParcial, JLabel labelCuenta, JLabel labelTip, JLabel labelTotal, JLabel labelPartialPay, JLabel labelOrder, JLabel labelWaiter, JButton butCloseTable, JButtonTable jbtAux) {
+    public ContainerAlpha(ArrayList<Itemcard> itemsTableAux, ArrayList<Itemcard> itemsGift, ArrayList<Itemcard> itemsPartialPaid, ArrayList<Itemcard> itemsPartialPaidNoDiscount, User waiterAux, Table tableAux, double total, double error, double discount, double priceCorrection, JCheckBox checkBoxIndic, JSpinner spinnerUnitsItem, JComboBox comboItems, JLabel labelTotalParcial, JLabel labelCuenta, JLabel labelTip, JLabel labelTotal, JLabel labelPartialPay, JLabel labelOrder, JLabel labelWaiter, JButtonMetalBlu butCloseTable, JButtonTable jbtAux) {
         this.itemsTableAux = itemsTableAux;
         this.itemsGift = itemsGift;
         this.itemsPartialPaid = itemsPartialPaid;
@@ -149,7 +149,7 @@ public class ContainerAlpha {
         return labelWaiter;
     }
 
-    public JButton getButCloseTable() {
+    public JButtonMetalBlu getButCloseTable() {
         return butCloseTable;
     }
 

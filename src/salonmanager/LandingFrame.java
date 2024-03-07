@@ -13,11 +13,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import salonmanager.entidades.graphics.FrameGeneral;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 
 public class LandingFrame extends FrameGeneral {
 
@@ -49,7 +49,7 @@ public class LandingFrame extends FrameGeneral {
         labelTitleProgram.setBounds(230, 50, anchoFrame - 160, 100);
         panelTitle.add(labelTitleProgram);
 
-        JButton butSign = utiliGraf.button1("Sign In", anchoFrame - 140, 20, 100);
+        JButtonMetalBlu butSign = utiliGraf.button1("Sign In", anchoFrame - 140, 20, 100);
         butSign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -61,7 +61,7 @@ public class LandingFrame extends FrameGeneral {
         });
         panelPpal.add(butSign);
 
-        JButton butLog = utiliGraf.button1("Login", anchoFrame - 140, 80, 100);
+        JButtonMetalBlu butLog = utiliGraf.button1("Login", anchoFrame - 140, 80, 100);
         butLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -73,7 +73,7 @@ public class LandingFrame extends FrameGeneral {
         });
         panelPpal.add(butLog);
 
-        JButton butSalir = utiliGraf.buttonSalir(anchoFrame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
@@ -48,7 +48,7 @@ public class WaiterSelector extends FrameWindow {
 
     Table tableAux = new Table();
     JComboBox comboWaiters = new JComboBox();
-    JButton butInWaiter = new JButton();
+    JButtonMetalBlu butInWaiter = new JButtonMetalBlu();
     Salon salon = null;
     ArrayList<User> waiters = null;
     User waiterAux = null;
@@ -83,7 +83,7 @@ public class WaiterSelector extends FrameWindow {
         renderer.setFont(new Font("Arial", Font.PLAIN, 50));
         comboWaiters.setRenderer(renderer);
         panelPpal.add(comboWaiters);
-        JButton butSelWaiter = utiliGraf.button1("Elija mozo", 90, 180, 200);
+        JButtonMetalBlu butSelWaiter = utiliGraf.button1("Elija mozo", 90, 180, 200);
         butSelWaiter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

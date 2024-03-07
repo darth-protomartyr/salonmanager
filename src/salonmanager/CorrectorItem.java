@@ -12,11 +12,11 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
@@ -46,7 +46,7 @@ public class CorrectorItem extends FrameWindow {
     JLabel labelComboItems = new JLabel();
     JComboBox comboItems = new JComboBox();
     Table tab = new Table();
-    JButton butInGift = new JButton();
+    JButtonMetalBlu butInGift = new JButtonMetalBlu();
     Salon salon = null;
     ArrayList<Itemcard> itemsOrder = new ArrayList<Itemcard>();
     ArrayList<Itemcard> itemsGift = new ArrayList<Itemcard>();
@@ -79,7 +79,7 @@ public class CorrectorItem extends FrameWindow {
         itemsPayedNoDiscount = tab.getPartialPayedND();
         itemsCombo = new ArrayList<Itemcard>();
 
-        JButton butItemsOrder = utiliGraf.button3("Items A Pagar", 30, 75, 150);
+        JButtonMetalBlu butItemsOrder = utiliGraf.button3("Items A Pagar", 30, 75, 150);
         butItemsOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -93,7 +93,7 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsOrder);
 
-        JButton butItemsGift = utiliGraf.button3("Items Obsequiados", 30, 105, 150);
+        JButtonMetalBlu butItemsGift = utiliGraf.button3("Items Obsequiados", 30, 105, 150);
         butItemsGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -107,7 +107,7 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsGift);
 
-        JButton butItemsPayed = utiliGraf.button3("Items pagados", 30, 135, 150);
+        JButtonMetalBlu butItemsPayed = utiliGraf.button3("Items pagados", 30, 135, 150);
         butItemsPayed.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

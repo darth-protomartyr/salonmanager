@@ -30,6 +30,7 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonTable;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
@@ -137,7 +138,7 @@ public class Salon extends FrameFull {
     ScheduledExecutorService scheduler = null;
     boolean loopBreaker = false;
 
-    JButton butBarrDeli = null;
+    JButtonMetalBlu butBarrDeli = null;
     JPanel panelBDButtons = new JPanel();
     JPanel panelA = new JPanel();
 
@@ -164,7 +165,7 @@ public class Salon extends FrameFull {
     JSpinner spinnerUnitsItem = new JSpinner();
     JScrollPane scrollPaneItems = new JScrollPane();
     JTable jTableItems = new JTable();
-    JButton butCloseTable = new JButton();
+    JButtonMetalBlu butCloseTable = new JButtonMetalBlu();
     JPanel panelCount = new JPanel();
     JPanel panelFlotante = new JPanel();
     JLabel labelTotalParcial = new JLabel();
@@ -174,8 +175,8 @@ public class Salon extends FrameFull {
     JLabel labelTip = new JLabel();
     JLabel labelTotal = new JLabel();
     JLabel labelPartialPay = new JLabel();
-    JButton butInitWorkshift = new JButton();
-    JButton butPartialPay = new JButton();
+    JButtonMetalBlu butInitWorkshift = new JButtonMetalBlu();
+    JButtonMetalBlu butPartialPay = new JButtonMetalBlu();
     JPanel panelPartial = new JPanel();
 
     Salon sal = null;
@@ -275,7 +276,7 @@ public class Salon extends FrameFull {
         utiliGrafSal.tableCarrector(sal);
 
 //Boton Obsequio--------------------------------------------------------
-        JButton butGift = utiliGraf.button2("Obsequio", altoUnit, altoUnit * 59, anchoUnit * 11);
+        JButtonMetalBlu butGift = utiliGraf.button2("Obsequio", altoUnit, altoUnit * 59, anchoUnit * 11);
         butGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -289,7 +290,7 @@ public class Salon extends FrameFull {
         panelTable.add(butGift);
 
 //Boton Descuento-------------------------------------------------------
-        JButton butDiscount = utiliGraf.button2("Descuento", altoUnit * 2 + anchoUnit * 11, altoUnit * 59, anchoUnit * 10);
+        JButtonMetalBlu butDiscount = utiliGraf.button2("Descuento", altoUnit * 2 + anchoUnit * 11, altoUnit * 59, anchoUnit * 10);
         butDiscount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -321,7 +322,7 @@ public class Salon extends FrameFull {
         });
 
 //Boton Error
-        JButton butErrorTable = utiliGraf.button1("ERROR", altoUnit + anchoUnit * 14, altoUnit * 70, anchoUnit * 7 + altoUnit);
+        JButtonMetalBlu butErrorTable = utiliGraf.button1("ERROR", altoUnit + anchoUnit * 14, altoUnit * 70, anchoUnit * 7 + altoUnit);
         butErrorTable.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -766,11 +767,11 @@ public class Salon extends FrameFull {
         this.loopBreaker = loopBreaker;
     }
 
-    public JButton getButBarrDeli() {
+    public JButtonMetalBlu getButBarrDeli() {
         return butBarrDeli;
     }
 
-    public void setButBarrDeli(JButton butBarrDeli) {
+    public void setButBarrDeli(JButtonMetalBlu butBarrDeli) {
         this.butBarrDeli = butBarrDeli;
     }
 
@@ -934,11 +935,11 @@ public class Salon extends FrameFull {
         this.jTableItems = jTableItems;
     }
 
-    public JButton getButCloseTable() {
+    public JButtonMetalBlu getButCloseTable() {
         return butCloseTable;
     }
 
-    public void setButCloseTable(JButton butCloseTable) {
+    public void setButCloseTable(JButtonMetalBlu butCloseTable) {
         this.butCloseTable = butCloseTable;
     }
 
@@ -1014,19 +1015,19 @@ public class Salon extends FrameFull {
         this.labelPartialPay = labelPartialPay;
     }
 
-    public JButton getButInitWorkshift() {
+    public JButtonMetalBlu getButInitWorkshift() {
         return butInitWorkshift;
     }
 
-    public void setButInitWorkshift(JButton butInitWorkshift) {
+    public void setButInitWorkshift(JButtonMetalBlu butInitWorkshift) {
         this.butInitWorkshift = butInitWorkshift;
     }
 
-    public JButton getButPartialPay() {
+    public JButtonMetalBlu getButPartialPay() {
         return butPartialPay;
     }
 
-    public void setButPartialPay(JButton butPartialPay) {
+    public void setButPartialPay(JButtonMetalBlu butPartialPay) {
         this.butPartialPay = butPartialPay;
     }
 

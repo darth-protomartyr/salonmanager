@@ -10,7 +10,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,6 +17,7 @@ import javax.swing.JSpinner;
 import javax.swing.ScrollPaneConstants;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.bussiness.ItemMonitor;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelMonitorBarr;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
@@ -57,7 +57,7 @@ public class Monitor extends FrameHalf {
 
     User user = null;
 
-    JButton butInGift = new JButton();
+    JButtonMetalBlu butInGift = new JButtonMetalBlu();
     JSpinner spinnerDiscount = null;
 
     JPanel panelHeader = new JPanel(null);
@@ -86,7 +86,7 @@ public class Monitor extends FrameHalf {
         labelTit.setBounds(10, 20, 400, 30);
         panelPpal.add(labelTit);
 
-        JButton butMonitTabs = utiliGraf.button2("Órdenes de Mesa", anchoUnit * 2, altoUnit * 8, anchoUnit * 15);
+        JButtonMetalBlu butMonitTabs = utiliGraf.button2("Órdenes de Mesa", anchoUnit * 2, altoUnit * 8, anchoUnit * 15);
         butMonitTabs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -99,7 +99,7 @@ public class Monitor extends FrameHalf {
         });
         panelPpal.add(butMonitTabs);
 
-        JButton butMonitBarrs = utiliGraf.button2("Órdenes de Barra", anchoUnit * 19, altoUnit * 8, anchoUnit * 14);
+        JButtonMetalBlu butMonitBarrs = utiliGraf.button2("Órdenes de Barra", anchoUnit * 19, altoUnit * 8, anchoUnit * 14);
         butMonitBarrs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -112,7 +112,7 @@ public class Monitor extends FrameHalf {
         });
         panelPpal.add(butMonitBarrs);
 
-        JButton butMonitDelis = utiliGraf.button2("Órdenes de Delivery", anchoUnit * 35, altoUnit * 8, anchoUnit * 15);
+        JButtonMetalBlu butMonitDelis = utiliGraf.button2("Órdenes de Delivery", anchoUnit * 35, altoUnit * 8, anchoUnit * 15);
         butMonitDelis.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

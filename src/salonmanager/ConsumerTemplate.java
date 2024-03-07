@@ -9,7 +9,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import salonmanager.entidades.bussiness.DeliveryConsumer;
 import salonmanager.entidades.graphics.FrameHalf;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAODeliveryConsumer;
@@ -71,7 +71,7 @@ public class ConsumerTemplate extends FrameHalf {
     JTextField fieldPhone = new JTextField();
     JTextField fieldSN = new JTextField();
 
-    JButton butCreateConsumer = null;
+    JButtonMetalBlu butCreateConsumer = null;
     DeliveryConsumer cmrFull = null;
 
     public ConsumerTemplate(DeliveryTemplate f, DeliveryConsumer cmr) throws Exception {
@@ -211,7 +211,7 @@ public class ConsumerTemplate extends FrameHalf {
             fieldSN.setText(cmrFull.getSocialNetwork());
         }
 
-        JButton butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

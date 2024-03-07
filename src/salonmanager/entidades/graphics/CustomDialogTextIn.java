@@ -85,7 +85,7 @@ public class CustomDialogTextIn extends JDialog {
         scrollPane.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 21, altoUnit * 15);
         panelText.add(scrollPane);
 
-        JButton butInText = utiliGraf.button2("Ingresar", anchoUnit * 10, altoUnit * 28, anchoUnit * 10);
+        JButtonMetalBlu butInText = utiliGraf.button2("Ingresar", anchoUnit * 10, altoUnit * 28, anchoUnit * 10);
         butInText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

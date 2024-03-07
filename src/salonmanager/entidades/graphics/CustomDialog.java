@@ -78,7 +78,7 @@ public class CustomDialog extends JDialog {
         constraints.weighty = 1.0;
         panelText.add(labelText, constraints);
 
-        JButton closeButton = utiliGraf.button2("Cerrar", anchoUnit * 10, altoUnit * 28, anchoUnit * 10);
+        JButtonMetalBlu closeButton = utiliGraf.button2("Cerrar", anchoUnit * 10, altoUnit * 28, anchoUnit * 10);
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

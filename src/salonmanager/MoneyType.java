@@ -16,7 +16,6 @@ import static java.lang.Double.parseDouble;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,6 +25,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
@@ -67,11 +67,11 @@ public class MoneyType extends FrameWindow {
     JLabel labelChange = new JLabel();
     JTextField fieldAmountCash = new JTextField();
     JTextArea textArea = new JTextArea();
-    JButton butInPartialCash = new JButton();
-    JButton butCashIn = new JButton();
-    JButton butElectronicIn = new JButton();
-    JButton butMixedIn = new JButton();
-    JButton butBack = new JButton();
+    JButtonMetalBlu butInPartialCash = new JButtonMetalBlu();
+    JButtonMetalBlu butCashIn = new JButtonMetalBlu();
+    JButtonMetalBlu butElectronicIn = new JButtonMetalBlu();
+    JButtonMetalBlu butMixedIn = new JButtonMetalBlu();
+    JButtonMetalBlu butBack = new JButtonMetalBlu();
 
     public MoneyType(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed1, double amountToPay) {
         salon = sal;

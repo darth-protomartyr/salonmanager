@@ -13,7 +13,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
@@ -49,7 +49,7 @@ public class GiftSelector extends FrameWindow {
     JComboBox comboItems = new JComboBox();
     JTextArea textAreaGifts = new JTextArea();
     Table tab = new Table();
-    JButton butInGift = new JButton();
+    JButtonMetalBlu butInGift = new JButtonMetalBlu();
     Salon salon = null;
     ArrayList<Itemcard> aIC = null;
 

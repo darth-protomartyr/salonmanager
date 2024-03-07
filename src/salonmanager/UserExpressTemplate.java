@@ -8,11 +8,11 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOUser;
@@ -57,7 +57,7 @@ public class UserExpressTemplate extends FrameHalf {
     JTextField fieldMail = new JTextField();
     JTextField fieldRol = new JTextField();
 
-    JButton butCreateUserExpress = null;
+    JButtonMetalBlu butCreateUserExpress = null;
 
     public UserExpressTemplate(DeliveryTemplate f, String r, User u) throws Exception {
         rol = r;
@@ -150,7 +150,7 @@ public class UserExpressTemplate extends FrameHalf {
         }
         panelPpal.add(butCreateUserExpress);
 
-        JButton butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

@@ -87,7 +87,7 @@ public class CustomDialogConfirm extends JDialog {
         constraints.weighty = 1.0;
         panelText.add(labelText, constraints);
 
-        JButton rejectButton = utiliGraf.button2("Rechazar", anchoUnit * 3, altoUnit * 28, anchoUnit * 10);
+        JButtonMetalBlu rejectButton = utiliGraf.button2("Rechazar", anchoUnit * 3, altoUnit * 28, anchoUnit * 10);
         rejectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -103,7 +103,7 @@ public class CustomDialogConfirm extends JDialog {
         contentPane.add(rejectButton);
         
         
-        JButton acceptButton = utiliGraf.button2("Aceptar", anchoUnit * 16, altoUnit * 28, anchoUnit * 10);
+        JButtonMetalBlu acceptButton = utiliGraf.button2("Aceptar", anchoUnit * 16, altoUnit * 28, anchoUnit * 10);
         acceptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

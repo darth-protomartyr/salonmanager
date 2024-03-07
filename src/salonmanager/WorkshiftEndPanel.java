@@ -17,12 +17,12 @@ import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
@@ -216,7 +216,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         fieldFinalAmount.setBounds(100, 35, 150, 30);
         fieldFinalAmount.setFont(new Font("Arial", Font.PLAIN, 20));
         panelRealAmount.add(fieldFinalAmount);
-        JButton buttonConfirm = utiliGraf.button2("Confirmar", 270, 35, 120);
+        JButtonMetalBlu buttonConfirm = utiliGraf.button2("Confirmar", 270, 35, 120);
         buttonConfirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -229,7 +229,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         });
         panelRealAmount.add(buttonConfirm);
         
-        JButton buttonDeferWsClose = utiliGraf.button2("Arbritrar", 330, 35, 120);
+        JButtonMetalBlu buttonDeferWsClose = utiliGraf.button2("Arbritrar", 330, 35, 120);
         buttonDeferWsClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -262,7 +262,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         renderer.setFont(new Font("Arial", Font.PLAIN, 50));
         comboTabs.setRenderer(renderer);
         panelTabs.add(comboTabs);
-        JButton butSelTab = utiliGraf.button3("Elija mesa", 280, 50, 150);
+        JButtonMetalBlu butSelTab = utiliGraf.button3("Elija mesa", 280, 50, 150);
         butSelTab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
@@ -63,7 +63,7 @@ public class PartialPayer extends FrameWindow {
     JLabel labelPrice = new JLabel();
     JLabel labelRest = new JLabel();
     JLabel labelTip = new JLabel();
-    JButton butPartialIn = new JButton();
+    JButtonMetalBlu butPartialIn = new JButtonMetalBlu();
 
     public PartialPayer(Salon sal) {
         salon = sal;

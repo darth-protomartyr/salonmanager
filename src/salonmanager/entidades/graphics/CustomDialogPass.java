@@ -90,7 +90,7 @@ public class CustomDialogPass extends JDialog {
         fieldPass.setFont(new Font("Arial", Font.PLAIN, 20));
         contentPane.add(fieldPass);
         
-        JButton acceptButton = utiliGraf.button2("Aceptar", anchoUnit * 9, altoUnit * 28, anchoUnit * 10);
+        JButtonMetalBlu acceptButton = utiliGraf.button2("Aceptar", anchoUnit * 9, altoUnit * 28, anchoUnit * 10);
         acceptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

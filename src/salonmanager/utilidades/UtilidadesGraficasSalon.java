@@ -24,7 +24,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -55,6 +54,7 @@ import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonDeliverySee;
 import salonmanager.entidades.graphics.JButtonTable;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
@@ -179,7 +179,7 @@ public class UtilidadesGraficasSalon {
         panelBarrDeli.setBackground(bluLg);
         panelBarrDeli.setLayout(null);
 
-        salon.setButBarrDeli(new JButton());
+        salon.setButBarrDeli(new JButtonMetalBlu());
         salon.getButBarrDeli().setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 7);
         salon.getButBarrDeli().setBorder(null);
         salon.getButBarrDeli().setFont(salon.getFont2());
@@ -210,7 +210,7 @@ public class UtilidadesGraficasSalon {
         panelMonitor.setBackground(narLg);
         panelMonitor.setLayout(null);
 
-        JButton butMonitor = new JButton();
+        JButtonMetalBlu butMonitor = new JButtonMetalBlu();
 //        butMonitor.setBackground(narUlg);
         butMonitor.setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 5);
         butMonitor.setBorder(null);
@@ -395,7 +395,7 @@ public class UtilidadesGraficasSalon {
         labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
         panelBarr.add(labelBP);
 
-        JButton butCreateBarr = utiliGraf.button1("Crear pedido Barra", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
+        JButtonMetalBlu butCreateBarr = utiliGraf.button1("Crear pedido Barra", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
         butCreateBarr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -565,7 +565,7 @@ public class UtilidadesGraficasSalon {
         labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
         panelDeli.add(labelDP);
 
-        JButton butCreateDeli = utiliGraf.button1("Crear pedido delivery", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
+        JButtonMetalBlu butCreateDeli = utiliGraf.button1("Crear pedido delivery", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
         butCreateDeli.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -904,7 +904,7 @@ public class UtilidadesGraficasSalon {
         panelSelItem.setBounds(6, altoUnit * 12, anchoFrame - (salon.getAnchoPane() + anchoUnit * 10), altoUnit * 16);
         panelSelItem.setBackground(bluLg);
 
-        JButton butCaptionBebidas = utiliGraf.button3("Bebidas", 5, 5, 55);
+        JButtonMetalBlu butCaptionBebidas = utiliGraf.button3("Bebidas", 5, 5, 55);
         butCaptionBebidas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -917,7 +917,7 @@ public class UtilidadesGraficasSalon {
         });
         panelSelItem.add(butCaptionBebidas);
 
-        JButton butCaptionPlatos = utiliGraf.button3("Platos", 65, 5, 55);
+        JButtonMetalBlu butCaptionPlatos = utiliGraf.button3("Platos", 65, 5, 55);
         butCaptionPlatos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -930,7 +930,7 @@ public class UtilidadesGraficasSalon {
         });
         panelSelItem.add(butCaptionPlatos);
 
-        JButton butCaptionCafeteria = utiliGraf.button3("Cafetería", 125, 5, 80);
+        JButtonMetalBlu butCaptionCafeteria = utiliGraf.button3("Cafetería", 125, 5, 80);
         butCaptionCafeteria.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -943,7 +943,7 @@ public class UtilidadesGraficasSalon {
         });
         panelSelItem.add(butCaptionCafeteria);
 
-        JButton butCaptionOtros = utiliGraf.button3("Otros", 210, 5, 65);
+        JButtonMetalBlu butCaptionOtros = utiliGraf.button3("Otros", 210, 5, 65);
         butCaptionOtros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -968,7 +968,7 @@ public class UtilidadesGraficasSalon {
         panelSelItem.add(salon.getSpinnerUnitsItem());
 
         //Boton Ingreso Item
-        JButton butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 10);
+        JButtonMetalBlu butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 10);
         butSelItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
