@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -38,13 +37,13 @@ import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
 import salonmanager.Manager;
 import salonmanager.Admin;
-import salonmanager.Salon;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -401,8 +400,8 @@ public class UtilidadesGraficas extends JFrame {
         return title;
     }
 
-    public JButton button1(String text, int mWidth, int mHeight, int width) {
-        JButton bot = new JButton();
+    public JButtonMetalBlu button1(String text, int mWidth, int mHeight, int width) {
+        JButtonMetalBlu bot = new JButtonMetalBlu();
         text = text.toUpperCase();
         Font font = new Font("Arial", Font.BOLD, 16); // Crear una nueva fuente
         bot.setFont(font); // Establecer la fuente en el botón
@@ -413,8 +412,8 @@ public class UtilidadesGraficas extends JFrame {
         return bot;
     }
 
-    public JButton button2(String text, int mWidth, int mHeight, int width) {
-        JButton bot = new JButton();
+    public JButtonMetalBlu button2(String text, int mWidth, int mHeight, int width) {
+        JButtonMetalBlu bot = new JButtonMetalBlu();
         text = text.toUpperCase();
         Font font = new Font("Arial", Font.BOLD, 14); // Crear una nueva fuente
         bot.setFont(font); // Establecer la fuente en el botón
@@ -424,8 +423,8 @@ public class UtilidadesGraficas extends JFrame {
         return bot;
     }
 
-    public JButton button3(String text, int mWidth, int mHeight, int width) {
-        JButton bot = new JButton();
+    public JButtonMetalBlu button3(String text, int mWidth, int mHeight, int width) {
+        JButtonMetalBlu bot = new JButtonMetalBlu();
         text = text.toUpperCase();
         Font font = new Font("Arial", Font.BOLD, 11); // Crear una nueva fuente
         bot.setFont(font); // Establecer la fuente en el botón
@@ -435,20 +434,20 @@ public class UtilidadesGraficas extends JFrame {
         return bot;
     }
 
-    public JButton buttonSalir(int width) {
-        JButton butSalir = new JButton();
+    public JButtonMetalBlu buttonSalir(int width) {
+        JButtonMetalBlu butSalir = new JButtonMetalBlu();
         butSalir = button2("salir", width - 90, 691 - 45, 70);
         return butSalir;
     }
 
-    public JButton buttonSalir2(int width, int height) {
-        JButton butSalir = new JButton();
+    public JButtonMetalBlu buttonSalir2(int width, int height) {
+        JButtonMetalBlu butSalir = new JButtonMetalBlu();
         butSalir = button2("salir", width - 90, height, 70);
         return butSalir;
     }
 
-    public JButton buttonModify() {
-        JButton butSalir = new JButton();
+    public JButtonMetalBlu buttonModify() {
+        JButtonMetalBlu butSalir = new JButtonMetalBlu();
         butSalir = button1("modificar", 140, 691 - 75, 120);
         return butSalir;
     }
