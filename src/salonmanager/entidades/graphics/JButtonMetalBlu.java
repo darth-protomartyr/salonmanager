@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package salonmanager.entidades.graphics;
 
 import java.awt.Color;
@@ -21,8 +17,8 @@ import javax.swing.plaf.metal.MetalButtonUI;
  * @author Gonzalo
  */
 public class JButtonMetalBlu extends JButton{
-    Color bluSSt = new Color(1, 54, 62);
-    public JButtonMetalBlu () {
+    Color bluSSt = new Color(4, 97, 80);
+    public JButtonMetalBlu() {
         setUI(new MetalButtonUI() {
             protected Color getDisabledTextColor() {
                 return Color.WHITE; // Cambia el color del texto cuando el botón está deshabilitado
@@ -40,16 +36,16 @@ public class JButtonMetalBlu extends JButton{
                 ButtonModel model = button.getModel();
 
                 if (model.isArmed()) {
-                    g2.setColor(new Color(4, 225, 179)); // Color cuando se presiona el botón
+                    g2.setColor(new Color(4, 77, 60)); // Color cuando se presiona el botón
                 } else if (model.isRollover()) {
-                    g2.setColor(new Color(7, 255, 239)); // Color cuando el ratón pasa por encima del botón
+                    g2.setColor(new Color(4, 127, 110)); // Color cuando el ratón pasa por encima del botón
                 } else {
-                    g2.setColor(new Color(5, 255, 209)); // Color normal del botón
+                    g2.setColor(new Color(4, 107, 90)); // Color normal del botón
                 }
 
                 g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 10, 10); // Dibuja el botón redondeado
 
-//                g2.setColor(Color.WHITE);
+                g2.setColor(Color.WHITE);
 //                g2.drawRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 10, 10); // Dibuja el borde del botón
 
                 FontMetrics fm = g2.getFontMetrics();
@@ -57,14 +53,15 @@ public class JButtonMetalBlu extends JButton{
                 int textX = (c.getWidth() - textRect.width) / 2;
                 int textY = (c.getHeight() - textRect.height) / 2 + fm.getMaxAscent();
 
-                g2.setColor(bluSSt);
+                g2.setColor(Color.WHITE);
                 g2.drawString(button.getText(), textX, textY); // Dibuja el texto centrado en el botón
 
                 g2.dispose();
             }
         });
         setContentAreaFilled(false); // Hace que el área interior del botón sea transparente
-        setForeground(Color.WHITE); // Cambia el color del texto del botón
+//        setForeground(Color.WHITE); // Cambia el color del texto del botón
+//        setForeground(Color.RED);
         setFocusPainted(false); // Elimina el resaltado del botón cuando tiene el foco
     }
 }

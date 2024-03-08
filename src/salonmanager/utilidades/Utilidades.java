@@ -472,9 +472,17 @@ public class Utilidades {
         return perm;
     }
 
-    public String friendlyDate(Timestamp timeInitSes) {
+    public String friendlyDate1(Timestamp timeInitSes) {
         String time = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date date = new Date(timeInitSes.getTime());
+        time = dateFormat.format(date);
+        return time;
+    }
+    
+    public String friendlyDate2(Timestamp timeInitSes) {
+        String time = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
         Date date = new Date(timeInitSes.getTime());
         time = dateFormat.format(date);
         return time;

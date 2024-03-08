@@ -55,6 +55,7 @@ import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonDeliverySee;
 import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
+import salonmanager.entidades.graphics.PanelBorder;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
@@ -71,6 +72,7 @@ import salonmanager.servicios.ServicioTable;
  * @author Gonzalo
  */
 public class UtilidadesGraficasSalon {
+
     Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -118,25 +120,25 @@ public class UtilidadesGraficasSalon {
         }
 
         JPanel panelActual = new JPanel();
-        panelActual.setBounds(anchoUnit * 11, altoUnit * 3, anchoUnit * 17, altoUnit * 14);
+        panelActual.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 25, altoUnit * 17);
         panelActual.setBackground(bluLg);
         panelActual.setLayout(null);
 
         JLabel labelUser = utiliGraf.labelTitleBacker3("Usuario: " + salon.getUser().getName().toUpperCase() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-        labelUser.setBounds(altoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
+        labelUser.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
         panelActual.add(labelUser);
 
         salon.setLabelWorkshift(utiliGraf.labelTitleBacker3(""));
         if (salon.getWorkshiftNow() != null) {
             Timestamp timeInitWork = salon.getWorkshiftNow().getOpenWs();
-            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate(timeInitWork));
+            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(timeInitWork));
         } else {
             salon.getLabelWorkshift().setText("Turno no iniciado.");
         }
-        salon.getLabelWorkshift().setBounds(altoUnit, altoUnit * 3, anchoUnit * 17, altoUnit * 2);
+        salon.getLabelWorkshift().setBounds(anchoUnit, altoUnit * 4, anchoUnit * 17, altoUnit * 2);
         panelActual.add(salon.getLabelWorkshift());
 
-        salon.setButInitWorkshift(utiliGraf.button1("ABRIR TURNO", anchoUnit * 2, altoUnit * 6, anchoUnit * 13));
+        salon.setButInitWorkshift(utiliGraf.button1("ABRIR TURNO", anchoUnit, altoUnit * 8, anchoUnit * 13));
         if (cfgAct.isOpenWs()) {
             salon.getButInitWorkshift().setText("CERRAR TURNO");
         }
@@ -153,7 +155,7 @@ public class UtilidadesGraficasSalon {
                             salon.getWorkshiftNow().setCashierWs(salon.getUser());
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                             sm.workshiftBacker(salon.getWorkshiftNow());
-                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate(salon.getWorkshiftNow().getOpenWs()));
+                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
                             salon.getButInitWorkshift().setText("CERRAR TURNO");
                             daoC.updateCfgActOpenWs(true);
                             int id = daoW.findLastWsID();
@@ -168,19 +170,68 @@ public class UtilidadesGraficasSalon {
             }
         });
         panelActual.add(salon.getButInitWorkshift());
+        
+        PanelBorder panelCashFlow = new PanelBorder();
+        panelCashFlow.setLayout(null);
+        panelCashFlow.setBounds(anchoUnit * 15, altoUnit * 1, anchoUnit * 9, altoUnit * 15);
+        panelCashFlow.setBackground(bluLg);
+        panelActual.add(panelCashFlow);
+        
+        JLabel labelCashFlow = utiliGraf.labelTitleBacker3("Flujo de caja");
+        labelCashFlow.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 7, altoUnit * 4);
+        panelCashFlow.add(labelCashFlow);
+        
+        JButtonMetalBlu butInnFlow = utiliGraf.button2("Ingresos", anchoUnit * 1, altoUnit * 5, anchoUnit * 7);
+        panelCashFlow.add(butInnFlow);
+
+        JButtonMetalBlu butOutFlow = utiliGraf.button2("Salidas", anchoUnit * 1, altoUnit * 10, anchoUnit * 7);
+        panelCashFlow.add(butOutFlow);
+        
         return panelActual;
+    }
+
+    
+//PANEL MONITOR........................................................................................................
+//PANEL MONITOR........................................................................................................
+    public JPanel panelMonitor(Salon salon) {
+        JPanel panelMonitor = new JPanel();
+        panelMonitor.setBounds(anchoUnit * 55, altoUnit * 2, anchoUnit * 20, altoUnit * 8);
+        panelMonitor.setBackground(bluLg);
+        panelMonitor.setLayout(null);
+
+        JButtonMetalBlu butMonitor = new JButtonMetalBlu();
+        butMonitor.setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 6);
+        butMonitor.setBorder(null);
+        butMonitor.setFont(salon.getFont3());
+        butMonitor.setText("Seguimiento Órdenes");
+        butMonitor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    if (salon.getWorkshiftNow() != null) {
+                        new Monitor(salon);
+                    } else {
+                        utiliMsg.errorWorkshift();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelMonitor.add(butMonitor);
+        return panelMonitor;
     }
 
 //PANEL BARRDELI.......................................................................................................
 //PANEL BARRDELI.......................................................................................................
     public JPanel panelBarrDeliBacker(Salon salon) {
         JPanel panelBarrDeli = new JPanel();
-        panelBarrDeli.setBounds(anchoUnit * 55, altoUnit * 12, anchoUnit * 20, altoUnit * 8);
+        panelBarrDeli.setBounds(anchoUnit * 55, altoUnit * 11, anchoUnit * 20, altoUnit * 9);
         panelBarrDeli.setBackground(bluLg);
         panelBarrDeli.setLayout(null);
 
         salon.setButBarrDeli(new JButtonMetalBlu());
-        salon.getButBarrDeli().setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 7);
+        salon.getButBarrDeli().setBounds(anchoUnit, altoUnit * 2, anchoUnit * 18, altoUnit * 7);
         salon.getButBarrDeli().setBorder(null);
         salon.getButBarrDeli().setFont(salon.getFont2());
         salon.getButBarrDeli().setText("Barra - Delivery");
@@ -200,38 +251,6 @@ public class UtilidadesGraficasSalon {
         });
         panelBarrDeli.add(salon.getButBarrDeli());
         return panelBarrDeli;
-    }
-
-//PANEL MONITOR........................................................................................................
-//PANEL MONITOR........................................................................................................
-    public JPanel panelMonitor(Salon salon) {
-        JPanel panelMonitor = new JPanel();
-        panelMonitor.setBounds(anchoUnit * 55, altoUnit * 2, anchoUnit * 20, altoUnit * 7);
-        panelMonitor.setBackground(narLg);
-        panelMonitor.setLayout(null);
-
-        JButtonMetalBlu butMonitor = new JButtonMetalBlu();
-//        butMonitor.setBackground(narUlg);
-        butMonitor.setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 5);
-        butMonitor.setBorder(null);
-        butMonitor.setFont(salon.getFont3());
-        butMonitor.setText("Seguimiento Ordenes");
-        butMonitor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (salon.getWorkshiftNow() != null) {
-                        new Monitor(salon);
-                    } else {
-                        utiliMsg.errorWorkshift();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelMonitor.add(butMonitor);
-        return panelMonitor;
     }
 
     private void butPanelTurn(Salon salon) throws Exception {
@@ -1091,10 +1110,10 @@ public class UtilidadesGraficasSalon {
     public void setTableItems(Salon salon) {
 
         ArrayList<Itemcard> itemsAux = utili.unRepeatItems(salon.getItemsTableAux());
-        ArrayList<Itemcard> partials =  utili.unRepeatItems(salon.getItemsPartialPaid());
-        ArrayList<Itemcard> partialsND =  utili.unRepeatItems(salon.getItemsPartialPaidNoDiscount());
-        ArrayList<Itemcard> gifts =  utili.unRepeatItems(salon.getItemsGift());
-        ArrayList<Itemcard> totalItems =  utili.unRepeatItems(itemsAux);
+        ArrayList<Itemcard> partials = utili.unRepeatItems(salon.getItemsPartialPaid());
+        ArrayList<Itemcard> partialsND = utili.unRepeatItems(salon.getItemsPartialPaidNoDiscount());
+        ArrayList<Itemcard> gifts = utili.unRepeatItems(salon.getItemsGift());
+        ArrayList<Itemcard> totalItems = utili.unRepeatItems(itemsAux);
 
         totalItems.addAll(partials);
         totalItems.addAll(partialsND);
@@ -1119,7 +1138,6 @@ public class UtilidadesGraficasSalon {
 
         double disc = (double) salon.getDiscount() / 100;
 
-        
         for (int i = 0; i < salon.getRowsItems(); i++) {
             Itemcard ic = totalItems.get(i);
 
@@ -1240,8 +1258,6 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-
-
 //DISCOUNT.............................................................................................................
 //DISCOUNT.............................................................................................................    
     public void actionButtonDiscount(Salon salon) {
@@ -1276,8 +1292,6 @@ public class UtilidadesGraficasSalon {
         bd.setAlwaysOnTop(true);
         salon.setEnabled(false);
     }
-
-
 
 //PARTIAL PAY..........................................................................................................
 //PARTIAL PAY..........................................................................................................
@@ -1316,8 +1330,6 @@ public class UtilidadesGraficasSalon {
         pp.setAlwaysOnTop(true);
         salon.setEnabled(false);
     }
-
-
 
 //TABLE CLOSER.........................................................................................................
 //TABLE CLOSER.........................................................................................................
@@ -1359,7 +1371,6 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    
     public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
@@ -1403,7 +1414,6 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(true);
     }
 
-
 //Pago de cuenta y cierre de mesa
     public void tablePaid(Salon salon) throws Exception {
         jButExtSetter(salon);
@@ -1419,7 +1429,6 @@ public class UtilidadesGraficasSalon {
         etc.setAlwaysOnTop(true);
         salon.setEnabled(false);
     }
-
 
 //PANEL COUNT..........................................................................................................    
 //PANEL COUNT..........................................................................................................
@@ -1670,7 +1679,7 @@ public class UtilidadesGraficasSalon {
                 salon.setJbdAux(d);
                 salon.getJbdAux().setOpenJBD(true);
                 salon.setJbdSAux(butSee);
-                
+
                 if (salon.getJbdAux().getTable().isBill()) {
                     salon.getJbdAux().setBackground(red);
                     salon.getJbdSAux().setBackground(red);

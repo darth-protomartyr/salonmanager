@@ -5,7 +5,6 @@ import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -128,7 +126,7 @@ public class Salon extends FrameFull {
     double error = 0; // dinero faltante a pagar;
 
     JLabel labelWorkshift = new JLabel();
-
+    
     //Botonera
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
@@ -210,16 +208,16 @@ public class Salon extends FrameFull {
         JPanel panelActual = utiliGrafSal.panelActualBacker(sal);
         panelPpal.add(panelActual);
 
+//PANEL MONITOR--------------------------------------------------------------------------------------------------------
+//PANEL MONITOR--------------------------------------------------------------------------------------------------------
+        JPanel panelMonitor = utiliGrafSal.panelMonitor(sal);
+        panelPpal.add(panelMonitor);        
+        
 //PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
 //PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------      
 //BARR / DELI
         JPanel panelBarrDeli = utiliGrafSal.panelBarrDeliBacker(sal);
         panelPpal.add(panelBarrDeli);
-
-//PANEL MONITOR--------------------------------------------------------------------------------------------------------
-//PANEL MONITOR--------------------------------------------------------------------------------------------------------
-        JPanel panelMonitor = utiliGrafSal.panelMonitor(sal);
-        panelPpal.add(panelMonitor);
 
 //PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
 //PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------

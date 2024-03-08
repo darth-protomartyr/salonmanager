@@ -40,7 +40,6 @@ public class TableResumePanel extends FrameThird {
     TableResumePanel(Table tab) throws Exception {
         sm.addFrame(this);
         tabAux = tab;
-//        tabAux = st.tableItemsByTab(tabAux);
         setTitle("Consulta Mesa");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -52,7 +51,7 @@ public class TableResumePanel extends FrameThird {
         JPanel panelPn = utiliGraf.panelInfoBacker(70, 60, 300, 40, bluLg, 20, "Mesa: ", tabAux.getPos() + tabAux.getNum());
         panelPpal.add(panelPn);
 
-        JPanel panelInit = utiliGraf.panelInfoBacker(70, 100, 300, 40, bluLg, 20, "Inicio de mesa: ", utili.friendlyDate(tabAux.getOpenTime()));
+        JPanel panelInit = utiliGraf.panelInfoBacker(70, 100, 300, 40, bluLg, 20, "Inicio de mesa: ", utili.friendlyDate1(tabAux.getOpenTime()));
         panelPpal.add(panelInit);
 
         JPanel panelWaiter = utiliGraf.panelInfoBacker(70, 140, 300, 40, bluLg, 20, "Mozo: ", tabAux.getWaiter().getName() + " " + tabAux.getWaiter().getLastName());
