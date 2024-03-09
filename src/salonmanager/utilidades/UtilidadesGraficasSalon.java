@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.utilidades;
 
 import java.awt.Color;
@@ -33,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import salonmanager.BillDiscounter;
+import salonmanager.CashFlowManager;
 import salonmanager.CorrectorItem;
 import salonmanager.DeliveryTemplate;
 import salonmanager.ErrorTableCount;
@@ -67,10 +63,6 @@ import salonmanager.servicios.ServicioItemSale;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 
-/**
- *
- * @author Gonzalo
- */
 public class UtilidadesGraficasSalon {
 
     Utilidades utili = new Utilidades();
@@ -182,9 +174,29 @@ public class UtilidadesGraficasSalon {
         panelCashFlow.add(labelCashFlow);
         
         JButtonMetalBlu butInnFlow = utiliGraf.button2("Ingresos", anchoUnit * 1, altoUnit * 5, anchoUnit * 7);
+        butInnFlow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    new CashFlowManager(salon, 1);
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         panelCashFlow.add(butInnFlow);
 
         JButtonMetalBlu butOutFlow = utiliGraf.button2("Salidas", anchoUnit * 1, altoUnit * 10, anchoUnit * 7);
+            butOutFlow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    new CashFlowManager(salon, 2);
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         panelCashFlow.add(butOutFlow);
         
         return panelActual;

@@ -47,7 +47,6 @@ public class ErrorTableCount extends FrameWindow {
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
 
@@ -72,7 +71,6 @@ public class ErrorTableCount extends FrameWindow {
         setTitle("Error Mesa");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
-//        itemsToPay = new ArrayList<Itemcard>(salon.getItemsTableAux());
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
         panelLabel.setBounds(0, 0, 390, 40);

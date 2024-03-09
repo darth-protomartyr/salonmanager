@@ -306,6 +306,15 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
+    
+    public JLabel labelTitleBackerA3W(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(35f);
+        title.setForeground(white);
+        title.setFont(newFont);
+        return title;
+    }
 
     public JLabel labelTitleBackerA4(String tit) {
         JLabel title = new JLabel(tit);

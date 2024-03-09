@@ -320,7 +320,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorEmptyCause() {
-        CustomDialog cm = new CustomDialog("Error: No se ingreso la causa del Error en la orden.", 2);
+        CustomDialog cm = new CustomDialog("Error: debe ingresar el comentario.", 2);
         cm.setVisible(true);        
     }
 

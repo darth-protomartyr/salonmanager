@@ -144,7 +144,7 @@ public class PartialPayer extends FrameWindow {
 
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluSt);
-        panelBut.setBounds(0, 210, 390, 40);
+        panelBut.setBounds(0, 210, 390, 50);
         panelPpal.add(panelBut);
 
         butPartialIn = utiliGraf.button1("Pago Parcial", 206, 580, 270);

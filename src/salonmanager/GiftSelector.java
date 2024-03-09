@@ -90,7 +90,7 @@ public class GiftSelector extends FrameWindow {
 
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluSt);
-        panelBut.setBounds(0, 210, 390, 40);
+        panelBut.setBounds(0, 210, 390, 50);
         panelPpal.add(panelBut);
 
         butInGift = utiliGraf.button1("Obsequiar", 206, 580, 270);

@@ -528,4 +528,8 @@ public class ServicioSalon {
         newWs.setStateWs(false);
         return newWs;
     }
+
+    public void cashFlowAdd(double cashFlow, String comment, int flowKind, Salon salon) {
+        
+    }
 }

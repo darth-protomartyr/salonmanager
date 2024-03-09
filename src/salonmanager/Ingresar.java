@@ -75,7 +75,7 @@ public class Ingresar extends FrameWindow {
 
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluLg);
-        panelBut.setBounds(0, 210, 390, 40);
+        panelBut.setBounds(0, 210, 390, 50);
         panelPpal.add(panelBut);
 
         butInUser = utiliGraf.button1("Ingresar", 206, 580, 270);
