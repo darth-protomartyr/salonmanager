@@ -319,7 +319,7 @@ public class UtilidadesGraficasSalon {
             JPanel panelB = new JPanel();
             panelB.setBackground(narLg);
             panelB.setLayout(null);
-            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), salon.getAnchoPane(), salon.getAlturaPane());
+            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), anchoUnit * 72, salon.getAlturaPane());
             salon.setFontSizeTable(configValues.get(0));
             salon.setWUnit(configValues.get(1));
             salon.setHUnit(configValues.get(2));
@@ -340,14 +340,14 @@ public class UtilidadesGraficasSalon {
                     panelB.add(jbt);
                 }
             }
-            panelB.setBounds(salon.getWUnit(), salon.getHUnit(), salon.getAnchoPane(), salon.getAlturaPane() + salon.getHUnit());
+            panelB.setBounds(salon.getWUnit(), salon.getHUnit(), anchoUnit * 72, salon.getAlturaPane() + salon.getHUnit());
             salon.getPanelsPane().add(panelB);
         }
 
         for (int i = 0; i < salon.getPanelsPane().size(); i++) {
             salon.getTabbedPane().addTab(salon.getTablePan().get(i), salon.getPanelsPane().get(i));
         }
-        salon.getTabbedPane().setBounds(anchoUnit, anchoUnit, salon.getAnchoPane(), (salon.getAlturaPane() + altoUnit * 3));
+        salon.getTabbedPane().setBounds(anchoUnit, anchoUnit, anchoUnit * 72, (salon.getAlturaPane() + altoUnit * 3));
         salon.getPanelA().add(salon.getTabbedPane());
 
         ActionListener actionListener = new ActionListener() {
@@ -422,7 +422,7 @@ public class UtilidadesGraficasSalon {
         JPanel panelBarr = new JPanel();
         panelBarr.setLayout(null);
         panelBarr.setBackground(bluLg);
-        panelBarr.setBounds(anchoUnit * 2, altoUnit, (salon.getAnchoPane() / 2) - anchoUnit * 3, salon.getAlturaPane());
+        panelBarr.setBounds(anchoUnit * 2, altoUnit, anchoUnit * 36 - anchoUnit * 3, salon.getAlturaPane());
 
         JLabel labelBP = utiliGraf.labelTitleBackerA4("Barra");
         labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
