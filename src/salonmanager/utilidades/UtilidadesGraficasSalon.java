@@ -918,7 +918,7 @@ public class UtilidadesGraficasSalon {
         JPanel panelTable = new JPanel();
         panelTable.setLayout(null);
         panelTable.setBackground(narLg);
-        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - anchoUnit * 81, altoUnit * 89);
+        panelTable.setBounds(anchoUnit, altoUnit, anchoUnit * 26, altoUnit * 89);
         salon.setLabelOrder(utiliGraf.labelTitleBackerA2b("MESA: --"));
         salon.getLabelOrder().setBounds(altoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
         panelTable.add(salon.getLabelOrder());

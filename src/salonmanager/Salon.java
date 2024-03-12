@@ -76,8 +76,6 @@ public class Salon extends FrameFull {
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
     ArrayList<String> configSalon = new ArrayList<String>(); //Configuración de l salón
-//    int anchoPane = anchoUnit * 72;
-//    int alturaPane = altoUnit * 72;
     int totalTable = 0;
     int numBut = 1;
     int rowsButtons = 0;
@@ -257,7 +255,7 @@ public class Salon extends FrameFull {
         JPanel panelLateral = new JPanel();
         panelLateral.setBackground(bluLg);
         panelLateral.setLayout(null);
-        panelLateral.setBounds(anchoUnit * 77, altoUnit * 3, anchoFrame - (anchoUnit * 79), altoUnit * 94);
+        panelLateral.setBounds(anchoUnit * 76, altoUnit * 2, anchoUnit * 28, altoUnit * 91);
         panelPpal.add(panelLateral);
 
 //Panel Table-----------------------------------------------------------
