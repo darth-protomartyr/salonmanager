@@ -417,4 +417,14 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
+
+    public void cargaCashFlowSuccess() {
+        CustomDialog cm = new CustomDialog("La operación fue confirmada.", 1);
+        cm.setVisible(true);
+    }
+
+    public void errorLackOfFunds() {
+        CustomDialog cm = new CustomDialog("Error: fondos insuficientes.", 2);
+        cm.setVisible(true);
+    }
 }

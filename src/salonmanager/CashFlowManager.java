@@ -13,11 +13,14 @@ import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.servicios.ServicioSalon;
@@ -47,6 +50,10 @@ public class CashFlowManager extends FrameWindow {
     JTextArea textArea = new JTextArea();
     JButtonMetalBlu butCashFlow = new JButtonMetalBlu();
     Salon salon = null;
+    JRadioButton optionCash = new JRadioButton("Efectivo");
+    JRadioButton optionElec = new JRadioButton("Transferencia");
+    boolean cashKind;
+    
     int flowKind;
 
     public CashFlowManager(Salon sal, int kind) {
@@ -65,12 +72,54 @@ public class CashFlowManager extends FrameWindow {
         panelLabel.add(labelTit);
 
         JLabel label$ = utiliGraf.labelTitleBackerA3W("$");
-        label$.setBounds(anchoUnit * 4, altoUnit * 9, anchoUnit * 3, altoUnit * 8);
+        label$.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 2, altoUnit * 5);
         panelPpal.add(label$);
 
-        fieldCashFlow.setBounds(anchoUnit * 7, altoUnit * 10, anchoUnit * 17, altoUnit * 6);
+        fieldCashFlow.setBounds(anchoUnit * 5, altoUnit * 10, anchoUnit * 12, altoUnit * 6);
         fieldCashFlow.setFont(salon.getFont2());
 
+        optionCash.setBounds(anchoUnit * 19, altoUnit * 10, anchoUnit * 17, altoUnit * 3);
+        optionElec.setBounds(anchoUnit * 19, altoUnit * 13, anchoUnit * 17, altoUnit * 3);
+
+        optionCash.setBackground(bluSt);
+        optionElec.setBackground(bluSt);
+        
+        optionCash.setForeground(Color.WHITE);
+        optionElec.setForeground(Color.WHITE);
+
+
+        
+        ButtonGroup group = new ButtonGroup();
+        group.add(optionCash);
+        group.add(optionElec);
+        optionCash.setSelected(true);
+        optionElec.setSelected(false);
+
+        ActionListener listener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JRadioButton selectedButton = (JRadioButton) e.getSource();
+                if (selectedButton.getText().equals("Efectivo")) {
+//                    optionCash.setSelected(true);
+                    optionElec.setSelected(false);
+                    cashKind = true;
+                } else {
+                    optionCash.setSelected(false);
+//                    optionElec.setSelected(true);
+                    cashKind = false;                    
+                }
+            }
+        };
+
+        optionCash.addActionListener(listener);
+        optionElec.addActionListener(listener);
+        
+        panelPpal.add(optionCash);
+        panelPpal.add(optionElec);
+
+
+        JLabel labelComment = utiliGraf.labelTitleBacker3W("");
+        panelPpal.add(labelComment);
+        
         textArea.setRows(3);
         textArea.setColumns(5);
         textArea.setLineWrap(true);
@@ -83,8 +132,7 @@ public class CashFlowManager extends FrameWindow {
         panelPpal.add(scrollPane);
         panelPpal.add(fieldCashFlow);
 
-        JLabel labelComment = utiliGraf.labelTitleBacker3W("");
-        panelPpal.add(labelComment);
+
 
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluSt);
@@ -106,7 +154,10 @@ public class CashFlowManager extends FrameWindow {
         if (flowKind == 0) {
             setTitle("Caja Inicial");
             labelTit.setText(utili.stringMsgFrd("Introduzca el monto de la caja inicial", 20, 1));
-            fieldCashFlow.setBounds(anchoUnit * 7, altoUnit * 15, anchoUnit * 17, altoUnit * 6);
+//            fieldCashFlow.setBounds(anchoUnit * 7, altoUnit * 15, anchoUnit * 17, altoUnit * 6);
+            fieldCashFlow.setBounds(anchoUnit * 5, altoUnit * 15, anchoUnit * 12, altoUnit * 6);
+            optionCash.setBounds(anchoUnit * 19, altoUnit * 15, anchoUnit * 17, altoUnit * 3);
+            optionElec.setBounds(anchoUnit * 19, altoUnit * 18, anchoUnit * 17, altoUnit * 3);
             label$.setBounds(anchoUnit * 4, altoUnit * 15, anchoUnit * 3, altoUnit * 8);
             labelComment.setVisible(false);
             textArea.setVisible(false);
@@ -135,6 +186,7 @@ public class CashFlowManager extends FrameWindow {
     }
 
     private void butCashFlowAction() throws Exception {
+        boolean kind = cashKind;
         String cashFlowSt = fieldCashFlow.getText();
         double cashFlow = 0;
         String comment = textArea.getText();
@@ -159,7 +211,7 @@ public class CashFlowManager extends FrameWindow {
         }
         
         if (error == false) {
-            ss.cashFlowAdd(cashFlow, comment, flowKind, salon);
+            ss.cashFlowAdd(flowKind, cashKind, cashFlow, comment, salon);
             dispose();
         } else {
             resetValues();

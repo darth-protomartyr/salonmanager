@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.Salon;
 import salonmanager.WorkshiftEndPanel;
+import salonmanager.entidades.bussiness.CashFlow;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonTable;
@@ -13,6 +14,7 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
+import salonmanager.persistencia.DAOCashFlow;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
@@ -34,6 +36,7 @@ public class ServicioSalon {
     DAOWorkshift daoW = new DAOWorkshift();
     DAODelivery daoD = new DAODelivery();
     DAOConfig daoC = new DAOConfig();
+    DAOCashFlow daoCF = new DAOCashFlow();
     ServicioItemMonitor sim = new ServicioItemMonitor();
     ServicioItemSale sis = new ServicioItemSale();
     ServicioTable st = new ServicioTable();
@@ -529,7 +532,43 @@ public class ServicioSalon {
         return newWs;
     }
 
-    public void cashFlowAdd(double cashFlow, String comment, int flowKind, Salon salon) {
-        
+    public void cashFlowAdd(int flowKind, boolean moneyKind, double cashFlow, String comment, Salon salon) throws Exception {
+        boolean kind = true;
+        if (flowKind == 2) {
+            kind = false;
+        }
+        int wsId = salon.getWorkshiftNow().getId();
+
+        CashFlow cf = new CashFlow(kind, moneyKind, cashFlow, comment, wsId);
+        daoCF.saveCashFlow(cf);
+        if (kind == false) { //substr
+            if (moneyKind == false) {
+                if (salon.getCashFlowElec() - cashFlow < 0) {
+                    utiliMsg.errorLackOfFunds();
+                } else {
+                    salon.setCashFlowElec(salon.getCashFlowElec() - cashFlow);
+                    salon.getWorkshiftNow().setCashFlowWsElec(salon.getCashFlowElec());
+                    daoW.updateWorkshiftCashFlowElec(salon.getWorkshiftNow());
+                }
+            } else {
+                if (salon.getCashFlowCash() - cashFlow < 0) {
+                    utiliMsg.errorLackOfFunds();
+                } else {
+                    salon.setCashFlowCash(salon.getCashFlowCash() - cashFlow);
+                    salon.getWorkshiftNow().setCashFlowWsCash(salon.getCashFlowCash());
+                    daoW.updateWorkshiftCashFlowCash(salon.getWorkshiftNow());
+                }
+            }
+        } else {
+            if (moneyKind == false) {
+                salon.setCashFlowElec(salon.getCashFlowElec() + cashFlow);
+                salon.getWorkshiftNow().setCashFlowWsElec(salon.getCashFlowElec());
+                daoW.updateWorkshiftCashFlowElec(salon.getWorkshiftNow());
+            } else {
+                salon.setCashFlowCash(salon.getCashFlowCash() + cashFlow);
+                salon.getWorkshiftNow().setCashFlowWsCash(salon.getCashFlowCash());
+                daoW.updateWorkshiftCashFlowCash(salon.getWorkshiftNow());
+            }
+        }
     }
 }

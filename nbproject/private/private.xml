@@ -2,22 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="17">
         <file>
-            <url>src/salonmanager/persistencia/DAOItemCarta.java</url>
-            <bookmark id="2">
-                <name/>
-                <line>240</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>src/salonmanager/servicios/ServicioSalon.java</url>
-            <bookmark id="15">
-                <name/>
-                <line>412</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>src/salonmanager/utilidades/UtilidadesGraficas.java</url>
             <bookmark id="6">
                 <name/>
@@ -53,18 +37,28 @@
                 <key/>
             </bookmark>
         </file>
+        <file>
+            <url>src/salonmanager/persistencia/DAOItemCarta.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>240</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/salonmanager/servicios/ServicioSalon.java</url>
+            <bookmark id="15">
+                <name/>
+                <line>415</line>
+                <key/>
+            </bookmark>
+        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasSalon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/graphics/PanelPpal.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesMensajes.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/servicios/ServicioSalon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/ErrorTableCount.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/CashFlowManager.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/bussiness/CashFlow.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/MoneyType.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/BillDiscounter.java</file>
         </group>
     </open-files>
 </project-private>

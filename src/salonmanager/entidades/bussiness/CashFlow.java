@@ -4,46 +4,70 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 public class CashFlow {
-    boolean cashfwKind;
-    int cashFwWsId;
+    int id;
+    boolean cashFwKind;
+    boolean cashFwMoneyKind;
     double cashFwAmount;
     String cashFwComment;
     Timestamp cashFwTime;
-    boolean cashFlowActive;
+    int cashFwWsId;
+    boolean cashFwActive;
 
     public CashFlow() {
     }
 
-    public CashFlow(boolean cashfwKind, int cashFwWsId, double cashFwAmount, String cashFwComment, boolean cashFlowActive) {
-        this.cashfwKind = cashfwKind;
-        this.cashFwWsId = cashFwWsId;
+    public CashFlow(boolean cashFwKind, boolean cashFwMoneyKind, double cashFwAmount, String cashFwComment, int cashFwWsId) {
+        this.cashFwKind = cashFwKind;
+        this.cashFwMoneyKind = cashFwMoneyKind;
         this.cashFwAmount = cashFwAmount;
         this.cashFwComment = cashFwComment;
-        this.cashFwTime =new Timestamp(new Date().getTime());
-        this.cashFlowActive = cashFlowActive;
-    }
-
-    public boolean isCashfwKind() {
-        return cashfwKind;
-    }
-
-    public void setCashfwKind(boolean cashfwKind) {
-        this.cashfwKind = cashfwKind;
-    }
-
-    public int getCashFwWsId() {
-        return cashFwWsId;
-    }
-
-    public void setCashFwWsId(int cashFwWsId) {
+        this.cashFwTime = new Timestamp(new Date().getTime());
         this.cashFwWsId = cashFwWsId;
+        this.cashFwActive = true;
+    }
+
+    public CashFlow(int id, boolean cashFwKind, boolean cashFwMoneyKind, double cashFwAmount, String cashFwComment, Timestamp cashFwTime, int cashFwWsId, boolean cashFwActive) {
+        this.id = id;
+        this.cashFwKind = cashFwKind;
+        this.cashFwMoneyKind = cashFwMoneyKind;
+        this.cashFwAmount = cashFwAmount;
+        this.cashFwComment = cashFwComment;
+        this.cashFwTime = cashFwTime;
+        this.cashFwWsId = cashFwWsId;
+        this.cashFwActive = cashFwActive;
+    }
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isCashFwKind() {
+        return cashFwKind;
+    }
+
+    public void setCashFwKind(boolean cashFwKind) {
+        this.cashFwKind = cashFwKind;
+    }
+
+    public boolean isCashFwMoneyKind() {
+        return cashFwMoneyKind;
+    }
+
+    public void setCashFwMoneyKind(boolean cashFwMoneyKind) {
+        this.cashFwMoneyKind = cashFwMoneyKind;
     }
 
     public double getCashFwAmount() {
         return cashFwAmount;
     }
 
-    public void setCashFwAmount(double cashFwIn) {
+    public void setCashFwAmount(double cashFwAmount) {
         this.cashFwAmount = cashFwAmount;
     }
 
@@ -63,11 +87,19 @@ public class CashFlow {
         this.cashFwTime = cashFwTime;
     }
 
-    public boolean isCashFlowActive() {
-        return cashFlowActive;
+    public int getCashFwWsId() {
+        return cashFwWsId;
     }
 
-    public void setCashFlowActive(boolean cashFlowActive) {
-        this.cashFlowActive = cashFlowActive;
+    public void setCashFwWsId(int cashFwWsId) {
+        this.cashFwWsId = cashFwWsId;
+    }
+
+    public boolean isCashFwActive() {
+        return cashFwActive;
+    }
+
+    public void setCashFwActive(boolean cashFwActive) {
+        this.cashFwActive = cashFwActive;
     }
 }

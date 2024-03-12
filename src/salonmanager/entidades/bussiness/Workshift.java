@@ -21,7 +21,8 @@ public class Workshift {
     double totalMountRealWs;
     double errorMountWs;
     double errorMountRealWs;
-    double cashFlowWs;
+    double cashFlowWsCash;
+    double cashFlowWsElec;
     String commentWs;
     boolean activeWs;
 
@@ -40,13 +41,14 @@ public class Workshift {
         this.errorMountRealWs = 0;
         this.totalMountWs = 0;
         this.totalMountRealWs = 0;
-        this.cashFlowWs = 0;
+        this.cashFlowWsCash = 0;
+        this.cashFlowWsElec = 0;
         this.commentWs = "";
         this.activeWs = true;
     }
 
     //Consulta Turno
-    public Workshift(int id, User cashierWs, Timestamp openWs, Timestamp closeWs, boolean stateWs, double totalMountCashWs, double totalMountElectronicWs, double errorWs, double errorRealWs, double totalWs, double totalRealWs, double cashFlowWs, String commentWs, boolean activeWs) {
+    public Workshift(int id, User cashierWs, Timestamp openWs, Timestamp closeWs, boolean stateWs, double totalMountCashWs, double totalMountElectronicWs, double errorWs, double errorRealWs, double totalWs, double totalRealWs, double cashFlowWsCash, double cashFlowWsElec, String commentWs, boolean activeWs) {
         this.id = id;
         this.cashierWs = cashierWs;
         this.openWs = openWs;
@@ -58,7 +60,8 @@ public class Workshift {
         this.errorMountRealWs = errorRealWs;
         this.totalMountWs = totalWs;
         this.totalMountRealWs = totalRealWs;
-        this.cashFlowWs = cashFlowWs;
+        this.cashFlowWsCash = cashFlowWsCash;
+        this.cashFlowWsElec = cashFlowWsElec;
         this.commentWs = commentWs;
         this.activeWs = activeWs;
     }
@@ -151,12 +154,20 @@ public class Workshift {
         this.errorMountRealWs = errorMountRealWs;
     }
 
-    public double getCashFlowWs() {
-        return cashFlowWs;
+    public double getCashFlowWsCash() {
+        return cashFlowWsCash;
     }
 
-    public void setCashFlowWs(double cashFlowWs) {
-        this.cashFlowWs = cashFlowWs;
+    public void setCashFlowWsCash(double cashFlowWsCash) {
+        this.cashFlowWsCash = cashFlowWsCash;
+    }
+    
+    public double getCashFlowWsElec() {
+        return cashFlowWsElec;
+    }
+
+    public void setCashFlowWsElec(double cashFlowWsElec) {
+        this.cashFlowWsElec = cashFlowWsElec;
     }
 
     public String getCommentWs() {

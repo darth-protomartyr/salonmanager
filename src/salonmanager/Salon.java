@@ -76,8 +76,6 @@ public class Salon extends FrameFull {
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
     ArrayList<String> configSalon = new ArrayList<String>(); //Configuración de l salón
-//    int anchoPane = (anchoFrame * 7 / 10);
-//    int alturaPane = (alturaFrame * 7 / 10);
     int anchoPane = anchoUnit * 72;
     int alturaPane = altoUnit * 72;
     int totalTable = 0;
@@ -116,6 +114,8 @@ public class Salon extends FrameFull {
     User waiterAux = null; // mozo actual
     Table tableAux = null; // mesa actual
     Workshift workshiftNow = null;
+    double cashFlowCash = 0;
+    double cashFlowElec = 0;
     Delivery deliOrderAux = null;
 
     int discount = 0; //porcentaje de descuento
@@ -1067,5 +1067,21 @@ public class Salon extends FrameFull {
 
     public void setLabelWorkshift(JLabel labelWorkshift) {
         this.labelWorkshift = labelWorkshift;
-    }    
+    }
+
+    public double getCashFlowCash() {
+        return cashFlowCash;
+    }
+
+    public void setCashFlowCash(double cashFlowCash) {
+        this.cashFlowCash = cashFlowCash;
+    }
+
+    public double getCashFlowElec() {
+        return cashFlowElec;
+    }
+
+    public void setCashFlowElec(double cashFlowElec) {
+        this.cashFlowElec = cashFlowElec;
+    }
 }
