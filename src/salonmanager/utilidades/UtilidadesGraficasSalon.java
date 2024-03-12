@@ -319,7 +319,7 @@ public class UtilidadesGraficasSalon {
             JPanel panelB = new JPanel();
             panelB.setBackground(narLg);
             panelB.setLayout(null);
-            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), anchoUnit * 72, salon.getAlturaPane());
+            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), anchoUnit * 72, altoUnit * 72);
             salon.setFontSizeTable(configValues.get(0));
             salon.setWUnit(configValues.get(1));
             salon.setHUnit(configValues.get(2));
@@ -340,14 +340,14 @@ public class UtilidadesGraficasSalon {
                     panelB.add(jbt);
                 }
             }
-            panelB.setBounds(salon.getWUnit(), salon.getHUnit(), anchoUnit * 72, salon.getAlturaPane() + salon.getHUnit());
+            panelB.setBounds(salon.getWUnit(), salon.getHUnit(), anchoUnit * 72, altoUnit * 71);
             salon.getPanelsPane().add(panelB);
         }
 
         for (int i = 0; i < salon.getPanelsPane().size(); i++) {
             salon.getTabbedPane().addTab(salon.getTablePan().get(i), salon.getPanelsPane().get(i));
         }
-        salon.getTabbedPane().setBounds(anchoUnit, anchoUnit, anchoUnit * 72, (salon.getAlturaPane() + altoUnit * 3));
+        salon.getTabbedPane().setBounds(anchoUnit, anchoUnit, anchoUnit * 72, altoUnit * 75);
         salon.getPanelA().add(salon.getTabbedPane());
 
         ActionListener actionListener = new ActionListener() {
@@ -422,7 +422,7 @@ public class UtilidadesGraficasSalon {
         JPanel panelBarr = new JPanel();
         panelBarr.setLayout(null);
         panelBarr.setBackground(bluLg);
-        panelBarr.setBounds(anchoUnit * 2, altoUnit, anchoUnit * 36 - anchoUnit * 3, salon.getAlturaPane());
+        panelBarr.setBounds(anchoUnit * 2, altoUnit, anchoUnit * 36 - anchoUnit * 3, altoUnit * 72);
 
         JLabel labelBP = utiliGraf.labelTitleBackerA4("Barra");
         labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
@@ -592,7 +592,7 @@ public class UtilidadesGraficasSalon {
         JPanel panelDeli = new JPanel();
         panelDeli.setLayout(null);
         panelDeli.setBackground(bluLg);
-        panelDeli.setBounds( anchoUnit * 73, altoUnit, anchoUnit * 69, salon.getAlturaPane());
+        panelDeli.setBounds( anchoUnit * 73, altoUnit, anchoUnit * 69, altoUnit * 72);
 
         JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
         labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
@@ -613,7 +613,7 @@ public class UtilidadesGraficasSalon {
 
         salon.getPanelDeliContainer().setLayout(new FlowLayout(FlowLayout.CENTER));
         salon.getPanelDeliContainer().setBackground(bluLg);
-        salon.getPanelDeliContainer().setBounds(0, altoUnit * 14, anchoUnit * 69, (salon.getAlturaPane() - altoUnit * 13));
+        salon.getPanelDeliContainer().setBounds(0, altoUnit * 14, anchoUnit * 69, (altoUnit * 59));
         panelDeli.add(salon.getPanelDeliContainer());
 
         panelDeliContainerSetter(salon);
@@ -1211,7 +1211,7 @@ public class UtilidadesGraficasSalon {
         salon.getJTableItems().setRowHeight(25);
         salon.getJTableItems().setBackground(narUlg);
 
-        int c = anchoUnit * 65 / 8;
+        int c = (anchoUnit * 65) / 8;
         TableColumn column1 = salon.getJTableItems().getColumnModel().getColumn(0);
         column1.setPreferredWidth(c);
         TableColumn column2 = salon.getJTableItems().getColumnModel().getColumn(1);
