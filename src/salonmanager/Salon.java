@@ -76,7 +76,7 @@ public class Salon extends FrameFull {
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
     ArrayList<String> configSalon = new ArrayList<String>(); //Configuración de l salón
-    int anchoPane = anchoUnit * 72;
+//    int anchoPane = anchoUnit * 72;
     int alturaPane = altoUnit * 72;
     int totalTable = 0;
     int numBut = 1;
@@ -423,13 +423,13 @@ public class Salon extends FrameFull {
         this.configSalon = configSalon;
     }
 
-    public int getAnchoPane() {
-        return anchoPane;
-    }
-
-    public void setAnchoPane(int anchoPane) {
-        this.anchoPane = anchoPane;
-    }
+//    public int getAnchoPane() {
+//        return anchoPane;
+//    }
+//
+//    public void setAnchoPane(int anchoPane) {
+//        this.anchoPane = anchoPane;
+//    }
 
     public int getAlturaPane() {
         return alturaPane;

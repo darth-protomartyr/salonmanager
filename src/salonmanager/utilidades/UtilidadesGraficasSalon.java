@@ -592,7 +592,7 @@ public class UtilidadesGraficasSalon {
         JPanel panelDeli = new JPanel();
         panelDeli.setLayout(null);
         panelDeli.setBackground(bluLg);
-        panelDeli.setBounds(salon.getAnchoPane() / 2 + anchoUnit, altoUnit, (salon.getAnchoPane() / 2) - anchoUnit * 3, salon.getAlturaPane());
+        panelDeli.setBounds( anchoUnit * 73, altoUnit, anchoUnit * 69, salon.getAlturaPane());
 
         JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
         labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
@@ -613,7 +613,7 @@ public class UtilidadesGraficasSalon {
 
         salon.getPanelDeliContainer().setLayout(new FlowLayout(FlowLayout.CENTER));
         salon.getPanelDeliContainer().setBackground(bluLg);
-        salon.getPanelDeliContainer().setBounds(0, altoUnit * 14, (salon.getAnchoPane() / 2) - anchoUnit * 3, (salon.getAlturaPane() - altoUnit * 13));
+        salon.getPanelDeliContainer().setBounds(0, altoUnit * 14, anchoUnit * 69, (salon.getAlturaPane() - altoUnit * 13));
         panelDeli.add(salon.getPanelDeliContainer());
 
         panelDeliContainerSetter(salon);
@@ -918,7 +918,7 @@ public class UtilidadesGraficasSalon {
         JPanel panelTable = new JPanel();
         panelTable.setLayout(null);
         panelTable.setBackground(narLg);
-        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - (salon.getAnchoPane() + anchoUnit * 9), altoUnit * 89);
+        panelTable.setBounds(anchoUnit, anchoUnit, anchoFrame - anchoUnit * 81, altoUnit * 89);
         salon.setLabelOrder(utiliGraf.labelTitleBackerA2b("MESA: --"));
         salon.getLabelOrder().setBounds(altoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
         panelTable.add(salon.getLabelOrder());
@@ -934,7 +934,7 @@ public class UtilidadesGraficasSalon {
     public JPanel returnPanelSelItem(Salon salon) {
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
-        panelSelItem.setBounds(6, altoUnit * 12, anchoFrame - (salon.getAnchoPane() + anchoUnit * 10), altoUnit * 16);
+        panelSelItem.setBounds(6, altoUnit * 12, anchoFrame - anchoUnit * 82, altoUnit * 16);
         panelSelItem.setBackground(bluLg);
 
         JButtonMetalBlu butCaptionBebidas = utiliGraf.button3("Bebidas", 5, 5, 55);
@@ -1211,7 +1211,7 @@ public class UtilidadesGraficasSalon {
         salon.getJTableItems().setRowHeight(25);
         salon.getJTableItems().setBackground(narUlg);
 
-        int c = (salon.getAnchoPane() - 50) / 8;
+        int c = anchoUnit * 65 / 8;
         TableColumn column1 = salon.getJTableItems().getColumnModel().getColumn(0);
         column1.setPreferredWidth(c);
         TableColumn column2 = salon.getJTableItems().getColumnModel().getColumn(1);
