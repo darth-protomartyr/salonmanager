@@ -223,15 +223,15 @@ public class Salon extends FrameFull {
 //PANELES CONTENEDORES BOTONES 1--------------------------------------------------------------------------------------
         panelA = new JPanel();
         panelA.setLayout(null);
-        panelA.setBounds(anchoUnit, altoUnit * 20, (anchoPane + anchoUnit * 2), (alturaPane + altoUnit * 7));
+        panelA.setBounds(anchoUnit, altoUnit * 20, anchoUnit * 74, (alturaPane + altoUnit * 7));
         panelA.setBackground(bluLg);
-        JLabel labelLegal = utiliGraf.labelLegal(anchoPane + anchoUnit * 2, alturaPane + altoUnit * 7, 2, 13);
+        JLabel labelLegal = utiliGraf.labelLegal(anchoUnit * 74, alturaPane + altoUnit * 7, 2, 13);
         panelA.add(labelLegal);
         panelPpal.add(panelA);
         panelBDButtons = new JPanel();
         panelBDButtons.setLayout(null);
         panelBDButtons.setBackground(narLg);
-        panelBDButtons.setBounds(anchoUnit, anchoUnit, anchoPane, (alturaPane + altoUnit * 3));
+        panelBDButtons.setBounds(anchoUnit, anchoUnit, anchoUnit * 72, (alturaPane + altoUnit * 3));
         panelBDButtons.setVisible(false);
         panelA.add(panelBDButtons);
 
@@ -257,7 +257,7 @@ public class Salon extends FrameFull {
         JPanel panelLateral = new JPanel();
         panelLateral.setBackground(bluLg);
         panelLateral.setLayout(null);
-        panelLateral.setBounds(anchoPane + anchoUnit * 5, altoUnit * 3, anchoFrame - (anchoPane + anchoUnit * 7), (alturaPane + altoUnit * 22));
+        panelLateral.setBounds(anchoUnit * 77, altoUnit * 3, anchoFrame - (anchoUnit * 79), (alturaPane + altoUnit * 22));
         panelPpal.add(panelLateral);
 
 //Panel Table-----------------------------------------------------------
