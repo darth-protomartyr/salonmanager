@@ -109,6 +109,8 @@ public class UtilidadesGraficasSalon {
         if (cfgAct.isOpenWs()) {
             salon.setWorkshiftNow(daoW.askWorshiftById(cfgAct.getOpenIdWs()));
             salon.getWorkshiftNow().setCashierWs(daoU.getCashierByWorkshift(salon.getWorkshiftNow().getId()));
+            salon.setCashFlowCash(salon.getWorkshiftNow().getCashFlowWsCash());
+            salon.setCashFlowElec(salon.getWorkshiftNow().getCashFlowWsElec());
         }
 
         JPanel panelActual = new JPanel();
