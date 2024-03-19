@@ -181,7 +181,7 @@ public class CashFlowManager extends FrameWindow {
         boolean error = false;
         
         if (flowKind == 0) {
-            comment = "Dinero ingresado en caja inicial.";
+            comment = "Dinero ingresado en caja inicial. " + comment;
         }
         
         try {
