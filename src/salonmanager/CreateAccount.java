@@ -141,7 +141,7 @@ public class CreateAccount extends FrameHalf {
         });
         panelPpal.add(butCreateUser);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

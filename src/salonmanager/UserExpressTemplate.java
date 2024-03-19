@@ -150,7 +150,7 @@ public class UserExpressTemplate extends FrameHalf {
         }
         panelPpal.add(butCreateUserExpress);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

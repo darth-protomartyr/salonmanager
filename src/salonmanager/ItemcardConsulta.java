@@ -85,7 +85,7 @@ public class ItemcardConsulta extends FrameThird {
         labelTipItem.setBounds(10, 430, 345, 40);
         panelB.add(labelTipItem);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(400);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

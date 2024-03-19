@@ -267,12 +267,12 @@ public class Salon extends FrameFull {
         panelTable.add(panelSelItem);
 
 //Tabla con corrector--------------------------------------------------- 
-        scrollPaneItems = utiliGrafSal.scrollItemsBack(altoUnit, altoUnit * 28, anchoUnit * 21 + altoUnit, altoUnit * 30, sal);
+        scrollPaneItems = utiliGrafSal.scrollItemsBack(anchoUnit, altoUnit * 28, anchoUnit * 24, altoUnit * 30, sal);
         panelTable.add(scrollPaneItems);
         utiliGrafSal.tableCarrector(sal);
 
 //Boton Obsequio--------------------------------------------------------
-        JButtonMetalBlu butGift = utiliGraf.button2("Obsequio", altoUnit, altoUnit * 59, anchoUnit * 11);
+        JButtonMetalBlu butGift = utiliGraf.button2("Obsequio", anchoUnit, altoUnit * 59, anchoUnit * 11);
         butGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -286,7 +286,7 @@ public class Salon extends FrameFull {
         panelTable.add(butGift);
 
 //Boton Descuento-------------------------------------------------------
-        JButtonMetalBlu butDiscount = utiliGraf.button2("Descuento", altoUnit * 2 + anchoUnit * 11, altoUnit * 59, anchoUnit * 10);
+        JButtonMetalBlu butDiscount = utiliGraf.button2("Descuento", anchoUnit * 14, altoUnit * 59, anchoUnit * 11);
         butDiscount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -304,7 +304,7 @@ public class Salon extends FrameFull {
         panelTable.add(panelPartial);
 
 //Boton Pago Final
-        butCloseTable = utiliGraf.button1("CERRAR ORDEN", altoUnit, altoUnit * 70, anchoUnit * 13 + altoUnit);
+        butCloseTable = utiliGraf.button1("CERRAR ORDEN", anchoUnit, altoUnit * 70, anchoUnit * 14);
         panelTable.add(butCloseTable);
         butCloseTable.addActionListener(new ActionListener() {
             @Override
@@ -318,7 +318,7 @@ public class Salon extends FrameFull {
         });
 
 //Boton Error
-        JButtonMetalBlu butErrorTable = utiliGraf.button1("ERROR", altoUnit + anchoUnit * 14, altoUnit * 70, anchoUnit * 7 + altoUnit);
+        JButtonMetalBlu butErrorTable = utiliGraf.button1("ERROR", anchoUnit * 16, altoUnit * 70, anchoUnit * 9);
         butErrorTable.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -338,16 +338,40 @@ public class Salon extends FrameFull {
             }
         });
         panelTable.add(butErrorTable);
-//Panel SelItem---------------------------------------------------------
 //Panel Count---------------------------------------------------------
-
+//Panel Count---------------------------------------------------------
         panelCount = utiliGrafSal.returnPanelCount(sal);
         panelTable.add(panelCount);
 
+//End Elements--------------------------------------------------------
+//End Elements--------------------------------------------------------
+        JPanel panelEnd = new JPanel();
+        panelEnd.setLayout(null);
+        panelEnd.setBackground(bluLg);
+        panelEnd.setBounds(anchoUnit * 76, altoUnit * 95, anchoUnit * 19, altoUnit * 4 );
+        panelPpal.add(panelEnd);
+        
+        JPanel panelEndInn = new JPanel();
+        panelEndInn.setBackground(bluSt);
+        panelEndInn.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2 );
+        panelEnd.add(panelEndInn);
+
+
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
+        
+
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
+
 
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
@@ -355,8 +379,9 @@ public class Salon extends FrameFull {
             utiliGrafSal.tableManager(tables, sal);
         }
         
-        
+                        
 
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

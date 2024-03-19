@@ -211,7 +211,7 @@ public class ConsumerTemplate extends FrameHalf {
             fieldSN.setText(cmrFull.getSocialNetwork());
         }
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame / 2);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

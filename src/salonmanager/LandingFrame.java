@@ -72,15 +72,6 @@ public class LandingFrame extends FrameGeneral {
             }
         });
         panelPpal.add(butLog);
-
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrame);
-        butSalir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                dispose();
-            }
-        });
-        panelPpal.add(butSalir);
         
         
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -94,6 +85,19 @@ public class LandingFrame extends FrameGeneral {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width, screenSize.height);
         setVisible(true);
+        
+
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
+        
+        
+
 
         
         addWindowListener(new WindowAdapter() {

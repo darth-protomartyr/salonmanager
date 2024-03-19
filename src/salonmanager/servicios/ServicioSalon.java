@@ -540,7 +540,6 @@ public class ServicioSalon {
         int wsId = salon.getWorkshiftNow().getId();
 
         CashFlow cf = new CashFlow(kind, moneyKind, cashFlow, comment, wsId);
-        daoCF.saveCashFlow(cf);
         if (kind == false) { //substr
             if (moneyKind == false) {
                 if (salon.getCashFlowElec() - cashFlow < 0) {
@@ -549,6 +548,7 @@ public class ServicioSalon {
                     salon.setCashFlowElec(salon.getCashFlowElec() - cashFlow);
                     salon.getWorkshiftNow().setCashFlowWsElec(salon.getCashFlowElec());
                     daoW.updateWorkshiftCashFlowElec(salon.getWorkshiftNow());
+                    daoCF.saveCashFlow(cf);
                 }
             } else {
                 if (salon.getCashFlowCash() - cashFlow < 0) {
@@ -557,6 +557,7 @@ public class ServicioSalon {
                     salon.setCashFlowCash(salon.getCashFlowCash() - cashFlow);
                     salon.getWorkshiftNow().setCashFlowWsCash(salon.getCashFlowCash());
                     daoW.updateWorkshiftCashFlowCash(salon.getWorkshiftNow());
+                    daoCF.saveCashFlow(cf);
                 }
             }
         } else {
@@ -564,10 +565,12 @@ public class ServicioSalon {
                 salon.setCashFlowElec(salon.getCashFlowElec() + cashFlow);
                 salon.getWorkshiftNow().setCashFlowWsElec(salon.getCashFlowElec());
                 daoW.updateWorkshiftCashFlowElec(salon.getWorkshiftNow());
+                daoCF.saveCashFlow(cf);
             } else {
                 salon.setCashFlowCash(salon.getCashFlowCash() + cashFlow);
                 salon.getWorkshiftNow().setCashFlowWsCash(salon.getCashFlowCash());
                 daoW.updateWorkshiftCashFlowCash(salon.getWorkshiftNow());
+                daoCF.saveCashFlow(cf);
             }
         }
     }

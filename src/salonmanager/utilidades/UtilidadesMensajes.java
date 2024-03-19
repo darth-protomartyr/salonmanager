@@ -427,4 +427,9 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: fondos insuficientes.", 2);
         cm.setVisible(true);
     }
+
+    public void errorCommentNull() {
+        CustomDialog cm = new CustomDialog("Error: Debe adjuntar la causa del faltante en los comentarios.", 2);
+        cm.setVisible(true);
+    }
 }

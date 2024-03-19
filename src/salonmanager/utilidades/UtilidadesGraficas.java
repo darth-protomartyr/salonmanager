@@ -443,15 +443,19 @@ public class UtilidadesGraficas extends JFrame {
         return bot;
     }
 
-    public JButtonMetalBlu buttonSalir(int width) {
+    public JButtonMetalBlu buttonSalir(JFrame frame) {
+        int width = frame.getWidth();
+        int height = frame.getHeight();    
         JButtonMetalBlu butSalir = new JButtonMetalBlu();
-        butSalir = button2("salir", width - 90, 691 - 45, 70);
+        butSalir = button2("salir", width - anchoUnit * 10, height - altoUnit * 11, anchoUnit * 8);
         return butSalir;
     }
-
-    public JButtonMetalBlu buttonSalir2(int width, int height) {
+    
+    public JButtonMetalBlu buttonSalir2(JFrame frame, int uni) {
+        int width = frame.getWidth();
+        int height = frame.getHeight();    
         JButtonMetalBlu butSalir = new JButtonMetalBlu();
-        butSalir = button2("salir", width - 90, height, 70);
+        butSalir = button2("salir", width - anchoUnit * 10, height - altoUnit * (11 + uni), anchoUnit * 8);
         return butSalir;
     }
 

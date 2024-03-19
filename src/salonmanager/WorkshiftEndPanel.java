@@ -20,7 +20,10 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
@@ -58,6 +61,7 @@ public class WorkshiftEndPanel extends FrameHalf {
 
     JComboBox comboTabs = new JComboBox();
     JTextField fieldFinalAmount = new JTextField();
+    JTextArea textArea = new JTextArea();
 
     Salon salon = null;
     Workshift actualWs = null;
@@ -69,13 +73,16 @@ public class WorkshiftEndPanel extends FrameHalf {
     double total = 0;
     double cash = 0;
     double electronic = 0;
+    double cashFlow = 0;
+    double electronicFlow = 0;
     double error = 0;
+    double cashComplete = 0;
 
     public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
         actualWs = ws1;
         newWs = ws2;
         actualTabs = filterClose(actTabs);
-        
+
         if (nTabs == null) {
             newTabs = new ArrayList<Table>();
         } else {
@@ -103,120 +110,218 @@ public class WorkshiftEndPanel extends FrameHalf {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, 390, 40);
+        panelLabel.setBounds(0, 0, frame.getWidth(), altoUnit * 6);
         panelPpal.add(panelLabel);
+
         String nomCashier = cashier.getName();
         String pronomCashier = cashier.getLastName();
-        String tsInit = actualWs.getOpenWs() + "";
-        String tsClose = actualWs.getCloseWs() + "";
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("CIERRE DE TURNO");
         panelLabel.add(labelTit);
 
-        JLabel labelCashier = utiliGraf.labelTitleBacker2W("Titular caja: " + nomCashier.toUpperCase() + " " + pronomCashier.toUpperCase());
-        labelCashier.setBounds(50, 50, 300, 25);
+        JLabel labelCashier = utiliGraf.labelTitleBacker1W("Titular caja: " + nomCashier.toUpperCase() + " " + pronomCashier.toUpperCase());
+        labelCashier.setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 30, altoUnit * 4);
         panelPpal.add(labelCashier);
 
-        JLabel labelOpen = utiliGraf.labelTitleBacker2W("Inicio: " + tsInit);
-        labelOpen.setBounds(380, 50, 300, 25);
+        JLabel labelOpen = utiliGraf.labelTitleBacker2W("Inicio: " + utili.friendlyDate2(actualWs.getOpenWs()));
+        labelOpen.setBounds(anchoUnit * 35, altoUnit * 7, anchoUnit * 18, altoUnit * 3);
         panelPpal.add(labelOpen);
 
-        JLabel labelClose = utiliGraf.labelTitleBacker2W("Cierre: " + tsClose);
-        labelClose.setBounds(380, 70, 300, 25);
+        JLabel labelClose = utiliGraf.labelTitleBacker2W("Cierre: " + utili.friendlyDate2(actualWs.getCloseWs()));
+        labelClose.setBounds(anchoUnit * 35, altoUnit * 10, anchoUnit * 18, altoUnit * 3);
         panelPpal.add(labelClose);
 
+        //Panel elements
         JPanel panelMounts = new JPanel();
         panelMounts.setLayout(null);
-        panelMounts.setBounds(80, 105, 510, 300);
+        panelMounts.setBounds(anchoUnit * 3, altoUnit * 14, anchoUnit * 45, altoUnit * 77);
         panelMounts.setBackground(bluLg);
         panelPpal.add(panelMounts);
 
         total = actualWs.getTotalMountWs();
         cash = actualWs.getTotalMountCashWs();
+        cashFlow = actualWs.getCashFlowWsCash();
         electronic = actualWs.getTotalMountElectronicWs();
+        electronicFlow = actualWs.getCashFlowWsElec();
         error = actualWs.getErrorMountWs();
 
         //Facturación
-        JPanel panelTotal = new JPanel();
-        panelTotal.setLayout(new BoxLayout(panelTotal, BoxLayout.X_AXIS));
-        panelTotal.setBounds(20, 20, 470, 50);
-        panelMounts.add(panelTotal);
+        JPanel panelTotalFact = new JPanel();
+        panelTotalFact.setLayout(new BoxLayout(panelTotalFact, BoxLayout.X_AXIS));
+        panelTotalFact.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 43, altoUnit * 7);
+        panelMounts.add(panelTotalFact);
 
-        JLabel labelTotal1 = utiliGraf.labelTitleBackerA3("Facturación:");
-        panelTotal.add(labelTotal1);
+        JLabel labelTotalFact1 = utiliGraf.labelTitleBackerA3("Facturación:");
+        labelTotalFact1.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelTotalFact.add(labelTotalFact1);
+        panelTotalFact.add(Box.createHorizontalGlue());
 
-        panelTotal.add(Box.createHorizontalGlue());
+        JLabel labelTotalFact2 = utiliGraf.labelTitleBackerA3("$" + total);
+        labelTotalFact2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panelTotalFact.add(labelTotalFact2);
 
-        JLabel labelTotal2 = utiliGraf.labelTitleBackerA3("$ " + total);
-        labelTotal2.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        panelTotal.add(labelTotal2);
-
-        //Efectivo
+        //Efectivo    
+        //Efectivo    
         JPanel panelCash = new JPanel();
-        panelCash.setLayout(new BoxLayout(panelCash, BoxLayout.X_AXIS));
-        panelCash.setBounds(20, 90, 470, 50);
+        panelCash.setLayout(null);
+        panelCash.setBounds(anchoUnit * 1, altoUnit * 9, anchoUnit * 21, altoUnit * 20);
         panelMounts.add(panelCash);
 
-        JLabel labelCash1 = utiliGraf.labelTitleBackerA3("Efectivo:");
-        panelCash.add(labelCash1);
+        //Fact Cash
+        JPanel panelCashSell = new JPanel();
+        panelCashSell.setLayout(new BoxLayout(panelCashSell, BoxLayout.X_AXIS));
+        panelCashSell.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 19, altoUnit * 2);
+        panelCash.add(panelCashSell);
 
-        panelCash.add(Box.createHorizontalGlue());
+        JLabel labelTotalCash1 = utiliGraf.labelTitleBacker3("Flujo Venta Efectivo:");
+        panelCashSell.add(labelTotalCash1);
+        panelCashSell.add(Box.createHorizontalGlue());
 
-        JLabel labelCash2 = utiliGraf.labelTitleBackerA3("$ " + cash);
-        labelCash2.setAlignmentX(Component.RIGHT_ALIGNMENT); // Alinear a la derecha
-        panelCash.add(labelCash2);
+        JLabel labelTotalCash2 = utiliGraf.labelTitleBacker3("$" + cash);
+        labelTotalCash2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panelCashSell.add(labelTotalCash2);
 
-        //Electronic
-        JPanel panelElectronic = new JPanel();
-        panelElectronic.setLayout(new BoxLayout(panelElectronic, BoxLayout.X_AXIS));
-        panelElectronic.setBounds(20, 160, 470, 50);
-        panelMounts.add(panelElectronic);
+        //Inn Cash
+        JPanel panelCashInn = new JPanel();
+        panelCashInn.setLayout(new BoxLayout(panelCashInn, BoxLayout.X_AXIS));
 
-        JLabel labelElectronic1 = utiliGraf.labelTitleBackerA3("Transferencia:");
-        panelElectronic.add(labelElectronic1);
+        panelCashInn.setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 19, altoUnit * 2);
+        panelCash.add(panelCashInn);
 
-        panelElectronic.add(Box.createHorizontalGlue());
+        JLabel labelCashInn1 = utiliGraf.labelTitleBacker3("Flujo Auxiliar Efectivo:");
+        panelCashInn.add(labelCashInn1);
+        panelCashInn.add(Box.createHorizontalGlue());
 
-        JLabel labelElectronic2 = utiliGraf.labelTitleBackerA3("$ " + electronic);
-        labelElectronic2.setAlignmentX(Component.RIGHT_ALIGNMENT); // Alinear a la derecha
-        panelElectronic.add(labelElectronic2);
+        JLabel labelCashInn2 = utiliGraf.labelTitleBacker3("$" + cashFlow);
+        labelCashInn2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panelCashInn.add(labelCashInn2);
+
+        //Total Efec
+        JLabel labelCashTotal1 = utiliGraf.labelTitleBacker1("TOTAL EFECTIVO:");
+        labelCashTotal1.setBounds(anchoUnit, altoUnit * 8, anchoUnit * 19, altoUnit * 3);
+        panelCash.add(labelCashTotal1);
+
+        double totalCash = cash + cashFlow;
+
+        JLabel labelCashTotal2 = utiliGraf.labelTitleBackerA3("$" + (totalCash));
+        labelCashTotal2.setHorizontalAlignment(SwingConstants.CENTER);
+        labelCashTotal2.setBounds(anchoUnit, altoUnit * 13, anchoUnit * 19, altoUnit * 5);
+        panelCash.add(labelCashTotal2);
+
+        //Transferencia         
+        //Transferencia 
+        JPanel panelElec = new JPanel();
+        panelElec.setLayout(null);
+        panelElec.setBounds(anchoUnit * 23, altoUnit * 9, anchoUnit * 21, altoUnit * 20);
+        panelMounts.add(panelElec);
+
+        //Fact Elec
+        JPanel panelElecSell = new JPanel();
+        panelElecSell.setLayout(new BoxLayout(panelElecSell, BoxLayout.X_AXIS));
+        panelElecSell.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 19, altoUnit * 2);
+        panelElec.add(panelElecSell);
+
+        JLabel labelTotalElec1 = utiliGraf.labelTitleBacker3("Flujo Ventas por Transferencia:");
+        panelElecSell.add(labelTotalElec1);
+        panelElecSell.add(Box.createHorizontalGlue());
+
+        JLabel labelTotalElec2 = utiliGraf.labelTitleBacker3("$" + electronic);
+        labelTotalElec2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panelElecSell.add(labelTotalElec2);
+
+        //Inn Electronic
+        JPanel panelElecInn = new JPanel();
+        panelElecInn.setLayout(new BoxLayout(panelElecInn, BoxLayout.X_AXIS));
+
+        panelElecInn.setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 19, altoUnit * 2);
+        panelElec.add(panelElecInn);
+
+        JLabel labelElecInn1 = utiliGraf.labelTitleBacker3("Flujo Auxiliar Transferencia:");
+        panelElecInn.add(labelElecInn1);
+        panelElecInn.add(Box.createHorizontalGlue());
+
+        JLabel labelElecInn2 = utiliGraf.labelTitleBacker3("$" + electronicFlow);
+        labelElecInn2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panelElecInn.add(labelElecInn2);
+
+        //Total Electr
+        JLabel labelElecTotal1 = utiliGraf.labelTitleBacker1("TOTAL ELECTRÓNICO:");
+        labelElecTotal1.setBounds(anchoUnit, altoUnit * 8, anchoUnit * 19, altoUnit * 3);
+        panelElec.add(labelElecTotal1);
+
+        double totalElec = electronic + electronicFlow;
+
+        JLabel labelElecTotal2 = utiliGraf.labelTitleBackerA3("$" + totalElec);
+        labelElecTotal2.setHorizontalAlignment(SwingConstants.CENTER);
+        labelElecTotal2.setBounds(anchoUnit, altoUnit * 13, anchoUnit * 19, altoUnit * 5);
+        panelElec.add(labelElecTotal2);
 
         //Error
         JPanel panelError = new JPanel();
         panelError.setLayout(new BoxLayout(panelError, BoxLayout.X_AXIS));
-        panelError.setBounds(20, 230, 470, 50);
+
+        panelError.setBounds(anchoUnit * 1, altoUnit * 30, anchoUnit * 43, altoUnit * 7);
         panelMounts.add(panelError);
 
         JLabel labelError1 = utiliGraf.labelTitleBackerA3("Error:");
+        labelError1.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelError.add(labelError1);
-
         panelError.add(Box.createHorizontalGlue());
 
         JLabel labelError2 = utiliGraf.labelTitleBackerA3("$ " + error);
-        labelError2.setAlignmentX(Component.RIGHT_ALIGNMENT); // Alinear a la derecha
+        labelError2.setAlignmentX(Component.RIGHT_ALIGNMENT);
         panelError.add(labelError2);
-        
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                utiliMsg.confirmRealWsMount();
-                salon.setEnabled(true);
-                dispose();
-            }
-        });
 
+        //Total
+        JPanel panelTotal = new JPanel();
+        panelTotal.setLayout(new BoxLayout(panelTotal, BoxLayout.X_AXIS));
+        panelTotal.setBounds(anchoUnit * 1, altoUnit * 38, anchoUnit * 43, altoUnit * 7);
+        panelMounts.add(panelTotal);
+
+        JLabel labelTotal1 = utiliGraf.labelTitleBackerA3("Total Caja:");
+        labelTotal1.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelTotal.add(labelTotal1);
+        panelTotal.add(Box.createHorizontalGlue());
+
+        cashComplete = total + cashFlow + electronicFlow;
+        JLabel labelTotal2 = utiliGraf.labelTitleBackerA3("$" + cashComplete);
+        labelTotal2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panelTotal.add(labelTotal2);
+
+        //Total
         JPanel panelRealAmount = new JPanel();
-        panelRealAmount.setBounds(80, 405, 510, 70);
+        panelRealAmount.setBackground(narUlg);
+        panelRealAmount.setBounds(anchoUnit * 1, altoUnit * 46, anchoUnit * 43, altoUnit * 16);
         panelRealAmount.setLayout(null);
-        panelPpal.add(panelRealAmount);
+        panelMounts.add(panelRealAmount);
 
-        JLabel labelInMount = utiliGraf.labelTitleBacker2("Ingrese la suma total del efectivo y de las transferencias:");
-        labelInMount.setBounds(40, 5, 500, 20);
+        JLabel labelInMount = utiliGraf.labelTitleBacker2("<html>Ingrese el total del efectivo <br>y de las transferencias:</html>");
+        labelInMount.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 18, altoUnit * 6);
         panelRealAmount.add(labelInMount);
 
-        fieldFinalAmount.setBounds(100, 35, 150, 30);
-        fieldFinalAmount.setFont(new Font("Arial", Font.PLAIN, 20));
+        JLabel label$ = utiliGraf.labelTitleBackerA3("$");
+        label$.setBounds(anchoUnit * 1, altoUnit * 8, anchoUnit * 2, altoUnit * 7);
+        panelRealAmount.add(label$);
+
+        fieldFinalAmount.setBounds(anchoUnit * 3, altoUnit * 8, anchoUnit * 14, altoUnit * 7);
+        fieldFinalAmount.setFont(new Font("Arial", Font.BOLD, 35));
         panelRealAmount.add(fieldFinalAmount);
-        JButtonMetalBlu buttonConfirm = utiliGraf.button2("Confirmar", 270, 35, 120);
+
+        JLabel labelComment = utiliGraf.labelTitleBacker2("Ingrese un comentario:");
+        labelComment.setBounds(anchoUnit * 18, altoUnit * 1, anchoUnit * 14, altoUnit * 3);
+        panelRealAmount.add(labelComment);
+
+        textArea.setRows(3);
+        textArea.setColumns(5);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        Font newFont = new Font("Arial", Font.PLAIN, 16);
+        textArea.setFont(newFont);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBounds(anchoUnit * 18, altoUnit * 5, anchoUnit * 14, altoUnit * 10);
+        panelRealAmount.add(scrollPane);
+
+        JButtonMetalBlu buttonConfirm = utiliGraf.button1("Confirmar", anchoUnit * 33, altoUnit * 7, anchoUnit * 9);
         buttonConfirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -228,8 +333,8 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         });
         panelRealAmount.add(buttonConfirm);
-        
-        JButtonMetalBlu buttonDeferWsClose = utiliGraf.button2("Arbritrar", 330, 35, 120);
+
+        JButtonMetalBlu buttonDeferWsClose = utiliGraf.button2("Arbritrar", 330, 35, 120); //por si hay un turno previo abierto con otro usuario.
         buttonDeferWsClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -240,66 +345,109 @@ public class WorkshiftEndPanel extends FrameHalf {
                 }
             }
         });
+
         if (errorWs) {
             panelRealAmount.add(buttonConfirm);
             utiliMsg.cargaAdvertNoData();
         }
-        
 
-        JPanel panelTabs = new JPanel();
-        panelTabs.setLayout(null);
-        panelTabs.setBounds(80, 515, 510, 120);
-        panelTabs.setBackground(bluLg);
-        panelPpal.add(panelTabs);
+        //Consultas
+        JPanel panelAsk = new JPanel();
+        panelAsk.setLayout(null);
+        panelAsk.setBounds(anchoUnit * 1, altoUnit * 63, anchoUnit * 43, altoUnit * 13);
+        panelMounts.add(panelAsk);
+        //ConsultaMesa
+        JPanel panelAskTab = new JPanel();
+        panelAskTab.setLayout(null);
+        panelAskTab.setBackground(bluLg);
+        panelAskTab.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 41, altoUnit * 5);
+        panelAsk.add(panelAskTab);
 
         JLabel labelTabs = utiliGraf.labelTitleBacker1("Consultar Mesa");
-        labelTabs.setBounds(50, 10, 200, 25);
-        panelTabs.add(labelTabs);
-        
+        labelTabs.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 12, altoUnit * 3);
+        panelAskTab.add(labelTabs);
+
         comboTabs.setModel(utili.tableComboModelReturn(actualTabs));
-        comboTabs.setBounds(50, 50, 200, 30);
+        comboTabs.setBounds(anchoUnit * 15, altoUnit * 1, anchoUnit * 15, altoUnit * 3);
         DefaultListCellRenderer renderer = new DefaultListCellRenderer();
         renderer.setFont(new Font("Arial", Font.PLAIN, 50));
         comboTabs.setRenderer(renderer);
-        panelTabs.add(comboTabs);
-        JButtonMetalBlu butSelTab = utiliGraf.button3("Elija mesa", 280, 50, 150);
+        panelAskTab.add(comboTabs);
+        JButtonMetalBlu butSelTab = utiliGraf.button3("Elija mesa", anchoUnit * 31, altoUnit * 1, anchoUnit * 9);
         butSelTab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    getTab();                    
+                    getTab();
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelTabs.add(butSelTab);
+        panelAskTab.add(butSelTab);
+
+        JPanel panelAskCashFlow = new JPanel();
+        panelAskCashFlow.setLayout(null);
+        panelAskCashFlow.setBackground(bluLg);
+        panelAskCashFlow.setBounds(anchoUnit * 1, altoUnit * 7, anchoUnit * 41, altoUnit * 5);
+        panelAsk.add(panelAskCashFlow);
+
+        JLabel labelCashFlow = utiliGraf.labelTitleBacker1("Consultar Movimientos de Caja");
+        labelCashFlow.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 24, altoUnit * 3);
+        panelAskCashFlow.add(labelCashFlow);
+
+        JButtonMetalBlu butSeeCashFlow = utiliGraf.button3(" Ver Listado", anchoUnit * 31, altoUnit * 1, anchoUnit * 9);
+        butSeeCashFlow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    butSeeCashFlowAction();
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelAskCashFlow.add(butSeeCashFlow);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                utiliMsg.confirmRealWsMount();
+                salon.setEnabled(true);
+                dispose();
+            }
+        });
     }
 
     private void confirmRealAmount() throws Exception {
         String real = fieldFinalAmount.getText();
+        String comment = textArea.getText();
         try {
             double realAmount = parseDouble(real);
-            double realError = realAmount - total;
+            double realError = realAmount - cashComplete;
             boolean confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
-            if (confirm) {
-                realAmount = parseDouble(real);
-                actualWs.setTotalMountRealWs(realAmount);
-                actualWs.setErrorMountRealWs(realError);
-                if (realError < 0) {
-                    realError = realError * (-1);
-                } else if (realError > 0) {
-                    realError = 0;
+            if (realError > 0 && comment.equals("")) {
+                utiliMsg.errorCommentNull();
+            } else {
+                if (confirm) {
+                    realAmount = parseDouble(real);
+                    actualWs.setTotalMountRealWs(realAmount);
+                    actualWs.setErrorMountRealWs(realError);
+                    actualWs.setCommentWs(comment);
+                    if (realError < 0) {
+                        realError = realError * (-1);
+                    } else if (realError > 0) {
+                        realError = 0;
+                    }
+                    sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
+                    dispose();
                 }
-                sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
-                dispose();
             }
         } catch (NumberFormatException e) {
             utiliMsg.errorNumerico();
             fieldFinalAmount.setText("");
         }
     }
-    
+
     public void getTab() throws Exception {
         String selection = (String) comboTabs.getSelectedItem();
         Table tab = new Table();
@@ -324,7 +472,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         }
         return closeTabs;
     }
-    
+
     private void buttonDeferWsCloseAction() throws Exception {
         ConfigActual cfgGen = daoC.askConfigActual();
         ArrayList<Integer> deferWsArray = cfgGen.getArrayDeferWs();
@@ -333,4 +481,15 @@ public class WorkshiftEndPanel extends FrameHalf {
         daoC.updateCfgActDeferWs(deferWsArray);
         utiliMsg.cargaWsDefer();
     }
+
+    private void butSeeCashFlowAction() throws Exception {
+        new CashFlowViewer(this, salon);
+        setEnabled(false);
+
+    }
+
+    public void setEnableWEP() {
+        setEnabled(true);
+    }
+
 }

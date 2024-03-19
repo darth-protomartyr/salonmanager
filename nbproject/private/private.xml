@@ -29,38 +29,37 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficasSalon.java</url>
             <bookmark id="13">
                 <name/>
-                <line>1272</line>
+                <line>1274</line>
                 <key/>
             </bookmark>
             <bookmark id="12">
                 <name/>
-                <line>1294</line>
+                <line>1296</line>
                 <key/>
             </bookmark>
             <bookmark id="11">
                 <name/>
-                <line>1342</line>
+                <line>1344</line>
                 <key/>
             </bookmark>
             <bookmark id="17">
                 <name/>
-                <line>1404</line>
+                <line>1406</line>
                 <key/>
             </bookmark>
             <bookmark id="16">
                 <name/>
-                <line>1608</line>
+                <line>1610</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/Salon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesMensajes.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasSalon.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/CashFlowViewer.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/servicios/ServicioSalon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/persistencia/DAOWorkshift.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/bussiness/Workshift.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/CashFlowManager.java</file>
         </group>
     </open-files>
 </project-private>

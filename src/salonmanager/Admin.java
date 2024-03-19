@@ -33,7 +33,7 @@ public class Admin extends FrameFull {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

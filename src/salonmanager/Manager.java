@@ -89,7 +89,7 @@ public class Manager extends FrameFull {
         panelWorkshift.setBounds(anchoUnit * 54, altoUnit * 21, anchoUnit * 50, altoUnit * 65);
         panelPpal.add(panelWorkshift);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(anchoFrame, alturaFrame - 90);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(frame, 3);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

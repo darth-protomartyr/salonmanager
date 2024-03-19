@@ -154,6 +154,7 @@ public class UtilidadesGraficasSalon {
                             daoC.updateCfgActOpenWs(true);
                             int id = daoW.findLastWsID();
                             daoC.updateCfgActOpenIdWs(id);
+                            new CashFlowManager(salon, 0);
                         }
                     } else {
                         ss.endWorkshift(salon, false);
@@ -175,7 +176,7 @@ public class UtilidadesGraficasSalon {
         labelCashFlow.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 7, altoUnit * 4);
         panelCashFlow.add(labelCashFlow);
         
-        JButtonMetalBlu butInnFlow = utiliGraf.button2("Ingresos", anchoUnit * 1, altoUnit * 5, anchoUnit * 7);
+        JButtonMetalBlu butInnFlow = utiliGraf.button2("Ingresar", anchoUnit * 1, altoUnit * 5, anchoUnit * 7);
         butInnFlow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -188,7 +189,7 @@ public class UtilidadesGraficasSalon {
         });
         panelCashFlow.add(butInnFlow);
 
-        JButtonMetalBlu butOutFlow = utiliGraf.button2("Salidas", anchoUnit * 1, altoUnit * 10, anchoUnit * 7);
+        JButtonMetalBlu butOutFlow = utiliGraf.button2("Extraer", anchoUnit * 1, altoUnit * 10, anchoUnit * 7);
             butOutFlow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -422,8 +423,8 @@ public class UtilidadesGraficasSalon {
         JPanel panelBarr = new JPanel();
         panelBarr.setLayout(null);
         panelBarr.setBackground(bluLg);
-        panelBarr.setBounds(anchoUnit * 2, altoUnit, anchoUnit * 36 - anchoUnit * 3, altoUnit * 72);
-
+        panelBarr.setBounds(anchoUnit, altoUnit, anchoUnit * 34, altoUnit * 73);
+        
         JLabel labelBP = utiliGraf.labelTitleBackerA4("Barra");
         labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
         panelBarr.add(labelBP);
@@ -446,7 +447,7 @@ public class UtilidadesGraficasSalon {
         salon.setScrPaneBarr(new JScrollPane(salon.getPanelBarrBut()));
         salon.getScrPaneBarr().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         salon.getScrPaneBarr().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        salon.getScrPaneBarr().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 55);
+        salon.getScrPaneBarr().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 56);
         panelBarr.add(salon.getScrPaneBarr());
 
         return panelBarr;
@@ -592,7 +593,7 @@ public class UtilidadesGraficasSalon {
         JPanel panelDeli = new JPanel();
         panelDeli.setLayout(null);
         panelDeli.setBackground(bluLg);
-        panelDeli.setBounds( anchoUnit * 73, altoUnit, anchoUnit * 69, altoUnit * 72);
+        panelDeli.setBounds(anchoUnit * 37, altoUnit, anchoUnit * 34, altoUnit * 73);
 
         JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
         labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
@@ -613,7 +614,7 @@ public class UtilidadesGraficasSalon {
 
         salon.getPanelDeliContainer().setLayout(new FlowLayout(FlowLayout.CENTER));
         salon.getPanelDeliContainer().setBackground(bluLg);
-        salon.getPanelDeliContainer().setBounds(0, altoUnit * 14, anchoUnit * 69, (altoUnit * 59));
+        salon.getPanelDeliContainer().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 56);
         panelDeli.add(salon.getPanelDeliContainer());
 
         panelDeliContainerSetter(salon);
@@ -920,11 +921,11 @@ public class UtilidadesGraficasSalon {
         panelTable.setBackground(narLg);
         panelTable.setBounds(anchoUnit, altoUnit, anchoUnit * 26, altoUnit * 89);
         salon.setLabelOrder(utiliGraf.labelTitleBackerA2b("MESA: --"));
-        salon.getLabelOrder().setBounds(altoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
+        salon.getLabelOrder().setBounds(anchoUnit, altoUnit, anchoUnit * 23, altoUnit * 6);
         panelTable.add(salon.getLabelOrder());
 
         salon.setLabelWaiter(utiliGraf.labelTitleBackerA4("Mozo: --"));
-        salon.getLabelWaiter().setBounds(altoUnit, altoUnit * 7, anchoUnit * 20, 30);
+        salon.getLabelWaiter().setBounds(anchoUnit, altoUnit * 7, anchoUnit * 20, 30);
         panelTable.add(salon.getLabelWaiter());
         return panelTable;
     }
@@ -934,10 +935,10 @@ public class UtilidadesGraficasSalon {
     public JPanel returnPanelSelItem(Salon salon) {
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
-        panelSelItem.setBounds(6, altoUnit * 12, anchoFrame - anchoUnit * 82, altoUnit * 16);
+        panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 16);
         panelSelItem.setBackground(bluLg);
 
-        JButtonMetalBlu butCaptionBebidas = utiliGraf.button3("Bebidas", 5, 5, 55);
+        JButtonMetalBlu butCaptionBebidas = utiliGraf.button3("Bebidas", anchoUnit , altoUnit, anchoUnit * 5);
         butCaptionBebidas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -950,7 +951,7 @@ public class UtilidadesGraficasSalon {
         });
         panelSelItem.add(butCaptionBebidas);
 
-        JButtonMetalBlu butCaptionPlatos = utiliGraf.button3("Platos", 65, 5, 55);
+        JButtonMetalBlu butCaptionPlatos = utiliGraf.button3("Platos", anchoUnit * 7, altoUnit, anchoUnit * 5);
         butCaptionPlatos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -963,7 +964,7 @@ public class UtilidadesGraficasSalon {
         });
         panelSelItem.add(butCaptionPlatos);
 
-        JButtonMetalBlu butCaptionCafeteria = utiliGraf.button3("Cafetería", 125, 5, 80);
+        JButtonMetalBlu butCaptionCafeteria = utiliGraf.button3("Cafetería", anchoUnit * 13, altoUnit, anchoUnit * 5);
         butCaptionCafeteria.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -976,7 +977,7 @@ public class UtilidadesGraficasSalon {
         });
         panelSelItem.add(butCaptionCafeteria);
 
-        JButtonMetalBlu butCaptionOtros = utiliGraf.button3("Otros", 210, 5, 65);
+        JButtonMetalBlu butCaptionOtros = utiliGraf.button3("Otros", anchoUnit * 19, altoUnit, anchoUnit * 4);
         butCaptionOtros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -990,18 +991,18 @@ public class UtilidadesGraficasSalon {
         panelSelItem.add(butCaptionOtros);
 
         salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
-        salon.getComboItems().setBounds(anchoUnit, altoUnit * 5, anchoUnit * 11, altoUnit * 4);
+        salon.getComboItems().setBounds(anchoUnit, altoUnit * 5, anchoUnit * 12, altoUnit * 4);
         salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
         panelSelItem.add(salon.getComboItems());
 
         JLabel labelUnitsItem = utiliGraf.labelTitleBacker3("Unidades");
-        labelUnitsItem.setBounds(anchoUnit * 13, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
+        labelUnitsItem.setBounds(anchoUnit * 15, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
         panelSelItem.add(labelUnitsItem);
-        salon.setSpinnerUnitsItem(utiliGraf.spinnerBack(anchoUnit * 18, altoUnit * 5, anchoUnit * 3, altoUnit * 4, salon.getSpinnerUnitsItem()));
+        salon.setSpinnerUnitsItem(utiliGraf.spinnerBack(anchoUnit * 20, altoUnit * 5, anchoUnit * 3, altoUnit * 4, salon.getSpinnerUnitsItem()));
         panelSelItem.add(salon.getSpinnerUnitsItem());
 
         //Boton Ingreso Item
-        JButtonMetalBlu butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 10);
+        JButtonMetalBlu butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 11);
         butSelItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -1029,10 +1030,10 @@ public class UtilidadesGraficasSalon {
         panelSelItem.add(butSelItem);
 
         JLabel labelAddIndication = utiliGraf.labelTitleBacker3("Indicación item");
-        labelAddIndication.setBounds(anchoUnit * 12, altoUnit * 12, anchoUnit * 8, altoUnit * 3);
+        labelAddIndication.setBounds(anchoUnit * 13, altoUnit * 12, anchoUnit * 8, altoUnit * 3);
         panelSelItem.add(labelAddIndication);
 
-        salon.getCheckBoxIndic().setBounds(anchoUnit * 20 - 5, altoUnit * 12, altoUnit * 3, altoUnit * 3);
+        salon.getCheckBoxIndic().setBounds(anchoUnit * 21, altoUnit * 12, altoUnit * 3, altoUnit * 3);
         salon.getCheckBoxIndic().addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -1103,7 +1104,7 @@ public class UtilidadesGraficasSalon {
             ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
             ss.addItemOrder(salon, salon.getTableAux(), arrayAux, salon.isIndiBool());
             jButExtSetter(salon);
-            salon.getLabelCuenta().setText("$ " + salon.getTotal());
+            salon.getLabelCuenta().setText("" + salon.getTotal());
             salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
             salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
             setTableItems(salon);
@@ -1312,7 +1313,7 @@ public class UtilidadesGraficasSalon {
     public JPanel returnPanelPartial(Salon salon) {
         JPanel panelPartial = new JPanel();
         panelPartial.setLayout(null);
-        panelPartial.setBounds(altoUnit, altoUnit * 64, anchoUnit * 21 + altoUnit, altoUnit * 5);
+        panelPartial.setBounds(anchoUnit, altoUnit * 64, anchoUnit * 24, altoUnit * 5);
         panelPartial.setBackground(bluLg);
 
         salon.setButPartialPay(utiliGraf.button3("PAGO PARCIAL", altoUnit, altoUnit * 1, anchoUnit * 8));
@@ -1333,7 +1334,7 @@ public class UtilidadesGraficasSalon {
         panelPartial.add(salon.getButPartialPay());
 
         salon.getLabelPartialPay().setText("Pagado: $0.0");
-        salon.getLabelPartialPay().setBounds(anchoUnit * 10, altoUnit, anchoUnit * 10, altoUnit * 3);
+        salon.getLabelPartialPay().setBounds(anchoUnit * 12, altoUnit, anchoUnit * 10, altoUnit * 3);
         panelPartial.add(salon.getLabelPartialPay());
         return panelPartial;
     }
@@ -1449,24 +1450,24 @@ public class UtilidadesGraficasSalon {
     public JPanel returnPanelCount(Salon salon) {
         JPanel panelCount = new JPanel();
         panelCount.setLayout(null);
-        panelCount.setBounds(altoUnit, altoUnit * 78, anchoUnit * 21 + altoUnit, altoUnit * 10);
+        panelCount.setBounds(anchoUnit, altoUnit * 78, anchoUnit * 24, altoUnit * 10);
         panelCount.setBackground(narUlg);
 
-        salon.setLabelTotalParcial(utiliGraf.labelTitleBacker2("Parcial $:"));
-        salon.getLabelTotalParcial().setBounds(5, altoUnit * 2, anchoUnit * 6, altoUnit * 3);
+        salon.setLabelTotalParcial(utiliGraf.labelTitleBacker1("Parcial $:"));
+        salon.getLabelTotalParcial().setBounds(anchoUnit, altoUnit * 2, anchoUnit * 8, altoUnit * 3);
         panelCount.add(salon.getLabelTotalParcial());
 
         salon.setLabelCuenta(utiliGraf.labelTitleBackerA3("00,0"));
-        salon.getLabelCuenta().setBounds(anchoUnit * 7, altoUnit * 2, anchoUnit * 15, altoUnit * 4);
+        salon.getLabelCuenta().setBounds(anchoUnit * 9, altoUnit * 2, anchoUnit * 15, altoUnit * 4);
         salon.getLabelCuenta().setBackground(viol);
         panelCount.add(salon.getLabelCuenta());
 
         salon.setLabelTip(utiliGraf.labelTitleBacker3("Prop.: $ 00,0"));
-        salon.getLabelTip().setBounds(5, altoUnit * 7, anchoUnit * 10, altoUnit * 2);
+        salon.getLabelTip().setBounds(anchoUnit, altoUnit * 7, anchoUnit * 13, altoUnit * 2);
         panelCount.add(salon.getLabelTip());
 
         salon.setLabelTotal(utiliGraf.labelTitleBacker3("Total: $ 00,0"));
-        salon.getLabelTotal().setBounds(anchoUnit * 11, altoUnit * 7, anchoUnit * 10, altoUnit * 2);
+        salon.getLabelTotal().setBounds(anchoUnit * 13, altoUnit * 7, anchoUnit * 13, altoUnit * 2);
         panelCount.add(salon.getLabelTotal());
         return panelCount;
     }

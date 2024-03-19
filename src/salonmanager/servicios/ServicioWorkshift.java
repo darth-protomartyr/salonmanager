@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
@@ -36,7 +35,6 @@ public class ServicioWorkshift {
         if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
             isTabs = true;
         }
-
         daoW.updateWorkshiftCash(actualWs);
         daoW.updateWorkshiftClose(actualWs, isTabs);
         daoW.updateWorkshiftElectronic(actualWs);
@@ -45,6 +43,7 @@ public class ServicioWorkshift {
         daoW.updateWorkshiftMountReal(actualWs);
         daoW.updateWorkshiftState(actualWs);
         daoW.updateWorkshiftTotal(actualWs);
+        daoW.updateWorkshiftComment(actualWs);
         daoC.updateCfgActOpenWs(false);
         daoC.updateCfgActOpenIdWs(0);
         if (newWs != null) {

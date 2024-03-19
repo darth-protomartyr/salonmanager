@@ -84,7 +84,7 @@ public class ItemcardInn extends FrameHalf {
         });
         panelPpal.add(butCreateItem);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(anchoFrameHalf);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
