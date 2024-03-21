@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -1385,14 +1386,16 @@ public class UtilidadesGraficasSalon {
         mt.setAlwaysOnTop(true);
         salon.setEnabled(false);
     }
-
+ 
     public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
         salon.getTableAux().setAmountCash(salon.getTableAux().getAmountCash() + amountC);
         salon.getTableAux().setAmountElectronic(salon.getTableAux().getAmountElectronic() + amountE);
+        salon.getTableAux().setCloseTime(new Timestamp(new Date().getTime()));
         daoT.updateTableMountCash(salon.getTableAux());
         daoT.updateTableMountElectronic(salon.getTableAux());
+        daoT.updateCloseTime(salon.getTableAux());
 
         if (itemsPayed != null) {
             if (endex == true) {

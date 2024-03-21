@@ -82,24 +82,25 @@ public class MoneyType extends FrameWindow {
         total = amountToPay;
         amounts.add(cash);
         amounts.add(electronic);
-        setTitle("Modos de Pago");
+        setTitle("Modo de Pago");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, 390, 40);
+        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("SELECCIONAR MODO DE PAGO");
         panelLabel.add(labelTit);
 
         JLabel labelMount = utiliGraf.labelTitleBacker2W("Monto a pagar: $" + total);
-        labelMount.setBounds(100, 35, 190, 25);
+        labelMount.setBounds(anchoUnit * 5, altoUnit * 5, anchoUnit * 29, altoUnit * 3);
         panelPpal.add(labelMount);
 
         JLabel labelComment = utiliGraf.labelTitleBacker3W("Ingrese un comentario(opcional): ");
-        labelComment.setBounds(70, 65, 250, 20);
+        labelComment.setBounds(anchoUnit * 5, altoUnit * 8, anchoUnit * 19, altoUnit * 3);
+
         panelPpal.add(labelComment);
 
         textArea.setRows(3);
@@ -110,10 +111,11 @@ public class MoneyType extends FrameWindow {
         textArea.setFont(newFont);
         textArea.setBackground(narUlg);
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setBounds(70, 85, 250, 55);
+        scrollPane.setBounds(anchoUnit * 5, altoUnit * 11, anchoUnit * 19, altoUnit * 8);
         panelPpal.add(scrollPane);
 
-        butCashIn = utiliGraf.button2("Pago Total Efectivo", 85, 150, 220);
+        butCashIn = utiliGraf.button2("Pago Total Efectivo", anchoUnit * 6, altoUnit * 21, anchoUnit * 17);
+
         butCashIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -130,7 +132,7 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butCashIn);
 
-        butElectronicIn = utiliGraf.button2("Pago Total Electronico", 85, 190, 220);
+        butElectronicIn = utiliGraf.button2("Pago Total Electronico", anchoUnit * 6, altoUnit * 26, anchoUnit * 17);
         butElectronicIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -143,7 +145,7 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butElectronicIn);
 
-        butMixedIn = utiliGraf.button2("Pago Mixto", 85, 230, 220);
+        butMixedIn = utiliGraf.button2("Pago Mixto", anchoUnit * 6, altoUnit * 31, anchoUnit * 17);
         butMixedIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -159,12 +161,12 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butMixedIn);
 
-        labelMixed = utiliGraf.labelTitleBacker2("Ingrese el monto que recibió en efectivo:");
-        labelMixed.setBounds(40, 150, 340, 25);
+        labelMixed = utiliGraf.labelTitleBacker2W("Ingrese el monto que recibió en efectivo:");
+        labelMixed.setBounds(anchoUnit * 3, altoUnit * 20, anchoUnit * 25, altoUnit * 3);        
         labelMixed.setVisible(false);
         panelPpal.add(labelMixed);
 
-        fieldAmountCash.setBounds(40, 180, 120, 30);
+        fieldAmountCash.setBounds(anchoUnit * 5, altoUnit * 23, anchoUnit * 9, altoUnit * 4);
         fieldAmountCash.setFont(new Font("Arial", Font.PLAIN, altoUnit * 3));
         fieldAmountCash.setVisible(false);
         fieldAmountCash.addKeyListener(new KeyListener() {
@@ -174,12 +176,12 @@ public class MoneyType extends FrameWindow {
                 if (keyChar == KeyEvent.VK_DELETE || keyChar == KeyEvent.CHAR_UNDEFINED) {
                     e.consume(); // Consume la tecla para evitar que se procese como entrada
                 }
-                
+
                 if (e.getKeyChar() == '-') {
                     e.consume();
                 }
             }
-            
+
             @Override
             public void keyPressed(KeyEvent e) {
             }
@@ -208,13 +210,14 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(fieldAmountCash);
 
-        labelChange = utiliGraf.labelTitleBacker2("");
-        labelChange.setBounds(165, 180, 200, 30);
+        labelChange = utiliGraf.labelTitleBacker2W("");
+        labelChange.setBounds(anchoUnit * 15, altoUnit * 23, anchoUnit * 12, altoUnit * 4);
+                                
         labelChange.setVisible(false);
         panelPpal.add(labelChange);
 
-        butInPartialCash = utiliGraf.button1("Confirmar Monto", 70, 220, 200);
-        butInPartialCash.setVisible(false);
+        butInPartialCash = utiliGraf.button1("Confirmar Monto", anchoUnit * 7, altoUnit * 29, anchoUnit * 15);
+        butInPartialCash.setVisible(false);                     
         butInPartialCash.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -227,7 +230,7 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butInPartialCash);
 
-        butBack = utiliGraf.button3("Volver", 290, 233, 70);
+        butBack = utiliGraf.button3("Volver", anchoUnit * 23, altoUnit * 33, anchoUnit * 5);
         butBack.setVisible(false);
         butBack.addActionListener(new ActionListener() {
             @Override
@@ -284,7 +287,6 @@ public class MoneyType extends FrameWindow {
         }
     }
 
-
     private void butInPartialCashActionPerformed(int num) throws Exception {
         String amountCash = fieldAmountCash.getText();
         double cash = 0;
@@ -302,10 +304,10 @@ public class MoneyType extends FrameWindow {
                 }
             } else if (num == 2) {
                 if (cash < total) {
-                amounts.set(0, cash);
-                amounts.set(1, total - cash);
-                utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
-                dispose();
+                    amounts.set(0, cash);
+                    amounts.set(1, total - cash);
+                    utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
+                    dispose();
                 } else {
                     utiliMsg.errorUnnecesaryOp();
                 }

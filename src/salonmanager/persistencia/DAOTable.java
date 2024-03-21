@@ -38,9 +38,15 @@ public class DAOTable extends DAO {
         }
 
         if (error == false) {
+            String sql = "";
             try {
-                String sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
-                        + "VALUES( " + tab.getNum() + ",'" + tab.getPos() + "','" + tab.getOpenTime() + "','" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", " + tab.isToPay() + ", " + tab.getDiscount() + ", " + tab.getError() + "," + tab.getPriceCorrection() + ", " + tab.getAmountCash() + ", " + tab.getAmountElectronic() + ", " + tab.getTotal() + ",'" + tab.getComments() + "', " + tab.isActiveTable() + ");";
+                if (tab.getCloseTime() == null) {
+                    sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
+                            + "VALUES( " + tab.getNum() + ",'" + tab.getPos() + "','" + tab.getOpenTime() + "'," + tab.getCloseTime() + ",'" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", " + tab.isToPay() + ", " + tab.getDiscount() + ", " + tab.getError() + "," + tab.getPriceCorrection() + ", " + tab.getAmountCash() + ", " + tab.getAmountElectronic() + ", " + tab.getTotal() + ",'" + tab.getComments() + "', " + tab.isActiveTable() + ");";
+                } else {
+                    sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
+                            + "VALUES( " + tab.getNum() + ",'" + tab.getPos() + "','" + tab.getOpenTime() + "','" + tab.getCloseTime() + "','" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", " + tab.isToPay() + ", " + tab.getDiscount() + ", " + tab.getError() + "," + tab.getPriceCorrection() + ", " + tab.getAmountCash() + ", " + tab.getAmountElectronic() + ", " + tab.getTotal() + ",'" + tab.getComments() + "', " + tab.isActiveTable() + ");";
+                }
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
             } catch (SQLException e) {
@@ -187,6 +193,22 @@ public class DAOTable extends DAO {
         }
     }
 
+    public void updateCloseTime(Table tab) throws Exception {
+        try {
+            String sql1 = "UPDATE tabs SET table_close_time = '" + tab.getCloseTime() + "' WHERE table_id = '" + tab.getId() + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
     public void updateComments(Table tab) throws Exception {
         if (!tab.getComments().equals("Ingrese un comentario(opcional): ") || !tab.getComments().equals("Causa del Error (obligatorio): ")) {
             try {
@@ -205,8 +227,6 @@ public class DAOTable extends DAO {
         }
     }
 
-    
-    
     public ArrayList<Table> listarTablesByWorkshift(Workshift ws) throws Exception {
         ArrayList<Table> tables = new ArrayList<Table>();
         Timestamp open = ws.getOpenWs();
@@ -217,9 +237,6 @@ public class DAOTable extends DAO {
 
         try {
             String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
-//            if (close == null) {
-//                sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= " + close + " AND table_active = true;";
-//            }
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -227,18 +244,19 @@ public class DAOTable extends DAO {
                 tab.setNum(resultado.getInt(1));
                 tab.setPos(resultado.getString(2));
                 tab.setOpenTime(resultado.getTimestamp(3));
-                tab.setId(resultado.getString(4));
-                tab.setOpen(resultado.getBoolean(5));
-                tab.setBill(resultado.getBoolean(6));
-                tab.setToPay(resultado.getBoolean(7));
-                tab.setDiscount(resultado.getInt(8));
-                tab.setError(resultado.getDouble(9));
-                tab.setPriceCorrection(resultado.getDouble(10));
-                tab.setAmountCash(resultado.getDouble(11));
-                tab.setAmountElectronic(resultado.getDouble(12));
-                tab.setTotal(resultado.getDouble(13));
-                tab.setComments(resultado.getString(14));
-                tab.setActiveTable(resultado.getBoolean(15));
+                tab.setCloseTime(resultado.getTimestamp(4));
+                tab.setId(resultado.getString(5));
+                tab.setOpen(resultado.getBoolean(6));
+                tab.setBill(resultado.getBoolean(7));
+                tab.setToPay(resultado.getBoolean(8));
+                tab.setDiscount(resultado.getInt(9));
+                tab.setError(resultado.getDouble(10));
+                tab.setPriceCorrection(resultado.getDouble(11));
+                tab.setAmountCash(resultado.getDouble(12));
+                tab.setAmountElectronic(resultado.getDouble(13));
+                tab.setTotal(resultado.getDouble(14));
+                tab.setComments(resultado.getString(15));
+                tab.setActiveTable(resultado.getBoolean(16));
                 tables.add(tab);
             }
             return tables;
@@ -248,16 +266,15 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
-    
-        public ArrayList<Table> listarTablesOpenByWorkshift(Workshift ws) throws Exception {
+
+    public ArrayList<Table> listarTablesOpenByWorkshift(Workshift ws) throws Exception {
         ArrayList<Table> tables = new ArrayList<Table>();
         Timestamp open = ws.getOpenWs();
         Timestamp close = ws.getCloseWs();
         if (close == null) {
             close = new Timestamp(new Date().getTime());
         }
-        
+
         try {
             String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_open = true AND table_active = true;";
             System.out.println(sql);
@@ -267,18 +284,19 @@ public class DAOTable extends DAO {
                 tab.setNum(resultado.getInt(1));
                 tab.setPos(resultado.getString(2));
                 tab.setOpenTime(resultado.getTimestamp(3));
-                tab.setId(resultado.getString(4));
-                tab.setOpen(resultado.getBoolean(5));
-                tab.setBill(resultado.getBoolean(6));
-                tab.setToPay(resultado.getBoolean(7));
-                tab.setDiscount(resultado.getInt(8));
-                tab.setError(resultado.getDouble(9));
-                tab.setPriceCorrection(resultado.getDouble(10));
-                tab.setAmountCash(resultado.getDouble(11));
-                tab.setAmountElectronic(resultado.getDouble(12));
-                tab.setTotal(resultado.getDouble(13));
-                tab.setComments(resultado.getString(14));
-                tab.setActiveTable(resultado.getBoolean(15));
+                tab.setCloseTime(resultado.getTimestamp(4));
+                tab.setId(resultado.getString(5));
+                tab.setOpen(resultado.getBoolean(6));
+                tab.setBill(resultado.getBoolean(7));
+                tab.setToPay(resultado.getBoolean(8));
+                tab.setDiscount(resultado.getInt(9));
+                tab.setError(resultado.getDouble(10));
+                tab.setPriceCorrection(resultado.getDouble(11));
+                tab.setAmountCash(resultado.getDouble(12));
+                tab.setAmountElectronic(resultado.getDouble(13));
+                tab.setTotal(resultado.getDouble(14));
+                tab.setComments(resultado.getString(15));
+                tab.setActiveTable(resultado.getBoolean(16));
                 tables.add(tab);
             }
             return tables;
@@ -288,8 +306,6 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
-    
 
     public Table getTableById(String st) throws Exception {
         Table tab = new Table();
@@ -301,18 +317,19 @@ public class DAOTable extends DAO {
                 tab.setNum(resultado.getInt(1));
                 tab.setPos(resultado.getString(2));
                 tab.setOpenTime(resultado.getTimestamp(3));
-                tab.setId(resultado.getString(4));
-                tab.setOpen(resultado.getBoolean(5));
-                tab.setBill(resultado.getBoolean(6));
-                tab.setToPay(resultado.getBoolean(7));
-                tab.setDiscount(resultado.getInt(8));
-                tab.setError(resultado.getDouble(9));
-                tab.setPriceCorrection(resultado.getDouble(10));
-                tab.setAmountCash(resultado.getDouble(11));
-                tab.setAmountElectronic(resultado.getDouble(12));
-                tab.setTotal(resultado.getDouble(13));
-                tab.setComments(resultado.getString(14));
-                tab.setActiveTable(resultado.getBoolean(15));
+                tab.setCloseTime(resultado.getTimestamp(4));
+                tab.setId(resultado.getString(5));
+                tab.setOpen(resultado.getBoolean(6));
+                tab.setBill(resultado.getBoolean(7));
+                tab.setToPay(resultado.getBoolean(8));
+                tab.setDiscount(resultado.getInt(9));
+                tab.setError(resultado.getDouble(10));
+                tab.setPriceCorrection(resultado.getDouble(11));
+                tab.setAmountCash(resultado.getDouble(12));
+                tab.setAmountElectronic(resultado.getDouble(13));
+                tab.setTotal(resultado.getDouble(14));
+                tab.setComments(resultado.getString(15));
+                tab.setActiveTable(resultado.getBoolean(16));
             }
             return tab;
         } catch (Exception e) {
@@ -322,21 +339,6 @@ public class DAOTable extends DAO {
         }
     }
 
-//    public void deleteTable(Table tab) throws Exception {
-//        try {
-//            String sql = "DELETE FROM tabs WHERE table_id = '" + tab.getId() + "';";
-//            System.out.println(sql);
-//            insertarModificarEliminar(sql.trim());
-//        } catch (SQLException e) {
-//            if (e.getErrorCode() == 1062) {
-//                utiliMsg.cargaError();
-//            } else {
-//                e.printStackTrace();
-//            }
-//        } finally {
-//            desconectarBase();
-//        }
-//    }
     public void downActiveTable(Table t) throws Exception {
         try {
             String sql1 = "UPDATE tabs SET table_active = false WHERE table_id = '" + t.getId() + "';";
@@ -367,9 +369,5 @@ public class DAOTable extends DAO {
         } finally {
             desconectarBase();
         }
-    }
-
-    public Table getTableById(Table tab) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

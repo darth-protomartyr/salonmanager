@@ -97,12 +97,10 @@ public class CashFlowManager extends FrameWindow {
             public void actionPerformed(ActionEvent e) {
                 JRadioButton selectedButton = (JRadioButton) e.getSource();
                 if (selectedButton.getText().equals("Efectivo")) {
-//                    optionCash.setSelected(true);
                     optionElec.setSelected(false);
                     cashKind = true;
                 } else {
                     optionCash.setSelected(false);
-//                    optionElec.setSelected(true);
                     cashKind = false;                    
                 }
             }
@@ -181,7 +179,7 @@ public class CashFlowManager extends FrameWindow {
         boolean error = false;
         
         if (flowKind == 0) {
-            comment = "Dinero ingresado en caja inicial. " + comment;
+            comment = "Dinero ingresado en caja inicial. \n" + comment;
         }
         
         try {

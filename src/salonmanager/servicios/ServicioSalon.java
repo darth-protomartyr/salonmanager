@@ -42,7 +42,6 @@ public class ServicioSalon {
     ServicioTable st = new ServicioTable();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-//    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     Salon salon = null;
 
     public ArrayList<Integer> salonConfigValues(Integer tab, int anchoPane, int alturaPane) {
@@ -127,7 +126,6 @@ public class ServicioSalon {
             bill = bill - Math.round(bill * discount / 100);
         }
 
-//      bill += tableAux.getErrorMod;
         return bill;
     }
 
@@ -493,6 +491,7 @@ public class ServicioSalon {
                     tab.setPartialPayedND(tab.getPartialPayedND());
                     double total2 = countBill(tab);
                     tab.setTotal(total2);
+                    tab.setCloseTime(new Timestamp(new Date().getTime()));
                     tab.setPartialPayed(new ArrayList<Itemcard>());
                     tab.setPartialPayedND(new ArrayList<Itemcard>());
                     tab.setComments(tab.getComments() + "<br>Los elementos no pagados fueron enviados al siguiente turno");
@@ -501,7 +500,6 @@ public class ServicioSalon {
                     toUpdTabs.add(tab);
                     upTabs.add(tabNewWs);
                 } else {
-
                     Thread.sleep(10);
                     Table tabNewWs = new Table(tab.getNum(), tab.getPos(), bill, activeTable, orderNew, waiter, discount, total, comments);
                     tabNewWs.setOrder(tab.getOrder());
@@ -509,7 +507,6 @@ public class ServicioSalon {
                     total = countBill(tabNewWs);
                     tabNewWs.setTotal(total);
                     tabNewWs.setComments("La mesa fue dividida por cambio de turno");
-
                     tab.setActiveTable(false);
                     upTabs.add(tabNewWs);
                     downTabs.add(tab);

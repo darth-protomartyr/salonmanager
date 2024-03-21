@@ -9,6 +9,7 @@ public class Table {
     int num;
     String pos;
     Timestamp openTime;
+    Timestamp closeTime;
     String id;
     boolean open;
     boolean bill;
@@ -35,6 +36,7 @@ public class Table {
         this.num = num;
         this.pos = pos;
         this.openTime = new Timestamp(new Date().getTime());
+        this.closeTime = null;
         this.id = emptyEraser(num + pos + "_" + openTime);
         this.open = true;
         this.bill = false;
@@ -56,10 +58,11 @@ public class Table {
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, String id, boolean open, boolean bill, boolean toPay,  boolean activeTable, ArrayList<Itemcard> order, ArrayList<Itemcard> gifts, ArrayList<Itemcard> partialPayed, ArrayList<Itemcard> partialPayedNoDiscount, ArrayList<Itemcard> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total, String comments) {
+    public Table(int num, String pos, Timestamp openTime, Timestamp closeTime, String id, boolean open, boolean bill, boolean toPay,  boolean activeTable, ArrayList<Itemcard> order, ArrayList<Itemcard> gifts, ArrayList<Itemcard> partialPayed, ArrayList<Itemcard> partialPayedNoDiscount, ArrayList<Itemcard> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total, String comments) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
+        this.closeTime = closeTime;
         this.id = id;
         this.open = open;
         this.bill = bill;
@@ -84,6 +87,7 @@ public class Table {
         this.num = num;
         this.pos = pos;
         this.openTime = new Timestamp(new Date().getTime());
+        this.closeTime = new Timestamp(new Date().getTime());
         this.id = emptyEraser(num + pos + "_" + openTime);
         this.open = true;
         this.bill = bill;
@@ -106,6 +110,7 @@ public class Table {
         this.num = tab.getNum();
         this.pos = tab.getPos();
         this.openTime = tab.getOpenTime();
+        this.closeTime = tab.getCloseTime();
         this.id = tab.getId();
         this.open = tab.isOpen();
         this.toPay = tab.isToPay();
@@ -149,6 +154,14 @@ public class Table {
 
     public void setOpenTime(Timestamp openTime) {
         this.openTime = openTime;
+    }
+    
+    public Timestamp getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(Timestamp closeTime) {
+        this.closeTime = closeTime;
     }
 
     public String getId() {
@@ -207,7 +220,6 @@ public class Table {
         return activeTable;
     }
     
-
     public void setPartialPayed(ArrayList<Itemcard> partialPayed) {
         this.partialPayed = partialPayed;
     }
@@ -215,7 +227,7 @@ public class Table {
     public ArrayList<Itemcard> getPartialPayed() {
         return partialPayed;
     }
-
+ 
     public void setPartialPayedND(ArrayList<Itemcard> partialPayedNoDiscount) {
         this.partialPayedND = partialPayedNoDiscount;
     }
