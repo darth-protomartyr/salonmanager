@@ -156,6 +156,15 @@ public class CorrectorItem extends FrameWindow {
         });
         panelBut.add(butInGift);
 
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
+        
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 salon.setEnabled(true);

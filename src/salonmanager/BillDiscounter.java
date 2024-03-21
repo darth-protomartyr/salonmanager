@@ -17,12 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.entidades.graphics.PanelPpal;                                                                                                                                                                                                                                                                                                                                                                            
+import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class BillDiscounter extends FrameWindow {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -30,7 +31,7 @@ public class BillDiscounter extends FrameWindow {
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
-    
+
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -40,11 +41,11 @@ public class BillDiscounter extends FrameWindow {
 
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
-    
+
     JButtonMetalBlu butInGift = new JButtonMetalBlu();
     JSpinner spinnerDiscount = null;
     Salon salon = null;
-    
+
     public BillDiscounter(Salon sal) {
         salon = sal;
         sm.addFrame(this);
@@ -70,7 +71,7 @@ public class BillDiscounter extends FrameWindow {
         labelPercentage.setForeground(bluLg);
         labelPercentage.setBounds(240, 90, 80, 80);
         panelPpal.add(labelPercentage);
-        
+
         JPanel panelBut = new JPanel();
         panelBut.setBackground(bluSt);
         panelBut.setBounds(0, 210, 390, 50);
@@ -80,15 +81,24 @@ public class BillDiscounter extends FrameWindow {
         butInGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                try {           
+                try {
                     butDiscounterActionPerformed();
                 } catch (Exception ex) {
                     Logger.getLogger(BillDiscounter.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelBut.add(butInGift);        
-        
+        panelBut.add(butInGift);
+
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 salon.setEnabled(true);

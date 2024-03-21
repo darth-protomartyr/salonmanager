@@ -3,6 +3,8 @@ package salonmanager;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,6 +94,12 @@ public class ItemcardInn extends FrameHalf {
             }
         });
         panelPpal.add(butSalir);
+        
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
     }
 
     private void butCreateItemActionPerformed() throws Exception {

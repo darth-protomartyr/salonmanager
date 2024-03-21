@@ -160,6 +160,16 @@ public class PartialPayer extends FrameWindow {
         });
         panelBut.add(butPartialIn);
 
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                salon.setEnabled(true);
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
+        
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 salon.setEnabled(true);

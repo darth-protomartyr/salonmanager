@@ -96,10 +96,6 @@ public class LandingFrame extends FrameGeneral {
         });
         panelPpal.add(butSalir);
         
-        
-
-
-        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

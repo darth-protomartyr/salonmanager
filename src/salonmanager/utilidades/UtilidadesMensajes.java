@@ -314,9 +314,11 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
-    public void confirmRealWsMount() {
-        CustomDialog cm = new CustomDialog("Para cerrar la ventana debe confirmar el monto final del turno.", 3);
-        cm.setVisible(true);
+    public boolean confirmRealWsMount() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Desea cerrar la ventana sin confirmar el monto final del turno?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;        
     }
 
     public void errorEmptyCause() {

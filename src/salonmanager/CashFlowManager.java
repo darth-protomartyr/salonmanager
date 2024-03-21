@@ -161,6 +161,15 @@ public class CashFlowManager extends FrameWindow {
             labelComment.setText("Introduzca el motivo de la extracción:");
             butCashFlow.setText("Extraer");
         }
+        
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
 
 
         addWindowListener(new WindowAdapter() {

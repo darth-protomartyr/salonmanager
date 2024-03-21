@@ -104,6 +104,16 @@ public class GiftSelector extends FrameWindow {
             }
         });
         panelBut.add(butInGift);
+        
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                salon.setEnabled(true);
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

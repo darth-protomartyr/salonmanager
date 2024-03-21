@@ -3,6 +3,8 @@ package salonmanager;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +61,7 @@ public class ItemcardModificacion extends FrameHalf {
     JButtonMetalBlu butModificarItem = null;
 
     public ItemcardModificacion(Itemcard ic) throws Exception {
-        itemAux= ic;
+        itemAux = ic;
         sm.addFrame(this);
         item = ic;
         setTitle("Modificación Item de la Carta");
@@ -95,6 +97,12 @@ public class ItemcardModificacion extends FrameHalf {
             }
         });
         panelPpal.add(butSalir);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
     }
 
     private void butModificarItemActionPerformed() throws Exception {

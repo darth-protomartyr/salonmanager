@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
@@ -19,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import salonmanager.SalonManager;
 import salonmanager.entidades.graphics.FrameWindow;
+import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.servicios.ServicioUser;
 import salonmanager.utilidades.Utilidades;
@@ -76,6 +79,15 @@ public class IndicationsShower extends FrameWindow{
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setBounds(20, 65, 340, 190);
         panelPpal.add(scrollPane);
+
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);        
         
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

@@ -3,6 +3,8 @@ package salonmanager;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import salonmanager.entidades.graphics.FrameThird;
@@ -64,7 +66,6 @@ public class ItemcardConsulta extends FrameThird {
 
         String descr = "<html>" + itemAux.getDescription() + "</html>";
         JLabel labelDescriptionTextItem = utiliGraf.labelTitleBacker3(descr);
-//        labelDescriptionTextItem.setToolTipText(descr);
         labelDescriptionTextItem.setBounds(20, 180, 345, 80);
         panelB.add(labelDescriptionTextItem);
 
@@ -93,5 +94,11 @@ public class ItemcardConsulta extends FrameThird {
             }
         });
         panelPpal.add(butSalir);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
     }
 }

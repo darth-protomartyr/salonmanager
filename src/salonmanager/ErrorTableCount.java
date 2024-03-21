@@ -236,6 +236,16 @@ public class ErrorTableCount extends FrameWindow {
         });
         panelAmount.add(butErrorMount);
         panelPpal.add(panelAmount);
+        
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);   
+        
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 salon.setEnabled(true);
@@ -243,7 +253,6 @@ public class ErrorTableCount extends FrameWindow {
             }
         });
     }
-
 //FUNCIONES------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------
 //Funciones por Monto--------------------------------------------------------------------------------------------------    

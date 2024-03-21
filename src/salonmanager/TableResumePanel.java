@@ -97,7 +97,7 @@ public class TableResumePanel extends FrameThird {
         scrollPane.setBounds(anchoUnit * 4, altoUnit * 61, anchoUnit * 26, altoUnit * 30);
         panelPpal.add(scrollPane);
         
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(frame, 3);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

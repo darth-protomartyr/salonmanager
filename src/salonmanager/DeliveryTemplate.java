@@ -388,6 +388,15 @@ public class DeliveryTemplate extends FrameHalf {
             butOpDelivery.setText("CONFIRMAR CAMBIOS");
         }
 
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        butSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
+        panelPpal.add(butSalir);
+        
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -396,18 +405,7 @@ public class DeliveryTemplate extends FrameHalf {
         });
     }
 
-//    public static void main(String[] args) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                try {
-//                    DeliveryTemplate fnd = new DeliveryTemplate();
-//                    fnd.setVisible(true);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(DeliveryTemplate.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//    }
+    
     private JPanel panelBacker(String tit, int i, int i0, int i1, int i2) {
         JPanel panel = new JPanel(null);
         panel.setBounds(i, i0, i1, i2);
