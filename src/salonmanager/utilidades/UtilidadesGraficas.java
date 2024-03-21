@@ -581,6 +581,9 @@ public class UtilidadesGraficas extends JFrame {
         panelData2.setBounds(anchoUnit * 5, altoUnit * 15, anchoUnit * 30, altoUnit * 7);
         comboCaption.setModel(utili.captionComboModelReturn(captionsDB));
         comboCaption.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
+        int f4 = (int) Math.round(anchoUnit * 1.6);
+        Font font4 = new Font("Arial", Font.BOLD, f4);
+        comboCaption.setFont(font4);
         panelData2.add(comboCaption);
         panelData2.add(Box.createHorizontalStrut(30));
         panelA.add(panelData2);

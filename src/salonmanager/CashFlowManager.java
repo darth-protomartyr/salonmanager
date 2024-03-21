@@ -63,7 +63,7 @@ public class CashFlowManager extends FrameWindow {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, 390, 70);
+        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("");

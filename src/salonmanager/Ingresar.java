@@ -53,7 +53,7 @@ public class Ingresar extends FrameWindow {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluLg);
-        panelLabel.setBounds(0, 0, 390, 50);
+        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
 
         JLabel labelIngreso = utiliGraf.labelTitleBacker1W("Log In");

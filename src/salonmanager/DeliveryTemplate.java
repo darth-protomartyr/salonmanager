@@ -125,6 +125,7 @@ public class DeliveryTemplate extends FrameHalf {
 
         consumers = daoC.getConsumersPhone();
         comboConsumers.setModel(utili.consumerComboModelReturnWNull(consumers));
+        comboConsumers.setFont(salon.getFont4());
         comboConsumers.setBounds(anchoUnit * 24, altoUnit * 7, anchoUnit * 12, altoUnit * 4);
         comboConsumers.setSelectedIndex(consumers.size());
         panelConsumer.add(comboConsumers);
@@ -258,6 +259,7 @@ public class DeliveryTemplate extends FrameHalf {
 
         deliverys = daoU.listUserByRol("DELIVERY");
         comboDelis.setModel(utili.userComboModelReturnWNull(deliverys));
+        comboDelis.setFont(salon.getFont4());
         comboDelis.setBounds(anchoUnit * 22, altoUnit * 7, anchoUnit * 12, altoUnit * 4);
         comboDelis.setSelectedIndex(deliverys.size());
         panelDelivery.add(comboDelis);
@@ -413,7 +415,7 @@ public class DeliveryTemplate extends FrameHalf {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(narLg);
-        panelLabel.setBounds(0, 0, anchoFrame / 2, 40);
+        panelLabel.setBounds(0, 0, anchoFrame / 2, altoUnit * 5);
         panel.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4(tit);

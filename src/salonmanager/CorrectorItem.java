@@ -67,7 +67,7 @@ public class CorrectorItem extends FrameWindow {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, 390, 40);
+        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Corrector de Ingresos");
@@ -135,6 +135,7 @@ public class CorrectorItem extends FrameWindow {
 
         itemsComboChanger(itemsOrder, 1);
         comboItems.setBounds(200, 140, 150, 40);
+        comboItems.setFont(salon.getFont3());
         panelPpal.add(comboItems);
 
         JPanel panelBut = new JPanel();

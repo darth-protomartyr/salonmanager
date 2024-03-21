@@ -65,7 +65,7 @@ public class WaiterSelector extends FrameWindow {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, 390, 40);
+        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("");
@@ -78,6 +78,7 @@ public class WaiterSelector extends FrameWindow {
 
         comboWaiters.setModel(utili.userComboModelReturnWNull(waiters));
         comboWaiters.setBounds(90, 80, 200, 40);
+        comboWaiters.setFont(salon.getFont4());
         comboWaiters.setSelectedIndex(waiters.size());
         DefaultListCellRenderer renderer = new DefaultListCellRenderer();
         renderer.setFont(new Font("Arial", Font.PLAIN, 50));

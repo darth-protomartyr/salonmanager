@@ -63,17 +63,16 @@ public class GiftSelector extends FrameWindow {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, 390, 40);
+        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Selecione un item para obsequiar");
         panelLabel.add(labelTit);
 
         aIC = tab.getOrder();
-//        HashSet<Itemcard> hsaIC = new HashSet<Itemcard>(aIC1);
-//        aIC2 = new ArrayList<Itemcard>(hsaIC);
 
         comboItems.setModel(utili.itemsComboModelReturn(aIC));
+        comboItems.setFont(salon.getFont4());
         comboItems.setBounds(30, 50, 150, 40);
         panelPpal.add(comboItems);
 

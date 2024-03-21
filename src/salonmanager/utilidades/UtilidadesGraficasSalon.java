@@ -992,6 +992,7 @@ public class UtilidadesGraficasSalon {
         panelSelItem.add(butCaptionOtros);
 
         salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
+        salon.getComboItems().setFont(salon.getFont4());
         salon.getComboItems().setBounds(anchoUnit, altoUnit * 5, anchoUnit * 12, altoUnit * 4);
         salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
         panelSelItem.add(salon.getComboItems());

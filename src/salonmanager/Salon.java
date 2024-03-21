@@ -91,6 +91,10 @@ public class Salon extends FrameFull {
     Font font2 = new Font("Arial", Font.BOLD, f2);
     int f3 = (int) Math.round(anchoUnit * 1.6);
     Font font3 = new Font("Arial", Font.BOLD, f3);
+    int f4 = (int) Math.round(anchoUnit * 1.2);
+    Font font4 = new Font("Arial", Font.BOLD, f4);
+    int f5 = (int) Math.round(anchoUnit * 1.0);
+    Font font5 = new Font("Arial", Font.BOLD, f5);
     JScrollPane scrPaneBarr = new JScrollPane();
     JPanel panelBarrBut = new JPanel();
     JPanel panelDeliBut = new JPanel();
@@ -510,28 +514,12 @@ public class Salon extends FrameFull {
         this.tabsBut = tabsBut;
     }
 
-    public int getF1() {
-        return f1;
-    }
-
-    public void setF1(int f1) {
-        this.f1 = f1;
-    }
-
     public Font getFont1() {
         return font1;
     }
 
     public void setFont1(Font font1) {
         this.font1 = font1;
-    }
-
-    public int getF2() {
-        return f2;
-    }
-
-    public void setF2(int f2) {
-        this.f2 = f2;
     }
 
     public Font getFont2() {
@@ -542,20 +530,28 @@ public class Salon extends FrameFull {
         this.font2 = font2;
     }
 
-    public int getF3() {
-        return f3;
-    }
-
-    public void setF3(int f3) {
-        this.f3 = f3;
-    }
-
     public Font getFont3() {
         return font3;
     }
 
-    public void setFont3(Font font3) {
+    public void setFont3(Font font4) {
         this.font3 = font3;
+    }
+    
+    public Font getFont4() {
+        return font4;
+    }
+
+    public void setFont4(Font font4) {
+        this.font4 = font4;
+    }
+    
+    public Font getFont5() {
+        return font5;
+    }
+
+    public void setFont5(Font font5) {
+        this.font5 = font5;
     }
 
     public JScrollPane getScrPaneBarr() {
