@@ -7,9 +7,10 @@ import javax.swing.JPanel;
 public class PanelPpal extends JPanel {
     Color bluSt = new Color(3, 166, 136);
 
+    
     public PanelPpal(JFrame frame) {
         setBackground(bluSt);
         setLayout(null);
-        setSize(frame.getSize());
+        setSize(frame.getWidth(), frame.getHeight());
     }
 }

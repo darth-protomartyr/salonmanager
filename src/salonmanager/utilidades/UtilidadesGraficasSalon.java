@@ -5,7 +5,9 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import static java.awt.PageAttributes.ColorType.COLOR;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +25,10 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -62,7 +66,9 @@ import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioItemMonitor;
 import salonmanager.servicios.ServicioItemSale;
 import salonmanager.servicios.ServicioSalon;
+import salonmanager.entidades.graphics.CustomTabbedPaneUI;
 import salonmanager.servicios.ServicioTable;
+
 
 public class UtilidadesGraficasSalon {
 
@@ -350,7 +356,9 @@ public class UtilidadesGraficasSalon {
             salon.getTabbedPane().addTab(salon.getTablePan().get(i), salon.getPanelsPane().get(i));
         }
         salon.getTabbedPane().setBounds(anchoUnit, anchoUnit, anchoUnit * 72, altoUnit * 75);
+//        salon.getTabbedPane().setForeground(new Color(3, 106, 76));       
         salon.getPanelA().add(salon.getTabbedPane());
+        salon.getTabbedPane().setUI(new CustomTabbedPaneUI());
 
         ActionListener actionListener = new ActionListener() {
             @Override

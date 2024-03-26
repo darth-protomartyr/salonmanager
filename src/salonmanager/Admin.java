@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import salonmanager.SalonManager;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.utilidades.Utilidades;
@@ -16,14 +15,13 @@ import salonmanager.utilidades.UtilidadesMensajes;
 import salonmanager.utilidades.UtilidadesUpdate;
 
 public class Admin extends FrameFull {
-
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     UtilidadesUpdate utiliUpd = new UtilidadesUpdate();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
-    Color bluLg = new Color(194, 242, 206);
+    Color bluLg = new Color(194, 242, 206); 
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
     User userIn = null;
@@ -37,8 +35,10 @@ public class Admin extends FrameFull {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                sm.frameCloser();
-                dispose();
+                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                if (confirmation) {
+                    dispose();
+                }
             }
         });
         panelPpal.add(butSalir);
@@ -48,11 +48,9 @@ public class Admin extends FrameFull {
             public void windowClosing(WindowEvent e) {
                 boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
                 if (confirmation) {
-                    sm.frameCloser();
                     dispose();
                 }
             }
         });
-
     }
 }

@@ -149,7 +149,6 @@ public class Salon extends FrameFull {
     
     JTabbedPane tabbedPane = new JTabbedPane();
 
-
     //Menu Lateral
     int rowsItems = 0; //nro filas de la tabla
     int colItems = 3; //nro columnas de las tablas
@@ -227,7 +226,7 @@ public class Salon extends FrameFull {
         panelA.setLayout(null);
         panelA.setBounds(anchoUnit, altoUnit * 20, anchoUnit * 74, altoUnit * 79);
         panelA.setBackground(bluLg);
-        JLabel labelLegal = utiliGraf.labelLegal(anchoUnit * 74, altoUnit * 79, 2, 13);
+        JLabel labelLegal = utiliGraf.labelLegal(anchoUnit * 74, altoUnit * 79, 2, 2);
         panelA.add(labelLegal);
         panelPpal.add(panelA);
         panelBDButtons = new JPanel();

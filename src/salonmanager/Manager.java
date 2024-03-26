@@ -17,6 +17,7 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameFull;
+import salonmanager.entidades.graphics.PanelPpalCustom;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -54,13 +55,14 @@ public class Manager extends FrameFull {
         user = userIn;
         pass = passIn;
         setTitle("Salón Manager");
-        PanelPpal panelPpal = new PanelPpal(frame);
+        setLayout(null);
+        PanelPpalCustom panelPpal = new PanelPpalCustom(frame, 4);
         add(panelPpal);
 
         JMenuBar menuBar = utiliGraf.navegador(userIn, passIn, this);
         setJMenuBar(menuBar);
 
-        JLabel labelLegal = utiliGraf.labelLegal(anchoFrame, alturaFrame, 1, 70);
+        JLabel labelLegal = utiliGraf.labelLegal(anchoFrame, alturaFrame, 1, 10);
         panelPpal.add(labelLegal);
 
         JPanel panelUser = new JPanel();
@@ -89,7 +91,7 @@ public class Manager extends FrameFull {
         panelWorkshift.setBounds(anchoUnit * 54, altoUnit * 21, anchoUnit * 50, altoUnit * 65);
         panelPpal.add(panelWorkshift);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(frame, 3);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(frame, 4);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

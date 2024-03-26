@@ -3,8 +3,11 @@ package salonmanager.utilidades;
 import java.awt.BorderLayout;
 import salonmanager.entidades.bussiness.User;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import static java.awt.PageAttributes.ColorType.COLOR;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -13,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -28,6 +32,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -43,6 +49,7 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.graphics.CustomJMenuBar;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -54,8 +61,10 @@ public class UtilidadesGraficas extends JFrame {
 
     Color bluSt = new Color(3, 166, 136);
     Color bluLg = new Color(194, 242, 206);
-    Color narSt = new Color(217, 103, 4);
+    Color narSt = new Color(217, 153, 4);
     Color narLg = new Color(252, 203, 5);
+    Color narLgSelected = new Color(252, 183, 5);
+
     Color narUlg = new Color(255, 255, 176);
     Color narUlgX = new Color(255, 255, 210);
     Color viol = new Color(242, 29, 41);
@@ -77,9 +86,34 @@ public class UtilidadesGraficas extends JFrame {
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
 
-    public JMenuBar navegador(User user, String pass, Manager man) throws Exception {
+    public CustomJMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
-        JMenuBar menuBar = new JMenuBar();
+        Font menuFont = new Font("Arial", Font.BOLD, 16);
+        Color fontColor = white;
+        Color backgroundColor = narLg;
+        Color selectionColor = narLgSelected;
+
+        UIManager.put("MenuBar.background", narLg);
+
+        UIManager.put("Menu.font", menuFont);
+        UIManager.put("MenuItem.font", menuFont);
+
+        UIManager.put("Menu.foreground", fontColor);
+        UIManager.put("MenuItem.foreground", fontColor);
+
+        UIManager.put("Menu.background", backgroundColor);
+        UIManager.put("MenuItem.background", backgroundColor);
+
+        UIManager.put("Menu.selectionBackground", selectionColor);
+        UIManager.put("MenuItem.selectionBackground", selectionColor);
+
+        UIManager.put("Menu.selectionForeground", fontColor);
+        UIManager.put("MenuItem.selectionForeground", fontColor);
+
+        CustomJMenuBar menuBar = new CustomJMenuBar(altoUnit * 4);
+        Border emptyBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+        ((JComponent) menuBar).setBorder(emptyBorder);
+
         JMenu menuInicio = new JMenu("Inicio");
         JMenu menuCard = new JMenu("Carta");
         JMenu menuFacturacion = new JMenu("Facturación");
@@ -91,6 +125,18 @@ public class UtilidadesGraficas extends JFrame {
         JMenuItem itemConsultaItemcard = new JMenuItem("Consulta Itemcarta");
         JMenuItem itemTurno = new JMenuItem("Turnos");
         JMenuItem itemSalon = new JMenuItem("Salón");
+
+        applyEmptyBorder(menuInicio, emptyBorder);
+        applyEmptyBorder(menuCard, emptyBorder);
+        applyEmptyBorder(menuFacturacion, emptyBorder);
+        applyEmptyBorder(menuSalon, emptyBorder);
+//        applyEmptyBorder(itemAdministrador, emptyBorder);
+//        applyEmptyBorder(itemAdministrador, emptyBorder);
+//        applyEmptyBorder(itemAdministrador, emptyBorder);
+//        applyEmptyBorder(itemAdministrador, emptyBorder);
+//        applyEmptyBorder(itemAdministrador, emptyBorder);
+//        applyEmptyBorder(itemAdministrador, emptyBorder);
+//        applyEmptyBorder(itemAdministrador, emptyBorder);
 
         if (sm.rolPermission(2)) {
             menuInicio.add(itemAdministrador);
@@ -199,6 +245,7 @@ public class UtilidadesGraficas extends JFrame {
                 }
             });
         }
+
         return menuBar;
     }
 
@@ -306,7 +353,7 @@ public class UtilidadesGraficas extends JFrame {
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBackerA3W(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
@@ -405,7 +452,7 @@ public class UtilidadesGraficas extends JFrame {
         if (col == 1) {
             title.setForeground(white);
         }
-        title.setBounds((width - 300) / 2, height - hLess, 320, 10);
+        title.setBounds((width / 2) - anchoUnit * 10, height - altoUnit * hLess, anchoUnit * 21, altoUnit * 2);
         return title;
     }
 
@@ -445,15 +492,15 @@ public class UtilidadesGraficas extends JFrame {
 
     public JButtonMetalBlu buttonSalir(JFrame frame) {
         int width = frame.getWidth();
-        int height = frame.getHeight();    
+        int height = frame.getHeight();
         JButtonMetalBlu butSalir = new JButtonMetalBlu();
         butSalir = button2("salir", width - anchoUnit * 10, height - altoUnit * 11, anchoUnit * 8);
         return butSalir;
     }
-    
+
     public JButtonMetalBlu buttonSalir2(JFrame frame, int uni) {
         int width = frame.getWidth();
-        int height = frame.getHeight();    
+        int height = frame.getHeight();
         JButtonMetalBlu butSalir = new JButtonMetalBlu();
         butSalir = button2("salir", width - anchoUnit * 10, height - altoUnit * (11 + uni), anchoUnit * 8);
         return butSalir;
@@ -685,6 +732,18 @@ public class UtilidadesGraficas extends JFrame {
         panelBack.add(panelRight, BorderLayout.EAST);
 
         return panelBack;
+    }
+ 
+    private static void applyEmptyBorder(Component component, EmptyBorder emptyBorder) {
+        if (component instanceof JComponent) {
+            ((JComponent) component).setBorder(emptyBorder);
+        }
+        if (component instanceof Container) {
+            Component[] subComponents = ((Container) component).getComponents();
+            for (Component subComponent : subComponents) {
+                applyEmptyBorder(subComponent, emptyBorder);
+            }
+        }
     }
 
 }
