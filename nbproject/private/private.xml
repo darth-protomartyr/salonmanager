@@ -21,7 +21,7 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficas.java</url>
             <bookmark id="6">
                 <name/>
-                <line>251</line>
+                <line>259</line>
                 <key/>
             </bookmark>
         </file>
@@ -56,8 +56,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/graphics/CustomJMenuBar.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficas.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/StaticsManager.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/bussiness/Table.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/SelectorPeriod.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/BillDiscounter.java</file>
         </group>
     </open-files>
 </project-private>

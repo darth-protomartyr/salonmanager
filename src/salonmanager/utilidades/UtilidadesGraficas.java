@@ -43,6 +43,7 @@ import salonmanager.SalonManager;
 import salonmanager.ItemSelector;
 import salonmanager.Manager;
 import salonmanager.Admin;
+import salonmanager.StaticsManager;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Itemcard;
@@ -60,11 +61,15 @@ import salonmanager.servicios.ServicioTable;
 public class UtilidadesGraficas extends JFrame {
 
     Color bluSt = new Color(3, 166, 136);
+    Color bluStBarr = new Color(5, 255, 209);
+    Color bluStDark = new Color(2, 105, 84);
     Color bluLg = new Color(194, 242, 206);
-    Color narSt = new Color(217, 153, 4);
-    Color narLg = new Color(252, 203, 5);
-    Color narLgSelected = new Color(252, 183, 5);
+    Color bluStSelected = new Color(147, 255, 211);
 
+    Color narSt = new Color(217, 153, 4);
+//    Color narStUltra = new Color(107, 83, 3);
+
+    Color narLg = new Color(252, 203, 5);
     Color narUlg = new Color(255, 255, 176);
     Color narUlgX = new Color(255, 255, 210);
     Color viol = new Color(242, 29, 41);
@@ -72,7 +77,7 @@ public class UtilidadesGraficas extends JFrame {
 
     Utilidades utili = new Utilidades();
     ServicioSalon ss = new ServicioSalon();
-    ServicioTable st = new ServicioTable();
+    ServicioTable st = new ServicioTable(); 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
@@ -89,11 +94,11 @@ public class UtilidadesGraficas extends JFrame {
     public CustomJMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
         Font menuFont = new Font("Arial", Font.BOLD, 16);
-        Color fontColor = white;
-        Color backgroundColor = narLg;
-        Color selectionColor = narLgSelected;
+        Color fontColor = bluStDark;
+        Color backgroundColor = bluStBarr;
+        Color selectionColor = bluStSelected;
 
-        UIManager.put("MenuBar.background", narLg);
+        UIManager.put("MenuBar.background", bluStBarr);
 
         UIManager.put("Menu.font", menuFont);
         UIManager.put("MenuItem.font", menuFont);
@@ -112,12 +117,17 @@ public class UtilidadesGraficas extends JFrame {
 
         CustomJMenuBar menuBar = new CustomJMenuBar(altoUnit * 4);
         Border emptyBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+        EmptyBorder eBorder = new EmptyBorder(0, 0, 0, 0);
+
+        
         ((JComponent) menuBar).setBorder(emptyBorder);
 
         JMenu menuInicio = new JMenu("Inicio");
         JMenu menuCard = new JMenu("Carta");
         JMenu menuFacturacion = new JMenu("Facturación");
         JMenu menuSalon = new JMenu("Salón");
+        JMenu menuStatics = new JMenu("Estadisticas");
+        
         JMenuItem itemAdministrador = new JMenuItem("Administrador");
         JMenuItem itemSalir = new JMenuItem("Salir");
         JMenuItem itemIngresoItemcard = new JMenuItem("Ingreso Itemcarta");
@@ -125,18 +135,23 @@ public class UtilidadesGraficas extends JFrame {
         JMenuItem itemConsultaItemcard = new JMenuItem("Consulta Itemcarta");
         JMenuItem itemTurno = new JMenuItem("Turnos");
         JMenuItem itemSalon = new JMenuItem("Salón");
+        JMenuItem itemStatics = new JMenuItem("Estadísticas");
 
-        applyEmptyBorder(menuInicio, emptyBorder);
-        applyEmptyBorder(menuCard, emptyBorder);
-        applyEmptyBorder(menuFacturacion, emptyBorder);
-        applyEmptyBorder(menuSalon, emptyBorder);
-//        applyEmptyBorder(itemAdministrador, emptyBorder);
-//        applyEmptyBorder(itemAdministrador, emptyBorder);
-//        applyEmptyBorder(itemAdministrador, emptyBorder);
-//        applyEmptyBorder(itemAdministrador, emptyBorder);
-//        applyEmptyBorder(itemAdministrador, emptyBorder);
-//        applyEmptyBorder(itemAdministrador, emptyBorder);
-//        applyEmptyBorder(itemAdministrador, emptyBorder);
+
+        applyEmptyBorder(menuInicio, eBorder);
+        applyEmptyBorder(menuCard, eBorder);
+        applyEmptyBorder(menuFacturacion, eBorder);
+        applyEmptyBorder(menuSalon, eBorder);
+        applyEmptyBorder(menuStatics, eBorder);
+
+
+        applyEmptyBorder(itemAdministrador, eBorder);
+        applyEmptyBorder(itemSalir, eBorder);
+        applyEmptyBorder(itemIngresoItemcard, eBorder);
+        applyEmptyBorder(itemModificacionItemcard, eBorder);
+        applyEmptyBorder(itemConsultaItemcard, eBorder);
+        applyEmptyBorder(itemTurno, eBorder);
+        applyEmptyBorder(itemSalon, eBorder);
 
         if (sm.rolPermission(2)) {
             menuInicio.add(itemAdministrador);
@@ -147,6 +162,7 @@ public class UtilidadesGraficas extends JFrame {
         menuCard.add(itemConsultaItemcard);
         menuFacturacion.add(itemTurno);
         menuSalon.add(itemSalon);
+        menuStatics.add(itemStatics);
 
         menuBar.add(menuInicio);
         if (sm.rolPermission(2)) {
@@ -154,6 +170,9 @@ public class UtilidadesGraficas extends JFrame {
         }
         menuBar.add(menuFacturacion);
         menuBar.add(menuSalon);
+        if (sm.rolPermission(2)) {
+            menuBar.add(menuStatics);
+        }        
 
 //---------------------------------------------------------------------------------------------------------        
         if (sm.rolPermission(2)) {
@@ -233,9 +252,24 @@ public class UtilidadesGraficas extends JFrame {
             itemSalon.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
-
                         if (user.getPassword().equals(pass)) {
                             salonOpener(user);
+                        } else {
+                            sm.salir();
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(UtilidadesGraficas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        }
+        
+        if (sm.rolPermission(2)) {
+            itemStatics.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    try {
+                        if (user.getPassword().equals(pass)) {
+                            new StaticsManager(user);
                         } else {
                             sm.salir();
                         }

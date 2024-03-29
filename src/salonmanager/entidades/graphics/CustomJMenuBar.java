@@ -1,10 +1,10 @@
 package salonmanager.entidades.graphics;
+
 import javax.swing.*;
 import java.awt.*;
 
-
-
 public class CustomJMenuBar extends JMenuBar {
+
     private int preferredHeight;
 
     public CustomJMenuBar(int preferredHeight) {

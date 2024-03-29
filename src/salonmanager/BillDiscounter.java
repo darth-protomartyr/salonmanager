@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -46,6 +49,10 @@ public class BillDiscounter extends FrameWindow {
     JSpinner spinnerDiscount = null;
     Salon salon = null;
 
+    int year = 0;
+    int month = 0;
+    int day = 0;
+    
     public BillDiscounter(Salon sal) {
         salon = sal;
         sm.addFrame(this);
@@ -53,6 +60,12 @@ public class BillDiscounter extends FrameWindow {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
+        Timestamp now = new Timestamp(new Date().getTime());
+        LocalDateTime today = now.toLocalDateTime();
+        year = today.getYear();
+        month = today.getMonthValue();
+        day = today.getDayOfMonth();
+        
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
         panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
@@ -94,6 +107,7 @@ public class BillDiscounter extends FrameWindow {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                salon.setEnabled(true);
                 dispose();
             }
         });

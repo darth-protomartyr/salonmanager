@@ -5,6 +5,7 @@
 package salonmanager.persistencia;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
@@ -84,5 +85,9 @@ public class DAOItemSale extends DAO {
         } finally {
             desconectarBase();
         }
+    }
+
+    public ArrayList getItemSaleByDate(Timestamp tsInit, Timestamp tsEnd) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
