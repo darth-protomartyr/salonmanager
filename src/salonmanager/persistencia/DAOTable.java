@@ -370,4 +370,38 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
+
+    public ArrayList<Table> listarTablesByDate(Timestamp open, Timestamp close) throws Exception {
+        ArrayList<Table> tables = new ArrayList<Table>();
+        try {
+            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                Table tab = new Table();
+                tab.setNum(resultado.getInt(1));
+                tab.setPos(resultado.getString(2));
+                tab.setOpenTime(resultado.getTimestamp(3));
+                tab.setCloseTime(resultado.getTimestamp(4));
+                tab.setId(resultado.getString(5));
+                tab.setOpen(resultado.getBoolean(6));
+                tab.setBill(resultado.getBoolean(7));
+                tab.setToPay(resultado.getBoolean(8));
+                tab.setDiscount(resultado.getInt(9));
+                tab.setError(resultado.getDouble(10));
+                tab.setPriceCorrection(resultado.getDouble(11));
+                tab.setAmountCash(resultado.getDouble(12));
+                tab.setAmountElectronic(resultado.getDouble(13));
+                tab.setTotal(resultado.getDouble(14));
+                tab.setComments(resultado.getString(15));
+                tab.setActiveTable(resultado.getBoolean(16));
+                tables.add(tab);
+            }
+            return tables;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
 }

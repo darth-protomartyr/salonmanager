@@ -125,7 +125,7 @@ public class CashFlowViewer extends FrameHalfFlat {
         TableColumn column4 = jTable.getColumnModel().getColumn(3);
         column4.setPreferredWidth(anchoUnit * 4);
         TableColumn column5 = jTable.getColumnModel().getColumn(4);
-        column5.setPreferredWidth(anchoUnit * 7);
+        column5.setPreferredWidth(anchoUnit * 11);
 
         TableCellRenderer tableCellRenderer = new TableCellRenderer() {
             DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
@@ -148,7 +148,7 @@ public class CashFlowViewer extends FrameHalfFlat {
         JScrollPane scrollPane = new JScrollPane(jTable);
         scrollPane.setBackground(narUlg);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 49, altoUnit * 60);
+        scrollPane.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 53, altoUnit * 72);
         panelPpal.add(scrollPane);
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);

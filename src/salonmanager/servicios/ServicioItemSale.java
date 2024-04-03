@@ -14,7 +14,7 @@ public class ServicioItemSale {
     public void createItemSale(Salon salon) throws Exception {
         ArrayList<Itemcard> items = salon.getItemsTableAux();
         String tabId = salon.getTableAux().getPos();
-        if (!tabId.equals("barr") && !tabId.equals("delivery")) {
+        if (!tabId.equals("barra") && !tabId.equals("delivery")) {
             tabId = "tab";
         }
         String waiterId = salon.getWaiterAux().getId();

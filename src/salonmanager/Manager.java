@@ -16,6 +16,7 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
+import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.PanelPpalCustom;
 import salonmanager.persistencia.DAOConfig;
@@ -42,11 +43,13 @@ public class Manager extends FrameFull {
     DAOWorkshift daoW = new DAOWorkshift();
     DAOUser daoU = new DAOUser();
     ConfigActual cfgAct = new ConfigActual();
+    ConfigGeneral cfgGen = new ConfigGeneral();
     Salon salon = null;
 
     public Manager(User userIn, String passIn) throws Exception {
         sm.addFrame(this);
         cfgAct = daoC.askConfigActual();
+        cfgGen = daoC.askConfigGeneral();
         if (cfgAct.isOpenWs()) {
             actualWs = daoW.askWorshiftById(cfgAct.getOpenIdWs());
             actualWs.setCashierWs(daoU.getCashierByWorkshift(actualWs.getId()));
@@ -149,5 +152,21 @@ public class Manager extends FrameFull {
 
     public void setSalon(Salon salon) {
         this.salon = salon;
+    }
+
+    public ConfigActual getCfgAct() {
+        return cfgAct;
+    }
+
+    public void setCfgAct(ConfigActual cfgAct) {
+        this.cfgAct = cfgAct;
+    }
+
+    public ConfigGeneral getCfgGen() {
+        return cfgGen;
+    }
+
+    public void setCfgGen(ConfigGeneral cfgGen) {
+        this.cfgGen = cfgGen;
     }
 }

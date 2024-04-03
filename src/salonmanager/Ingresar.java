@@ -73,12 +73,7 @@ public class Ingresar extends FrameWindow {
         fieldPass.setText("27949874");
         panelPpal.add(panelData2);
 
-        JPanel panelBut = new JPanel();
-        panelBut.setBackground(bluLg);
-        panelBut.setBounds(0, 210, 390, 50);
-        panelPpal.add(panelBut);
-
-        butInUser = utiliGraf.button1("Ingresar", 206, 580, 270);
+        butInUser = utiliGraf.button1("Ingresar", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
         butInUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -89,9 +84,9 @@ public class Ingresar extends FrameWindow {
                 }
             }
         });
-        panelBut.add(butInUser);
+        panelPpal.add(butInUser);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

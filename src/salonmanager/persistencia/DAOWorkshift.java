@@ -348,7 +348,7 @@ public class DAOWorkshift extends DAO {
         }
     }
 
-    public ArrayList<Integer> getALStringByDate(Timestamp tsInit, Timestamp tsEnd) throws Exception {
+    public ArrayList<Integer> listIdByDate(Timestamp tsInit, Timestamp tsEnd) throws Exception {
         ArrayList<Integer> wss = new ArrayList<Integer>();
         try {
             String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_shift >= '" + tsInit + "' AND workshift_open_shift <= '" + tsEnd + "';";

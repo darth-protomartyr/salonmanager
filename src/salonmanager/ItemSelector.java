@@ -82,7 +82,7 @@ public class ItemSelector extends FrameWindow {
         });
         panelPpal.add(butSelItem);
         
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

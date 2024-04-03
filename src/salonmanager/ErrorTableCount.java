@@ -237,7 +237,7 @@ public class ErrorTableCount extends FrameWindow {
         panelAmount.add(butErrorMount);
         panelPpal.add(panelAmount);
         
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

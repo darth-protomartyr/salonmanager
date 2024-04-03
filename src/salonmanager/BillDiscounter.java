@@ -85,12 +85,7 @@ public class BillDiscounter extends FrameWindow {
         labelPercentage.setBounds(240, 90, 80, 80);
         panelPpal.add(labelPercentage);
 
-        JPanel panelBut = new JPanel();
-        panelBut.setBackground(bluSt);
-        panelBut.setBounds(0, 210, 390, 50);
-        panelPpal.add(panelBut);
-
-        butInGift = utiliGraf.button1("Descontar", 206, 580, 270);
+        butInGift = utiliGraf.button1("Descontar", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
         butInGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -101,9 +96,9 @@ public class BillDiscounter extends FrameWindow {
                 }
             }
         });
-        panelBut.add(butInGift);
+        panelPpal.add(butInGift);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

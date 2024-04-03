@@ -7,7 +7,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import static java.awt.PageAttributes.ColorType.COLOR;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -21,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -61,17 +59,9 @@ import salonmanager.servicios.ServicioTable;
 public class UtilidadesGraficas extends JFrame {
 
     Color bluSt = new Color(3, 166, 136);
-    Color bluStBarr = new Color(5, 255, 209);
-    Color bluStDark = new Color(2, 105, 84);
+    Color bluStBarr = new Color(2, 82, 67);
     Color bluLg = new Color(194, 242, 206);
-    Color bluStSelected = new Color(147, 255, 211);
-
     Color narSt = new Color(217, 153, 4);
-//    Color narStUltra = new Color(107, 83, 3);
-
-    Color narLg = new Color(252, 203, 5);
-    Color narUlg = new Color(255, 255, 176);
-    Color narUlgX = new Color(255, 255, 210);
     Color viol = new Color(242, 29, 41);
     Color white = new Color(255, 255, 255);
 
@@ -94,9 +84,9 @@ public class UtilidadesGraficas extends JFrame {
     public CustomJMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
         Font menuFont = new Font("Arial", Font.BOLD, 16);
-        Color fontColor = bluStDark;
+        Color fontColor = white;
         Color backgroundColor = bluStBarr;
-        Color selectionColor = bluStSelected;
+        Color selectionColor = bluSt;
 
         UIManager.put("MenuBar.background", bluStBarr);
 
@@ -113,8 +103,8 @@ public class UtilidadesGraficas extends JFrame {
         UIManager.put("MenuItem.selectionBackground", selectionColor);
 
         UIManager.put("Menu.selectionForeground", fontColor);
-        UIManager.put("MenuItem.selectionForeground", fontColor);
-
+        UIManager.put("MenuItem.selectionForeground", fontColor);        
+        
         CustomJMenuBar menuBar = new CustomJMenuBar(altoUnit * 4);
         Border emptyBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
         EmptyBorder eBorder = new EmptyBorder(0, 0, 0, 0);
@@ -269,7 +259,7 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            new StaticsManager(user);
+                            new StaticsManager(manager);
                         } else {
                             sm.salir();
                         }
@@ -529,6 +519,14 @@ public class UtilidadesGraficas extends JFrame {
         int height = frame.getHeight();
         JButtonMetalBlu butSalir = new JButtonMetalBlu();
         butSalir = button2("salir", width - anchoUnit * 10, height - altoUnit * 11, anchoUnit * 8);
+        return butSalir;
+    }
+    
+    public JButtonMetalBlu buttonSalirRedux(JFrame frame) {
+        int width = frame.getWidth();
+        int height = frame.getHeight();
+        JButtonMetalBlu butSalir = new JButtonMetalBlu();
+        butSalir = button3("salir", width - anchoUnit * 6, height - altoUnit * 10, anchoUnit * 4);
         return butSalir;
     }
 

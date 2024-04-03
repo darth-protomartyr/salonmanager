@@ -128,11 +128,8 @@ public class CashFlowManager extends FrameWindow {
         panelPpal.add(scrollPane);
         panelPpal.add(fieldCashFlow);
 
-        JPanel panelBut = new JPanel();
-        panelBut.setBackground(bluSt);
-        panelBut.setBounds(0, 210, 390, 50);
-        panelPpal.add(panelBut);
-        butCashFlow = utiliGraf.button1("", 206, 580, 270);
+
+        butCashFlow = utiliGraf.button1("", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
         butCashFlow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -143,7 +140,7 @@ public class CashFlowManager extends FrameWindow {
                 }
             }
         });
-        panelBut.add(butCashFlow);       
+        panelPpal.add(butCashFlow);       
         
         if (flowKind == 0) {
             setTitle("Caja Inicial");
@@ -162,7 +159,7 @@ public class CashFlowManager extends FrameWindow {
             butCashFlow.setText("Extraer");
         }
         
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

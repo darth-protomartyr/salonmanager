@@ -15,12 +15,12 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
-import salonmanager.entidades.bussiness.DeliveryConsumer;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.config.ConfigGeneral;
 
 public class Utilidades {
-
+    
     public double toNumberD(String str) {
         double d = -1;
         if (str != "") {
@@ -620,5 +620,22 @@ public class Utilidades {
             }
         }
         return unRepeatItems;
+    }
+
+    public String getTabPos(String itemSaleTabPos) throws Exception {
+        String tabPos = itemSaleTabPos;
+        if (tabPos.equals("tab")) {
+            tabPos = "Mesa";
+        }
+        
+        if (tabPos.equals("barra")) {
+            tabPos = "Barra";
+        }
+        
+        if (tabPos.equals("delivery")) {
+            tabPos = "Delivery";
+        }        
+        
+        return tabPos;
     }
 }

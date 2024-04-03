@@ -40,7 +40,7 @@ public class DAOItemSale extends DAO {
         ArrayList<ItemSale> itemSales = new ArrayList<ItemSale>();
         ArrayList<Integer> itemIds = new ArrayList<Integer>();
         try {
-            String sql = "SELECT item_sale_statics_id FROM item_sale_statics WHERE item_sale_workshift = id";
+            String sql = "SELECT item_sale_statics_id FROM item_sales_statics WHERE item_sale_workshift = id";
             System.out.println(sql);
             consultarBase(sql);
             while(resultado.next()) {
@@ -65,7 +65,7 @@ public class DAOItemSale extends DAO {
     public ItemSale askItemSaleById(int id) throws Exception {
         ItemSale iS = new ItemSale();
         try {
-            String sql = "SELECT * FROM item_sale_statics WHERE item_sale_statics_id = " + id + ";";
+            String sql = "SELECT * FROM item_sales_statics WHERE item_sale_statics_id = " + id + ";";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -87,7 +87,31 @@ public class DAOItemSale extends DAO {
         }
     }
 
-    public ArrayList getItemSaleByDate(Timestamp tsInit, Timestamp tsEnd) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+    public ArrayList<ItemSale> listarItemSalesByDate(Timestamp open, Timestamp close) throws Exception {
+        ArrayList<ItemSale> listISale = new ArrayList<ItemSale>();
+        try {
+            String sql = "SELECT item_sale_statics_id FROM item_sales_statics WHERE item_sale_date >= '" + open + "' AND item_sale_date <= '" + close + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<Integer> ids = new ArrayList<Integer>();
+            while (resultado.next()) {
+                int id = 0; 
+                id = resultado.getInt(1);
+                ids.add(id);
+            }
+            
+            for (int id : ids) {
+                ItemSale is = askItemSaleById(id);
+                listISale.add(is);
+            }
+            
+            return listISale;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }        
+
     }
 }

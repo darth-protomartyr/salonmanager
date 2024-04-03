@@ -230,7 +230,7 @@ public class MoneyType extends FrameWindow {
         });
         panelPpal.add(butInPartialCash);
 
-        butBack = utiliGraf.button3("Volver", anchoUnit * 23, altoUnit * 33, anchoUnit * 5);
+        butBack = utiliGraf.button3("Volver", anchoUnit * 23, altoUnit * 29, anchoUnit * 5);
         butBack.setVisible(false);
         butBack.addActionListener(new ActionListener() {
             @Override
@@ -252,7 +252,7 @@ public class MoneyType extends FrameWindow {
         panelPpal.add(butBack);
 
         
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

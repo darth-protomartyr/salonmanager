@@ -2,12 +2,14 @@ package salonmanager.entidades.bussiness;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import salonmanager.utilidades.Utilidades;
 
 /**
  *
  * @author Gonzalo
  */
 public class ItemSale {
+    Utilidades utili = new Utilidades();
     private int saleId;
     private int itemSaleId;
     private String itemSaleCaption;
@@ -21,7 +23,7 @@ public class ItemSale {
     public ItemSale() {
     }
 
-    public ItemSale(int itemSaleId, String itemSaleCaption, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSalePrice, Timestamp itemSaleDate) {
+    public ItemSale(int itemSaleId, String itemSaleCaption, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSalePrice, Timestamp itemSaleDate) throws Exception {
         this.itemSaleId = itemSaleId;
         this.itemSaleCaption = itemSaleCaption;
         this.itemSaleTabPos = itemSaleTabPos;
@@ -63,11 +65,6 @@ public class ItemSale {
     public void setItemSaleTabPos(String itemSaleTabPos) {
         this.itemSaleTabPos = itemSaleTabPos;
     }
-    
-    
-    
-    
-    
 
     public String getItemSaleWaiterId() {
         return itemSaleWaiterId;

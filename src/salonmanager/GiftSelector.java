@@ -72,8 +72,8 @@ public class GiftSelector extends FrameWindow {
         aIC = tab.getOrder();
 
         comboItems.setModel(utili.itemsComboModelReturn(aIC));
-        comboItems.setFont(salon.getFont4());
-        comboItems.setBounds(30, 50, 150, 40);
+        comboItems.setFont(salon.getFont5());
+        comboItems.setBounds( anchoUnit * 1, altoUnit * 8, anchoUnit * 13, altoUnit * 4);
         panelPpal.add(comboItems);
 
         textAreaGifts.setBackground(bluLg);
@@ -81,18 +81,13 @@ public class GiftSelector extends FrameWindow {
         textAreaGifts.setFont(newFont);
         textAreaGifts.setBackground(narUlg);
         JScrollPane scrollPane = new JScrollPane(textAreaGifts);
-        scrollPane.setBounds(200, 50, 150, 140);
+        scrollPane.setBounds(anchoUnit * 15, altoUnit * 8, anchoUnit * 13, altoUnit * 20);
         panelPpal.add(scrollPane);
 
         String txt = st.listarGifts(tab.getGifts());
         textAreaGifts.setText(txt);
 
-        JPanel panelBut = new JPanel();
-        panelBut.setBackground(bluSt);
-        panelBut.setBounds(0, 210, 390, 50);
-        panelPpal.add(panelBut);
-
-        butInGift = utiliGraf.button1("Obsequiar", 206, 580, 270);
+        butInGift = utiliGraf.button1("Obsequiar", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
         butInGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -103,9 +98,9 @@ public class GiftSelector extends FrameWindow {
                 }
             }
         });
-        panelBut.add(butInGift);
+        panelPpal.add(butInGift);
         
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

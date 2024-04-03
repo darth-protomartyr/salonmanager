@@ -13,15 +13,14 @@ public class ServiceStatics {
     DAOWorkshift daoW = new DAOWorkshift();
     DAOItemSale daoIS = new DAOItemSale();
     
-    public void listSellsByTime(Timestamp tsInit, Timestamp tsEnd) throws Exception {
-        ArrayList<ItemSale> iSales = new ArrayList<ItemSale>();
-        ArrayList<Integer> wsIds = daoW.getALStringByDate(tsInit, tsEnd);
-        for (int i = 0; i < wsIds.size(); i++) {
-            ArrayList<ItemSale> iSalesWs = daoIS.askItemSaleByWorkshift(i);
-            iSales.addAll(iSalesWs);
-        }
-        dsfhfdyjdty
-        
-    }
+//    public void listSellsByTime(Timestamp tsInit, Timestamp tsEnd) throws Exception {
+//        ArrayList<ItemSale> iSales = new ArrayList<ItemSale>();
+//        ArrayList<Integer> wsIds = daoW.listIdByDate(tsInit, tsEnd);
+//        for (int i = 0; i < wsIds.size(); i++) {
+//            ArrayList<ItemSale> iSalesWs = daoIS.askItemSaleByWorkshift(i);
+//            iSales.addAll(iSalesWs);
+//        }
+//               
+//    }
     
 }

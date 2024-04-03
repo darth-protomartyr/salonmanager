@@ -5,9 +5,7 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import static java.awt.PageAttributes.ColorType.COLOR;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,10 +23,8 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -94,13 +90,11 @@ public class UtilidadesGraficasSalon {
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
 
-    Color black = new Color(50, 50, 50);
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
     Color narUlgX = new Color(255, 255, 210);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
@@ -1000,8 +994,8 @@ public class UtilidadesGraficasSalon {
         panelSelItem.add(butCaptionOtros);
 
         salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
-        salon.getComboItems().setFont(salon.getFont4());
-        salon.getComboItems().setBounds(anchoUnit, altoUnit * 5, anchoUnit * 12, altoUnit * 4);
+        salon.getComboItems().setFont(salon.getFont5());
+        salon.getComboItems().setBounds(anchoUnit, altoUnit * 5, anchoUnit * 13, altoUnit * 4);
         salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
         panelSelItem.add(salon.getComboItems());
 

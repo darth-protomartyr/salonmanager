@@ -93,7 +93,7 @@ public class Salon extends FrameFull {
     Font font3 = new Font("Arial", Font.BOLD, f3);
     int f4 = (int) Math.round(anchoUnit * 1.2);
     Font font4 = new Font("Arial", Font.BOLD, f4);
-    int f5 = (int) Math.round(anchoUnit * 1.0);
+    int f5 = (int) Math.round(anchoUnit * 1.1);
     Font font5 = new Font("Arial", Font.BOLD, f5);
     JScrollPane scrPaneBarr = new JScrollPane();
     JPanel panelBarrBut = new JPanel();

@@ -434,4 +434,14 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: Debe adjuntar la causa del faltante en los comentarios.", 2);
         cm.setVisible(true);
     }
+
+    public void errorNullDates() {
+        CustomDialog cm = new CustomDialog("Error: el período ingresado no arroja resultados.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorPeriodNull() {
+        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un período de tiempo.", 2);
+        cm.setVisible(true);
+    }
 }

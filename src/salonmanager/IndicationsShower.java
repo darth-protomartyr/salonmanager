@@ -18,8 +18,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import salonmanager.SalonManager;
 import salonmanager.entidades.graphics.FrameWindow;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOItemcard;
@@ -80,7 +78,7 @@ public class IndicationsShower extends FrameWindow{
         scrollPane.setBounds(20, 65, 340, 190);
         panelPpal.add(scrollPane);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

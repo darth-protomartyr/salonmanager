@@ -160,7 +160,7 @@ public class PartialPayer extends FrameWindow {
         });
         panelBut.add(butPartialIn);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

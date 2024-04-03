@@ -1,7 +1,6 @@
 package salonmanager;
 
 import salonmanager.entidades.graphics.FrameWindow;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
@@ -11,7 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,12 +25,15 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import salonmanager.entidades.bussiness.User;
+import salonmanager.entidades.bussiness.ItemSale;
+import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.persistencia.DAOItemSale;
+import salonmanager.persistencia.DAOTable;
+import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServiceStatics;
-import salonmanager.servicios.ServicioSalon;
-import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class SelectorPeriod extends FrameWindow {
@@ -37,7 +43,9 @@ public class SelectorPeriod extends FrameWindow {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServiceStatics sStats = new ServiceStatics();
     SalonManager sm = new SalonManager();
-
+    DAOWorkshift daoW = new DAOWorkshift();
+    DAOTable daoT = new DAOTable();
+    DAOItemSale daoIs = new DAOItemSale();
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -58,21 +66,12 @@ public class SelectorPeriod extends FrameWindow {
     private int month2 = 0;
     private int day2 = 0;
     Font font = new Font("Arial", Font.BOLD, 18);
+    StaticsManager statsM = null;
 
-    public SelectorPeriod(int op, User user) {
+    public SelectorPeriod(StaticsManager stM) {
         sm.addFrame(this);
-        String title = "";
-        switch (op) {
-            case 0:
-                title = "Ventas en periodo de tiempo";
-                break;
-            case 1:
-                title = "Ventas en periodo de tiempo";
-                break;
-            case 2:
-                title = "Ventas en periodo de tiempo";
-                break;
-        }
+        statsM = stM;
+        String title = "Generar periodo de tiempo";
         setTitle(title);
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -92,7 +91,7 @@ public class SelectorPeriod extends FrameWindow {
         panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1W("Seleccione los límites temporales");
+        JLabel labelTit = utiliGraf.labelTitleBacker1W("Establezca límites temporales");
         panelLabel.add(labelTit);
 
         JPanel panelStatsBySellInit = new JPanel(null);
@@ -104,14 +103,19 @@ public class SelectorPeriod extends FrameWindow {
         labelInitBySell.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 32, altoUnit * 3);
         panelStatsBySellInit.add(labelInitBySell);
 
-        JLabel labelYear = utiliGraf.labelTitleBacker1W("Año:");
-        labelYear.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
-        panelStatsBySellInit.add(labelYear);
+        JLabel labelYear1 = utiliGraf.labelTitleBacker1W("Año:");
+        labelYear1.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
+        panelStatsBySellInit.add(labelYear1);
 
         yearSpinner1 = new JSpinner(new SpinnerNumberModel(year1, 1900, 2100, 1));
         yearSpinner1.setBounds(anchoUnit * 6, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
         yearSpinner1.setFont(font);
         panelStatsBySellInit.add(yearSpinner1);
+
+        JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(yearSpinner1, "#");
+        DecimalFormat format1 = editor1.getFormat();
+        format1.setMaximumFractionDigits(0);
+        yearSpinner1.setEditor(editor1);
 
         yearSpinner1.addChangeListener(new ChangeListener() {
             @Override
@@ -120,9 +124,9 @@ public class SelectorPeriod extends FrameWindow {
             }
         });
 
-        JLabel labelMonth = utiliGraf.labelTitleBacker1W("Mes:");
-        labelMonth.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 5, altoUnit * 4);
-        panelStatsBySellInit.add(labelMonth);
+        JLabel labelMonth1 = utiliGraf.labelTitleBacker1W("Mes:");
+        labelMonth1.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 5, altoUnit * 4);
+        panelStatsBySellInit.add(labelMonth1);
 
         monthSpinner1 = new JSpinner(new SpinnerNumberModel(month1, 1, 12, 1));
         monthSpinner1.setBounds(anchoUnit * 6, altoUnit * 10, anchoUnit * 5, altoUnit * 4);
@@ -132,15 +136,15 @@ public class SelectorPeriod extends FrameWindow {
         monthSpinner1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                daySpinner1 = returnJSpinner(day1, month2, year2);
+                daySpinner1 = returnJSpinner(day1, month1, year1);
             }
         });
 
-        JLabel labelDay = utiliGraf.labelTitleBacker1W("Día:");
-        labelDay.setBounds(anchoUnit * 1, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
-        panelStatsBySellInit.add(labelDay);
+        JLabel labelDay1 = utiliGraf.labelTitleBacker1W("Día:");
+        labelDay1.setBounds(anchoUnit * 1, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
+        panelStatsBySellInit.add(labelDay1);
 
-        daySpinner1 = new JSpinner(new SpinnerNumberModel(month1, 1, 12, 1));
+        daySpinner1 = new JSpinner(new SpinnerNumberModel(day1, 1, 12, 1));
         daySpinner1.setBounds(anchoUnit * 6, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
         daySpinner1.setFont(font);
         panelStatsBySellInit.add(daySpinner1);
@@ -150,7 +154,7 @@ public class SelectorPeriod extends FrameWindow {
         panelStatsBySellEnd.setBackground(narLg);
         panelPpal.add(panelStatsBySellEnd);
 
-        JLabel labelInitBySell2 = utiliGraf.labelTitleBackerA4W("Inicio");
+        JLabel labelInitBySell2 = utiliGraf.labelTitleBackerA4W("Final");
         labelInitBySell2.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 32, altoUnit * 3);
         panelStatsBySellEnd.add(labelInitBySell2);
 
@@ -162,6 +166,11 @@ public class SelectorPeriod extends FrameWindow {
         yearSpinner2.setBounds(anchoUnit * 6, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
         yearSpinner2.setFont(font);
         panelStatsBySellEnd.add(yearSpinner2);
+
+        JSpinner.NumberEditor editor2 = new JSpinner.NumberEditor(yearSpinner2, "#");
+        DecimalFormat format2 = editor2.getFormat();
+        format2.setMaximumFractionDigits(0);
+        yearSpinner2.setEditor(editor2);
 
         yearSpinner2.addChangeListener(new ChangeListener() {
             @Override
@@ -187,20 +196,20 @@ public class SelectorPeriod extends FrameWindow {
         });
 
         JLabel labelDay2 = utiliGraf.labelTitleBacker1W("Día:");
-        labelDay.setBounds(anchoUnit * 1, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
-        panelStatsBySellEnd.add(labelDay);
+        labelDay2.setBounds(anchoUnit * 1, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
+        panelStatsBySellEnd.add(labelDay2);
 
-        daySpinner2 = new JSpinner(new SpinnerNumberModel(month2, 1, 12, 1));
+        daySpinner2 = new JSpinner(new SpinnerNumberModel(day2, 1, 12, 1));
         daySpinner2.setBounds(anchoUnit * 6, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
         daySpinner2.setFont(font);
         panelStatsBySellEnd.add(daySpinner2);
 
-        butSelect = utiliGraf.button1("Seleccionar", anchoUnit * 5, altoUnit * 27, anchoUnit * 12);
+        butSelect = utiliGraf.button1("Establecer", anchoUnit * 9, altoUnit * 27, anchoUnit * 10);
         butSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    selectPeriod(op);
+                    selectPeriod();
                 } catch (Exception ex) {
                     Logger.getLogger(SelectorPeriod.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -208,10 +217,11 @@ public class SelectorPeriod extends FrameWindow {
         });
         panelPpal.add(butSelect);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                statsM.setEnabled(true);
                 dispose();
             }
         });
@@ -219,12 +229,13 @@ public class SelectorPeriod extends FrameWindow {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                statsM.setEnabled(true);
                 dispose();
             }
         });
     }
 
-    private void selectPeriod(int op) {
+    private void selectPeriod() throws Exception {
         int y1 = (int) yearSpinner1.getValue();
         int m1 = (int) monthSpinner1.getValue();
         int d1 = (int) daySpinner1.getValue();
@@ -239,22 +250,51 @@ public class SelectorPeriod extends FrameWindow {
         Timestamp timestampInit = Timestamp.valueOf(date1);
         Timestamp timestampEnd = Timestamp.valueOf(date2);
 
-        switch (op) {
-            case 0:
-                    sStats.listSellsByTime(timestampInit, timestampEnd);
-                break;
-            case 1:
-                    sStats.listSellsByTime(timestampInit, timestampEnd);
-                break;
-            case 2:
-                   sStats.listSellsByTime(timestampInit, timestampEnd);
-                break;
-            case 3:
-
-                break;
-
+        ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
+        ArrayList<Workshift> wsS = new ArrayList<Workshift>();
+        for (Integer id : wsIds) {
+            Workshift ws = daoW.askWorshiftById(id);
+            wsS.add(ws);
         }
 
+        ArrayList<Timestamp> tsList = new ArrayList<Timestamp>();
+        for (Workshift ws : wsS) {
+            Timestamp tsOpen = ws.getOpenWs();
+            Timestamp tsClose = ws.getCloseWs();
+            if (tsClose == null) {
+                tsClose = new Timestamp(new Date().getTime());
+            }
+            tsList.add(tsOpen);
+            tsList.add(tsClose);
+        }
+
+//        for (int i = 0; i < tsList.size(); i++) {
+//            if(tsList == null) {
+//                Timestamp ts = new Timestamp(new Date().getTime());
+//                tsList.set(i, ts);
+//            }
+//        }
+        Collections.sort(tsList, new Comparator<Timestamp>() {
+            @Override
+            public int compare(Timestamp t1, Timestamp t2) {
+                return t1.compareTo(t2);
+            }
+        });
+
+        int size = tsList.size();
+        if (size == 0) {
+            utiliMsg.errorNullDates();
+        } else {
+            Timestamp ts1 = tsList.get(0);
+            Timestamp ts2 = tsList.get(size - 1);
+            ArrayList<Table> tabs = daoT.listarTablesByDate(ts1, ts2);
+            ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
+            Collections.sort(tabs, new TimestampComparator());
+            statsM.setItemsSale(is);
+            statsM.setTabs(tabs);
+            statsM.setEnabled(true);
+            dispose();
+        }
     }
 
     private JSpinner returnJSpinner(int day, int month, int year) {
@@ -273,6 +313,14 @@ public class SelectorPeriod extends FrameWindow {
 
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(day, 1, lastDay, 1));
         return spinner;
+    }
+
+    
+    class TimestampComparator implements Comparator<Table> {
+        @Override
+        public int compare(Table o1, Table o2) {
+            return o1.getOpenTime().compareTo(o2.getOpenTime());
+        }
     }
 
 }

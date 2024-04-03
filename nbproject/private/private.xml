@@ -21,7 +21,7 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficas.java</url>
             <bookmark id="6">
                 <name/>
-                <line>259</line>
+                <line>249</line>
                 <key/>
             </bookmark>
         </file>
@@ -29,27 +29,27 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficasSalon.java</url>
             <bookmark id="13">
                 <name/>
-                <line>1285</line>
+                <line>1279</line>
                 <key/>
             </bookmark>
             <bookmark id="12">
                 <name/>
-                <line>1307</line>
+                <line>1301</line>
                 <key/>
             </bookmark>
             <bookmark id="11">
                 <name/>
-                <line>1355</line>
+                <line>1349</line>
                 <key/>
             </bookmark>
             <bookmark id="17">
                 <name/>
-                <line>1419</line>
+                <line>1413</line>
                 <key/>
             </bookmark>
             <bookmark id="16">
                 <name/>
-                <line>1623</line>
+                <line>1617</line>
                 <key/>
             </bookmark>
         </file>
@@ -58,8 +58,9 @@
         <group>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/StaticsManager.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/bussiness/Table.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/TabViewer.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/SelectorPeriod.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/BillDiscounter.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/persistencia/DAOTable.java</file>
         </group>
     </open-files>
 </project-private>

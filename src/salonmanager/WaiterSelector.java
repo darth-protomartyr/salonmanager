@@ -103,7 +103,7 @@ public class WaiterSelector extends FrameWindow {
         });
         panelPpal.add(butSelWaiter);
 
-        JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
+        JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
