@@ -112,11 +112,11 @@ public class DeliveryTemplate extends FrameHalf {
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W(title);
-        labelTit.setBounds(10, 20, 300, 30);
+        labelTit.setBounds(anchoUnit, altoUnit * 2, anchoUnit * 12, altoUnit * 3);
         panelPpal.add(labelTit);
 
         //---------------------------------------DeliveryConsumer
-        JPanel panelConsumer = panelBacker("Cliente", anchoUnit, altoUnit * 7, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 8));
+        JPanel panelConsumer = panelBacker("Cliente", anchoUnit, altoUnit * 6, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 9));
         panelPpal.add(panelConsumer);
 
         labelSelectPhone = utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:");
@@ -250,7 +250,7 @@ public class DeliveryTemplate extends FrameHalf {
         }
 
         //---------------------------------------Delivery
-        JPanel panelDelivery = panelBacker("Delivery", anchoUnit, alturaFrame / 2 + altoUnit, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 15));
+        JPanel panelDelivery = panelBacker("Delivery", anchoUnit, alturaFrame / 2, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 16));
         panelPpal.add(panelDelivery);
 
         labelSelectDeli = utiliGraf.labelTitleBacker1("Elija Delivery para envíar:");
@@ -356,7 +356,7 @@ public class DeliveryTemplate extends FrameHalf {
             setDeliveryFields(deliAux);
         }
 
-        butOpDelivery = utiliGraf.button1("CREAR ENVÏO", anchoUnit * 17, altoUnit * 90, anchoUnit * 20);
+        butOpDelivery = utiliGraf.button1("CREAR ENVÏO", anchoUnit * 17, altoUnit * 90, anchoUnit * 16);
         if (deliFull == null) {
             butOpDelivery.addActionListener(new ActionListener() {
                 @Override

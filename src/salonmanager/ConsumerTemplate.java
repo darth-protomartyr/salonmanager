@@ -97,7 +97,6 @@ public class ConsumerTemplate extends FrameHalf {
         panelPpal.add(labelTit);
 
         JPanel panelForm = new JPanel();
-
         panelForm.setLayout(null);
         panelForm.setBounds(anchoUnit * 3, altoUnit * 8, anchoUnit * 45, altoUnit * 77);
         panelForm.setBackground(narLg);

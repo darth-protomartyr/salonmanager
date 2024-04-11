@@ -12,14 +12,15 @@ public class DAOConfig extends DAO {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> chartPan, boolean cfgActive) throws Exception {
+    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCapt, ArrayList<String> chartPan, boolean cfgActive) throws Exception {
         try {
             deleteConfigGeneral();
             String nums = utili.arrayIntToStr(numTab);
             String pans = utili.arrayStrToStr(strPan);
+            String capts = utili.arrayStrToStr(strCapt);
             String charts = utili.arrayStrToStr(chartPan);
-            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_chart_panes, config_active)"
-                    + "VALUES('" + totalTab + "', '" + nums + "', '" + pans + "', '" + charts + "', " + cfgActive + ");";
+            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_name_captions, config_table_chart_panes, config_active)"
+                    + "VALUES('" + totalTab + "', '" + nums + "', '" + pans + "', '" + capts + "', '" + charts + "', " + cfgActive + ");";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -57,8 +58,9 @@ public class DAOConfig extends DAO {
             cfnGen.setTotalTable(resultado.getInt(1));
             cfnGen.setTableNum(utili.strToArrayInt(resultado.getString(2)));
             cfnGen.setTablePan(utili.strToArrayStr(resultado.getString(3)));
-            cfnGen.setTablePanCh(utili.strToArrayStr(resultado.getString(4)));
-            cfnGen.setActiveConfig(resultado.getBoolean(5));
+            cfnGen.setTableItemCaptions(utili.strToArrayStr(resultado.getString(4)));
+            cfnGen.setTablePanCh(utili.strToArrayStr(resultado.getString(5)));
+            cfnGen.setActiveConfig(resultado.getBoolean(6));
         }
         desconectarBase();
         return cfnGen;

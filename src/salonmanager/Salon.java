@@ -270,7 +270,7 @@ public class Salon extends FrameFull {
         panelTable.add(panelSelItem);
 
 //Tabla con corrector--------------------------------------------------- 
-        scrollPaneItems = utiliGrafSal.scrollItemsBack(anchoUnit, altoUnit * 28, anchoUnit * 24, altoUnit * 30, sal);
+        scrollPaneItems = utiliGrafSal.scrollItemsBack(anchoUnit, altoUnit * 31, anchoUnit * 24, altoUnit * 27, sal);
         panelTable.add(scrollPaneItems);
         utiliGrafSal.tableCarrector(sal);
 

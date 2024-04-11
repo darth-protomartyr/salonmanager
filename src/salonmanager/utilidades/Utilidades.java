@@ -20,7 +20,7 @@ import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.config.ConfigGeneral;
 
 public class Utilidades {
-    
+
     public double toNumberD(String str) {
         double d = -1;
         if (str != "") {
@@ -479,10 +479,18 @@ public class Utilidades {
         time = dateFormat.format(date);
         return time;
     }
-    
+
     public String friendlyDate2(Timestamp timeInitSes) {
         String time = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
+        Date date = new Date(timeInitSes.getTime());
+        time = dateFormat.format(date);
+        return time;
+    }
+    
+    public String friendlyDate3(Timestamp timeInitSes) {
+        String time = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
         Date date = new Date(timeInitSes.getTime());
         time = dateFormat.format(date);
         return time;
@@ -613,7 +621,7 @@ public class Utilidades {
                     repeat = true;
                     break;
                 }
-            }    
+            }
             if (repeat == false) {
                 ints.add(item.getId());
                 unRepeatItems.add(item);
@@ -627,15 +635,43 @@ public class Utilidades {
         if (tabPos.equals("tab")) {
             tabPos = "Mesa";
         }
-        
+
         if (tabPos.equals("barra")) {
             tabPos = "Barra";
         }
-        
+
         if (tabPos.equals("delivery")) {
             tabPos = "Delivery";
-        }        
-        
+        }
+
         return tabPos;
+    }
+
+    public String reduxSt(String itemName) {
+        String[] words = itemName.split(" ");
+
+        String firstWord = words[0];
+        if (firstWord.length() > 2) {
+            firstWord = firstWord.substring(0, 2) + ".";
+        }
+        words[0] = firstWord;
+
+        if (words.length > 1) {
+            String secondWord = words[1];
+            if (secondWord.length() > 4) {
+                secondWord = secondWord.substring(0, 4) + ".";
+            }
+            words[1] = secondWord;
+        }
+
+        if (words.length > 2) {
+            String thirdWord = words[2];
+            if (thirdWord.length() > 4) {
+                thirdWord = thirdWord.substring(0, 2) + ".";
+            }
+            words[2] = thirdWord;
+        }
+
+        return String.join(" ", words);
     }
 }

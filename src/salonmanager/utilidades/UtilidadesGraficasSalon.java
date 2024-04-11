@@ -47,6 +47,7 @@ import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
+import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonDeliverySee;
@@ -935,78 +936,106 @@ public class UtilidadesGraficasSalon {
 
 //PANEL SELECT ITEM....................................................................................................
 //PANEL SELECT ITEM....................................................................................................
-    public JPanel returnPanelSelItem(Salon salon) {
+    public JPanel returnPanelSelItem(Salon salon) throws Exception {
+        ConfigGeneral cfgGen = daoC.askConfigGeneral();
+        ArrayList<String> captions = cfgGen.getTableItemCaptions();
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
-        panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 16);
+        panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 19);
         panelSelItem.setBackground(bluLg);
 
-        JButtonMetalBlu butCaptionBebidas = utiliGraf.button3("Bebidas", anchoUnit , altoUnit, anchoUnit * 5);
-        butCaptionBebidas.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCaption0 = utiliGraf.button3(captions.get(0), anchoUnit , altoUnit, anchoUnit * 7);
+        butCaption0.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack("Bebidas", salon);
+                    itemCaptionBack(captions.get(0), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaptionBebidas);
+        panelSelItem.add(butCaption0);
 
-        JButtonMetalBlu butCaptionPlatos = utiliGraf.button3("Platos", anchoUnit * 7, altoUnit, anchoUnit * 5);
-        butCaptionPlatos.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCaption1 = utiliGraf.button3(captions.get(1), anchoUnit * 9, altoUnit, anchoUnit * 6);
+        butCaption1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack("Platos", salon);
+                    itemCaptionBack(captions.get(1), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaptionPlatos);
+        panelSelItem.add(butCaption1);
 
-        JButtonMetalBlu butCaptionCafeteria = utiliGraf.button3("Cafetería", anchoUnit * 13, altoUnit, anchoUnit * 5);
-        butCaptionCafeteria.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCaption2 = utiliGraf.button3(captions.get(2), anchoUnit * 16, altoUnit, anchoUnit * 7);
+        butCaption2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack("Cafeteria", salon);
+                    itemCaptionBack(captions.get(2), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaptionCafeteria);
+        panelSelItem.add(butCaption2);
 
-        JButtonMetalBlu butCaptionOtros = utiliGraf.button3("Otros", anchoUnit * 19, altoUnit, anchoUnit * 4);
-        butCaptionOtros.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCaption3 = utiliGraf.button3(captions.get(3), anchoUnit, altoUnit * 5, anchoUnit * 7);
+        butCaption3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack("Otros", salon);
+                    itemCaptionBack(captions.get(3), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaptionOtros);
+        panelSelItem.add(butCaption3);
+        
+        JButtonMetalBlu butCaption4 = utiliGraf.button3(captions.get(4), anchoUnit * 9, altoUnit * 5, anchoUnit * 6);
+        butCaption4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    itemCaptionBack(captions.get(4), salon);
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelSelItem.add(butCaption4);
+        
+        JButtonMetalBlu butCaption5 = utiliGraf.button3(captions.get(5), anchoUnit * 16, altoUnit * 5, anchoUnit * 7);
+        butCaption5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    itemCaptionBack(captions.get(5), salon);
+                } catch (Exception ex) {
+                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelSelItem.add(butCaption5);
 
         salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
         salon.getComboItems().setFont(salon.getFont5());
-        salon.getComboItems().setBounds(anchoUnit, altoUnit * 5, anchoUnit * 13, altoUnit * 4);
+        salon.getComboItems().setBounds(anchoUnit, altoUnit * 9, anchoUnit * 13, altoUnit * 4);
         salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
         panelSelItem.add(salon.getComboItems());
 
         JLabel labelUnitsItem = utiliGraf.labelTitleBacker3("Unidades");
-        labelUnitsItem.setBounds(anchoUnit * 15, altoUnit * 5, anchoUnit * 5, altoUnit * 4);
+        labelUnitsItem.setBounds(anchoUnit * 15, altoUnit * 9, anchoUnit * 5, altoUnit * 4);
         panelSelItem.add(labelUnitsItem);
-        salon.setSpinnerUnitsItem(utiliGraf.spinnerBack(anchoUnit * 20, altoUnit * 5, anchoUnit * 3, altoUnit * 4, salon.getSpinnerUnitsItem()));
+        salon.setSpinnerUnitsItem(utiliGraf.spinnerBack(anchoUnit * 20, altoUnit * 10, anchoUnit * 3, altoUnit * 4, salon.getSpinnerUnitsItem()));
         panelSelItem.add(salon.getSpinnerUnitsItem());
 
         //Boton Ingreso Item
-        JButtonMetalBlu butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 11, anchoUnit * 11);
+        JButtonMetalBlu butSelItem = utiliGraf.button2("Ingresar item", anchoUnit * 1, altoUnit * 14, anchoUnit * 11);
         butSelItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -1034,10 +1063,10 @@ public class UtilidadesGraficasSalon {
         panelSelItem.add(butSelItem);
 
         JLabel labelAddIndication = utiliGraf.labelTitleBacker3("Indicación item");
-        labelAddIndication.setBounds(anchoUnit * 13, altoUnit * 12, anchoUnit * 8, altoUnit * 3);
+        labelAddIndication.setBounds(anchoUnit * 13, altoUnit * 15, anchoUnit * 8, altoUnit * 3);
         panelSelItem.add(labelAddIndication);
 
-        salon.getCheckBoxIndic().setBounds(anchoUnit * 21, altoUnit * 12, altoUnit * 3, altoUnit * 3);
+        salon.getCheckBoxIndic().setBounds(anchoUnit * 21, altoUnit * 15, altoUnit * 3, altoUnit * 3);
         salon.getCheckBoxIndic().addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {

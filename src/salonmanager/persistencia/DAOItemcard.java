@@ -9,6 +9,7 @@ import salonmanager.entidades.bussiness.Table;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DAOItemcard extends DAO {
+
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 //    ServicioRegister sr = new ServicioRegister();
 
@@ -113,7 +114,6 @@ public class DAOItemcard extends DAO {
         }
     }
 
-    
     public void modificarItem(Itemcard itemAux, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
         Timestamp upd = new Timestamp(new Date().getTime());
         String sql = "UPDATE itemcards "
@@ -189,7 +189,7 @@ public class DAOItemcard extends DAO {
             desconectarBase();
         }
     }
-    
+
     public void upActiveItemOrderTableAll(Table t) throws Exception {
         try {
             String sql = "UPDATE itemcard_order_tabs SET itemcard_order_tabs_active = " + true + " WHERE table_id_fkey = '" + t.getId() + "' AND itemcard_order_tabs_active = true;";
@@ -493,8 +493,7 @@ public class DAOItemcard extends DAO {
         }
     }
 
-
-    public Itemcard getItemById(int itemIMon) throws Exception {     
+    public Itemcard getItemById(int itemIMon) throws Exception {
         try {
             String sql = "SELECT * FROM itemcards WHERE itemcard_active = true AND itemcard_id = '" + itemIMon + "';";
             System.out.println(sql);
@@ -521,5 +520,25 @@ public class DAOItemcard extends DAO {
         } finally {
             desconectarBase();
         }
+    }
+
+    public String getItemNameById(int i) throws Exception {
+        String name = "";
+        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
+        try {
+            String sql = "SELECT * FROM itemcards WHERE itemcard_id = "+ i +" AND itemcard_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            Itemcard ic = new Itemcard();
+            while (resultado.next()) {
+                name = resultado.getString(3);
+            }
+            return name;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+
     }
 }
