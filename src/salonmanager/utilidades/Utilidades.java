@@ -487,7 +487,7 @@ public class Utilidades {
         time = dateFormat.format(date);
         return time;
     }
-    
+
     public String friendlyDate3(Timestamp timeInitSes) {
         String time = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
@@ -648,30 +648,43 @@ public class Utilidades {
     }
 
     public String reduxSt(String itemName) {
-        String[] words = itemName.split(" ");
+        String name = itemName;
+        if (itemName.length() > 20) {
+            String[] words = itemName.split(" ");
 
-        String firstWord = words[0];
-        if (firstWord.length() > 2) {
-            firstWord = firstWord.substring(0, 2) + ".";
-        }
-        words[0] = firstWord;
-
-        if (words.length > 1) {
-            String secondWord = words[1];
-            if (secondWord.length() > 4) {
-                secondWord = secondWord.substring(0, 4) + ".";
+            String firstWord = words[0];
+            if (firstWord.length() > 5) {
+                firstWord = firstWord.substring(0, 6) + ".";
             }
-            words[1] = secondWord;
-        }
+            words[0] = firstWord;
 
-        if (words.length > 2) {
-            String thirdWord = words[2];
-            if (thirdWord.length() > 4) {
-                thirdWord = thirdWord.substring(0, 2) + ".";
+            if (words.length > 1) {
+                String secondWord = words[1];
+                if (secondWord.length() > 4) {
+                    secondWord = secondWord.substring(0, 2) + ".";
+                }
+                words[1] = secondWord;
             }
-            words[2] = thirdWord;
-        }
 
-        return String.join(" ", words);
+            if (words.length > 2) {
+                String thirdWord = words[2];
+                if (thirdWord.length() > 4) {
+                    thirdWord = thirdWord.substring(0, 2) + ".";
+                }
+                words[3] = thirdWord;
+            }
+            
+            if (words.length > 3) {
+                String thirdWord = words[3];
+                if (thirdWord.length() > 4) {
+                    thirdWord = thirdWord.substring(0, 5) + ".";
+                }
+                words[3] = thirdWord;
+            }
+            
+            name = String.join(" ", words); 
+        }
+        
+        return name;
     }
 }

@@ -414,7 +414,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaWorkshiftEmpty() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno no registra movimientos. Confirme si quiere descartarlo");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno no registra movimientos. Confirme si desea descartarlo");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -436,10 +436,15 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorNullDates() {
-        CustomDialog cm = new CustomDialog("Error: el período ingresado no arroja resultados.", 2);
+        CustomDialog cm = new CustomDialog("Error: el período consultado no arroja resultados.", 2);
         cm.setVisible(true);
     }
 
+    public void errorNullItemDates() {
+        CustomDialog cm = new CustomDialog("Error: el item consultado no arroja resultados.", 2);
+        cm.setVisible(true);
+    }
+    
     public void errorPeriodNull() {
         CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un período de tiempo.", 2);
         cm.setVisible(true);

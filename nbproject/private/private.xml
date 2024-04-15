@@ -2,6 +2,42 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="17">
         <file>
+            <url>src/salonmanager/utilidades/UtilidadesGraficas.java</url>
+            <bookmark id="6">
+                <name/>
+                <line>249</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/salonmanager/utilidades/UtilidadesGraficasSalon.java</url>
+            <bookmark id="13">
+                <name/>
+                <line>1337</line>
+                <key/>
+            </bookmark>
+            <bookmark id="12">
+                <name/>
+                <line>1359</line>
+                <key/>
+            </bookmark>
+            <bookmark id="11">
+                <name/>
+                <line>1407</line>
+                <key/>
+            </bookmark>
+            <bookmark id="17">
+                <name/>
+                <line>1471</line>
+                <key/>
+            </bookmark>
+            <bookmark id="16">
+                <name/>
+                <line>1677</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
             <url>src/salonmanager/persistencia/DAOItemCarta.java</url>
             <bookmark id="2">
                 <name/>
@@ -17,48 +53,12 @@
                 <key/>
             </bookmark>
         </file>
-        <file>
-            <url>src/salonmanager/utilidades/UtilidadesGraficas.java</url>
-            <bookmark id="6">
-                <name/>
-                <line>249</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>src/salonmanager/utilidades/UtilidadesGraficasSalon.java</url>
-            <bookmark id="13">
-                <name/>
-                <line>1308</line>
-                <key/>
-            </bookmark>
-            <bookmark id="12">
-                <name/>
-                <line>1330</line>
-                <key/>
-            </bookmark>
-            <bookmark id="11">
-                <name/>
-                <line>1378</line>
-                <key/>
-            </bookmark>
-            <bookmark id="17">
-                <name/>
-                <line>1442</line>
-                <key/>
-            </bookmark>
-            <bookmark id="16">
-                <name/>
-                <line>1648</line>
-                <key/>
-            </bookmark>
-        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/StaticsManager.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasStatics.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/StaticsSelectorPeriod.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/StatsViewer.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/servicios/ServiceStatics.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/Utilidades.java</file>
         </group>

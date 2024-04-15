@@ -49,6 +49,14 @@ public class StaticsManager extends FrameFull {
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
+    Color black = new Color(50, 50, 50);
+    Color red = new Color(240, 82, 7);
+    Color green = new Color(31, 240, 100);
+    Color narUlg = new Color(255, 255, 176);
+    Color narUlgX = new Color(255, 255, 210);
+    Color narLg = new Color(252, 203, 5);
+    
+    
     SalonManager sm = new SalonManager();
     private User userIn = null;
     ArrayList<Table> tabs = new ArrayList<Table>();
@@ -64,7 +72,7 @@ public class StaticsManager extends FrameFull {
     double numTabs = 0;
     double numBar = 0;
     double numDeli = 0;
-    HashMap<Integer, Integer> countItems = null;
+//    HashMap<Integer, Integer> countItems = null;
     HashMap<String, Double> countCapt = null;
     JPanel chartPanelByOrder = new JPanel();
     JPanel chartPanelSellCurve = new JPanel();
@@ -73,9 +81,17 @@ public class StaticsManager extends FrameFull {
     JTextField fieldTotal = null;
     JTextField fieldPromTab = null;
     JTextField fieldTimeTab = null;
-    JLabel labelPeriod1 = null;
+    JLabel labelPeriod = null;
     JPanel panelStatsBySell = new JPanel();
 
+    JLabel labelCaption0 = null;
+    JLabel labelCaption1 = null;
+    JLabel labelCaption2 = null;
+    JLabel labelCaption3 = null;
+    JLabel labelCaption4 = null;
+    JLabel labelCaption5 = null;
+
+    
     public StaticsManager(Manager man) throws Exception {
         setTitle("Administrador");
         manager = man;
@@ -114,9 +130,9 @@ public class StaticsManager extends FrameFull {
         });
         panelStatsBySell.add(butStatsPeriod);
 
-        labelPeriod1 = utiliGraf.labelTitleBacker2("");
-        labelPeriod1.setBounds(anchoUnit * 2, altoUnit * 12, anchoUnit * 16, altoUnit * 6);
-        panelStatsBySell.add(labelPeriod1);
+        labelPeriod = utiliGraf.labelTitleBacker2("");
+        labelPeriod.setBounds(anchoUnit * 2, altoUnit * 12, anchoUnit * 16, altoUnit * 6);
+        panelStatsBySell.add(labelPeriod);
 
         JButtonMetalBlu butViewAllItemSales = utiliGraf.button2("Ver Ventas", anchoUnit * 2, altoUnit * 19, anchoUnit * 13);
         butViewAllItemSales.addActionListener(new ActionListener() {
@@ -189,6 +205,7 @@ public class StaticsManager extends FrameFull {
 //PANEL ORDER KIND--------------------------------------------------------------        
 //PANEL ORDER KIND--------------------------------------------------------------        
         JPanel panelOrder = new JPanel();
+        panelOrder.setBackground(bluLg);
         panelOrder.setLayout(null);
         panelOrder.setBounds(anchoUnit * 21, altoUnit * 10, anchoUnit * 32, altoUnit * 37);
         panelPpal.add(panelOrder);
@@ -206,6 +223,7 @@ public class StaticsManager extends FrameFull {
 //PANEL WORKSHIFT SELL CURVE----------------------------------------------------        
 //PANEL WORKSHIFT SELL CURVE----------------------------------------------------        
         JPanel panelSellCurve = new JPanel();
+        panelSellCurve.setBackground(bluLg);
         panelSellCurve.setLayout(null);
         panelSellCurve.setBounds(anchoUnit * 54, altoUnit * 10, anchoUnit * 49, altoUnit * 37);
         panelPpal.add(panelSellCurve);
@@ -218,43 +236,107 @@ public class StaticsManager extends FrameFull {
         chartPanelSellCurve.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 47, altoUnit * 30);
         panelSellCurve.add(chartPanelSellCurve);
 
-//PANEL ITEM STATIC-------------------------------------------------------------        
-//PANEL ITEM STATIC-------------------------------------------------------------        
-//PANEL ITEM STATIC-------------------------------------------------------------        
-//PANEL ITEM STATIC-------------------------------------------------------------        
+//PANEL ITEM STATICs-------------------------------------------------------------        
+//PANEL ITEM STATICs-------------------------------------------------------------        
+//PANEL ITEM STATICs-------------------------------------------------------------        
+//PANEL ITEM STATICs-------------------------------------------------------------        
         JPanel panelItemsStatics = new JPanel();
         panelItemsStatics.setLayout(null);
         panelItemsStatics.setBackground(bluLg);
         panelItemsStatics.setBounds(anchoUnit * 21, altoUnit * 49, anchoUnit * 40, altoUnit * 45);
         panelPpal.add(panelItemsStatics);
 
-        JLabel labelItemsStatics = utiliGraf.labelTitleBacker2("Estadísticas de Items");
-        labelItemsStatics.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 30, altoUnit * 3);
-        panelItemsStatics.add(labelItemsStatics);
-
-        chartPanelItemsCaption.setLayout(new BorderLayout());
-        chartPanelItemsCaption.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 30, altoUnit * 34);
-        chartPanelItemsCaption.setBackground(bluSt);
-        panelItemsStatics.add(chartPanelItemsCaption);
-
-        JButtonMetalBlu butItemSells = utiliGraf.button2("VENTA ITEMS", anchoUnit * 1, altoUnit * 40, anchoUnit * 10);
+        JButtonMetalBlu butItemSells = utiliGraf.button2("VENTA ITEMS", anchoUnit * 1, altoUnit * 4, anchoUnit * 11);
         butItemSells.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    openItemsSelledViewer();
+                    openItemsSelledViewer(1);
                 } catch (Exception ex) {
                     Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
         panelItemsStatics.add(butItemSells);
+        
+        JButtonMetalBlu butItemPriceEvol = utiliGraf.button2("VAR PRECIO x ITEM", anchoUnit * 13, altoUnit * 4, anchoUnit * 13);
+        butItemPriceEvol .addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    openItemsSelledViewer(2);
+                } catch (Exception ex) {
+                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelItemsStatics.add(butItemPriceEvol);
+
+        JButtonMetalBlu butItemQuantEvol = utiliGraf.button2("VOL VENTA x ITEM", anchoUnit * 27, altoUnit * 4, anchoUnit * 12);
+        butItemQuantEvol .addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    openItemsSelledViewer(3);
+                } catch (Exception ex) {
+                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelItemsStatics.add(butItemQuantEvol);        
+                
+        JLabel labelItemsStatics = utiliGraf.labelTitleBacker2("Estadísticas de Items");
+        labelItemsStatics.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 30, altoUnit * 3);
+        panelItemsStatics.add(labelItemsStatics);
+
+        JPanel panelItemsCaption = new JPanel();
+        panelItemsCaption.setLayout(null);
+        panelItemsCaption.setBackground(narUlg);
+        panelItemsCaption.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 34);
+        panelItemsStatics.add(panelItemsCaption);
+
+        JLabel labelItemsCaption = utiliGraf.labelTitleBacker2("Venta de Items por rubro");
+        labelItemsCaption.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 40, altoUnit * 3);
+        panelItemsCaption.add(labelItemsCaption);
+
+        labelCaption0 = utiliGraf.labelTitleBacker3("");
+        labelCaption0.setBounds(anchoUnit * 25, altoUnit * 5, anchoUnit * 20, altoUnit * 3);
+        panelItemsCaption.add(labelCaption0);
+
+        labelCaption1 = utiliGraf.labelTitleBacker3("");
+        labelCaption1.setBounds(anchoUnit * 25, altoUnit * 10, anchoUnit * 20, altoUnit * 3);
+        panelItemsCaption.add(labelCaption1);
+
+        labelCaption2 = utiliGraf.labelTitleBacker3("");
+        labelCaption2.setBounds(anchoUnit * 25, altoUnit * 15, anchoUnit * 20, altoUnit * 3);
+        panelItemsCaption.add(labelCaption2);        
+
+        labelCaption3 = utiliGraf.labelTitleBacker3("");
+        labelCaption3.setBounds(anchoUnit * 25, altoUnit * 20, anchoUnit * 20, altoUnit * 3);
+        panelItemsCaption.add(labelCaption3);
+
+        labelCaption4 = utiliGraf.labelTitleBacker3("");
+        labelCaption4.setBounds(anchoUnit * 25, altoUnit * 25, anchoUnit * 20, altoUnit * 3);
+        panelItemsCaption.add(labelCaption4);
+
+        labelCaption5 = utiliGraf.labelTitleBacker3("");
+        labelCaption5.setBounds(anchoUnit * 25, altoUnit * 30, anchoUnit * 20, altoUnit * 3);
+        panelItemsCaption.add(labelCaption5);
+        
+        chartPanelItemsCaption.setLayout(new BorderLayout());
+        chartPanelItemsCaption.setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 23, altoUnit * 29);
+        chartPanelItemsCaption.setBackground(bluSt);
+        panelItemsCaption.add(chartPanelItemsCaption);
+        
+        
+
 
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
         JPanel panelWaiterStatics = new JPanel();
+        panelWaiterStatics.setBackground(bluLg);
         panelWaiterStatics.setLayout(null);
         panelWaiterStatics.setBounds(anchoUnit * 62, altoUnit * 49, anchoUnit * 41, altoUnit * 45);
         panelPpal.add(panelWaiterStatics);
@@ -262,7 +344,14 @@ public class StaticsManager extends FrameFull {
         JLabel labelWaiterStatics = utiliGraf.labelTitleBacker2("Estadísticas de Mozos");
         labelWaiterStatics.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 30, altoUnit * 3);
         panelWaiterStatics.add(labelWaiterStatics);
+        
+        JPanel panelWaiterSells = new JPanel();
+        panelWaiterSells.setLayout(null);
+        panelWaiterSells.setBackground(narUlg);
+        panelWaiterSells.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 38, altoUnit * 34);
+        panelItemsStatics.add(panelWaiterSells);
 
+        
 //EXTRAS------------------------------------------------------------------------        
 //EXTRAS------------------------------------------------------------------------        
 //EXTRAS------------------------------------------------------------------------        
@@ -323,7 +412,6 @@ public class StaticsManager extends FrameFull {
         double promTab = 0;
         long totTime = 0;
         int tabInt = 0;
-        countItems = new HashMap<>();
         countCapt = new HashMap<>();
         ArrayList<Integer> idSales = new ArrayList<Integer>();
         ArrayList<Integer> cantSales = new ArrayList<Integer>();
@@ -355,9 +443,6 @@ public class StaticsManager extends FrameFull {
         }
 
         for (ItemSale is : iSales) {
-            int i = is.getItemSaleId();
-            countItems.put(i, countItems.getOrDefault(i, 0) + 1);
-
             for (Map.Entry<String, Double> entry : countCapt.entrySet()) {
                 String key = entry.getKey();
                 double newValue = 0;
@@ -399,15 +484,16 @@ public class StaticsManager extends FrameFull {
         chartPanelSellCurve.repaint();
 
         //Volume by item Capition
-        chartCaptionPie = utiliGrafStats.chartCaptionBacker(countCapt);
+        
+        chartCaptionPie = utiliGrafStats.chartCaptionBacker(countCapt, this);
         chartPanelItemsCaption.removeAll();
         chartPanelItemsCaption.add(new XChartPanel<>(chartCaptionPie));
         chartPanelItemsCaption.revalidate();
         chartPanelItemsCaption.repaint();
     }
 
-    private void openItemsSelledViewer() throws Exception {
-        new StatsViewer(this, 1);
+    private void openItemsSelledViewer(int i) throws Exception {
+        new StatsViewer(this, i);
     }
 
     public void setTabs(ArrayList tables) {
@@ -540,20 +626,62 @@ public class StaticsManager extends FrameFull {
         return time;
     }
 
-    public JLabel getLabelPeriod1() {
-        return labelPeriod1;
+    public JLabel getLabelPeriod() {
+        return labelPeriod;
     }
 
-    public void setLabelPeriod1(JLabel labelPeriod1) {
-        this.labelPeriod1 = labelPeriod1;
+    public void setLabelPeriod(JLabel labelPeriod) {
+        this.labelPeriod = labelPeriod;
     }
 
-    public HashMap<Integer, Integer> getCountItems() {
-        return countItems;
+    public JLabel getLabelCaption0() {
+        return labelCaption0;
     }
 
-    public void setCountItems(HashMap<Integer, Integer> countItems) {
-        this.countItems = countItems;
+    public void setLabelCaption0(JLabel labelCaption0) {
+        this.labelCaption0 = labelCaption0;
     }
+
+    public JLabel getLabelCaption1() {
+        return labelCaption1;
+    }
+
+    public void setLabelCaption1(JLabel labelCaption1) {
+        this.labelCaption1 = labelCaption1;
+    }
+
+    public JLabel getLabelCaption2() {
+        return labelCaption2;
+    }
+
+    public void setLabelCaption2(JLabel labelCaption2) {
+        this.labelCaption2 = labelCaption2;
+    }
+
+    public JLabel getLabelCaption3() {
+        return labelCaption3;
+    }
+
+    public void setLabelCaption3(JLabel labelCaption3) {
+        this.labelCaption3 = labelCaption3;
+    }
+
+    public JLabel getLabelCaption4() {
+        return labelCaption4;
+    }
+
+    public void setLabelCaption4(JLabel labelCaption4) {
+        this.labelCaption4 = labelCaption4;
+    }
+
+    public JLabel getLabelCaption5() {
+        return labelCaption5;
+    }
+
+    public void setLabelCaption5(JLabel labelCaption5) {
+        this.labelCaption5 = labelCaption5;
+    }
+    
+    
 
 }

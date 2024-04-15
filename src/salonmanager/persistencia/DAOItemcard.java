@@ -43,6 +43,25 @@ public class DAOItemcard extends DAO {
             desconectarBase();
         }
     }
+    
+     public ArrayList<Integer> listarItemsCardId() throws Exception {
+        ArrayList<Integer> itemsId = new ArrayList<Integer>();
+        try {
+            String sql = "SELECT itemcard_id FROM itemcards WHERE itemcard_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                int id = resultado.getInt(1);
+                itemsId.add(id);
+            }
+            return itemsId;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
 
     public ArrayList<Itemcard> listItemsByCaption(String capt) throws Exception {
         ArrayList<Itemcard> items = new ArrayList<Itemcard>();

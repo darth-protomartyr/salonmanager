@@ -415,6 +415,7 @@ public class ServicioSalon {
             boolean confirm = utiliMsg.cargaWorkshiftEmpty();
             if (confirm) {
                 daoW.updateWorkshiftState(actualWs);
+                daoW.downWorkshiftActive(actualWs);
                 daoC.updateCfgActOpenWs(false);
                 daoC.updateCfgActOpenIdWs(0);
                 salon.setWorkshiftNow(null);

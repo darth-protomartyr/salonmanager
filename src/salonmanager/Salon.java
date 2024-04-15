@@ -381,10 +381,6 @@ public class Salon extends FrameFull {
         if (tables != null) {
             utiliGrafSal.tableManager(tables, sal);
         }
-        
-                        
-
-        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

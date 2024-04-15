@@ -1031,7 +1031,7 @@ public class UtilidadesGraficasSalon {
         JLabel labelUnitsItem = utiliGraf.labelTitleBacker3("Unidades");
         labelUnitsItem.setBounds(anchoUnit * 15, altoUnit * 9, anchoUnit * 5, altoUnit * 4);
         panelSelItem.add(labelUnitsItem);
-        salon.setSpinnerUnitsItem(utiliGraf.spinnerBack(anchoUnit * 20, altoUnit * 10, anchoUnit * 3, altoUnit * 4, salon.getSpinnerUnitsItem()));
+        salon.setSpinnerUnitsItem(utiliGraf.spinnerBack(anchoUnit * 20, altoUnit * 9, anchoUnit * 3, altoUnit * 4, salon.getSpinnerUnitsItem()));
         panelSelItem.add(salon.getSpinnerUnitsItem());
 
         //Boton Ingreso Item

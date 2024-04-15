@@ -53,7 +53,7 @@ public class DAOWorkshift extends DAO {
 
     public void updateWorkshiftClose(Workshift ws, boolean isTabs) throws Exception {
         try {
-            if (isTabs = false) {
+            if (isTabs == false) {
                 downWorkshiftActive(ws);
             }
 
@@ -172,9 +172,8 @@ public class DAOWorkshift extends DAO {
         if (ts2 == null) {
             ts2 = new Timestamp(new Date().getTime());
         }
-
         try {
-            String sql = "SELECT * FROM workshifts WHERE workshift_open_shift >= '" + ts1 + "' AND workshift_open_shift <= '" + ts2 + "';";
+            String sql = "SELECT * FROM workshifts WHERE workshift_open_shift >= '" + ts1 + "' AND workshift_open_shift <= '" + ts2 + "' AND workshift_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -205,7 +204,6 @@ public class DAOWorkshift extends DAO {
 
     public Workshift askWorshiftById(int id) throws Exception {
         Workshift ws = new Workshift();
-
         try {
             String sql = "SELECT * FROM workshifts WHERE workshift_id= " + id + ";";
             System.out.println(sql);
@@ -351,7 +349,7 @@ public class DAOWorkshift extends DAO {
     public ArrayList<Integer> listIdByDate(Timestamp tsInit, Timestamp tsEnd) throws Exception {
         ArrayList<Integer> wss = new ArrayList<Integer>();
         try {
-            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_shift >= '" + tsInit + "' AND workshift_open_shift <= '" + tsEnd + "';";
+            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_shift >= '" + tsInit + "' AND workshift_open_shift <= '" + tsEnd + "' AND workshift_state_shift = false AND workshift_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {

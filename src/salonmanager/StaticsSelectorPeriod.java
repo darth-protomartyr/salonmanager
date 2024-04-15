@@ -146,7 +146,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
         labelDay1.setBounds(anchoUnit * 1, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
         panelStatsBySellInit.add(labelDay1);
 
-        daySpinner1 = new JSpinner(new SpinnerNumberModel(day1, 1, 12, 1));
+        daySpinner1 = new JSpinner(new SpinnerNumberModel(day1, 1, 30, 1));
         daySpinner1.setBounds(anchoUnit * 6, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
         daySpinner1.setFont(font);
         panelStatsBySellInit.add(daySpinner1);
@@ -185,7 +185,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
         labelMonth2.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 5, altoUnit * 4);
         panelStatsBySellEnd.add(labelMonth2);
 
-        monthSpinner2 = new JSpinner(new SpinnerNumberModel(month2, 1, 12, 1));
+        monthSpinner2 = new JSpinner(new SpinnerNumberModel(month2, 1, 31, 1));
         monthSpinner2.setBounds(anchoUnit * 6, altoUnit * 10, anchoUnit * 5, altoUnit * 4);
         monthSpinner2.setFont(font);
         panelStatsBySellEnd.add(monthSpinner2);
@@ -201,7 +201,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
         labelDay2.setBounds(anchoUnit * 1, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
         panelStatsBySellEnd.add(labelDay2);
 
-        daySpinner2 = new JSpinner(new SpinnerNumberModel(day2, 1, 12, 1));
+        daySpinner2 = new JSpinner(new SpinnerNumberModel(day2, 1, 31, 1));
         daySpinner2.setBounds(anchoUnit * 6, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
         daySpinner2.setFont(font);
         panelStatsBySellEnd.add(daySpinner2);
@@ -286,7 +286,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
             ArrayList<Table> tabs = daoT.listarTablesByDate(ts1, ts2);
             ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
             Collections.sort(tabs, new TimestampComparator());
-            statsM.getLabelPeriod1().setText("<html>LAPSO DE ANÁLISIS:<br>de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampInit) +"</html>");
+            statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampEnd) +"</html>");
             statsM.setItemsSale(is);
             statsM.setTabs(tabs);
             statsM.setWorkshifts(wsS);
