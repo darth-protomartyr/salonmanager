@@ -647,37 +647,68 @@ public class Utilidades {
         return tabPos;
     }
 
-    public String reduxSt(String itemName) {
-        String name = itemName;
-        if (itemName.length() > 20) {
-            String[] words = itemName.split(" ");
+    public String reduxSt(String n, int k) {
+        String name = n;
+        int limit = 20;
+        String[] words = name.split(" ");
+        int length = words.length;
 
+        int w1 = 7;
+        int w2 = 10;
+        int w3 = 3;
+        int w4 = 3;
+        
+        if (length == 3) {
+            w1 = 5;
+            w2 = 5; 
+            w3 = 5;
+        } else if(length == 4) {
+            w1 = 1;
+            w2 = 1; 
+            w3 = 1;
+            w4 = 10;
+        }
+
+        if (k == 2 ) {
+            limit = 8;
+
+            w1 = 1;
+            w2 = 4; 
+            w3 = 1;
+            w4 = 1;
+            
+            if (length > 2) {
+                w2 = 1;
+            }   
+        }
+
+        if (name.length() > limit) {
             String firstWord = words[0];
-            if (firstWord.length() > 5) {
-                firstWord = firstWord.substring(0, 6) + ".";
+            if (firstWord.length() > w1) {
+                firstWord = firstWord.substring(0, w1) + ".";
             }
             words[0] = firstWord;
 
-            if (words.length > 1) {
+            if (length > 1) {
                 String secondWord = words[1];
                 if (secondWord.length() > 4) {
-                    secondWord = secondWord.substring(0, 2) + ".";
+                    secondWord = secondWord.substring(0, w2) + ".";
                 }
                 words[1] = secondWord;
             }
 
-            if (words.length > 2) {
+            if (length > 2) {
                 String thirdWord = words[2];
                 if (thirdWord.length() > 4) {
-                    thirdWord = thirdWord.substring(0, 2) + ".";
+                    thirdWord = thirdWord.substring(0, w3) + ".";
                 }
                 words[3] = thirdWord;
             }
             
-            if (words.length > 3) {
+            if (length > 3) {
                 String thirdWord = words[3];
                 if (thirdWord.length() > 4) {
-                    thirdWord = thirdWord.substring(0, 5) + ".";
+                    thirdWord = thirdWord.substring(0, w4) + ".";
                 }
                 words[3] = thirdWord;
             }

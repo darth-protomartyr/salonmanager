@@ -85,6 +85,20 @@ public class DAOUser extends DAO {
         return mails;
     }
 
+    public ArrayList<String> listarUserByRol(String rol) throws Exception {
+        String sql = "SELECT user_id FROM users WHERE user_role = '" + rol + "' AND user_active = true";
+        System.out.println(sql);
+        consultarBase(sql);
+//        String id = "";
+        ArrayList<String> ids = new ArrayList<String>();
+        while (resultado.next()) {
+            String id = resultado.getString(1);
+            ids.add(id);
+        }
+        desconectarBase();
+        return ids;
+    }
+
     public User consultaUser(String mail) throws Exception {
         try {
             String sql = "SELECT * FROM users WHERE user_mail = '" + mail + "' AND user_active = true;";
@@ -258,6 +272,25 @@ public class DAOUser extends DAO {
                 user.setActiveUser(resultado.getBoolean(10));
             }
             return user;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public String getUserNameById(String deliId) throws Exception {
+        try {
+            String sql = "SELECT user_name, user_last_name FROM users WHERE user_id = '" + deliId + "' AND user_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            String nameC = "";
+            while (resultado.next()) {
+                String name = resultado.getString(1);
+                String lastName = resultado.getString(2);
+                nameC = name + " " + lastName; 
+            }
+            return nameC;
         } catch (Exception e) {
             throw e;
         } finally {

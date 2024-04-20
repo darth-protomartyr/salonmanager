@@ -11,14 +11,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import org.knowm.xchart.CategoryChart;
+import org.knowm.xchart.PieChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
@@ -35,7 +36,7 @@ import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasStatics;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class StatsViewer extends FrameFull {
+public class StatsWaiterViewer extends FrameFull {
 
     DAOItemcard daoI = new DAOItemcard();
     Color bluSt = new Color(3, 166, 136);
@@ -49,7 +50,8 @@ public class StatsViewer extends FrameFull {
     StaticsManager sMan = null;
     CategoryChart chartItemsSelled = null;
     CategoryChart chartItemPriceEvol = null;
-    JPanel chartPanel = new JPanel();
+    JPanel panelChart1 = new JPanel();
+    JPanel panelChart2 = new JPanel();
 
     int kind = 0;
     int page = 0;
@@ -60,11 +62,8 @@ public class StatsViewer extends FrameFull {
     ArrayList<ItemSale> iSales = null;
     ArrayList<Itemcard> itemsDB = null;
     ArrayList<ItemSale> iSalesByItem = null;
-    JComboBox comboItems = null;
-    JLabel labelItem = null;
 
-    
-    public StatsViewer(StaticsManager statsM, int k) throws Exception {
+    public StatsWaiterViewer(StaticsManager statsM, int k, String period) throws Exception {
 
         sm.addFrame(this);
         sMan = statsM;
@@ -78,20 +77,53 @@ public class StatsViewer extends FrameFull {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, this.getWidth(), anchoUnit * 6);
+        panelLabel.setBounds(0, 0, this.getWidth(), altoUnit * 6);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("");
         panelLabel.add(labelTit);
-         
-        labelItem = utiliGraf.labelTitleBacker1W("");
-        labelItem.setBounds(anchoUnit * 2, altoUnit * 10, anchoUnit * 50, altoUnit * 5);
-        panelPpal.add(labelItem);
 
-        chartPanel.setBounds(anchoUnit * 2, altoUnit * 15, anchoUnit * 101, altoUnit * 70);
-        chartPanel.setLayout(new BorderLayout());
-        panelPpal.add(chartPanel);
+        panelChart1.setLayout(new BorderLayout());
+        panelPpal.add(panelChart1);
 
+        panelChart2.setLayout(new BorderLayout());
+        panelPpal.add(panelChart2);
+
+        if (kind == 1) {
+            tit = "Estadísticas globales de Mozos(" + period + ")";
+            setTitle(tit);
+            labelTit.setText(tit);
+
+            JLabel labelWBySell = utiliGraf.labelTitleBacker2W("Por volumen de venta");
+            labelWBySell.setBounds(anchoUnit * 2, altoUnit * 6, anchoUnit * 20, altoUnit * 4);
+            panelPpal.add(labelWBySell);
+
+            HashMap<String, Double> countWSells = sMan.getCountWSells();
+            PieChart chartWSells = utiliGrafStats.chartWSellBacker(countWSells, statsM);
+            panelChart1.setBounds(anchoUnit * 2, altoUnit * 12, anchoUnit * 50, altoUnit * 80);
+            panelChart1.add(new XChartPanel<>(chartWSells));
+
+            JLabel labelWByWs = utiliGraf.labelTitleBacker2W("Por cantidad de turnos");
+            labelWByWs.setBounds(anchoUnit * 53, altoUnit * 6, anchoUnit * 20, altoUnit * 4);
+            panelPpal.add(labelWByWs);
+
+            HashMap<String, Integer> countWWs = sMan.getCountWWs();
+            CategoryChart chartWWs = utiliGrafStats.chartWWsBacker(countWWs, statsM);
+
+            JScrollPane scrollPane = new JScrollPane(new XChartPanel<>(chartWWs));
+            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+//            scrollPane.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 53, altoUnit * 72);
+            panelPpal.add(scrollPane);
+
+            panelChart2.setBounds(anchoUnit * 53, altoUnit * 12, anchoUnit * 50, altoUnit * 80);
+            panelChart2.add(scrollPane);
+
+        }
+
+
+        /*
         JButtonMetalBlu butPrev = utiliGraf.button2("Prev", anchoUnit * 43, altoUnit * 87, anchoUnit * 8);
         butPrev.addActionListener(new ActionListener() {
             @Override
@@ -101,7 +133,7 @@ public class StatsViewer extends FrameFull {
                     try {
                         updater();
                     } catch (Exception ex) {
-                        Logger.getLogger(StatsViewer.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(StatsWaiterViewer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
                     page += 1;
@@ -118,7 +150,7 @@ public class StatsViewer extends FrameFull {
                     try {
                         updater();
                     } catch (Exception ex) {
-                        Logger.getLogger(StatsViewer.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(StatsWaiterViewer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
                     page -= 1;
@@ -141,8 +173,9 @@ public class StatsViewer extends FrameFull {
             }
         });
 
+        
         if (kind == 1) {
-            tit = "Estadísticas venta de Items";
+            tit = "Estadísticas venta de Mozos";
             setTitle(tit);
             labelTit.setText(tit);
             ArrayList<Integer> list1 = daoI.listarItemsCardId();
@@ -154,10 +187,9 @@ public class StatsViewer extends FrameFull {
                     maxUnit = q;
                 }
                 countItems.put(i, q);
-                
                 list2.add(i);
             }
-            
+
             ArrayList<Integer> list3 = new ArrayList<>(list1);
             list3.removeAll(list2);
 
@@ -171,7 +203,7 @@ public class StatsViewer extends FrameFull {
             panelPpal.add(butPrev);
             panelPpal.add(butNext);
 
-        } else if (kind == 2) {
+        } /*else if (kind == 2) {
             tit = "Evolución de precios";
             setTitle(tit);
             labelTit.setText(tit);
@@ -185,8 +217,7 @@ public class StatsViewer extends FrameFull {
             panelPpal.add(comboItems);
             panelPpal.add(butSelItem);
             String itemName = "Item:";
-        }
-
+        }*/
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
@@ -204,6 +235,7 @@ public class StatsViewer extends FrameFull {
         });
     }
 
+    /*
     private void selectItem() {
         String st = (String) comboItems.getSelectedItem();
         Itemcard ic = null;
@@ -241,10 +273,10 @@ public class StatsViewer extends FrameFull {
                 chartPrice.getStyler().setYAxisDecimalPattern("#");
                 chartPrice.getStyler().setXAxisDecimalPattern("#");
                 chartPrice.addSeries("Precio de venta", dates, prices);
-                chartPanel.removeAll();
-                chartPanel.add(new XChartPanel<>(chartPrice));
-                chartPanel.revalidate();
-                chartPanel.repaint();
+                panelChart.removeAll();
+                panelChart.add(new XChartPanel<>(chartPrice));
+                panelChart.revalidate();
+                panelChart.repaint();
             } else {
                 utiliMsg.errorNullItemDates();
             }
@@ -286,16 +318,17 @@ public class StatsViewer extends FrameFull {
                 chartItemQ.getStyler().setYAxisDecimalPattern("#");
                 chartItemQ.getStyler().setXAxisDecimalPattern("#");
                 chartItemQ.addSeries("Unidades Vendidas", wss, quants);
-                chartPanel.add(new XChartPanel<>(chartItemQ));
-                chartPanel.removeAll();
-                chartPanel.add(new XChartPanel<>(chartItemQ));
-                chartPanel.revalidate();
-                chartPanel.repaint();
+                panelChart.add(new XChartPanel<>(chartItemQ));
+                panelChart.removeAll();
+                panelChart.add(new XChartPanel<>(chartItemQ));
+                panelChart.revalidate();
+                panelChart.repaint();
             } else {
                 utiliMsg.errorNullDates();
             }
         }
     }
+
 
     private void updater() throws Exception {
         int limitInf = 1;
@@ -315,20 +348,5 @@ public class StatsViewer extends FrameFull {
         countItems = statsS.orderHs(countItems);
 
         
-        newCountItems.clear();
-        
-        for (Map.Entry<Integer, Integer> entry : countItems.entrySet()) {
-            if (counter >= limitInf && counter <= limitSup) {
-                newCountItems.put(entry.getKey(), entry.getValue());
-            }
-            counter += 1;
-        }
-        newCountItems = statsS.orderHs(newCountItems);
-        
-        chartItemsSelled = utiliGrafStats.chartItemsBacker(newCountItems, maxUnit);
-        chartPanel.removeAll();
-        chartPanel.add(new XChartPanel<>(chartItemsSelled));
-        chartPanel.revalidate();
-        chartPanel.repaint();
-    }
+        newCountItems.clear();*/
 }

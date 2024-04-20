@@ -287,6 +287,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
             ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
             Collections.sort(tabs, new TimestampComparator());
             statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampEnd) +"</html>");
+            statsM.setPeriod("de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampEnd));
             statsM.setItemsSale(is);
             statsM.setTabs(tabs);
             statsM.setWorkshifts(wsS);

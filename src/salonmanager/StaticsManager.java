@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,11 +36,13 @@ import org.knowm.xchart.*;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.UtilidadesGraficasStatics;
 
 public class StaticsManager extends FrameFull {
 
     DAOConfig daoC = new DAOConfig();
+    DAOUser daoU = new DAOUser();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasStatics utiliGrafStats = new UtilidadesGraficasStatics();
     Utilidades utili = new Utilidades();
@@ -55,8 +58,7 @@ public class StaticsManager extends FrameFull {
     Color narUlg = new Color(255, 255, 176);
     Color narUlgX = new Color(255, 255, 210);
     Color narLg = new Color(252, 203, 5);
-    
-    
+
     SalonManager sm = new SalonManager();
     private User userIn = null;
     ArrayList<Table> tabs = new ArrayList<Table>();
@@ -69,10 +71,12 @@ public class StaticsManager extends FrameFull {
     CategoryChart chartItemsSelled = null;
     PieChart chartCaptionPie = null;
 
+    String period = "";
     double numTabs = 0;
     double numBar = 0;
     double numDeli = 0;
-//    HashMap<Integer, Integer> countItems = null;
+    HashMap<String, Double> countWSells = null;
+    HashMap<String, Integer> countWWs = null;
     HashMap<String, Double> countCapt = null;
     JPanel chartPanelByOrder = new JPanel();
     JPanel chartPanelSellCurve = new JPanel();
@@ -91,7 +95,17 @@ public class StaticsManager extends FrameFull {
     JLabel labelCaption4 = null;
     JLabel labelCaption5 = null;
 
-    
+    JLabel labelWaiter1 = null;
+    JLabel labelWaiter2 = null;
+    JLabel labelWaiter3 = null;
+    JLabel labelWaiter4 = null;
+    JLabel labelWaiter5 = null;
+    JLabel labelWaiter6 = null;
+    JLabel labelWaiter7 = null;
+    JLabel labelWaiter8 = null;
+    JLabel labelWaiter9 = null;
+    JLabel labelWaiter10 = null;
+
     public StaticsManager(Manager man) throws Exception {
         setTitle("Administrador");
         manager = man;
@@ -258,9 +272,9 @@ public class StaticsManager extends FrameFull {
             }
         });
         panelItemsStatics.add(butItemSells);
-        
+
         JButtonMetalBlu butItemPriceEvol = utiliGraf.button2("VAR PRECIO x ITEM", anchoUnit * 13, altoUnit * 4, anchoUnit * 13);
-        butItemPriceEvol .addActionListener(new ActionListener() {
+        butItemPriceEvol.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
@@ -273,7 +287,7 @@ public class StaticsManager extends FrameFull {
         panelItemsStatics.add(butItemPriceEvol);
 
         JButtonMetalBlu butItemQuantEvol = utiliGraf.button2("VOL VENTA x ITEM", anchoUnit * 27, altoUnit * 4, anchoUnit * 12);
-        butItemQuantEvol .addActionListener(new ActionListener() {
+        butItemQuantEvol.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
@@ -283,8 +297,8 @@ public class StaticsManager extends FrameFull {
                 }
             }
         });
-        panelItemsStatics.add(butItemQuantEvol);        
-                
+        panelItemsStatics.add(butItemQuantEvol);
+
         JLabel labelItemsStatics = utiliGraf.labelTitleBacker2("Estadísticas de Items");
         labelItemsStatics.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 30, altoUnit * 3);
         panelItemsStatics.add(labelItemsStatics);
@@ -309,7 +323,7 @@ public class StaticsManager extends FrameFull {
 
         labelCaption2 = utiliGraf.labelTitleBacker3("");
         labelCaption2.setBounds(anchoUnit * 25, altoUnit * 15, anchoUnit * 20, altoUnit * 3);
-        panelItemsCaption.add(labelCaption2);        
+        panelItemsCaption.add(labelCaption2);
 
         labelCaption3 = utiliGraf.labelTitleBacker3("");
         labelCaption3.setBounds(anchoUnit * 25, altoUnit * 20, anchoUnit * 20, altoUnit * 3);
@@ -322,14 +336,11 @@ public class StaticsManager extends FrameFull {
         labelCaption5 = utiliGraf.labelTitleBacker3("");
         labelCaption5.setBounds(anchoUnit * 25, altoUnit * 30, anchoUnit * 20, altoUnit * 3);
         panelItemsCaption.add(labelCaption5);
-        
+
         chartPanelItemsCaption.setLayout(new BorderLayout());
         chartPanelItemsCaption.setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 23, altoUnit * 29);
         chartPanelItemsCaption.setBackground(bluSt);
         panelItemsCaption.add(chartPanelItemsCaption);
-        
-        
-
 
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
@@ -344,13 +355,44 @@ public class StaticsManager extends FrameFull {
         JLabel labelWaiterStatics = utiliGraf.labelTitleBacker2("Estadísticas de Mozos");
         labelWaiterStatics.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 30, altoUnit * 3);
         panelWaiterStatics.add(labelWaiterStatics);
-        
-        JPanel panelWaiterSells = new JPanel();
+
+        JPanel panelWaiterSells = utiliGrafStats.panelWaiterBacker(this, 1);
         panelWaiterSells.setLayout(null);
         panelWaiterSells.setBackground(narUlg);
-        panelWaiterSells.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 38, altoUnit * 34);
-        panelItemsStatics.add(panelWaiterSells);
+        panelWaiterSells.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 19, altoUnit * 30);
+        panelWaiterStatics.add(panelWaiterSells);
 
+        JPanel panelWaiterWs = utiliGrafStats.panelWaiterBacker(this, 2);
+        panelWaiterWs.setLayout(null);
+        panelWaiterWs.setBackground(narUlg);
+        panelWaiterWs.setBounds(anchoUnit * 21, altoUnit * 5, anchoUnit * 19, altoUnit * 30);
+        panelWaiterStatics.add(panelWaiterWs);
+
+        JButtonMetalBlu butWGlobal = utiliGraf.button2("Estadisticas globales", anchoUnit * 2, altoUnit * 38, anchoUnit * 17);
+        butWGlobal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    openWSellsViewer(1);
+                } catch (Exception ex) {
+                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelWaiterStatics.add(butWGlobal);
+
+        JButtonMetalBlu butWSingle = utiliGraf.button2("Estadisticas Individuales", anchoUnit * 22, altoUnit * 38, anchoUnit * 17);
+        butWSingle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    openWSellsViewer(1);
+                } catch (Exception ex) {
+                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelWaiterStatics.add(butWSingle);
         
 //EXTRAS------------------------------------------------------------------------        
 //EXTRAS------------------------------------------------------------------------        
@@ -413,10 +455,13 @@ public class StaticsManager extends FrameFull {
         long totTime = 0;
         int tabInt = 0;
         countCapt = new HashMap<>();
+        countWSells = new HashMap<String, Double>();
+        countWWs = new HashMap<String, Integer>();
+        ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
+        ArrayList<String> waiterIds = new ArrayList<String>();
         ArrayList<Integer> idSales = new ArrayList<Integer>();
         ArrayList<Integer> cantSales = new ArrayList<Integer>();
-//        idSales.add(iSales.get(0).getItemSaleId());
-
+        ArrayList<HashSet<Integer>> listHS = new ArrayList<HashSet<Integer>>();
         for (Table tab : tabs) {
             tot += tab.getTotal();
             if (tab.getPos().equals("barra")) {
@@ -442,6 +487,8 @@ public class StaticsManager extends FrameFull {
             countCapt.put(captions.get(i), 0.0);
         }
 
+
+
         for (ItemSale is : iSales) {
             for (Map.Entry<String, Double> entry : countCapt.entrySet()) {
                 String key = entry.getKey();
@@ -451,6 +498,46 @@ public class StaticsManager extends FrameFull {
                     newValue = value + is.getItemSalePrice();
                     entry.setValue(newValue);
                 }
+            }
+
+            for (int i = 0; i < waiterIdsDB.size(); i++) {
+                String id1 = waiterIdsDB.get(i);
+                String Id2 = is.getItemSaleWaiterId();
+                if (id1.equals(Id2)) {
+                    waiterIds.add(is.getItemSaleWaiterId());
+                    HashSet<Integer> counterWs = new HashSet<Integer>(); 
+                    listHS.add(counterWs);
+                }
+            }
+        }
+
+        ArrayList<String> ids = new ArrayList<String>(waiterIds);
+        for (int i = 0; i < ids.size(); i++) {
+            String id = ids.get(i);
+            countWSells.put(id, 0.0);
+            countWWs.put(id, 0);
+        }
+
+        for (ItemSale is : iSales) {
+            for (Map.Entry<String, Double> entry : countWSells.entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(is.getItemSaleWaiterId())) {
+                    double value = entry.getValue();
+                    double newValue = value + is.getItemSalePrice();
+                    entry.setValue(newValue);
+                }
+            }
+
+            
+            int counter = 0;
+            for (Map.Entry<String, Integer> entry : countWWs.entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(is.getItemSaleWaiterId())) {
+                    listHS.get(counter).add(is.getItemSaleWorkshiftId());
+                    int newValue = listHS.get(counter).size();
+                    entry.setValue(newValue);
+                }
+                counter += 1;
             }
         }
 
@@ -484,16 +571,65 @@ public class StaticsManager extends FrameFull {
         chartPanelSellCurve.repaint();
 
         //Volume by item Capition
-        
         chartCaptionPie = utiliGrafStats.chartCaptionBacker(countCapt, this);
         chartPanelItemsCaption.removeAll();
         chartPanelItemsCaption.add(new XChartPanel<>(chartCaptionPie));
         chartPanelItemsCaption.revalidate();
         chartPanelItemsCaption.repaint();
+
+        //TOP Waiters Sell
+        ArrayList<String> waitersSell1 = new ArrayList<>(countWSells.keySet());
+        ArrayList<String> waitersSell2 = new ArrayList<String>();
+        ArrayList<Double> amounts1 = new ArrayList<>(countWSells.values());
+        ArrayList<Double> amounts2 = new ArrayList<Double>();
+
+        for (int i = 0; i < 5; i++) {
+            if (i < waitersSell1.size()) {
+                String name = daoU.getUserNameById(waitersSell1.get(i));
+                waitersSell2.add(name);
+                amounts2.add(amounts1.get(i));
+            } else {
+                waitersSell2.add("--");
+                amounts2.add(0.0);
+            }
+        }
+
+        //TOP Waiters Workshift
+        ArrayList<String> waitersWs1 = new ArrayList<>(countWWs.keySet());
+        ArrayList<String> waitersWs2 = new ArrayList<String>();
+        ArrayList<Integer> wss1 = new ArrayList<>(countWWs.values());
+        ArrayList<Integer> wss2 = new ArrayList<Integer>();
+
+        for (int i = 0; i < 5; i++) {
+            if (i < waitersWs1.size()) {
+                String name = daoU.getUserNameById(waitersWs1.get(i));
+                waitersWs2.add(name);
+                wss2.add(wss1.get(i));
+            } else {
+                waitersWs2.add("--");
+                wss2.add(0);
+            }
+        }
+
+        labelWaiter1.setText("1- " + waitersSell2.get(0) + ": $" + amounts2.get(0));
+        labelWaiter2.setText("2- " + waitersSell2.get(1) + ": $" + amounts2.get(1));
+        labelWaiter3.setText("3- " + waitersSell2.get(2) + ": $" + amounts2.get(2));
+        labelWaiter4.setText("4- " + waitersSell2.get(3) + ": $" + amounts2.get(3));
+        labelWaiter5.setText("5- " + waitersSell2.get(4) + ": $" + amounts2.get(4));
+
+        labelWaiter6.setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turnos.");
+        labelWaiter7.setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1)+ " turnos.");
+        labelWaiter8.setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turnos.");
+        labelWaiter9.setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turnos.");
+        labelWaiter10.setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turnos.");
     }
 
     private void openItemsSelledViewer(int i) throws Exception {
-        new StatsViewer(this, i);
+        new StatsItemViewer(this, i, period);
+    }
+
+    private void openWSellsViewer(int i) throws Exception {
+        new StatsWaiterViewer(this, i, period);
     }
 
     public void setTabs(ArrayList tables) {
@@ -681,7 +817,105 @@ public class StaticsManager extends FrameFull {
     public void setLabelCaption5(JLabel labelCaption5) {
         this.labelCaption5 = labelCaption5;
     }
-    
-    
+
+    public HashMap<String, Double> getCountWSells() {
+        return countWSells;
+    }
+
+    public void setCountWSells(HashMap<String, Double> countWSells) {
+        this.countWSells = countWSells;
+    }
+
+    public HashMap<String, Integer> getCountWWs() {
+        return countWWs;
+    }
+
+    public void setCountWWs(HashMap<String, Integer> countWWs) {
+        this.countWWs = countWWs;
+    }
+
+    public JLabel getLabelWaiter1() {
+        return labelWaiter1;
+    }
+
+    public void setLabelWaiter1(JLabel labelWaiter1) {
+        this.labelWaiter1 = labelWaiter1;
+    }
+
+    public JLabel getLabelWaiter2() {
+        return labelWaiter2;
+    }
+
+    public void setLabelWaiter2(JLabel labelWaiter2) {
+        this.labelWaiter2 = labelWaiter2;
+    }
+
+    public JLabel getLabelWaiter3() {
+        return labelWaiter3;
+    }
+
+    public void setLabelWaiter3(JLabel labelWaiter3) {
+        this.labelWaiter3 = labelWaiter3;
+    }
+
+    public JLabel getLabelWaiter4() {
+        return labelWaiter4;
+    }
+
+    public void setLabelWaiter4(JLabel labelWaiter4) {
+        this.labelWaiter4 = labelWaiter4;
+    }
+
+    public JLabel getLabelWaiter5() {
+        return labelWaiter5;
+    }
+
+    public void setLabelWaiter5(JLabel labelWaiter5) {
+        this.labelWaiter5 = labelWaiter5;
+    }
+
+    public JLabel getLabelWaiter6() {
+        return labelWaiter6;
+    }
+
+    public void setLabelWaiter6(JLabel labelWaiter6) {
+        this.labelWaiter6 = labelWaiter6;
+    }
+
+    public JLabel getLabelWaiter7() {
+        return labelWaiter7;
+    }
+
+    public void setLabelWaiter7(JLabel labelWaiter7) {
+        this.labelWaiter7 = labelWaiter7;
+    }
+
+    public JLabel getLabelWaiter8() {
+        return labelWaiter8;
+    }
+
+    public void setLabelWaiter8(JLabel labelWaiter8) {
+        this.labelWaiter8 = labelWaiter8;
+    }
+
+    public JLabel getLabelWaiter9() {
+        return labelWaiter9;
+    }
+
+    public void setLabelWaiter9(JLabel labelWaiter9) {
+        this.labelWaiter9 = labelWaiter9;
+    }
+
+    public JLabel getLabelWaiter10() {
+        return labelWaiter10;
+    }
+
+    public void setLabelWaiter10(JLabel labelWaiter10) {
+        this.labelWaiter10 = labelWaiter10;
+    }
+
+    void setPeriod(String period) {
+        this.period = period;
+    }
 
 }
