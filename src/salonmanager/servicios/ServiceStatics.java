@@ -7,13 +7,21 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import salonmanager.ItemSaleViewer;
+import salonmanager.StaticsManager;
+import salonmanager.StaticsSelectorPeriod;
+import salonmanager.StatsItemViewer;
+import salonmanager.StatsWaiterViewer;
+import salonmanager.TabViewer;
 import salonmanager.persistencia.DAOItemSale;
 import salonmanager.persistencia.DAOWorkshift;
+import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ServiceStatics {
 
     DAOWorkshift daoW = new DAOWorkshift();
     DAOItemSale daoIS = new DAOItemSale();
+    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
     public static HashMap<Integer, Integer> orderHsII(HashMap<Integer, Integer> hashMap) {
         List<Map.Entry<Integer, Integer>> lista = new LinkedList<>(hashMap.entrySet());
@@ -32,9 +40,6 @@ public class ServiceStatics {
         return hashMapOrdenado;
     }
 
-    
-    
-    
     public HashMap<String, Integer> orderHsSI(HashMap<String, Integer> countWWs) {
         List<Map.Entry<String, Integer>> lista = new LinkedList<>(countWWs.entrySet());
 
@@ -50,5 +55,35 @@ public class ServiceStatics {
             hashMapOrdenado.put(entrada.getKey(), entrada.getValue());
         }
         return hashMapOrdenado;
+    }
+
+    public void openSelectorPeriod(StaticsManager statsM) {
+        new StaticsSelectorPeriod(statsM);
+    }
+
+    public void openItemSaleViewer(StaticsManager statsM) throws Exception {
+        if (statsM.getiSales() != null) {
+            new ItemSaleViewer(statsM);
+            statsM.setEnabled(false);
+        } else {
+            utiliMsg.errorPeriodNull();
+        }
+    }
+
+    public void openTabViewer(StaticsManager statsM) throws Exception {
+        if (statsM.getTabs() != null) {
+            new TabViewer(statsM.getTabs());
+            statsM.setEnabled(false);
+        } else {
+            utiliMsg.errorPeriodNull();
+        }
+    }
+
+    public void openItemsSelledViewer(int i, StaticsManager statsM) throws Exception {
+        new StatsItemViewer(statsM, i, statsM.getPeriod());
+    }
+
+    public void openWSellsViewer(int i, StaticsManager statsM) throws Exception {
+        new StatsWaiterViewer(statsM, i, statsM.getPeriod());
     }
 }

@@ -237,7 +237,8 @@ public class StatsItemViewer extends FrameFull {
                         .yAxisTitle("Precios")
                         .build();
                 // Agregar series de datos al gráfico
-                
+
+                chartPrice.getStyler().setYAxisMin(0.0);                
                 chartPrice.getStyler().setYAxisDecimalPattern("#");
                 chartPrice.getStyler().setXAxisDecimalPattern("#");
                 chartPrice.addSeries("Precio de venta", dates, prices);
@@ -286,6 +287,7 @@ public class StatsItemViewer extends FrameFull {
                 chartItemQ.getStyler().setYAxisDecimalPattern("#");
                 chartItemQ.getStyler().setXAxisDecimalPattern("#");
                 chartItemQ.addSeries("Unidades Vendidas", wss, quants);
+                chartItemQ.getStyler().setYAxisMin(0.0);
                 chartPanel.add(new XChartPanel<>(chartItemQ));
                 chartPanel.removeAll();
                 chartPanel.add(new XChartPanel<>(chartItemQ));

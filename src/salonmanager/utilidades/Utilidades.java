@@ -5,6 +5,7 @@ import salonmanager.entidades.bussiness.User;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,10 +18,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.config.ConfigGeneral;
 
 public class Utilidades {
-
     public double toNumberD(String str) {
         double d = -1;
         if (str != "") {
@@ -717,5 +716,14 @@ public class Utilidades {
         }
         
         return name;
+    }
+
+    public LocalTime toLongHAndM(long totTime) {
+        long secs = totTime / 1000;
+        long hours = secs / 3600;
+        long minutes = (secs % 3600) / 60;
+        LocalTime time = LocalTime.of((int) hours, (int) minutes);
+
+        return time;
     }
 }
