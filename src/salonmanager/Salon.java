@@ -181,6 +181,7 @@ public class Salon extends FrameFull {
     Salon sal = null;
     Manager manager = null;
     ConfigActual cfgAct = null;
+    ConfigGeneral cfgGen = null;
 
     public Salon(ArrayList<Table> tables, Manager man) throws Exception {
         manager = man;
@@ -193,12 +194,12 @@ public class Salon extends FrameFull {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
-        ConfigGeneral cfgGen = daoC.askConfigGeneral();
+        cfgGen = man.getConfigGeneral();
+        cfgAct = man.getConfigActual();
         totalTable = cfgGen.getTotalTable();
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
         tablePanCh = cfgGen.getTablePanCh();
-        cfgAct = daoC.askConfigActual();
         
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------

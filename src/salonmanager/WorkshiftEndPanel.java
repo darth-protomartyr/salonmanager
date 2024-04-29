@@ -66,6 +66,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     JTextArea textArea = new JTextArea();
 
     Salon salon = null;
+    ConfigActual cfgAct = null;
     Workshift actualWs = null;
     Workshift newWs = null;
     ArrayList<Table> actualTabs = new ArrayList<Table>();
@@ -81,6 +82,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     double cashComplete = 0;
 
     public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
+        cfgAct = sal.getManager().getConfigActual();
         actualWs = ws1;
         newWs = ws2;
         actualTabs = filterClose(actTabs);
@@ -493,8 +495,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     }
 
     private void buttonDeferWsCloseAction() throws Exception {
-        ConfigActual cfgGen = daoC.askConfigActual();
-        ArrayList<Integer> deferWsArray = cfgGen.getArrayDeferWs();
+        ArrayList<Integer> deferWsArray = cfgAct.getArrayDeferWs();
         deferWsArray.add(actualWs.getId());
         deferWsArray.add(actualWs.getId());
         daoC.updateCfgActDeferWs(deferWsArray);

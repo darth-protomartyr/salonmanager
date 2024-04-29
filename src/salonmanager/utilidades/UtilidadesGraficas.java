@@ -243,7 +243,7 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            salonOpener(user);
+                            salonOpener(user, man.getConfigGeneral(), man.getConfigActual());
                         } else {
                             sm.salir();
                         }
@@ -273,10 +273,9 @@ public class UtilidadesGraficas extends JFrame {
         return menuBar;
     }
 
-    private void salonOpener(User user) throws Exception {
-        ConfigGeneral cfgGen = sm.getConfigGen();
+    private void salonOpener(User user, ConfigGeneral cfgGen, ConfigActual cfgAct) throws Exception {
+        
         if (cfgGen.isActiveConfig()) {
-            ConfigActual cfgAct = sm.getConfigAct();
             if (cfgAct.isOpenWs()) {
                 Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
                 ws.setCashierWs(daoU.getCashierByWorkshift(ws.getId()));

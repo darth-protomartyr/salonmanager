@@ -154,19 +154,19 @@ public class Manager extends FrameFull {
         this.salon = salon;
     }
 
-    public ConfigActual getCfgAct() {
+    public ConfigActual getConfigActual() {
         return cfgAct;
     }
 
-    public void setCfgAct(ConfigActual cfgAct) {
+    public void setConfigActual(ConfigActual cfgAct) {
         this.cfgAct = cfgAct;
     }
 
-    public ConfigGeneral getCfgGen() {
+    public ConfigGeneral getConfigGeneral() {
         return cfgGen;
     }
 
-    public void setCfgGen(ConfigGeneral cfgGen) {
+    public void setConfigGeneral(ConfigGeneral cfgGen) {
         this.cfgGen = cfgGen;
     }
 }

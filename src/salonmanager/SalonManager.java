@@ -17,19 +17,12 @@ import salonmanager.persistencia.DAOConfig;
 
 public class SalonManager {
     private static ArrayList<JFrame> framesOpen = new ArrayList<JFrame>();
-    private static Salon salon = null;
+//    private static Salon salon = null;
     private static User userIn = new User();
     private static String passIn = "";
     private static final String SECRET_KEY = "HappyWhenItRains";
-    private static Workshift workshiftActual = null;
+//    private static Workshift workshiftActual = null;
     private static DAOConfig daoC = new DAOConfig();
-    
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
-    ConfigGeneral cfgGen = new ConfigGeneral();
-    ConfigActual cfgAct = new ConfigActual();
     
     public static void main(String[] args) {
         try {
@@ -143,22 +136,5 @@ public class SalonManager {
         for (JFrame of : framesOpen) {
             of.dispose();
         }
-    }
-    
-    public void workshiftBacker(Workshift ws) {
-        workshiftActual = ws;
-    }
-    
-    public void workshiftEraser() {
-        workshiftActual = null;
-    }
-        
-    public ConfigGeneral getConfigGen() throws Exception {
-        cfgGen = daoC.askConfigGeneral();
-        return cfgGen;
-    }
-    public ConfigActual getConfigAct() throws Exception {
-        cfgAct = daoC.askConfigActual();
-        return cfgAct;
-    }    
+    }   
 }

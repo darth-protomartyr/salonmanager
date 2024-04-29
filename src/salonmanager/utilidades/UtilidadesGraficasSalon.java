@@ -149,7 +149,6 @@ public class UtilidadesGraficasSalon {
                             salon.getWorkshiftNow().setId(daoW.findLastWsID());
                             salon.getWorkshiftNow().setCashierWs(salon.getUser());
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
-                            sm.workshiftBacker(salon.getWorkshiftNow());
                             salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
                             salon.getButInitWorkshift().setText("CERRAR TURNO");
                             daoC.updateCfgActOpenWs(true);
@@ -936,8 +935,7 @@ public class UtilidadesGraficasSalon {
 //PANEL SELECT ITEM....................................................................................................
 //PANEL SELECT ITEM....................................................................................................
     public JPanel returnPanelSelItem(Salon salon) throws Exception {
-        ConfigGeneral cfgGen = daoC.askConfigGeneral();
-        ArrayList<String> captions = cfgGen.getTableItemCaptions();
+        ArrayList<String> captions = salon.getManager().getConfigGeneral().getTableItemCaptions();
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
         panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 19);

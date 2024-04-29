@@ -13,7 +13,7 @@
             <url>src/salonmanager/servicios/ServicioSalon.java</url>
             <bookmark id="15">
                 <name/>
-                <line>413</line>
+                <line>414</line>
                 <key/>
             </bookmark>
         </file>
@@ -21,7 +21,7 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficas.java</url>
             <bookmark id="6">
                 <name/>
-                <line>249</line>
+                <line>251</line>
                 <key/>
             </bookmark>
         </file>
@@ -56,12 +56,14 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/persistencia/DAOConfig.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasSalon.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/Salon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/StatsWaiterViewer.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/config/ConfigActual.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesMensajes.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficas.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/SalonManager.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/Manager.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/servicios/ServiceStatics.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/LandingFrame.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/WorkshiftEndPanel.java</file>
         </group>
     </open-files>
