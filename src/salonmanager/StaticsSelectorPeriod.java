@@ -45,9 +45,9 @@ public class StaticsSelectorPeriod extends FrameWindow {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServiceStatics sStats = new ServiceStatics();
     SalonManager sm = new SalonManager();
-    DAOWorkshift daoW = new DAOWorkshift();
-    DAOTable daoT = new DAOTable();
-    DAOItemSale daoIs = new DAOItemSale();
+//    DAOWorkshift daoW = new DAOWorkshift();
+//    DAOTable daoT = new DAOTable();
+//    DAOItemSale daoIs = new DAOItemSale();
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -215,7 +215,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
                 } catch (Exception ex) {
                     Logger.getLogger(StaticsSelectorPeriod.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
+             }
         });
         panelPpal.add(butSelect);
 
@@ -236,7 +236,8 @@ public class StaticsSelectorPeriod extends FrameWindow {
             }
         });
     }
-
+    
+    
     private void selectPeriod() throws Exception {
         int y1 = (int) yearSpinner1.getValue();
         int m1 = (int) monthSpinner1.getValue();
@@ -251,57 +252,18 @@ public class StaticsSelectorPeriod extends FrameWindow {
 
         Timestamp timestampInit = Timestamp.valueOf(date1);
         Timestamp timestampEnd = Timestamp.valueOf(date2);
-
-        ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
-        ArrayList<Workshift> wsS = new ArrayList<Workshift>();
-        for (Integer id : wsIds) {
-            Workshift ws = daoW.askWorshiftById(id);
-            wsS.add(ws);
-        }
-
-        ArrayList<Timestamp> tsList = new ArrayList<Timestamp>();
-        for (Workshift ws : wsS) {
-            Timestamp tsOpen = ws.getOpenWs();
-            Timestamp tsClose = ws.getCloseWs();
-            if (tsClose == null) {
-                tsClose = new Timestamp(new Date().getTime());
-            }
-            tsList.add(tsOpen);
-            tsList.add(tsClose);
-        }
-
-        Collections.sort(tsList, new Comparator<Timestamp>() {
-            @Override
-            public int compare(Timestamp t1, Timestamp t2) {
-                return t1.compareTo(t2);
-            }
-        });
-
-        int size = tsList.size();
-        if (size == 0) {
-            utiliMsg.errorNullDates();
-        } else {
-            Timestamp ts1 = tsList.get(0);
-            Timestamp ts2 = tsList.get(size - 1);
-            ArrayList<Table> tabs = daoT.listarTablesByDate(ts1, ts2);
-            ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
-            Collections.sort(tabs, new TimestampComparator());
-            statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampEnd) +"</html>");
-            statsM.setPeriod("de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampEnd));
-            statsM.setItemsSale(is);
-            statsM.setTabs(tabs);
-            statsM.setWorkshifts(wsS);
-            statsM.setEnabled(true);
-            dispose();
-        }
+        
+        sStats.staticBacker(timestampInit, timestampEnd, statsM);
+        dispose();
     }
 
+    
     private JSpinner returnJSpinner(int day, int month, int year) {
         int lastDay = 31;
         if (month == 4 || month == 6 || month == 9 || month == 1) {
             lastDay = 30;
         }
-
+        
         if (month == 2) {
             if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
                 lastDay = 29;
@@ -309,17 +271,8 @@ public class StaticsSelectorPeriod extends FrameWindow {
                 lastDay = 28;
             }
         }
-
+        
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(day, 1, lastDay, 1));
         return spinner;
     }
-
-    
-    class TimestampComparator implements Comparator<Table> {
-        @Override
-        public int compare(Table o1, Table o2) {
-            return o1.getOpenTime().compareTo(o2.getOpenTime());
-        }
-    }
-
 }

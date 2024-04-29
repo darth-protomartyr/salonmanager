@@ -62,9 +62,7 @@ public class StatsItemViewer extends FrameFull {
     JComboBox comboItems = null;
     JLabel labelItem = null;
 
-    
     public StatsItemViewer(StaticsManager statsM, int k, String period) throws Exception {
-
         sm.addFrame(this);
         sMan = statsM;
         kind = k;
@@ -82,12 +80,11 @@ public class StatsItemViewer extends FrameFull {
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("");
         panelLabel.add(labelTit);
-         
+
         labelItem = utiliGraf.labelTitleBacker1W("");
         labelItem.setBounds(anchoUnit * 2, altoUnit * 10, anchoUnit * 50, altoUnit * 5);
         panelPpal.add(labelItem);
 
-        
         chartPanel.setBounds(anchoUnit * 2, altoUnit * 15, anchoUnit * 101, altoUnit * 70);
         chartPanel.setLayout(new BorderLayout());
         panelPpal.add(chartPanel);
@@ -154,16 +151,16 @@ public class StatsItemViewer extends FrameFull {
                     maxUnit = q;
                 }
                 countItems.put(i, q);
-                
+
                 list2.add(i);
             }
-            
+
             ArrayList<Integer> list3 = new ArrayList<>(list1);
             list3.removeAll(list2);
 
             for (int i : list3) {
                 countItems.put(i, 0);
-            } 
+            }
 
             page = 1;
             updater();
@@ -172,19 +169,21 @@ public class StatsItemViewer extends FrameFull {
             panelPpal.add(butNext);
 
         } else if (kind == 2) {
-            tit = "Evolución de precios" + "(" + period + ")";
-            setTitle(tit);
-            labelTit.setText(tit);
-            panelPpal.add(comboItems);
-            panelPpal.add(butSelItem);
-            String itemName = "Item:";
-        } else if (kind == 3) {
             tit = "Evolución de ventas" + "(" + period + ")";
             setTitle(tit);
             labelTit.setText(tit);
             panelPpal.add(comboItems);
             panelPpal.add(butSelItem);
             String itemName = "Item:";
+
+        } else if (kind == 3) {
+            tit = "Evolución de precios" + "(" + period + ")";
+            setTitle(tit);
+            labelTit.setText(tit);
+            panelPpal.add(comboItems);
+            panelPpal.add(butSelItem);
+            String itemName = "Item:";
+
         }
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
@@ -208,7 +207,7 @@ public class StatsItemViewer extends FrameFull {
         String st = (String) comboItems.getSelectedItem();
         Itemcard ic = null;
         labelItem.setText(st);
-        
+
         for (Itemcard i : itemsDB) {
             if (i.getName().equals(st)) {
                 ic = i;
@@ -223,39 +222,12 @@ public class StatsItemViewer extends FrameFull {
         }
 
         if (kind == 2) {
-            ArrayList<Timestamp> dates = new ArrayList<Timestamp>();
-            ArrayList<Double> prices = new ArrayList<>();
-            for (ItemSale is : iSalesByItem) {
-                dates.add(is.getItemSaleDate());
-                prices.add(is.getItemSalePrice());
-            }
-
-            if (dates.size() > 0) {
-                XYChart chartPrice = new XYChartBuilder()
-                        .title("Evolución precio")
-                        .xAxisTitle("Fecha")
-                        .yAxisTitle("Precios")
-                        .build();
-                // Agregar series de datos al gráfico
-
-                chartPrice.getStyler().setYAxisMin(0.0);                
-                chartPrice.getStyler().setYAxisDecimalPattern("#");
-                chartPrice.getStyler().setXAxisDecimalPattern("#");
-                chartPrice.addSeries("Precio de venta", dates, prices);
-                chartPanel.removeAll();
-                chartPanel.add(new XChartPanel<>(chartPrice));
-                chartPanel.revalidate();
-                chartPanel.repaint();
-            } else {
-                utiliMsg.errorNullItemDates();
-            }
-        } else if (kind == 3) {
             HashSet<Integer> wsIds = new HashSet();
             ArrayList<Workshift> wsS = sMan.getWorkshift();
             for (int i = 0; i < wsS.size(); i++) {
                 wsIds.add(wsS.get(i).getId());
             }
-            
+
             HashMap<Integer, Integer> countQuant = new HashMap<>();
             for (int ws : wsIds) {
                 countQuant.put(ws, 0);
@@ -273,6 +245,8 @@ public class StatsItemViewer extends FrameFull {
                 }
             }
 
+            countQuant = statsS.orderHsIIDownToUp(countQuant);
+            
             ArrayList<Integer> wss = new ArrayList<>(countQuant.keySet());
             ArrayList<Integer> quants = new ArrayList<>(countQuant.values());
             if (quants.size() > 0) {
@@ -288,6 +262,7 @@ public class StatsItemViewer extends FrameFull {
                 chartItemQ.getStyler().setXAxisDecimalPattern("#");
                 chartItemQ.addSeries("Unidades Vendidas", wss, quants);
                 chartItemQ.getStyler().setYAxisMin(0.0);
+                chartItemQ.setTitle("");
                 chartPanel.add(new XChartPanel<>(chartItemQ));
                 chartPanel.removeAll();
                 chartPanel.add(new XChartPanel<>(chartItemQ));
@@ -295,6 +270,33 @@ public class StatsItemViewer extends FrameFull {
                 chartPanel.repaint();
             } else {
                 utiliMsg.errorNullDates();
+            }
+        } else if (kind == 3) {
+            ArrayList<Timestamp> dates = new ArrayList<Timestamp>();
+            ArrayList<Double> prices = new ArrayList<>();
+            for (ItemSale is : iSalesByItem) {
+                dates.add(is.getItemSaleDate());
+                prices.add(is.getItemSalePrice());
+            }
+
+            if (dates.size() > 0) {
+                XYChart chartPrice = new XYChartBuilder()
+                        .title("Evolución precio")
+                        .xAxisTitle("Fecha")
+                        .yAxisTitle("Precios")
+                        .build();
+
+                chartPrice.setTitle("");
+                chartPrice.getStyler().setYAxisMin(0.0);
+                chartPrice.getStyler().setYAxisDecimalPattern("#");
+                chartPrice.getStyler().setXAxisDecimalPattern("#");
+                chartPrice.addSeries("Precio de venta", dates, prices);
+                chartPanel.removeAll();
+                chartPanel.add(new XChartPanel<>(chartPrice));
+                chartPanel.revalidate();
+                chartPanel.repaint();
+            } else {
+                utiliMsg.errorNullItemDates();
             }
         }
     }
@@ -306,7 +308,7 @@ public class StatsItemViewer extends FrameFull {
         }
         int limitSup = 8 * page;
         int counter = 1;
-                
+
         int fakeId = 10000000;
         while (countItems.size() % 8 != 0) {
             countItems.put(fakeId, 0);
@@ -316,9 +318,8 @@ public class StatsItemViewer extends FrameFull {
 
         countItems = statsS.orderHsII(countItems);
 
-        
         newCountItems.clear();
-        
+
         for (Map.Entry<Integer, Integer> entry : countItems.entrySet()) {
             if (counter >= limitInf && counter <= limitSup) {
                 newCountItems.put(entry.getKey(), entry.getValue());
@@ -326,7 +327,7 @@ public class StatsItemViewer extends FrameFull {
             counter += 1;
         }
         newCountItems = statsS.orderHsII(newCountItems);
-        
+
         chartItemsSelled = utiliGrafStats.chartItemsBacker(newCountItems, maxUnit);
         chartPanel.removeAll();
         chartPanel.add(new XChartPanel<>(chartItemsSelled));

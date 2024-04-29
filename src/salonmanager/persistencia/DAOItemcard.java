@@ -43,8 +43,29 @@ public class DAOItemcard extends DAO {
             desconectarBase();
         }
     }
+
     
-     public ArrayList<Integer> listarItemsCardId() throws Exception {
+    public ArrayList<Integer> listarItemsCardIds() throws Exception {
+        ArrayList<Integer> items = new ArrayList<Integer>();
+        try {
+            String sql = "SELECT * FROM itemcards WHERE itemcard_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            Itemcard ic = new Itemcard();
+            while (resultado.next()) {
+                int id = resultado.getInt(1);
+                items.add(id);
+            }
+            return items;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+   
+    
+    public ArrayList<Integer> listarItemsCardId() throws Exception {
         ArrayList<Integer> itemsId = new ArrayList<Integer>();
         try {
             String sql = "SELECT itemcard_id FROM itemcards WHERE itemcard_active = true;";
@@ -133,13 +154,21 @@ public class DAOItemcard extends DAO {
         }
     }
 
-    public void modificarItem(Itemcard itemAux, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
+    public void modificarItem(int id, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
         Timestamp upd = new Timestamp(new Date().getTime());
+//        String sql = "UPDATE itemcards "
+//                + "SET itemcard_name = '" + name + "', itemcard_caption = '" + caption + "', itemcard_description = '" + description
+//                + "', itemcard_cost = " + cost + " , itemcard_price = " + price + ", itemcard_stock = " + stock + ","
+//                + " itemcard_date_update ='" + upd + "', itemcard_tip = " + tipAlta
+//                + " WHERE itemcard_id = " + itemAux.getId() + ";";
+        
+        
         String sql = "UPDATE itemcards "
-                + "SET itemcard_name = '" + name + "', itemcard_caption = '" + caption + "', item_description = '" + description
-                + "', itemcard_cost = " + cost + " , itemcard_price = " + price + ", itemcard_stock = " + stock + ","
-                + "', itemcard_date_update ='" + upd + "', itemcard_tip = " + tipAlta
-                + " WHERE itemcard_id = " + itemAux.getId() + ";";
+                + "SET itemcard_name = '" + name + "', itemcard_caption = '"+ caption  +"', itemcard_description = '" + description 
+                + "', itemcard_cost = " + cost + ", itemcard_price = " + price + ", itemcard_stock = " + stock + " , "
+                + "itemcard_date_creation = '" + upd + "', itemcard_tip = " + tipAlta
+                + " WHERE itemcard_id = " + id + ";";  
+
         System.out.println(sql);
         insertarModificarEliminar(sql);
 //        String values = name + " - " + caption + " - " + description + " - " + cost + " - " + price + " - " + stock + " - " + true;

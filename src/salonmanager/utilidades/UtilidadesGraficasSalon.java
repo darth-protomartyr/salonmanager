@@ -107,9 +107,8 @@ public class UtilidadesGraficasSalon {
 //PANEL ACTUAL.........................................................................................................
 //PANEL ACTUAL.........................................................................................................
     public JPanel panelActualBacker(Salon salon) throws Exception {
-        ConfigActual cfgAct = daoC.askConfigActual();
-        if (cfgAct.isOpenWs()) {
-            salon.setWorkshiftNow(daoW.askWorshiftById(cfgAct.getOpenIdWs()));
+        if (salon.getCfgAct().isOpenWs()) {
+            salon.setWorkshiftNow(daoW.askWorshiftById(salon.getCfgAct().getOpenIdWs()));
             salon.getWorkshiftNow().setCashierWs(daoU.getCashierByWorkshift(salon.getWorkshiftNow().getId()));
             salon.setCashFlowCash(salon.getWorkshiftNow().getCashFlowWsCash());
             salon.setCashFlowElec(salon.getWorkshiftNow().getCashFlowWsElec());
@@ -135,7 +134,7 @@ public class UtilidadesGraficasSalon {
         panelActual.add(salon.getLabelWorkshift());
 
         salon.setButInitWorkshift(utiliGraf.button1("ABRIR TURNO", anchoUnit, altoUnit * 8, anchoUnit * 13));
-        if (cfgAct.isOpenWs()) {
+        if (salon.getCfgAct().isOpenWs()) {
             salon.getButInitWorkshift().setText("CERRAR TURNO");
         }
         salon.getButInitWorkshift().addActionListener(new ActionListener() {
@@ -1546,6 +1545,20 @@ public class UtilidadesGraficasSalon {
             }
         }
     }
+    
+    public void resetWsValues(Salon salon) {
+        salon.setWorkshiftNow(null);
+        salon.setCashFlowCash(0);
+        salon.setCashFlowElec(0);
+        salon.getLabelWorkshift().setText("Turno no iniciado.");
+        salon.getButInitWorkshift().setText("ABRIR TURNO");
+        salon.setBarrButtons(new ArrayList<JButtonBarr>());
+        salon.setDeliButtons(new ArrayList<JButtonDelivery>());
+        salon.setDeliButtonsSees(new ArrayList<JButtonDeliverySee>());
+        salon.dispose();
+    }
+    
+    
 
     public void jButExtSetter(Salon salon) {
         if (salon.getJbtAux() != null) {

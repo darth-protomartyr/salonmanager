@@ -182,7 +182,7 @@ public class Salon extends FrameFull {
     Manager manager = null;
     ConfigActual cfgAct = null;
 
-    public Salon(ArrayList<Table> tables, Manager man, ConfigActual cfgA) throws Exception {
+    public Salon(ArrayList<Table> tables, Manager man) throws Exception {
         manager = man;
         sm.addFrame(this);
         user = man.getUser();
@@ -198,7 +198,7 @@ public class Salon extends FrameFull {
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
         tablePanCh = cfgGen.getTablePanCh();
-        cfgAct = cfgA;
+        cfgAct = daoC.askConfigActual();
         
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
@@ -437,6 +437,14 @@ public class Salon extends FrameFull {
         this.itemsTableAux = itemsTableAux;
     }
 
+    public ConfigActual getCfgAct() {
+        return cfgAct;
+    }
+
+    public void setCfgAct(ConfigActual cfgAct) {
+        this.cfgAct = cfgAct;
+    }
+
     public ArrayList<String> getConfigSalon() {
         return configSalon;
     }
@@ -444,22 +452,6 @@ public class Salon extends FrameFull {
     public void setConfigSalon(ArrayList<String> configSalon) {
         this.configSalon = configSalon;
     }
-
-//    public int getAnchoPane() {
-//        return anchoPane;
-//    }
-//
-//    public void setAnchoPane(int anchoPane) {
-//        this.anchoPane = anchoPane;
-//    }
-
-//    public int getAlturaPane() {
-//        return alturaPane;
-//    }
-//
-//    public void setAlturaPane(int alturaPane) {
-//        this.alturaPane = alturaPane;
-//    }
 
     public int getTotalTable() {
         return totalTable;

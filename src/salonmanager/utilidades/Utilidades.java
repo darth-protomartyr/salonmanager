@@ -18,8 +18,12 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAOWorkshift;
 
 public class Utilidades {
+    DAOWorkshift daoW = new DAOWorkshift();
+    
     public double toNumberD(String str) {
         double d = -1;
         if (str != "") {
@@ -217,6 +221,30 @@ public class Utilidades {
     public ComboBoxModel captionComboModelReturn(ArrayList<String> captionsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (String i : captionsDB) {
+            modeloCombo.addElement(i);
+        }
+        return modeloCombo;
+    }
+    
+    public ComboBoxModel wsComboModelReturnWNull() throws Exception {
+        ArrayList<Integer> wssId = daoW.listIdWs();
+        ArrayList<Timestamp> wssTs = daoW.listTsIWs();
+        
+        ArrayList<String> wssSt = new ArrayList<String>();
+        for (int i = 0; i < wssId.size(); i++) {
+            String ts = friendlyDate1(wssTs.get(i));
+            wssSt.add(wssId.get(i) + ". " + ts);
+        }
+
+        String wsa = "";
+        Workshift actual = daoW.askWorshiftActual();
+        if (actual.getOpenWs() != null) {
+            wsa = "Actual";
+        }
+        wssSt.add(0,wsa);
+        
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (String i : wssSt) {
             modeloCombo.addElement(i);
         }
         return modeloCombo;
@@ -701,7 +729,7 @@ public class Utilidades {
                 if (thirdWord.length() > 4) {
                     thirdWord = thirdWord.substring(0, w3) + ".";
                 }
-                words[3] = thirdWord;
+                words[2] = thirdWord;
             }
             
             if (length > 3) {

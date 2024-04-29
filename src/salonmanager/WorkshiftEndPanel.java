@@ -37,10 +37,12 @@ import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.servicios.ServicioWorkshift;
+import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class WorkshiftEndPanel extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     DAOTable daoT = new DAOTable();
@@ -327,6 +329,8 @@ public class WorkshiftEndPanel extends FrameHalf {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     confirmRealAmount();
+                    utiliGrafSal.resetWsValues(salon);
+                    salon.setEnabled(true);
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -119,7 +119,7 @@ public class Manager extends FrameFull {
     public void salonFrameManager(ArrayList<Table> tabs, ConfigActual cfgAct) throws Exception {
         Manager man = this;
         if (salon == null) {
-            salon = new Salon(tabs, man, cfgAct);
+            salon = new Salon(tabs, man);
         } else {
             salon.setVisible(true);
             salon.toFront();

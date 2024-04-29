@@ -232,6 +232,38 @@ public class DAOWorkshift extends DAO {
         }
     }
 
+    
+    public Workshift askWorshiftActual() throws Exception {
+        Workshift ws = new Workshift();
+        try {
+            String sql = "SELECT * FROM workshifts WHERE workshift_state_shift= true AND workshift_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                ws.setId(resultado.getInt(1));
+                ws.setOpenWs(resultado.getTimestamp(2));
+                ws.setCloseWs(resultado.getTimestamp(3));
+                ws.setStateWs(resultado.getBoolean(4));
+                ws.setTotalMountCashWs(resultado.getDouble(5));
+                ws.setTotalMountElectronicWs(resultado.getDouble(6));
+                ws.setTotalMountWs(resultado.getDouble(7));
+                ws.setTotalMountRealWs(resultado.getDouble(8));
+                ws.setErrorMountWs(resultado.getDouble(9));
+                ws.setErrorMountRealWs(resultado.getDouble(10));
+                ws.setCashFlowWsCash(resultado.getDouble(11));
+                ws.setCashFlowWsElec(resultado.getDouble(12));
+                ws.setCommentWs(resultado.getString(13));
+                ws.setActiveWs(resultado.getBoolean(14));
+            }
+            return ws;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+        
     public int findId(Timestamp openShift) throws Exception {
         int id = 0;
         try {
@@ -358,6 +390,43 @@ public class DAOWorkshift extends DAO {
                 wss.add(wsId);
             }
             return wss;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    public ArrayList<Integer> listIdWs() throws Exception {
+        ArrayList<Integer> wssId = new ArrayList<Integer>();
+        try {
+            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {          
+                int wsId = resultado.getInt(1);
+                wssId.add(wsId);
+            }
+            return wssId;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+
+    public ArrayList<Timestamp> listTsIWs() throws Exception {
+        ArrayList<Timestamp> wssTs = new ArrayList<Timestamp>();
+        try {
+            String sql = "SELECT workshift_open_shift FROM workshifts WHERE workshift_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {          
+                Timestamp wsTs = resultado.getTimestamp(1);
+                wssTs.add(wsTs);
+            }
+            return wssTs;
         } catch (Exception e) {
             throw e;
         } finally {

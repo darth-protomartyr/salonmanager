@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -126,9 +124,11 @@ public class StaticsManager extends FrameFull {
 //PANEL LATERAL IZQ-------------------------------------------------------------
         panelStatsBySell = utiliGrafStats.panelLateralBacker(this);
         panelStatsBySell.setLayout(null);
-        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 14);
+        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 39);
         panelStatsBySell.setBackground(bluLg);
         panelPpal.add(panelStatsBySell);
+        
+        
 
 //PANEL ORDER KIND--------------------------------------------------------------        
 //PANEL ORDER KIND--------------------------------------------------------------        
@@ -170,48 +170,6 @@ public class StaticsManager extends FrameFull {
         panelWaiterStatics.setBounds(anchoUnit * 62, altoUnit * 49, anchoUnit * 41, altoUnit * 45);
         panelPpal.add(panelWaiterStatics);
 
-//        JLabel labelWaiterStatics = utiliGraf.labelTitleBacker2("Estadísticas de Mozos");
-//        labelWaiterStatics.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 30, altoUnit * 3);
-//        panelWaiterStatics.add(labelWaiterStatics);
-//
-//        JPanel panelWaiterSells = utiliGrafStats.panelWaiterBacker(this, 1);
-//        panelWaiterSells.setLayout(null);
-//        panelWaiterSells.setBackground(narUlg);
-//        panelWaiterSells.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 19, altoUnit * 30);
-//        panelWaiterStatics.add(panelWaiterSells);
-//
-//        JPanel panelWaiterWs = utiliGrafStats.panelWaiterBacker(this, 2);
-//        panelWaiterWs.setLayout(null);
-//        panelWaiterWs.setBackground(narUlg);
-//        panelWaiterWs.setBounds(anchoUnit * 21, altoUnit * 5, anchoUnit * 19, altoUnit * 30);
-//        panelWaiterStatics.add(panelWaiterWs);
-//
-//        JButtonMetalBlu butWGlobal = utiliGraf.button2("Estadisticas globales", anchoUnit * 2, altoUnit * 38, anchoUnit * 17);
-//        butWGlobal.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent ae) {
-//                try {
-////                    sStats.openWSellsViewer(1, statsM);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//        panelWaiterStatics.add(butWGlobal);
-//
-//        JButtonMetalBlu butWSingle = utiliGraf.button2("Estadisticas Individuales", anchoUnit * 22, altoUnit * 38, anchoUnit * 17);
-//        butWSingle.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent ae) {
-//                try {
-////                    openWSellsViewer(2, statsM);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//        panelWaiterStatics.add(butWSingle);
-
 //EXTRAS------------------------------------------------------------------------        
 //EXTRAS------------------------------------------------------------------------        
 //EXTRAS------------------------------------------------------------------------        
@@ -245,7 +203,7 @@ public class StaticsManager extends FrameFull {
 //FUNCTIONS---------------------------------------------------------------------        
 //FUNCTIONS---------------------------------------------------------------------        
 //FUNCTIONS---------------------------------------------------------------------        
-    private void updater() throws Exception {
+    private void updater(StaticsManager statsM) throws Exception {
         double tot = 0;
         double promTab = 0;
         long totTime = 0;
@@ -344,10 +302,10 @@ public class StaticsManager extends FrameFull {
         fieldPromTab.setText("$" + formattedPromTab);
 
         long timeTab = totTime / tabInt;
-        LocalTime time = utili.toLongHAndM(totTime);
+        LocalTime time = utili.toLongHAndM(timeTab);
         fieldTimeTab.setText(time.getHour() + " horas, " + time.getMinute() + " min.");
 
-        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 55);
+        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 84);
 
         //Sells bykind of order
         chartOrder = utiliGrafStats.chartOrderBacker(this);
@@ -445,7 +403,22 @@ public class StaticsManager extends FrameFull {
     public void setPanelItemsCaption(JPanel panelItemsCaption) {
         this.panelChartCaption = panelItemsCaption;
     }
-    
+
+    public JPanel getPanelStatsBySell() {
+        return panelStatsBySell;
+    }
+
+    public void setPanelStatsBySell(JPanel panelStatsBySell) {
+        this.panelStatsBySell = panelStatsBySell;
+    }
+
+    public JPanel getPanelChartCaption() {
+        return panelChartCaption;
+    }
+
+    public void setPanelChartCaption(JPanel panelChartCaption) {
+        this.panelChartCaption = panelChartCaption;
+    }
     
     //Charts
     //Charts
@@ -472,12 +445,14 @@ public class StaticsManager extends FrameFull {
     public void setChartItemsSelled(CategoryChart chartItemsSelled) {
         this.chartItemsSelled = chartItemsSelled;
     }
-    
-    
-    
-    
-    
-    
+
+    public PieChart getChartCaptionPie() {
+        return chartCaptionPie;
+    }
+
+    public void setChartCaptionPie(PieChart chartCaptionPie) {
+        this.chartCaptionPie = chartCaptionPie;
+    }
     
     public void setTabs(ArrayList tables) {
         tabs = tables;
@@ -487,17 +462,17 @@ public class StaticsManager extends FrameFull {
         return tabs;
     }
 
-    public void setItemsSale(ArrayList iSals) {
-        iSales = iSals;
+    public void setItemsSale(ArrayList iSs) {
+        iSales = iSs;
     }
 
     public ArrayList<ItemSale> getItemsales() {
         return iSales;
     }
 
-    void setWorkshifts(ArrayList<Workshift> workshifts) throws Exception {
+    public void setWorkshifts(ArrayList<Workshift> workshifts) throws Exception {
         this.workshifts = workshifts;
-        updater();
+        updater(this);
     }
 
     public ArrayList<Workshift> getWorkshift() {
@@ -519,8 +494,6 @@ public class StaticsManager extends FrameFull {
     public void setiSales(ArrayList<ItemSale> iSales) {
         this.iSales = iSales;
     }
-
-
 
     public double getNumTabs() {
         return numTabs;
@@ -718,7 +691,7 @@ public class StaticsManager extends FrameFull {
         return period;
     }
 
-    void setPeriod(String period) {
+    public void setPeriod(String period) {
         this.period = period;
     }
 
@@ -729,4 +702,23 @@ public class StaticsManager extends FrameFull {
     public void setFieldTotal(JTextField fieldTotal) {
         this.fieldTotal = fieldTotal;
     }
+
+    public HashMap<String, Double> getCountCapt() {
+        return countCapt;
+    }
+
+    public void setCountCapt(HashMap<String, Double> countCapt) {
+        this.countCapt = countCapt;
+    }
+
+    public ArrayList<String> getCaptions() {
+        return captions;
+    }
+
+    public void setCaptions(ArrayList<String> captions) {
+        this.captions = captions;
+    }
+    
+    
+    
 }

@@ -76,7 +76,7 @@ public class ItemcardModificacion extends FrameHalf {
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, captionsDB, itemAux);
         panelPpal.add(panelForm);
 
-        butModificarItem = utiliGraf.button1("Crear Item", 206, 600, 270);
+        butModificarItem = utiliGraf.button1("Modificar Item", 206, 600, 270);
         butModificarItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -185,9 +185,10 @@ public class ItemcardModificacion extends FrameHalf {
         tipAlta = checkTip.isSelected();
 
         if (error == false) {
-            itemAux = new Itemcard(name, caption, description, cost, price, stock, tipAlta);
-            daoIC.modificarItem(itemAux, name, caption, description, cost, price, stock, tipAlta);
+//            itemAux = new Itemcard(name, caption, description, cost, price, stock, tipAlta);
+            daoIC.modificarItem(itemAux.getId(), name, caption, description, cost, price, stock, tipAlta);
             resetItemcard();
+            dispose();
         }
     }
 
