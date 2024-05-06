@@ -231,15 +231,16 @@ public class Utilidades {
         ArrayList<Timestamp> wssTs = daoW.listTsIWs();
         
         ArrayList<String> wssSt = new ArrayList<String>();
-        for (int i = 0; i < wssId.size(); i++) {
+        for (int i = 0; i < wssId.size() - 1; i++) {
             String ts = friendlyDate1(wssTs.get(i));
             wssSt.add(wssId.get(i) + ". " + ts);
         }
 
         String wsa = "";
-        Workshift actual = daoW.askWorshiftActual();
-        if (actual.getOpenWs() != null) {
-            wsa = "Actual";
+        int actual = 0;
+        actual = daoW.askWorshiftActualId();
+        if (actual != 0) {
+            wsa = "ACTUAL";
         }
         wssSt.add(0,wsa);
         

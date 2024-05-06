@@ -409,20 +409,16 @@ public class UtilidadesGraficasStatics {
     }
 
     private void workshiftSelector(String st, StaticsManager statsM) throws Exception {
-        Workshift ws = null;
-        int i = 0;
-        if (st.equals("actual")) {
-            ws = daoW.askWorshiftActual();
-            Timestamp e = new Timestamp(new Date().getTime());
-            ws.setCloseWs(e);
+        int ws = 0;
+        if (st.equals("ACTUAL")) {
+            ws = daoW.askWorshiftActualId();
         } else {
             String[] words = st.split("\\.");
             String w = words[0];
-            i = Integer.parseInt(w);
-            ws = daoW.askWorshiftById(i);
+            ws = Integer.parseInt(w);
         }
 
-        sStats.staticBacker(ws.getOpenWs(), ws.getCloseWs(), statsM);
+        sStats.staticBacker(null, null, statsM, ws);
     }
 
     public JPanel panelOrderBacker(StaticsManager statsM) {

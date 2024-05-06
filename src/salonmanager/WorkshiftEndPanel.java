@@ -331,8 +331,6 @@ public class WorkshiftEndPanel extends FrameHalf {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     confirmRealAmount();
-                    utiliGrafSal.resetWsValues(salon);
-                    salon.setEnabled(true);
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -457,9 +455,11 @@ public class WorkshiftEndPanel extends FrameHalf {
                     if (realError < 0) {
                         realError = realError * (-1);
                     } else if (realError > 0) {
-                        realError = 0;
+                         realError = 0;
                     }
                     sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
+                    utiliGrafSal.resetWsValues(salon);
+                    salon.setEnabled(true);
                     dispose();
                 }
             }

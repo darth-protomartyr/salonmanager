@@ -274,28 +274,8 @@ public class UtilidadesGraficas extends JFrame {
     }
 
     private void salonOpener(User user, ConfigGeneral cfgGen, ConfigActual cfgAct) throws Exception {
-        
         if (cfgGen.isActiveConfig()) {
-            if (cfgAct.isOpenWs()) {
-                Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-                ws.setCashierWs(daoU.getCashierByWorkshift(ws.getId()));
-                ArrayList<Table> tabs = st.workshiftTableslistComplete(ws, 2);
-                if (user.getId().equals(ws.getCashierWs().getId())) {
-                    manager.salonFrameManager(tabs, cfgAct);
-                } else {
-                    manager.salonFrameManager(tabs, cfgAct);
-                    manager.getSalon().setEnabled(false);
-                    boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
-                    if (newWs) {
-                        utiliMsg.cargaLateWs();
-                        ss.endWorkshift(manager.getSalon(), true);
-                    } else {
-                        manager.getSalon().dispose();
-                    }
-                }
-            } else {
-                manager.salonFrameManager(null, cfgAct);
-            }
+            manager.salonFrameManager();
         } else {
             utiliMsg.configNull();
         }
@@ -312,7 +292,6 @@ public class UtilidadesGraficas extends JFrame {
         Font fuente = new Font("Arial", Font.BOLD, font);
         nameData.setFont(fuente);
         panelData.add(nameData);
-//        panelData.add(Box.createHorizontalStrut(40));  
         return panelData;
     }
 

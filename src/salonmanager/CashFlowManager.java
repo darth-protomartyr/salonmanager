@@ -144,19 +144,19 @@ public class CashFlowManager extends FrameWindow {
         
         if (flowKind == 0) {
             setTitle("Caja Inicial");
-            labelTit.setText(utili.stringMsgFrd("Introduzca el monto de la caja inicial", 20, 1));
+            labelTit.setText(utili.stringMsgFrd("Introduzca la caja inicial", 20, 1));
             labelComment.setText("Introduzca un comentario de ser necesario:");
-            butCashFlow.setText("Ingresar");
+            butCashFlow.setText("INGRESAR");
         } else if (flowKind == 1) {
             setTitle("Ingresos a Caja");
-            labelTit.setText(utili.stringMsgFrd("Introduzca el monto a ingresar en la caja", 20, 1));
+            labelTit.setText(utili.stringMsgFrd("Introduzca el monto a ingresar", 20, 1));
             labelComment.setText("Introduzca el motivo del ingreso:");
-            butCashFlow.setText("Ingresar");
+            butCashFlow.setText("INGERSar");
         } else {
             setTitle("Salidas de Caja");
-            labelTit.setText(utili.stringMsgFrd("Introduzca el monto a extraer de la caja", 20, 1));
+            labelTit.setText(utili.stringMsgFrd("Introduzca el monto a extraer", 20, 1));
             labelComment.setText("Introduzca el motivo de la extracción:");
-            butCashFlow.setText("Extraer");
+            butCashFlow.setText("EXTRAER");
         }
         
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);

@@ -12,9 +12,6 @@ import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,14 +22,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import salonmanager.entidades.bussiness.ItemSale;
-import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.persistencia.DAOItemSale;
-import salonmanager.persistencia.DAOTable;
-import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServiceStatics;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
@@ -253,7 +244,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
         Timestamp timestampInit = Timestamp.valueOf(date1);
         Timestamp timestampEnd = Timestamp.valueOf(date2);
         
-        sStats.staticBacker(timestampInit, timestampEnd, statsM);
+        sStats.staticBacker(timestampInit, timestampEnd, statsM, 0);
         dispose();
     }
 

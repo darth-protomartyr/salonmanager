@@ -1,6 +1,5 @@
 package salonmanager.entidades.config;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class ConfigActual {
@@ -8,6 +7,9 @@ public class ConfigActual {
     int openIdWs;
     ArrayList<Integer> arrayDeferWs;
 
+    public ConfigActual() {
+    }
+    
     public boolean isOpenWs() {
         return openWs;
     }

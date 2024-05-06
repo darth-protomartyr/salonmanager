@@ -29,6 +29,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ServiceStatics {
+
     DAOWorkshift daoW = new DAOWorkshift();
     DAOTable daoT = new DAOTable();
     DAOItemSale daoIs = new DAOItemSale();
@@ -42,8 +43,7 @@ public class ServiceStatics {
     int alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
-    
-        
+
     public static HashMap<Integer, Integer> orderHsII(HashMap<Integer, Integer> hashMap) {
         List<Map.Entry<Integer, Integer>> lista = new LinkedList<>(hashMap.entrySet());
 
@@ -77,7 +77,7 @@ public class ServiceStatics {
         }
         return hashMapOrdenado;
     }
-    
+
     public static HashMap<Integer, Integer> orderHsIIDownToUp(HashMap<Integer, Integer> hashMap) {
         List<Map.Entry<Integer, Integer>> lista = new LinkedList<>(hashMap.entrySet());
 
@@ -110,8 +110,7 @@ public class ServiceStatics {
             hashMapOrdenado.put(entrada.getKey(), entrada.getValue());
         }
         return hashMapOrdenado;
-    }    
-    
+    }
 
     public void openSelectorPeriod(StaticsManager statsM) {
         new StaticsSelectorPeriod(statsM);
@@ -143,13 +142,17 @@ public class ServiceStatics {
         new StatsWaiterViewer(statsM, i, statsM.getPeriod());
     }
 
-    
-    
-    public void staticBacker( Timestamp timestampInit, Timestamp timestampEnd, StaticsManager statsM) throws Exception {
-        ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
+    public void staticBacker(Timestamp timestampInit, Timestamp timestampEnd, StaticsManager statsM, int wsId) throws Exception {
         ArrayList<Workshift> wsS = new ArrayList<Workshift>();
-        for (Integer id : wsIds) {
-            Workshift ws = daoW.askWorshiftById(id);
+
+        if (wsId == 0) {
+            ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
+            for (Integer id : wsIds) {
+                Workshift ws = daoW.askWorshiftById(id);
+                wsS.add(ws);
+            }
+        } else {
+            Workshift ws = daoW.askWorshiftById(wsId);
             wsS.add(ws);
         }
 
@@ -180,17 +183,22 @@ public class ServiceStatics {
             ArrayList<Table> tabs = daoT.listarTablesByDate(ts1, ts2);
             ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
             Collections.sort(tabs, new TimestampComparator());
-            statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampEnd) +"</html>");
-            statsM.setPeriod("de "+ utili.friendlyDate3(timestampInit) + " a " +  utili.friendlyDate3(timestampEnd));
+            if (timestampInit != null && timestampEnd != null) {
+                statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
+                statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
+            } else {
+                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenWs()) + "</html>");
+                statsM.setPeriod("TURNO " + wsS.get(0).getId());
+            }
             statsM.setItemsSale(is);
             statsM.setTabs(tabs);
             statsM.setWorkshifts(wsS);
             statsM.setEnabled(true);
         }
     }
-    
-    
+
     public class TimestampComparator implements Comparator<Table> {
+
         @Override
         public int compare(Table o1, Table o2) {
             return o1.getOpenTime().compareTo(o2.getOpenTime());

@@ -17,7 +17,14 @@ public class ServicioItemSale {
         if (!tabId.equals("barra") && !tabId.equals("delivery")) {
             tabId = "tab";
         }
-        String waiterId = salon.getWaiterAux().getId();
+
+        String waiterId = "";
+        if (tabId.equals("barra") || tabId.equals("delivery")) {
+            waiterId = salon.getUser().getId();
+        } else {
+           waiterId = salon.getWaiterAux().getId();
+        }
+
         int wsId = salon.getWorkshiftNow().getId();
         for(Itemcard ic : items) {
             Timestamp ts = new Timestamp(new Date().getTime());

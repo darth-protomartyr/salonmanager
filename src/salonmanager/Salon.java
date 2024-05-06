@@ -130,6 +130,7 @@ public class Salon extends FrameFull {
     JLabel labelWorkshift = new JLabel();
     
     //Botonera
+//    ArrayList<Table> prevTabs = new ArrayList<Table>();
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
     ArrayList<JButtonBarr> barrButtons = new ArrayList<JButtonBarr>();
@@ -180,10 +181,10 @@ public class Salon extends FrameFull {
 
     Salon sal = null;
     Manager manager = null;
-    ConfigActual cfgAct = null;
+    ConfigActual configActual = null;
     ConfigGeneral cfgGen = null;
 
-    public Salon(ArrayList<Table> tables, Manager man) throws Exception {
+    public Salon(Manager man) throws Exception {
         manager = man;
         sm.addFrame(this);
         user = man.getUser();
@@ -195,7 +196,7 @@ public class Salon extends FrameFull {
         add(panelPpal);
 
         cfgGen = man.getConfigGeneral();
-        cfgAct = man.getConfigActual();
+        configActual = man.getConfigActual();
         totalTable = cfgGen.getTotalTable();
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
@@ -379,9 +380,10 @@ public class Salon extends FrameFull {
 
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
-        if (tables != null) {
-            utiliGrafSal.tableManager(tables, sal);
+        if (prevTabs.size() > 0) {
+            utiliGrafSal.tableManager(prevTabs, sal);
         }
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -438,12 +440,12 @@ public class Salon extends FrameFull {
         this.itemsTableAux = itemsTableAux;
     }
 
-    public ConfigActual getCfgAct() {
-        return cfgAct;
+    public ConfigActual getConfigActual() {
+        return configActual;
     }
 
-    public void setCfgAct(ConfigActual cfgAct) {
-        this.cfgAct = cfgAct;
+    public void setConfigActual(ConfigActual configActual) {
+        this.configActual = configActual;
     }
 
     public ArrayList<String> getConfigSalon() {
@@ -1093,4 +1095,12 @@ public class Salon extends FrameFull {
     public void setCashFlowElec(double cashFlowElec) {
         this.cashFlowElec = cashFlowElec;
     }
+
+    public ArrayList<Table> getPrevTabs() {
+        return prevTabs;
+    }
+
+    public void setPrevTabs(ArrayList<Table> prevTabs) {
+        this.prevTabs = prevTabs;
+    }   
 }

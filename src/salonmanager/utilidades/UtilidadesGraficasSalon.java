@@ -46,8 +46,6 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
-import salonmanager.entidades.config.ConfigActual;
-import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonDeliverySee;
@@ -65,7 +63,6 @@ import salonmanager.servicios.ServicioItemSale;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.entidades.graphics.CustomTabbedPaneUI;
 import salonmanager.servicios.ServicioTable;
-
 
 public class UtilidadesGraficasSalon {
 
@@ -107,11 +104,13 @@ public class UtilidadesGraficasSalon {
 //PANEL ACTUAL.........................................................................................................
 //PANEL ACTUAL.........................................................................................................
     public JPanel panelActualBacker(Salon salon) throws Exception {
-        if (salon.getCfgAct().isOpenWs()) {
-            salon.setWorkshiftNow(daoW.askWorshiftById(salon.getCfgAct().getOpenIdWs()));
+        if (salon.getConfigActual().isOpenWs()) {
+            salon.setWorkshiftNow(daoW.askWorshiftById(salon.getConfigActual().getOpenIdWs()));
             salon.getWorkshiftNow().setCashierWs(daoU.getCashierByWorkshift(salon.getWorkshiftNow().getId()));
             salon.setCashFlowCash(salon.getWorkshiftNow().getCashFlowWsCash());
             salon.setCashFlowElec(salon.getWorkshiftNow().getCashFlowWsElec());
+            ArrayList<Table> tabs = st.workshiftTableslistComplete(salon.getWorkshiftNow(), 2);
+            salon.setPrevTabs(tabs);
         }
 
         JPanel panelActual = new JPanel();
@@ -134,7 +133,7 @@ public class UtilidadesGraficasSalon {
         panelActual.add(salon.getLabelWorkshift());
 
         salon.setButInitWorkshift(utiliGraf.button1("ABRIR TURNO", anchoUnit, altoUnit * 8, anchoUnit * 13));
-        if (salon.getCfgAct().isOpenWs()) {
+        if (salon.getConfigActual().isOpenWs()) {
             salon.getButInitWorkshift().setText("CERRAR TURNO");
         }
         salon.getButInitWorkshift().addActionListener(new ActionListener() {
@@ -151,31 +150,108 @@ public class UtilidadesGraficasSalon {
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                             salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
                             salon.getButInitWorkshift().setText("CERRAR TURNO");
+                            salon.getConfigActual().setOpenWs(true);
+                            salon.getConfigActual().setOpenIdWs(salon.getWorkshiftNow().getId());
                             daoC.updateCfgActOpenWs(true);
-                            int id = daoW.findLastWsID();
-                            daoC.updateCfgActOpenIdWs(id);
+                            daoC.updateCfgActOpenIdWs(salon.getWorkshiftNow().getId());
                             new CashFlowManager(salon, 0);
                         }
                     } else {
+                        if (salon.getPrevTabs().size() > 0) {
+                            if (salon.getUser().getId().equals(salon.getWorkshiftNow().getCashierWs().getId())) {
+                                boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
+                                if (confirm1 == true) {
+                                    salon.setWorkshiftNow(new Workshift(salon.getUser()));
+                                    daoW.saveWorkshift(salon.getWorkshiftNow());
+                                    salon.getWorkshiftNow().setId(daoW.findLastWsID());
+                                    salon.getWorkshiftNow().setCashierWs(salon.getUser());
+                                    daoU.saveCashierWorkshift(salon.getWorkshiftNow());
+                                    salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
+                                    salon.getButInitWorkshift().setText("CERRAR TURNO");
+                                    new CashFlowManager(salon, 0);
+                                }
+                            } else {
+                                salon.getManager().getSalon().setEnabled(false);
+                                boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
+                                if (newWs) {
+                                    utiliMsg.cargaLateWs();
+                                    ss.endWorkshift(salon.getManager().getSalon(), true);
+                                } else {
+                                    salon.getManager().getSalon().dispose();
+                                }
+                            }
+                        } else {
+                            ss.endWorkshift(salon, false);
+                        }
+                    }
+                    /*
+//                    } else {
+                    boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
+                    if (confirm1 == true) {
+                        salon.setWorkshiftNow(new Workshift(salon.getUser()));
+                        daoW.saveWorkshift(salon.getWorkshiftNow());
+                        salon.getWorkshiftNow().setId(daoW.findLastWsID());
+                        salon.getWorkshiftNow().setCashierWs(salon.getUser());
+                        daoU.saveCashierWorkshift(salon.getWorkshiftNow());
+                        salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
+                        salon.getButInitWorkshift().setText("CERRAR TURNO");
+                        daoC.updateCfgActOpenWs(true);
+                        int id = daoW.findLastWsID();
+                        daoC.updateCfgActOpenIdWs(id);
+                        new CashFlowManager(salon, 0);
+                    }
+//                    }
+
+//                if (user.getId().equals(ws.getCashierWs().getId())) {
+//                    manager.salonFrameManager(tabs, cfgAct);
+//                } else {
+//                    manager.salonFrameManager(tabs, cfgAct);
+//                    manager.getSalon().setEnabled(false);
+//                    boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
+//                    if (newWs) {
+//                        utiliMsg.cargaLateWs();
+//                        ss.endWorkshift(manager.getSalon(), true);
+//                    } else {
+//                        manager.getSalon().dispose();
+//                    }
+//                }
+                    if (salon.getWorkshiftNow() == null) {
+//                        boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
+//                        if (confirm1 == true) {
+//                            salon.setWorkshiftNow(new Workshift(salon.getUser()));
+//                            daoW.saveWorkshift(salon.getWorkshiftNow());
+//                            salon.getWorkshiftNow().setId(daoW.findLastWsID());
+//                            salon.getWorkshiftNow().setCashierWs(salon.getUser());
+//                            daoU.saveCashierWorkshift(salon.getWorkshiftNow());
+//                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
+//                            salon.getButInitWorkshift().setText("CERRAR TURNO");
+//                            daoC.updateCfgActOpenWs(true);
+//                            int id = daoW.findLastWsID();
+//                            daoC.updateCfgActOpenIdWs(id);
+//                            new CashFlowManager(salon, 0);
+//                        }
+                    } else {
                         ss.endWorkshift(salon, false);
                     }
+                    
+                     */
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
         panelActual.add(salon.getButInitWorkshift());
-        
+
         PanelBorder panelCashFlow = new PanelBorder();
         panelCashFlow.setLayout(null);
         panelCashFlow.setBounds(anchoUnit * 15, altoUnit * 1, anchoUnit * 9, altoUnit * 15);
         panelCashFlow.setBackground(bluLg);
         panelActual.add(panelCashFlow);
-        
+
         JLabel labelCashFlow = utiliGraf.labelTitleBacker3("Flujo de caja");
         labelCashFlow.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 7, altoUnit * 4);
         panelCashFlow.add(labelCashFlow);
-        
+
         JButtonMetalBlu butInnFlow = utiliGraf.button2("Ingresar", anchoUnit * 1, altoUnit * 5, anchoUnit * 7);
         butInnFlow.addActionListener(new ActionListener() {
             @Override
@@ -190,7 +266,7 @@ public class UtilidadesGraficasSalon {
         panelCashFlow.add(butInnFlow);
 
         JButtonMetalBlu butOutFlow = utiliGraf.button2("Extraer", anchoUnit * 1, altoUnit * 10, anchoUnit * 7);
-            butOutFlow.addActionListener(new ActionListener() {
+        butOutFlow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
@@ -201,11 +277,10 @@ public class UtilidadesGraficasSalon {
             }
         });
         panelCashFlow.add(butOutFlow);
-        
+
         return panelActual;
     }
 
-    
 //PANEL MONITOR........................................................................................................
 //PANEL MONITOR........................................................................................................
     public JPanel panelMonitor(Salon salon) {
@@ -426,7 +501,7 @@ public class UtilidadesGraficasSalon {
         panelBarr.setLayout(null);
         panelBarr.setBackground(bluLg);
         panelBarr.setBounds(anchoUnit, altoUnit, anchoUnit * 34, altoUnit * 73);
-        
+
         JLabel labelBP = utiliGraf.labelTitleBackerA4("Barra");
         labelBP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
         panelBarr.add(labelBP);
@@ -941,7 +1016,7 @@ public class UtilidadesGraficasSalon {
         panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 19);
         panelSelItem.setBackground(bluLg);
 
-        JButtonMetalBlu butCaption0 = utiliGraf.button3(captions.get(0), anchoUnit , altoUnit, anchoUnit * 7);
+        JButtonMetalBlu butCaption0 = utiliGraf.button3(captions.get(0), anchoUnit, altoUnit, anchoUnit * 7);
         butCaption0.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -992,7 +1067,7 @@ public class UtilidadesGraficasSalon {
             }
         });
         panelSelItem.add(butCaption3);
-        
+
         JButtonMetalBlu butCaption4 = utiliGraf.button3(captions.get(4), anchoUnit * 9, altoUnit * 5, anchoUnit * 6);
         butCaption4.addActionListener(new ActionListener() {
             @Override
@@ -1005,7 +1080,7 @@ public class UtilidadesGraficasSalon {
             }
         });
         panelSelItem.add(butCaption4);
-        
+
         JButtonMetalBlu butCaption5 = utiliGraf.button3(captions.get(5), anchoUnit * 16, altoUnit * 5, anchoUnit * 7);
         butCaption5.addActionListener(new ActionListener() {
             @Override
@@ -1415,7 +1490,7 @@ public class UtilidadesGraficasSalon {
         mt.setAlwaysOnTop(true);
         salon.setEnabled(false);
     }
- 
+
     public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
@@ -1543,7 +1618,7 @@ public class UtilidadesGraficasSalon {
             }
         }
     }
-    
+
     public void resetWsValues(Salon salon) {
         salon.setWorkshiftNow(null);
         salon.setCashFlowCash(0);
@@ -1553,15 +1628,13 @@ public class UtilidadesGraficasSalon {
         salon.setBarrButtons(new ArrayList<JButtonBarr>());
         salon.setDeliButtons(new ArrayList<JButtonDelivery>());
         salon.setDeliButtonsSees(new ArrayList<JButtonDeliverySee>());
+        salon.getManager().setSalon(null);
         salon.dispose();
     }
-    
-    
 
     public void jButExtSetter(Salon salon) {
         if (salon.getJbtAux() != null) {
             salon.getJbtAux().setTable(salon.getTableAux());
-
             for (int i = 0; i < salon.getTableButtons().size(); i++) {
                 if (salon.getTableButtons().get(i).getNum() == salon.getJbtAux().getNum()) {
                     salon.getTableButtons().set(i, salon.getJbtAux());

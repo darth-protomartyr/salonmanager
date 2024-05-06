@@ -233,27 +233,14 @@ public class DAOWorkshift extends DAO {
     }
 
     
-    public Workshift askWorshiftActual() throws Exception {
-        Workshift ws = new Workshift();
+    public int askWorshiftActualId() throws Exception {
+        int ws = 0;
         try {
             String sql = "SELECT * FROM workshifts WHERE workshift_state_shift= true AND workshift_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                ws.setId(resultado.getInt(1));
-                ws.setOpenWs(resultado.getTimestamp(2));
-                ws.setCloseWs(resultado.getTimestamp(3));
-                ws.setStateWs(resultado.getBoolean(4));
-                ws.setTotalMountCashWs(resultado.getDouble(5));
-                ws.setTotalMountElectronicWs(resultado.getDouble(6));
-                ws.setTotalMountWs(resultado.getDouble(7));
-                ws.setTotalMountRealWs(resultado.getDouble(8));
-                ws.setErrorMountWs(resultado.getDouble(9));
-                ws.setErrorMountRealWs(resultado.getDouble(10));
-                ws.setCashFlowWsCash(resultado.getDouble(11));
-                ws.setCashFlowWsElec(resultado.getDouble(12));
-                ws.setCommentWs(resultado.getString(13));
-                ws.setActiveWs(resultado.getBoolean(14));
+                ws = resultado.getInt(1);
             }
             return ws;
         } catch (Exception e) {

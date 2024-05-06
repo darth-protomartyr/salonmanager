@@ -9,6 +9,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -47,6 +48,8 @@ public class Ingresar extends FrameWindow {
     public Ingresar(JFrame landing1) throws Exception {
         landing = landing1;
         setTitle("Registrar");
+        int f = (int) Math.round(anchoUnit * 1.3);
+        Font font = new Font("Arial", Font.PLAIN, f);
 
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -60,17 +63,19 @@ public class Ingresar extends FrameWindow {
         panelLabel.add(labelIngreso);
 
         JPanel panelData1 = utiliGraf.dataPanelBacker("Mail:", 16);
-        panelData1.setBounds(anchoUnit * 3, altoUnit *10, anchoUnit * 23, altoUnit *7);
-        fieldMail.setBounds(anchoUnit * 7, altoUnit *1, anchoUnit * 15, altoUnit *5);
-        panelData1.add(fieldMail);
+        panelData1.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 23, altoUnit * 7);
+        fieldMail.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 15, altoUnit * 5);
+        fieldMail.setFont(font);
         fieldMail.setText("gon@gmail.com");
+        panelData1.add(fieldMail);
         panelPpal.add(panelData1);
 
         JPanel panelData2 = utiliGraf.dataPanelBacker("Clave:", 16);
-        panelData2.setBounds(anchoUnit * 3, altoUnit *20, anchoUnit * 23, altoUnit *7);
-        fieldPass.setBounds(anchoUnit * 7, altoUnit *1, anchoUnit * 15, altoUnit *5);
-        panelData2.add(fieldPass);
+        panelData2.setBounds(anchoUnit * 3, altoUnit * 20, anchoUnit * 23, altoUnit * 7);
+        fieldPass.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 15, altoUnit * 5);
+        fieldPass.setFont(font);
         fieldPass.setText("27949874");
+        panelData2.add(fieldPass);
         panelPpal.add(panelData2);
 
         butInUser = utiliGraf.button1("Ingresar", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
@@ -94,7 +99,7 @@ public class Ingresar extends FrameWindow {
             }
         });
         panelPpal.add(butSalir);
-        
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -114,12 +119,12 @@ public class Ingresar extends FrameWindow {
 
         userAux = daoU.consultaUser(mail);
         String id = userAux.getId();
-        
+
         if (id == null) {
             error = true;
             utiliMsg.errorUserNull();
         }
-        
+
         if (error == false && id != null) {
             if (userAux.getPassword().equals(pass)) {
                 try {
