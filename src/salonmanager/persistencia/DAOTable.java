@@ -127,7 +127,6 @@ public class DAOTable extends DAO {
 
     public void updateTableMountCash(Table tab) throws Exception {
         try {
-//            String sql1 = "UPDATE tabs SET table_amount_cash = table_amount_cash + " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
             String sql1 = "UPDATE tabs SET table_amount_cash = " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
 
             System.out.println(sql1);
@@ -145,7 +144,6 @@ public class DAOTable extends DAO {
 
     public void updateTableMountElectronic(Table tab) throws Exception {
         try {
-//            String sql1 = "UPDATE tabs SET table_amount_electronic = table_amount_electronic + " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
             String sql1 = "UPDATE tabs SET table_amount_electronic = " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
 
             System.out.println(sql1);
@@ -338,6 +336,29 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
+    
+    
+    public int getMaxTab(String st, Timestamp ds) throws Exception {
+        int i = 0;
+        try {
+            String sql = "SELECT COUNT(*) AS cantidad FROM tabs WHERE table_pos = '" + st + "' AND table_open_time > '"+ ds +"';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                i = resultado.getInt(1);
+            }
+            return i;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    
+    
+    
+    
 
     public void downActiveTable(Table t) throws Exception {
         try {

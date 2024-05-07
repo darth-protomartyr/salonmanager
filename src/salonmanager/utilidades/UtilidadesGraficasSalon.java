@@ -533,6 +533,7 @@ public class UtilidadesGraficasSalon {
     private void createBarr(Salon salon) throws Exception {
         boolean testN = false;
         boolean emptyButton = false;
+        
         if (salon.getBarrButtons().size() > 0) {
             testN = true;
         }
@@ -546,7 +547,7 @@ public class UtilidadesGraficasSalon {
         }
 
         if (emptyButton == false) {
-            int num = salon.getBarrButtons().size() + 1;
+            int num = daoT.getMaxTab("barra", salon.getWorkshiftNow().getOpenWs()) + 1;
             JButtonBarr newJBB = new JButtonBarr(num);
             Table newTable = new Table(newJBB.getNum(), newJBB.getPos(), salon.getUser());
             newJBB.setTable(newTable);
@@ -1824,7 +1825,7 @@ public class UtilidadesGraficasSalon {
                 salon.getDeliButtons().set(0, d);
                 salon.getJbdAux().setVisible(true);
                 salon.getJbdAux().setVisible(true);
-            } else {
+             } else {
                 for (int j = 0; j < salon.getTableButtons().size(); j++) {
                     if (tab.getNum() == salon.getTableButtons().get(j).getNum()) {
                         salon.getTableButtons().get(j).setTable(tab);

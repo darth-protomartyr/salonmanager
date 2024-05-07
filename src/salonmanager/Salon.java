@@ -130,7 +130,7 @@ public class Salon extends FrameFull {
     JLabel labelWorkshift = new JLabel();
     
     //Botonera
-//    ArrayList<Table> prevTabs = new ArrayList<Table>();
+    ArrayList<Table> prevTabs = new ArrayList<Table>();
     ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
     ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
     ArrayList<JButtonBarr> barrButtons = new ArrayList<JButtonBarr>();
