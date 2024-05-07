@@ -91,7 +91,7 @@ public class LandingFrame extends FrameGeneral {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                dispose();
+                System.exit(0);
             }
         });
         panelPpal.add(butSalir);
@@ -99,7 +99,7 @@ public class LandingFrame extends FrameGeneral {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                dispose();
+                System.exit(0);
             }
         });
     }

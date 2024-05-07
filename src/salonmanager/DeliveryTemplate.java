@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.accessibility.AccessibleContext;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -24,6 +25,7 @@ import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasDeliTemplate;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
@@ -32,8 +34,11 @@ public class DeliveryTemplate extends FrameHalf {
     DAODeliveryConsumer daoC = new DAODeliveryConsumer();
     DAOUser daoU = new DAOUser();
 
+    
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasDeliTemplate utiliGrafDT = new UtilidadesGraficasDeliTemplate();
+
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
 
     Utilidades utili = new Utilidades();
@@ -92,7 +97,9 @@ public class DeliveryTemplate extends FrameHalf {
         salon = sal;
         deliFull = deli;
         if (deliFull != null) {
-            deliAux = deli.getDeli();
+            if (deliFull.getDeli() != null) {
+                deliAux = deli.getDeli();
+            }
             cmrAux = deli.getConsumer();
         }
         setIconImage(icono.getImage());
@@ -104,6 +111,8 @@ public class DeliveryTemplate extends FrameHalf {
             title = "DATOS ENVIO";
         }
 
+        consumers = daoC.getConsumersPhone();
+        
         setTitle(title);
 
         setBounds(0, 0, anchoFrame / 2, alturaFrame);
@@ -116,138 +125,8 @@ public class DeliveryTemplate extends FrameHalf {
         panelPpal.add(labelTit);
 
         //---------------------------------------DeliveryConsumer
-        JPanel panelConsumer = panelBacker("Cliente", anchoUnit, altoUnit * 6, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 9));
+        JPanel panelConsumer = utiliGrafDT.panelConsumerBacker(this);
         panelPpal.add(panelConsumer);
-
-        labelSelectPhone = utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:");
-        labelSelectPhone.setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 23, altoUnit * 4);
-        panelConsumer.add(labelSelectPhone);
-
-        consumers = daoC.getConsumersPhone();
-        comboConsumers.setModel(utili.consumerComboModelReturnWNull(consumers));
-        comboConsumers.setFont(salon.getFont4());
-        comboConsumers.setBounds(anchoUnit * 24, altoUnit * 7, anchoUnit * 12, altoUnit * 4);
-        comboConsumers.setSelectedIndex(consumers.size());
-        panelConsumer.add(comboConsumers);
-
-        ActionListener actionListener1 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    consumerPhoneBacker();
-                    if (deliFull != null) {
-                        butOpDelivery.setVisible(true);
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(DeliveryTemplate.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        };
-        comboConsumers.addActionListener(actionListener1);
-        if (deliFull != null) {
-            labelSelectPhone.setVisible(false);
-            comboConsumers.setVisible(false);
-        }
-
-        butOpConsumer = utiliGraf.button2("CREAR CLIENTE", anchoUnit * 38, altoUnit * 7, anchoUnit * 11);
-        if (deliFull == null) {
-            butOpConsumer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        createConsumer();
-                    } catch (Exception ex) {
-                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            );
-        } else {
-            butOpConsumer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        changeConsumer();
-                    } catch (Exception ex) {
-                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            );
-            butOpConsumer.setLocation(anchoUnit * 20, altoUnit * 7);
-            butOpConsumer.setText("CAMBIAR CLIENTE");
-        }
-        panelConsumer.add(butOpConsumer);
-
-        if (deliFull != null) {
-            butUpdateConsumer = utiliGraf.button3("MODIFICAR DATOS", anchoUnit * 38, altoUnit * 8, anchoUnit * 10);
-            butUpdateConsumer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        updateConsumer();
-                    } catch (Exception ex) {
-                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            );
-            panelConsumer.add(butUpdateConsumer);
-        }
-
-        labelName = utiliGraf.labelTitleBacker2("Nombre:");
-        labelName.setBounds(anchoUnit * 5, altoUnit * 13, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelName);
-
-        labelPhone = utiliGraf.labelTitleBacker2("Teléfono:");
-        labelPhone.setBounds(anchoUnit * 5, altoUnit * 18, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelPhone);
-
-        labelSn = utiliGraf.labelTitleBacker2("Red Social:");
-        labelSn.setBounds(anchoUnit * 5, altoUnit * 23, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelSn);
-
-        labelStreet = utiliGraf.labelTitleBacker2("Calle:");
-        labelStreet.setBounds(anchoUnit * 5, altoUnit * 28, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelStreet);
-
-        labelNumSt = utiliGraf.labelTitleBacker2("Numéro:");
-        labelNumSt.setBounds(anchoUnit * 5, altoUnit * 33, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelNumSt);
-
-        labelFloorD = utiliGraf.labelTitleBacker2("Piso:");
-        labelFloorD.setBounds(anchoUnit * 5, altoUnit * 38, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelFloorD);
-
-        labelNumD = utiliGraf.labelTitleBacker2("Nro departamento:");
-        labelNumD.setBounds(anchoUnit * 30, altoUnit * 13, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelNumD);
-
-        labelDistrict = utiliGraf.labelTitleBacker2("Barrio:");
-        labelDistrict.setBounds(anchoUnit * 30, altoUnit * 18, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelDistrict);
-
-        labelArea = utiliGraf.labelTitleBacker2("Localidad:");
-        labelArea.setBounds(anchoUnit * 30, altoUnit * 23, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelArea);
-
-        JLabel labelDetailsTit = utiliGraf.labelTitleBacker2("Detalles Domicilio:");
-        labelDetailsTit.setBounds(anchoUnit * 30, altoUnit * 28, anchoUnit * 22, altoUnit * 3);
-        panelConsumer.add(labelDetailsTit);
-
-        panelDetails.setBackground(narLg);
-
-//        String details = utili.stringMsgFrd("", 25, 1);
-        labelDetails = utiliGraf.labelTitleBacker3("");
-        panelDetails.add(labelDetails);
-
-        JScrollPane scrollPaneConsumer = new JScrollPane(panelDetails);
-        scrollPaneConsumer.setBounds(anchoUnit * 30, altoUnit * 31, anchoUnit * 17, altoUnit * 10);
-        panelConsumer.add(scrollPaneConsumer);
-
-        if (deliFull != null) {
-            setConsumerFields(cmrAux);
-        }
 
         //---------------------------------------Delivery
         JPanel panelDelivery = panelBacker("Delivery", anchoUnit, alturaFrame / 2, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 16));
@@ -282,8 +161,13 @@ public class DeliveryTemplate extends FrameHalf {
         comboDelis.addActionListener(actionListener2);
 
         if (deliFull != null) {
-            labelSelectDeli.setVisible(false);
-            comboDelis.setVisible(false);
+            if (deliAux != null) {
+                labelSelectDeli.setVisible(false);
+                comboDelis.setVisible(false);
+            } else {
+                labelSelectDeli.setVisible(true);
+                comboDelis.setVisible(true);
+            }
         }
 
         butOpDeliUser = utiliGraf.button2("CREAR CONDUCTOR", anchoUnit * 35, altoUnit * 7, anchoUnit * 14);
@@ -396,7 +280,7 @@ public class DeliveryTemplate extends FrameHalf {
             }
         });
         panelPpal.add(butSalir);
-        
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -405,7 +289,6 @@ public class DeliveryTemplate extends FrameHalf {
         });
     }
 
-    
     private JPanel panelBacker(String tit, int i, int i0, int i1, int i2) {
         JPanel panel = new JPanel(null);
         panel.setBounds(i, i0, i1, i2);
@@ -422,44 +305,16 @@ public class DeliveryTemplate extends FrameHalf {
         return panel;
     }
 
-    private void consumerPhoneBacker() throws Exception {
-        String st = (String) comboConsumers.getSelectedItem();
-        cmrAux = daoC.getConsumerByPhone(st);
-        setConsumerFields(cmrAux);
-    }
-
     private void deliveryBacker() {
         String st = (String) comboDelis.getSelectedItem();
         deliAux = utili.userSelReturn(st, deliverys);
         setDeliveryFields(deliAux);
     }
 
-    private void createConsumer() throws Exception {
-        DeliveryTemplate fnd = this;
-        new ConsumerTemplate(fnd, null);
-        fnd.setEnabled(false);
-    }
-
     private void createDeliveryUser() throws Exception {
         DeliveryTemplate fnd = this;
         new UserExpressTemplate(fnd, "DELIVERY", null);
         fnd.setEnabled(false);
-    }
-
-    private void setConsumerFields(DeliveryConsumer cmr) {
-        labelName.setText("Nombre: " + cmr.getName());
-        labelPhone.setText("Teléfono: " + cmr.getPhone());
-        labelSn.setText("Red Social: " + cmr.getSocialNetwork());
-        labelStreet.setText("Calle: " + cmr.getStreet());
-        labelNumSt.setText("Número: " + cmr.getNumSt());
-        labelFloorD.setText("Piso: " + cmr.getDeptFloor());
-        labelNumD.setText("Nro de Departamento: " + cmr.getDeptNum());
-        labelDistrict.setText("Barrio: " + cmr.getDistrict());
-        labelArea.setText("Localidad: " + cmr.getArea());
-        String details = utili.stringMsgFrd(cmr.getDetails(), 25, 1);
-        labelDetails.setText(details);
-        revalidate();
-        repaint();
     }
 
     private void setDeliveryFields(User deli) {
@@ -470,17 +325,7 @@ public class DeliveryTemplate extends FrameHalf {
         labelRolDeli.setText("Ocupación: " + deli.getRol());
     }
 
-    public void getConsumer(DeliveryConsumer cmr) {
-        cmrAux = cmr;
-        setConsumerFields(cmrAux);
-        consumers.add(cmrAux.getPhone());
-        comboConsumers.setModel(utili.consumerComboModelReturnWNull(consumers));
-        comboConsumers.setSelectedIndex(consumers.size() - 1);
-        if (deliFull != null) {
-            butOpDelivery.setVisible(true);
-        }
-        setFndEnabled();
-    }
+
 
     void getDeliUser(User user) {
         deliAux = user;
@@ -495,16 +340,22 @@ public class DeliveryTemplate extends FrameHalf {
     }
 
     private void createDeliveryOrder() throws Exception {
-        if (deliAux != null && cmrAux != null) {
-            Delivery deliOrder = new Delivery(cmrAux.getPhone(), deliAux.getId());
+//        if (deliAux != null && cmrAux != null) {
+        if (cmrAux != null) {
+            String id = "";
+            if (deliAux != null) {
+                id = deliAux.getId();
+            }
+
+            Delivery deliOrder = new Delivery(cmrAux.getPhone(), id);
             utiliGrafSal.getDeliOrder(deliOrder, salon);
             salon.setEnabled(true);
             dispose();
 
         } else {
-            if (deliAux == null) {
-                utiliMsg.errorDeliveryNull();
-            }
+//            if (deliAux == null) {
+//                utiliMsg.errorDeliveryNull();
+//            }
 
             if (cmrAux == null) {
                 utiliMsg.errorConsumerNull();
@@ -546,7 +397,305 @@ public class DeliveryTemplate extends FrameHalf {
         fnd.setEnabled(false);
     }
 
+    
+    
     public void setFndEnabled() {
         setEnabled(true);
     }
+
+    public DAODeliveryConsumer getDaoC() {
+        return daoC;
+    }
+
+    public void setDaoC(DAODeliveryConsumer daoC) {
+        this.daoC = daoC;
+    }
+
+    public DAOUser getDaoU() {
+        return daoU;
+    }
+
+    public void setDaoU(DAOUser daoU) {
+        this.daoU = daoU;
+    }
+
+    public ImageIcon getIcono() {
+        return icono;
+    }
+
+    public void setIcono(ImageIcon icono) {
+        this.icono = icono;
+    }
+
+    public JComboBox getComboConsumers() {
+        return comboConsumers;
+    }
+
+    public void setComboConsumers(JComboBox comboConsumers) {
+        this.comboConsumers = comboConsumers;
+    }
+
+    public JComboBox getComboDelis() {
+        return comboDelis;
+    }
+
+    public void setComboDelis(JComboBox comboDelis) {
+        this.comboDelis = comboDelis;
+    }
+
+    public JPanel getPanelDetails() {
+        return panelDetails;
+    }
+
+    public void setPanelDetails(JPanel panelDetails) {
+        this.panelDetails = panelDetails;
+    }
+
+    public JLabel getLabelSelectPhone() {
+        return labelSelectPhone;
+    }
+
+    public void setLabelSelectPhone(JLabel labelSelectPhone) {
+        this.labelSelectPhone = labelSelectPhone;
+    }
+
+    public JLabel getLabelSelectDeli() {
+        return labelSelectDeli;
+    }
+
+    public void setLabelSelectDeli(JLabel labelSelectDeli) {
+        this.labelSelectDeli = labelSelectDeli;
+    }
+
+    public JLabel getLabelName() {
+        return labelName;
+    }
+
+    public void setLabelName(JLabel labelName) {
+        this.labelName = labelName;
+    }
+
+    public JLabel getLabelPhone() {
+        return labelPhone;
+    }
+
+    public void setLabelPhone(JLabel labelPhone) {
+        this.labelPhone = labelPhone;
+    }
+
+    public JLabel getLabelSn() {
+        return labelSn;
+    }
+
+    public void setLabelSn(JLabel labelSn) {
+        this.labelSn = labelSn;
+    }
+
+    public JLabel getLabelStreet() {
+        return labelStreet;
+    }
+
+    public void setLabelStreet(JLabel labelStreet) {
+        this.labelStreet = labelStreet;
+    }
+
+    public JLabel getLabelNumSt() {
+        return labelNumSt;
+    }
+
+    public void setLabelNumSt(JLabel labelNumSt) {
+        this.labelNumSt = labelNumSt;
+    }
+
+    public JLabel getLabelFloorD() {
+        return labelFloorD;
+    }
+
+    public void setLabelFloorD(JLabel labelFloorD) {
+        this.labelFloorD = labelFloorD;
+    }
+
+    public JLabel getLabelNumD() {
+        return labelNumD;
+    }
+
+    public void setLabelNumD(JLabel labelNumD) {
+        this.labelNumD = labelNumD;
+    }
+
+    public JLabel getLabelDistrict() {
+        return labelDistrict;
+    }
+
+    public void setLabelDistrict(JLabel labelDistrict) {
+        this.labelDistrict = labelDistrict;
+    }
+
+    public JLabel getLabelArea() {
+        return labelArea;
+    }
+
+    public void setLabelArea(JLabel labelArea) {
+        this.labelArea = labelArea;
+    }
+
+    public JLabel getLabelDetails() {
+        return labelDetails;
+    }
+
+    public void setLabelDetails(JLabel labelDetails) {
+        this.labelDetails = labelDetails;
+    }
+
+    public JLabel getLabelNameDeli() {
+        return labelNameDeli;
+    }
+
+    public void setLabelNameDeli(JLabel labelNameDeli) {
+        this.labelNameDeli = labelNameDeli;
+    }
+
+    public JLabel getLabelLastNameDeli() {
+        return labelLastNameDeli;
+    }
+
+    public void setLabelLastNameDeli(JLabel labelLastNameDeli) {
+        this.labelLastNameDeli = labelLastNameDeli;
+    }
+
+    public JLabel getLabelPhoneDeli() {
+        return labelPhoneDeli;
+    }
+
+    public void setLabelPhoneDeli(JLabel labelPhoneDeli) {
+        this.labelPhoneDeli = labelPhoneDeli;
+    }
+
+    public JLabel getLabelRolDeli() {
+        return labelRolDeli;
+    }
+
+    public void setLabelRolDeli(JLabel labelRolDeli) {
+        this.labelRolDeli = labelRolDeli;
+    }
+
+    public JLabel getLabelMailDeli() {
+        return labelMailDeli;
+    }
+
+    public void setLabelMailDeli(JLabel labelMailDeli) {
+        this.labelMailDeli = labelMailDeli;
+    }
+
+    public ArrayList<String> getConsumers() {
+        return consumers;
+    }
+
+    public void setConsumers(ArrayList<String> consumers) {
+        this.consumers = consumers;
+    }
+
+    public ArrayList<User> getDeliverys() {
+        return deliverys;
+    }
+
+    public void setDeliverys(ArrayList<User> deliverys) {
+        this.deliverys = deliverys;
+    }
+
+    public JButtonMetalBlu getButOpConsumer() {
+        return butOpConsumer;
+    }
+
+    public void setButOpConsumer(JButtonMetalBlu butOpConsumer) {
+        this.butOpConsumer = butOpConsumer;
+    }
+
+    public JButtonMetalBlu getButOpDeliUser() {
+        return butOpDeliUser;
+    }
+
+    public void setButOpDeliUser(JButtonMetalBlu butOpDeliUser) {
+        this.butOpDeliUser = butOpDeliUser;
+    }
+
+    public JButtonMetalBlu getButUpdateConsumer() {
+        return butUpdateConsumer;
+    }
+
+    public void setButUpdateConsumer(JButtonMetalBlu butUpdateConsumer) {
+        this.butUpdateConsumer = butUpdateConsumer;
+    }
+
+    public JButtonMetalBlu getButUpdateDeliUser() {
+        return butUpdateDeliUser;
+    }
+
+    public void setButUpdateDeliUser(JButtonMetalBlu butUpdateDeliUser) {
+        this.butUpdateDeliUser = butUpdateDeliUser;
+    }
+
+    public JButtonMetalBlu getButOpDelivery() {
+        return butOpDelivery;
+    }
+
+    public void setButOpDelivery(JButtonMetalBlu butOpDelivery) {
+        this.butOpDelivery = butOpDelivery;
+    }
+
+    public DeliveryConsumer getCmrAux() {
+        return cmrAux;
+    }
+
+    public void setCmrAux(DeliveryConsumer cmrAux) {
+        this.cmrAux = cmrAux;
+    }
+
+    public User getDeliAux() {
+        return deliAux;
+    }
+
+    public void setDeliAux(User deliAux) {
+        this.deliAux = deliAux;
+    }
+
+    public Salon getSalon() {
+        return salon;
+    }
+
+    public void setSalon(Salon salon) {
+        this.salon = salon;
+    }
+
+    public Delivery getDeliFull() {
+        return deliFull;
+    }
+
+    public void setDeliFull(Delivery deliFull) {
+        this.deliFull = deliFull;
+    }
+
+    public boolean isChange() {
+        return change;
+    }
+
+    public void setChange(boolean change) {
+        this.change = change;
+    }
+
+    public AccessibleContext getAccessibleContext() {
+        return accessibleContext;
+    }
+
+    public void setAccessibleContext(AccessibleContext accessibleContext) {
+        this.accessibleContext = accessibleContext;
+    }
+    
+    
+    
+    
+    
+    
+
+    
 }

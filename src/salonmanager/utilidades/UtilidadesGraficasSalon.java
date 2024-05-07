@@ -964,7 +964,7 @@ public class UtilidadesGraficasSalon {
     public void getDeliOrder(Delivery dOrder, Salon salon) throws Exception {
         salon.setDeliOrderAux(dOrder);
         daoD.saveDelivery(salon.getDeliOrderAux());
-        int num = salon.getDeliButtons().size() + 1;
+        int num = daoT.getMaxTab("delivery", salon.getWorkshiftNow().getOpenWs()) + 1;
         JButtonDelivery newJBD = new JButtonDelivery(num, dOrder);
         Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), salon.getUser());
         newJBD.setTable(newTable);

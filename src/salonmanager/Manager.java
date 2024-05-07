@@ -5,13 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
@@ -99,7 +96,7 @@ public class Manager extends FrameFull {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 sm.frameCloser();
-                dispose();
+                System.exit(0);
             }
         });
         panelPpal.add(butSalir);
@@ -110,7 +107,7 @@ public class Manager extends FrameFull {
                 boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
                 if (confirmation) {
                     sm.frameCloser();
-                    dispose();
+                    System.exit(0);
                 }
             }
         });

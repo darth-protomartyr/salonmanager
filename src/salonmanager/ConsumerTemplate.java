@@ -23,11 +23,13 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAODeliveryConsumer;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasDeliTemplate;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ConsumerTemplate extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasDeliTemplate utiliGrafDT = new UtilidadesGraficasDeliTemplate();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     DAODeliveryConsumer daoC = new DAODeliveryConsumer();
@@ -272,7 +274,7 @@ public class ConsumerTemplate extends FrameHalf {
             } else {
                 daoC.updateConsumer(cmrAux, cmrFull.getId());
             }
-            fnd.getConsumer(cmrAux);
+            utiliGrafDT.getConsumer(cmrAux, fnd);
             fnd.setFndEnabled();
             dispose();
 
