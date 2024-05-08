@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import salonmanager.ConsumerTemplate;
 import salonmanager.DeliveryTemplate;
+import salonmanager.UserExpressTemplate;
 import salonmanager.entidades.bussiness.DeliveryConsumer;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
 import salonmanager.persistencia.DAODeliveryConsumer;
 
@@ -50,11 +52,8 @@ public class UtilidadesGraficasDeliTemplate {
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
-    
-
-    
     public JPanel panelConsumerBacker(DeliveryTemplate dt) {
-        
+
         JPanel panelConsumer = panelBacker("Cliente", anchoUnit, altoUnit * 6, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 9));
 
         dt.setLabelSelectPhone(utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:"));
@@ -180,13 +179,10 @@ public class UtilidadesGraficasDeliTemplate {
         JScrollPane scrollPaneConsumer = new JScrollPane(dt.getPanelDetails());
         scrollPaneConsumer.setBounds(anchoUnit * 30, altoUnit * 31, anchoUnit * 17, altoUnit * 10);
         panelConsumer.add(scrollPaneConsumer);
-        
+
         return panelConsumer;
     }
-    
-    
-    
-    
+
     private JPanel panelBacker(String tit, int i, int i0, int i1, int i2) {
         JPanel panel = new JPanel(null);
         panel.setBounds(i, i0, i1, i2);
@@ -202,14 +198,14 @@ public class UtilidadesGraficasDeliTemplate {
 
         return panel;
     }
-    
+
     private void consumerPhoneBacker(DeliveryTemplate dt) throws Exception {
         String st = (String) dt.getComboConsumers().getSelectedItem();
-        DeliveryConsumer dc = daoC.getConsumerByPhone(st); 
+        DeliveryConsumer dc = daoC.getConsumerByPhone(st);
         dt.setCmrAux(dc);
         setConsumerFields(dt.getCmrAux(), dt);
     }
-    
+
     public void setConsumerFields(DeliveryConsumer cmr, DeliveryTemplate dt) {
         dt.getLabelName().setText("Nombre: " + cmr.getName());
         dt.getLabelPhone().setText("Teléfono: " + cmr.getPhone());
@@ -225,12 +221,12 @@ public class UtilidadesGraficasDeliTemplate {
         dt.revalidate();
         dt.repaint();
     }
-    
+
     private void createConsumer(DeliveryTemplate dt) throws Exception {
         new ConsumerTemplate(dt, null);
         dt.setEnabled(false);
     }
-    
+
     private void changeConsumer(DeliveryTemplate dt) {
         dt.getLabelSelectPhone().setVisible(true);
         dt.getComboConsumers().setVisible(true);
@@ -238,13 +234,11 @@ public class UtilidadesGraficasDeliTemplate {
         dt.getButUpdateConsumer().setVisible(false);
     }
 
-
     private void updateConsumer(DeliveryTemplate dt) throws Exception {
         new ConsumerTemplate(dt, dt.getCmrAux());
         dt.setEnabled(false);
     }
-    
-    
+
     public void getConsumer(DeliveryConsumer cmr, DeliveryTemplate dt) {
         dt.setCmrAux(cmr);
         setConsumerFields(dt.getCmrAux(), dt);
@@ -256,16 +250,152 @@ public class UtilidadesGraficasDeliTemplate {
         }
         dt.setFndEnabled();
     }
-    
-    
-    
-//--------------------------------DRIVER----------------------------------------
-//--------------------------------DRIVER----------------------------------------
-//--------------------------------DRIVER----------------------------------------
-//--------------------------------DRIVER----------------------------------------
 
+//--------------------------------DRIVER----------------------------------------
+//--------------------------------DRIVER----------------------------------------
+//--------------------------------DRIVER----------------------------------------
+//--------------------------------DRIVER----------------------------------------
+    public JPanel panelDeliveryBacker(DeliveryTemplate dt) {
+        JPanel panelDelivery = panelBacker("Delivery", anchoUnit, alturaFrame / 2, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 16));
+
+        dt.setLabelSelectDeli(utiliGraf.labelTitleBacker1("Elija Delivery para envíar:"));
+        dt.getLabelSelectDeli().setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 19, altoUnit * 4);
+        panelDelivery.add(dt.getLabelSelectDeli());
+
+        dt.getComboDelis().setModel(utili.userComboModelReturnWNull(dt.getDeliverys()));
+        dt.getComboDelis().setFont(dt.getSalon().getFont4());
+        dt.getComboDelis().setBounds(anchoUnit * 22, altoUnit * 7, anchoUnit * 12, altoUnit * 4);
+        dt.getComboDelis().setSelectedIndex(dt.getDeliverys().size());
+        panelDelivery.add(dt.getComboDelis());
+
+        ActionListener actionListener2 = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    deliveryBacker(dt);
+                    if (dt.getDeliFull() != null) {
+                        dt.getButOpDelivery().setVisible(true);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(DeliveryTemplate.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+
+        // Agregar el ActionListener al JComboBox
+        dt.getComboDelis().addActionListener(actionListener2);
+
+        if (dt.getDeliFull() != null) {
+            if (dt.getDeliAux() != null) {
+                dt.getLabelSelectDeli().setVisible(false);
+                dt.getComboDelis().setVisible(false);
+            } else {
+                dt.getLabelSelectDeli().setVisible(true);
+                dt.getComboDelis().setVisible(true);
+            }
+        }
+
+        dt.setButOpDeliUser(utiliGraf.button2("CREAR CONDUCTOR", anchoUnit * 35, altoUnit * 7, anchoUnit * 14));
+        if (dt.getDeliFull() == null) {
+            dt.getButOpDeliUser().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        createDeliveryUser(dt);
+                    } catch (Exception ex) {
+                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            );
+        } else {
+            dt.getButOpDeliUser().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        changeDeliveryUser(dt);
+                    } catch (Exception ex) {
+                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            );
+            dt.getButOpDeliUser().setLocation(anchoUnit * 20, altoUnit * 7);
+            dt.getButOpDeliUser().setText("CAMBIAR CONDUCTOR");
+        }
+        panelDelivery.add(dt.getButOpDeliUser());
+
+        if (dt.getDeliFull() != null) {
+            dt.setButUpdateDeliUser(utiliGraf.button3("MODIFICAR DATOS", anchoUnit * 38, altoUnit * 8, anchoUnit * 10));
+            dt.getButUpdateDeliUser().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        updateDeliveryUser(dt);
+                    } catch (Exception ex) {
+                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            );
+            panelDelivery.add(dt.getButUpdateDeliUser());
+        }
+
+        dt.setLabelNameDeli(utiliGraf.labelTitleBacker1("Nombre:"));
+        dt.getLabelNameDeli().setBounds(anchoUnit * 8, altoUnit * 11, anchoUnit * 22, altoUnit * 4);
+        panelDelivery.add(dt.getLabelNameDeli());
+
+        dt.setLabelLastNameDeli(utiliGraf.labelTitleBacker1("Apellido:"));
+        dt.getLabelLastNameDeli().setBounds(anchoUnit * 8, altoUnit * 16, anchoUnit * 22, altoUnit * 4);
+        panelDelivery.add(dt.getLabelLastNameDeli());
+
+        dt.setLabelPhoneDeli(utiliGraf.labelTitleBacker1("Teléfono:"));
+        dt.getLabelPhoneDeli().setBounds(anchoUnit * 8, altoUnit * 21, anchoUnit * 22, altoUnit * 4);
+        panelDelivery.add(dt.getLabelPhoneDeli());
+
+        dt.setLabelMailDeli(utiliGraf.labelTitleBacker1("Numéro:"));
+        dt.getLabelMailDeli().setBounds(anchoUnit * 8, altoUnit * 26, anchoUnit * 22, altoUnit * 4);
+        panelDelivery.add(dt.getLabelMailDeli());
+
+        dt.setLabelRolDeli(utiliGraf.labelTitleBacker1("Ocupación:"));
+        dt.getLabelRolDeli().setBounds(anchoUnit * 8, altoUnit * 31, anchoUnit * 22, altoUnit * 4);
+        panelDelivery.add(dt.getLabelRolDeli());
+
+        return panelDelivery;
+
+    }
+    
+    private void deliveryBacker(DeliveryTemplate dt) {
+        String st = (String) dt.getComboDelis().getSelectedItem();
+        dt.setDeliAux(utili.userSelReturn(st, dt.getDeliverys()));
+        setDeliveryFields(dt.getDeliAux(), dt);
+    }
     
     
+    public void setDeliveryFields(User deli, DeliveryTemplate dt) {
+        dt.getLabelNameDeli().setText("Nombre: " + deli.getName());
+        dt.getLabelLastNameDeli().setText("Apellido: " + deli.getLastName());
+        dt.getLabelPhoneDeli().setText("Teléfono: " + deli.getPhone());
+        dt.getLabelMailDeli().setText("Mail: " + deli.getMail());
+        dt.getLabelRolDeli().setText("Ocupación: " + deli.getRol());
+    }
     
     
+    private void createDeliveryUser(DeliveryTemplate dt) throws Exception {
+        new UserExpressTemplate(dt, "DELIVERY", null);
+        dt.setEnabled(false);
+    }
+    
+    
+    private void changeDeliveryUser(DeliveryTemplate dt) {
+        dt.getLabelSelectDeli().setVisible(true);
+        dt.getComboDelis().setVisible(true);
+        dt.getButOpDeliUser().setVisible(false);
+        dt.getButUpdateDeliUser().setVisible(false);
+    }
+    
+    private void updateDeliveryUser(DeliveryTemplate dt) throws Exception {
+        new UserExpressTemplate(dt, "DELIVERY", dt.getDeliAux());
+        dt.setEnabled(false);
+    }
 }
