@@ -146,6 +146,7 @@ public class CashFlowManager extends FrameWindow {
             setTitle("Caja Inicial");
             labelTit.setText(utili.stringMsgFrd("Introduzca la caja inicial", 20, 1));
             labelComment.setText("Introduzca un comentario de ser necesario:");
+            fieldCashFlow.setText("0");
             butCashFlow.setText("INGRESAR");
         } else if (flowKind == 1) {
             setTitle("Ingresos a Caja");

@@ -104,9 +104,15 @@ public class UtilidadesGraficasSalon {
 //PANEL ACTUAL.........................................................................................................
 //PANEL ACTUAL.........................................................................................................
     public JPanel panelActualBacker(Salon salon) throws Exception {
-        if (salon.getConfigActual().isOpenWs()) {
-            salon.setWorkshiftNow(daoW.askWorshiftById(salon.getConfigActual().getOpenIdWs()));
-            salon.getWorkshiftNow().setCashierWs(daoU.getCashierByWorkshift(salon.getWorkshiftNow().getId()));
+        if (salon.getCfgAct().isOpenWs()) {
+            salon.setWorkshiftNow(daoW.askWorshiftById(salon.getCfgAct().getOpenIdWs()));
+            User cashier = daoU.getCashierByWorkshift(salon.getWorkshiftNow().getId());
+            if (cashier.getId() != null) {
+                salon.getWorkshiftNow().setCashierWs(cashier);
+            } else {
+                salon.getWorkshiftNow().setCashierWs(salon.getUser());
+                daoU.saveCashierWorkshift(salon.getWorkshiftNow());
+            }
             salon.setCashFlowCash(salon.getWorkshiftNow().getCashFlowWsCash());
             salon.setCashFlowElec(salon.getWorkshiftNow().getCashFlowWsElec());
             ArrayList<Table> tabs = st.workshiftTableslistComplete(salon.getWorkshiftNow(), 2);
@@ -133,7 +139,7 @@ public class UtilidadesGraficasSalon {
         panelActual.add(salon.getLabelWorkshift());
 
         salon.setButInitWorkshift(utiliGraf.button1("ABRIR TURNO", anchoUnit, altoUnit * 8, anchoUnit * 13));
-        if (salon.getConfigActual().isOpenWs()) {
+        if (salon.getCfgAct().isOpenWs()) {
             salon.getButInitWorkshift().setText("CERRAR TURNO");
         }
         salon.getButInitWorkshift().addActionListener(new ActionListener() {
@@ -150,8 +156,8 @@ public class UtilidadesGraficasSalon {
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                             salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
                             salon.getButInitWorkshift().setText("CERRAR TURNO");
-                            salon.getConfigActual().setOpenWs(true);
-                            salon.getConfigActual().setOpenIdWs(salon.getWorkshiftNow().getId());
+                            salon.getCfgAct().setOpenWs(true);
+                            salon.getCfgAct().setOpenIdWs(salon.getWorkshiftNow().getId());
                             daoC.updateCfgActOpenWs(true);
                             daoC.updateCfgActOpenIdWs(salon.getWorkshiftNow().getId());
                             new CashFlowManager(salon, 0);
@@ -175,66 +181,15 @@ public class UtilidadesGraficasSalon {
                                 boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
                                 if (newWs) {
                                     utiliMsg.cargaLateWs();
-                                    ss.endWorkshift(salon.getManager().getSalon(), true);
+                                    ss.endWorkshift(salon.getManager().getSalon(), true); //user diferent
                                 } else {
                                     salon.getManager().getSalon().dispose();
                                 }
                             }
                         } else {
-                            ss.endWorkshift(salon, false);
+                            ss.endWorkshift(salon, false); 
                         }
                     }
-                    /*
-//                    } else {
-                    boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
-                    if (confirm1 == true) {
-                        salon.setWorkshiftNow(new Workshift(salon.getUser()));
-                        daoW.saveWorkshift(salon.getWorkshiftNow());
-                        salon.getWorkshiftNow().setId(daoW.findLastWsID());
-                        salon.getWorkshiftNow().setCashierWs(salon.getUser());
-                        daoU.saveCashierWorkshift(salon.getWorkshiftNow());
-                        salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
-                        salon.getButInitWorkshift().setText("CERRAR TURNO");
-                        daoC.updateCfgActOpenWs(true);
-                        int id = daoW.findLastWsID();
-                        daoC.updateCfgActOpenIdWs(id);
-                        new CashFlowManager(salon, 0);
-                    }
-//                    }
-
-//                if (user.getId().equals(ws.getCashierWs().getId())) {
-//                    manager.salonFrameManager(tabs, cfgAct);
-//                } else {
-//                    manager.salonFrameManager(tabs, cfgAct);
-//                    manager.getSalon().setEnabled(false);
-//                    boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
-//                    if (newWs) {
-//                        utiliMsg.cargaLateWs();
-//                        ss.endWorkshift(manager.getSalon(), true);
-//                    } else {
-//                        manager.getSalon().dispose();
-//                    }
-//                }
-                    if (salon.getWorkshiftNow() == null) {
-//                        boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
-//                        if (confirm1 == true) {
-//                            salon.setWorkshiftNow(new Workshift(salon.getUser()));
-//                            daoW.saveWorkshift(salon.getWorkshiftNow());
-//                            salon.getWorkshiftNow().setId(daoW.findLastWsID());
-//                            salon.getWorkshiftNow().setCashierWs(salon.getUser());
-//                            daoU.saveCashierWorkshift(salon.getWorkshiftNow());
-//                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
-//                            salon.getButInitWorkshift().setText("CERRAR TURNO");
-//                            daoC.updateCfgActOpenWs(true);
-//                            int id = daoW.findLastWsID();
-//                            daoC.updateCfgActOpenIdWs(id);
-//                            new CashFlowManager(salon, 0);
-//                        }
-                    } else {
-                        ss.endWorkshift(salon, false);
-                    }
-                    
-                     */
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1011,7 +966,7 @@ public class UtilidadesGraficasSalon {
 //PANEL SELECT ITEM....................................................................................................
 //PANEL SELECT ITEM....................................................................................................
     public JPanel returnPanelSelItem(Salon salon) throws Exception {
-        ArrayList<String> captions = salon.getManager().getConfigGeneral().getTableItemCaptions();
+        ArrayList<String> captions = salon.getCfgGen().getTableItemCaptions();
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
         panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 19);

@@ -39,18 +39,10 @@ public class Manager extends FrameFull {
     DAOConfig daoC = new DAOConfig();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOUser daoU = new DAOUser();
-    ConfigActual cfgAct = new ConfigActual();
-    ConfigGeneral cfgGen = new ConfigGeneral();
     Salon salon = null;
 
     public Manager(User userIn, String passIn) throws Exception {
         sm.addFrame(this);
-        cfgAct = daoC.askConfigActual();
-        cfgGen = daoC.askConfigGeneral();
-        if (cfgAct.isOpenWs()) {
-            actualWs = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-            actualWs.setCashierWs(daoU.getCashierByWorkshift(actualWs.getId()));
-        }
 
         user = userIn;
         pass = passIn;
@@ -149,21 +141,5 @@ public class Manager extends FrameFull {
 
     public void setSalon(Salon salon) {
         this.salon = salon;
-    }
-
-    public ConfigActual getConfigActual() {
-        return cfgAct;
-    }
-
-    public void setConfigActual(ConfigActual cfgAct) {
-        this.cfgAct = cfgAct;
-    }
-
-    public ConfigGeneral getConfigGeneral() {
-        return cfgGen;
-    }
-
-    public void setConfigGeneral(ConfigGeneral cfgGen) {
-        this.cfgGen = cfgGen;
     }
 }

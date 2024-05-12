@@ -2,7 +2,6 @@ package salonmanager;
 
 import salonmanager.entidades.graphics.FrameWindow;
 import salonmanager.utilidades.UtilidadesGraficas;
-import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -25,33 +23,18 @@ import javax.swing.event.ChangeListener;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.servicios.ServiceStatics;
-import salonmanager.utilidades.Utilidades;
-import salonmanager.utilidades.UtilidadesGraficasSalon;
+
 
 public class StaticsSelectorPeriod extends FrameWindow {
-
-    Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-    UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
-    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServiceStatics sStats = new ServiceStatics();
     SalonManager sm = new SalonManager();
-//    DAOWorkshift daoW = new DAOWorkshift();
-//    DAOTable daoT = new DAOTable();
-//    DAOItemSale daoIs = new DAOItemSale();
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
 
     JButtonMetalBlu butSelect = null;
 
     private JSpinner yearSpinner1, monthSpinner1, daySpinner1, yearSpinner2, monthSpinner2, daySpinner2;
-    private JButton selectButton;
     private int year1 = 0;
     private int month1 = 0;
     private int day1 = 0;
@@ -245,6 +228,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
         Timestamp timestampEnd = Timestamp.valueOf(date2);
         
         sStats.staticBacker(timestampInit, timestampEnd, statsM, 0);
+        statsM.setEnabled(true);
         dispose();
     }
 

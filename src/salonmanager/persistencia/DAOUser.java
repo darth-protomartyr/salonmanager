@@ -10,7 +10,6 @@ import salonmanager.entidades.bussiness.Workshift;
 
 public class DAOUser extends DAO {
 
-//    UtilidadesGraficas utiliF = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
 

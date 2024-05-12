@@ -387,7 +387,7 @@ public class DAOWorkshift extends DAO {
     public ArrayList<Integer> listIdWs() throws Exception {
         ArrayList<Integer> wssId = new ArrayList<Integer>();
         try {
-            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_active = true;";
+            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_state_shift = false AND workshift_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {          
@@ -406,7 +406,7 @@ public class DAOWorkshift extends DAO {
     public ArrayList<Timestamp> listTsIWs() throws Exception {
         ArrayList<Timestamp> wssTs = new ArrayList<Timestamp>();
         try {
-            String sql = "SELECT workshift_open_shift FROM workshifts WHERE workshift_active = true;";
+            String sql = "SELECT workshift_open_shift FROM workshifts WHERE workshift_state_shift = false AND workshift_active = true;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {          

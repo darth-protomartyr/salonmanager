@@ -82,7 +82,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     double cashComplete = 0;
 
     public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
-        cfgAct = sal.getManager().getConfigActual();
+        cfgAct = sal.getCfgAct();
         actualWs = ws1;
         newWs = ws2;
         actualTabs = filterClose(actTabs);
@@ -458,6 +458,9 @@ public class WorkshiftEndPanel extends FrameHalf {
                          realError = 0;
                     }
                     sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
+                    salon.getCfgAct().setOpenIdWs(0);
+                    salon.getCfgAct().setOpenWs(false);
+
                     utiliGrafSal.resetWsValues(salon);
                     salon.setEnabled(true);
                     dispose();
@@ -496,7 +499,6 @@ public class WorkshiftEndPanel extends FrameHalf {
 
     private void buttonDeferWsCloseAction() throws Exception {
         ArrayList<Integer> deferWsArray = cfgAct.getArrayDeferWs();
-        deferWsArray.add(actualWs.getId());
         deferWsArray.add(actualWs.getId());
         daoC.updateCfgActDeferWs(deferWsArray);
         utiliMsg.cargaWsDefer();

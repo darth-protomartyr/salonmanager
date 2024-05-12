@@ -13,7 +13,7 @@
             <url>src/salonmanager/servicios/ServicioSalon.java</url>
             <bookmark id="15">
                 <name/>
-                <line>413</line>
+                <line>417</line>
                 <key/>
             </bookmark>
         </file>
@@ -21,7 +21,7 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficas.java</url>
             <bookmark id="6">
                 <name/>
-                <line>251</line>
+                <line>259</line>
                 <key/>
             </bookmark>
         </file>
@@ -29,35 +29,40 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficasSalon.java</url>
             <bookmark id="13">
                 <name/>
-                <line>1410</line>
+                <line>1365</line>
                 <key/>
             </bookmark>
             <bookmark id="12">
                 <name/>
-                <line>1432</line>
+                <line>1387</line>
                 <key/>
             </bookmark>
             <bookmark id="11">
                 <name/>
-                <line>1480</line>
+                <line>1435</line>
                 <key/>
             </bookmark>
             <bookmark id="17">
                 <name/>
-                <line>1544</line>
+                <line>1499</line>
                 <key/>
             </bookmark>
             <bookmark id="16">
                 <name/>
-                <line>1751</line>
+                <line>1706</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasDeliTemplate.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/DeliveryTemplate.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasSalon.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/Salon.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/servicios/ServicioSalon.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/CashFlowViewer.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/Manager.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/WorkshiftEndPanel.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/persistencia/DAOUser.java</file>
         </group>
     </open-files>
 </project-private>

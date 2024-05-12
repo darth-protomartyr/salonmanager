@@ -363,31 +363,35 @@ public class ServicioSalon {
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
-    public void endWorkshift(Salon salon, boolean errorWs) throws Exception {
+    public void endWorkshift(Salon salon, boolean errorWs) throws Exception { //errorWs shows 
         salon.setEnabled(true);
         if (salon.getBarrButtons().size() > 0) {
-            if (salon.getBarrButtons().get(0).isOpenJBB()) {
+            if (salon.getBarrButtons().get(0).isOpenJBB() && salon.getBarrButtons().get(0).getTable().getTotal() == 0) {
                 salon.getBarrButtons().get(0).setOpenJBB(false);
             }
         }
 
-        if (salon.getDeliButtons().size() > 0) {
+        if (salon.getDeliButtons().size() > 0 && salon.getDeliButtons().get(0).getTable().getTotal() == 0) {
             if (salon.getDeliButtons().get(0).isOpenJBD()) {
                 salon.getDeliButtons().get(0).setOpenJBD(false);
             }
         }
 
-        if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == true || errorWs == false) {
+        if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == false) {
+            if (errorWs == false) {
+                boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(salon.getUser());
+                if (confirm3 == true) {
+                    salon.setEnabled(false);
+                    inconcludeWsCutter(salon, salon.getWorkshiftNow(), errorWs);
+                }
+            } else {
+//trABAJAR LUEGO
+            }
+        } else {
             boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
             if (confirm2 == true) {
                 salon.setEnabled(false);
                 closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
-            }
-        } else {
-            boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(salon.getUser());
-            if (confirm3 == true) {
-                salon.setEnabled(false);
-                inconcludeWsCutter(salon, salon.getWorkshiftNow(), errorWs);
             }
         }
     }
@@ -406,7 +410,7 @@ public class ServicioSalon {
             }
         }
 
-        if (nWs == null) {
+        if (newWs == null) {
             actualWs = setWsEnd(actualWs);
             actualTabs = st.workshiftTableslistComplete(actualWs, 1);
         }
@@ -466,6 +470,7 @@ public class ServicioSalon {
         newWs.setTotalMountRealWs(0);
         newWs.setErrorMountWs(0);
         newWs.setErrorMountRealWs(0);
+        newWs.setCommentWs("Turno creado a partir de mesas no cerradas del turno anterior.");
         for (int i = 0; i < actualTabs.size(); i++) {
             Table tab = actualTabs.get(i);
             if (tab.isOpen() == true) {
@@ -571,5 +576,5 @@ public class ServicioSalon {
                 daoCF.saveCashFlow(cf);
             }
         }
-    }    
+    }
 }

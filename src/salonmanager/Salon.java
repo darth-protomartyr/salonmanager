@@ -35,13 +35,7 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameFull;
-import salonmanager.persistencia.DAODelivery;
-import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
-import salonmanager.persistencia.DAOWorkshift;
-import salonmanager.servicios.ServicioSalon;
-import salonmanager.servicios.ServicioTable;
-import salonmanager.servicios.ServicioItemMonitor;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
@@ -55,25 +49,11 @@ public class Salon extends FrameFull {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
     SalonManager sm = new SalonManager();
-    DAOConfig daoC = new DAOConfig();
     DAOUser daoU = new DAOUser();
     DAOItemcard daoI = new DAOItemcard();
-    DAOTable daoT = new DAOTable();
-    DAOWorkshift daoW = new DAOWorkshift();
-    DAODelivery daoD = new DAODelivery();
-    ServicioSalon ss = new ServicioSalon();
-    ServicioTable st = new ServicioTable();
-    ServicioItemMonitor sim = new ServicioItemMonitor();
-
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
-    Color narUlgX = new Color(255, 255, 210);
+    DAOConfig daoC = new DAOConfig();
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-    Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
     ArrayList<String> configSalon = new ArrayList<String>(); //Configuración de l salón
     int totalTable = 0;
@@ -181,7 +161,7 @@ public class Salon extends FrameFull {
 
     Salon sal = null;
     Manager manager = null;
-    ConfigActual configActual = null;
+    ConfigActual cfgAct = null;
     ConfigGeneral cfgGen = null;
 
     public Salon(Manager man) throws Exception {
@@ -195,8 +175,8 @@ public class Salon extends FrameFull {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
-        cfgGen = man.getConfigGeneral();
-        configActual = man.getConfigActual();
+        cfgGen = daoC.askConfigGeneral();
+        cfgAct = daoC.askConfigActual();
         totalTable = cfgGen.getTotalTable();
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
@@ -382,6 +362,7 @@ public class Salon extends FrameFull {
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
         if (prevTabs.size() > 0) {
             utiliGrafSal.tableManager(prevTabs, sal);
+            prevTabs = new ArrayList<Table>();
         }
         
         addWindowListener(new WindowAdapter() {
@@ -440,13 +421,21 @@ public class Salon extends FrameFull {
         this.itemsTableAux = itemsTableAux;
     }
 
-    public ConfigActual getConfigActual() {
-        return configActual;
+    public ConfigActual getCfgAct() {
+        return cfgAct;
     }
 
-    public void setConfigActual(ConfigActual configActual) {
-        this.configActual = configActual;
+    public void setCfgAct(ConfigActual cfgAct) {
+        this.cfgAct = cfgAct;
     }
+    
+    public ConfigGeneral getCfgGen() {
+        return cfgGen;
+    }
+
+    public void setCfgGen(ConfigGeneral cfgGen) {
+        this.cfgGen = cfgGen;
+    }    
 
     public ArrayList<String> getConfigSalon() {
         return configSalon;

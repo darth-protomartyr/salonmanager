@@ -50,6 +50,7 @@ import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.CustomJMenuBar;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -71,6 +72,7 @@ public class UtilidadesGraficas extends JFrame {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
+    DAOConfig daoC = new DAOConfig(); 
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOTable daoT = new DAOTable();
@@ -80,9 +82,15 @@ public class UtilidadesGraficas extends JFrame {
     int alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
+    ConfigGeneral cfgGen = null;
+    ConfigActual cfgAct = null;
 
+    
     public CustomJMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
+        cfgGen = daoC.askConfigGeneral();
+        cfgAct = daoC.askConfigActual();
+
         Font menuFont = new Font("Arial", Font.BOLD, 16);
         Color fontColor = white;
         Color backgroundColor = bluStBarr;
@@ -243,7 +251,7 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            salonOpener(user, man.getConfigGeneral(), man.getConfigActual());
+                            salonOpener(user, cfgGen, cfgAct);
                         } else {
                             sm.salir();
                         }

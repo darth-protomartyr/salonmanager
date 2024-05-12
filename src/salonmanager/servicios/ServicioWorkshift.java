@@ -48,6 +48,11 @@ public class ServicioWorkshift {
         daoC.updateCfgActOpenIdWs(0);
         if (newWs != null) {
             daoW.saveWorkshift(newWs);
+            int id = daoW.askWorshiftActualId();
+            daoC.updateCfgActOpenWs(true);
+            daoC.updateCfgActOpenIdWs(id);
+            salon.getCfgAct().setOpenWs(true);
+            salon.getCfgAct().setOpenIdWs(newWs.getId());
             for (Table t : toEraseTabs) {
 
                 if (t.getOrder().size() > 0) {

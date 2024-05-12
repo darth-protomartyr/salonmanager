@@ -177,6 +177,7 @@ public class ServiceStatics {
         int size = tsList.size();
         if (size == 0) {
             utiliMsg.errorNullDates();
+            statsM.setEnabled(true);
         } else {
             Timestamp ts1 = tsList.get(0);
             Timestamp ts2 = tsList.get(size - 1);

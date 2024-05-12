@@ -231,7 +231,7 @@ public class Utilidades {
         ArrayList<Timestamp> wssTs = daoW.listTsIWs();
         
         ArrayList<String> wssSt = new ArrayList<String>();
-        for (int i = 0; i < wssId.size() - 1; i++) {
+        for (int i = 0; i < wssId.size(); i++) {
             String ts = friendlyDate1(wssTs.get(i));
             wssSt.add(wssId.get(i) + ". " + ts);
         }
