@@ -41,11 +41,11 @@ public class Table {
         this.open = true;
         this.bill = false;
         this.toPay = false;
-        this.order = new ArrayList<Itemcard>();
-        this.gifts = new ArrayList<Itemcard>();
+        this.order = new ArrayList<>();
+        this.gifts = new ArrayList<>();
         this.toPay = false;
-        this.partialPayed = new ArrayList<Itemcard>();
-        this.partialPayedND = new ArrayList<Itemcard>();
+        this.partialPayed = new ArrayList<>();
+        this.partialPayedND = new ArrayList<>();
         this.waiter = waiter;
         this.discount = 0;
         this.error = 0;
@@ -94,8 +94,8 @@ public class Table {
         this.toPay = false;
         this.order = order;
         this.gifts = new ArrayList();    
-        this.partialPayed = new ArrayList<Itemcard>();
-        this.partialPayedND = new ArrayList<Itemcard>();
+        this.partialPayed = new ArrayList<>();
+        this.partialPayedND = new ArrayList<>();
         this.waiter = waiter;
         this.discount = discount;
         this.error = 0;

@@ -45,7 +45,7 @@ public class ServicioSalon {
     Salon salon = null;
 
     public ArrayList<Integer> salonConfigValues(Integer tab, int anchoPane, int alturaPane) {
-        ArrayList<Integer> configValues = new ArrayList<Integer>();
+        ArrayList<Integer> configValues = new ArrayList<>();
         int fontSize = 0;
         int wUnit = 0;
         int hUnit = 0;
@@ -98,7 +98,7 @@ public class ServicioSalon {
     }
 
     public ArrayList<Itemcard> itemTableLesser(ArrayList<Itemcard> items, Itemcard ic) {
-        ArrayList<Itemcard> itemsLesser = new ArrayList<Itemcard>(items);
+        ArrayList<Itemcard> itemsLesser = new ArrayList<>(items);
         int index = -1;
 
         for (int i = 0; i < items.size(); i++) {
@@ -133,7 +133,7 @@ public class ServicioSalon {
     public double partialBillPayed(Table tableAux) {
         double partial = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<Itemcard> itemsPartial = new ArrayList<Itemcard>(tableAux.getPartialPayed());
+        ArrayList<Itemcard> itemsPartial = new ArrayList<>(tableAux.getPartialPayed());
         for (int i = 0; i < itemsPartial.size(); i++) {
             partial += itemsPartial.get(i).getPrice();
         }
@@ -141,7 +141,7 @@ public class ServicioSalon {
         double disc = (double) discount;
         partial = partial * (1 - disc / 100);
 
-        ArrayList<Itemcard> itemsPartialAux = new ArrayList<Itemcard>(tableAux.getPartialPayedND());
+        ArrayList<Itemcard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
             partialND += itemsPartialAux.get(i).getPrice();
@@ -168,7 +168,7 @@ public class ServicioSalon {
     }
 
     public ArrayList<Itemcard> itemDeployer(Itemcard ic, int num) {
-        ArrayList<Itemcard> al = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> al = new ArrayList<>();
         int count = 0;
         while (count < num) {
             al.add(ic);
@@ -249,7 +249,7 @@ public class ServicioSalon {
         if (salon.getItemsPartialPaid().size() > 0) {
             salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
             salon.getTableAux().setOrder(salon.getItemsTableAux());
-            salon.setItemsPartialPaid(new ArrayList<Itemcard>());
+            salon.setItemsPartialPaid(new ArrayList<>());
             salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
             daoIC.downActiveItemPayedTableAll(salon.getTableAux());
             daoIC.upActiveItemOrderTableAll(salon.getTableAux());
@@ -341,7 +341,7 @@ public class ServicioSalon {
     public void totalPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
         salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
         salon.getTableAux().setOrder(salon.getItemsTableAux());
-        salon.setItemsPartialPaid(new ArrayList<Itemcard>());
+        salon.setItemsPartialPaid(new ArrayList<>());
         salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
         sis.createItemSale(salon);
         daoIC.downActiveItemPayedTableAll(salon.getTableAux());
@@ -454,9 +454,9 @@ public class ServicioSalon {
         Workshift newWs = new Workshift();
         Workshift actualWs = ws;
         ArrayList<Table> actualTabs = null;
-        ArrayList<Table> upTabs = new ArrayList<Table>();
-        ArrayList<Table> downTabs = new ArrayList<Table>();
-        ArrayList<Table> toUpdTabs = new ArrayList<Table>();
+        ArrayList<Table> upTabs = new ArrayList<>();
+        ArrayList<Table> downTabs = new ArrayList<>();
+        ArrayList<Table> toUpdTabs = new ArrayList<>();
         actualWs = setWsEnd(ws);
         actualTabs = st.workshiftTableslistComplete(actualWs, 1);
         Thread.sleep(100);
@@ -479,7 +479,7 @@ public class ServicioSalon {
                 User waiter = tab.getWaiter();
                 int discount = tab.getDiscount();
                 double total = 0;
-                ArrayList<Itemcard> orderNew = new ArrayList<Itemcard>();
+                ArrayList<Itemcard> orderNew = new ArrayList<>();
                 String comments = tab.getComments();
                 if (tab.isToPay()) {
                     Thread.sleep(10);
@@ -492,14 +492,14 @@ public class ServicioSalon {
 
                     tab.setOpen(false);
                     tab.setToPay(false);
-                    tab.setGifts(new ArrayList<Itemcard>());
+                    tab.setGifts(new ArrayList<>());
                     tab.setOrder(tab.getPartialPayed());
                     tab.setPartialPayedND(tab.getPartialPayedND());
                     double total2 = countBill(tab);
                     tab.setTotal(total2);
                     tab.setCloseTime(new Timestamp(new Date().getTime()));
-                    tab.setPartialPayed(new ArrayList<Itemcard>());
-                    tab.setPartialPayedND(new ArrayList<Itemcard>());
+                    tab.setPartialPayed(new ArrayList<>());
+                    tab.setPartialPayedND(new ArrayList<>());
                     tab.setComments(tab.getComments() + "<br>Los elementos no pagados fueron enviados al siguiente turno");
                     tab.setActiveTable(true);
 

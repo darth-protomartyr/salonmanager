@@ -195,7 +195,7 @@ public class StatsWaiterViewer extends FrameFull {
             }
         }
 
-        iSalesByWaiter = new ArrayList<ItemSale>();
+        iSalesByWaiter = new ArrayList<>();
         for (ItemSale is : iSales) {
             if (is.getItemSaleWaiterId().equals(user.getId())) {
                 iSalesByWaiter.add(is);
@@ -209,7 +209,7 @@ public class StatsWaiterViewer extends FrameFull {
         }
 
         HashMap<Integer, Double> volSells = new HashMap<Integer, Double>();
-        ArrayList<Integer> wssIDAL = new ArrayList<Integer>(wssID);
+        ArrayList<Integer> wssIDAL = new ArrayList<>(wssID);
         for (int i = 0; i < wssID.size(); i++) {
             int ws = wssIDAL.get(i);
             volSells.put(ws, 0.0);
@@ -244,8 +244,8 @@ public class StatsWaiterViewer extends FrameFull {
         if (iSalesByWaiter.size() > 0) {
 
             volSells = statsS.orderHsIDDownToUp(volSells);
-            ArrayList<Integer> wss = new ArrayList<Integer>(volSells.keySet());
-            ArrayList<Double> sellsByWs = new ArrayList<Double>(volSells.values());
+            ArrayList<Integer> wss = new ArrayList<>(volSells.keySet());
+            ArrayList<Double> sellsByWs = new ArrayList<>(volSells.values());
 
             XYChart chartVol = new XYChartBuilder()
                     .title("Facturación por Turno")
@@ -265,9 +265,9 @@ public class StatsWaiterViewer extends FrameFull {
 
             
             items = statsS.orderHsII(items);
-            ArrayList<Integer> ids = new ArrayList<Integer>(items.keySet());
-            ArrayList<String> iNames = new ArrayList<String>();
-            ArrayList<Integer> units = new ArrayList<Integer>(items.values());
+            ArrayList<Integer> ids = new ArrayList<>(items.keySet());
+            ArrayList<String> iNames = new ArrayList<>();
+            ArrayList<Integer> units = new ArrayList<>(items.values());
             for (int i = 0; i < ids.size(); i++) {
                 String name = daoI.getItemNameById(ids.get(i));
                 name = utili.reduxSt(name, 2);

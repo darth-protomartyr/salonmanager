@@ -143,7 +143,7 @@ public class StatsItemViewer extends FrameFull {
             setTitle(tit);
             labelTit.setText(tit);
             ArrayList<Integer> list1 = daoI.listarItemsCardId();
-            ArrayList<Integer> list2 = new ArrayList<Integer>();
+            ArrayList<Integer> list2 = new ArrayList<>();
             for (ItemSale is : iSales) {
                 int i = is.getItemSaleId();
                 int q = countItems.getOrDefault(i, 0) + 1;
@@ -214,7 +214,7 @@ public class StatsItemViewer extends FrameFull {
             }
         }
 
-        iSalesByItem = new ArrayList<ItemSale>();
+        iSalesByItem = new ArrayList<>();
         for (ItemSale is : iSales) {
             if (is.getItemSaleId() == ic.getId()) {
                 iSalesByItem.add(is);
@@ -272,7 +272,7 @@ public class StatsItemViewer extends FrameFull {
                 utiliMsg.errorNullDates();
             }
         } else if (kind == 3) {
-            ArrayList<Timestamp> dates = new ArrayList<Timestamp>();
+            ArrayList<Timestamp> dates = new ArrayList<>();
             ArrayList<Double> prices = new ArrayList<>();
             for (ItemSale is : iSalesByItem) {
                 dates.add(is.getItemSaleDate());

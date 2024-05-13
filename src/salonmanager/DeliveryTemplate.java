@@ -76,8 +76,8 @@ public class DeliveryTemplate extends FrameHalf {
     JLabel labelRolDeli = new JLabel();
     JLabel labelMailDeli = new JLabel();
 
-    ArrayList<String> consumers = new ArrayList<String>();
-    ArrayList<User> deliverys = new ArrayList<User>();
+    ArrayList<String> consumers = new ArrayList<>();
+    ArrayList<User> deliverys = new ArrayList<>();
 
     JButtonMetalBlu butOpConsumer = null;
     JButtonMetalBlu butOpDeliUser = null;

@@ -54,8 +54,8 @@ public class DAOCashFlow extends DAO {
     }
     
     public ArrayList<CashFlow> askCfByWorkshift(int wsId) throws Exception {
-        ArrayList<Integer> ids = new ArrayList<Integer>();
-        ArrayList<CashFlow> cfList = new ArrayList<CashFlow>();
+        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<CashFlow> cfList = new ArrayList<>();
         try {
             String sql = "SELECT workshift_flow_id FROM workshift_flows WHERE workshift_id = " + wsId + " AND workshift_flow_active = " + true + ";";
             System.out.println(sql);

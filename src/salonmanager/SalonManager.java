@@ -1,27 +1,21 @@
 package salonmanager;
 
-import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import salonmanager.entidades.bussiness.User;
-import salonmanager.entidades.bussiness.Workshift;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import javax.swing.JFrame;
-import salonmanager.entidades.config.ConfigGeneral;
-import salonmanager.entidades.config.ConfigActual;
 import salonmanager.persistencia.DAOConfig;
 
 public class SalonManager {
-    private static ArrayList<JFrame> framesOpen = new ArrayList<JFrame>();
-//    private static Salon salon = null;
+    private static ArrayList<JFrame> framesOpen = new ArrayList<>();
     private static User userIn = new User();
     private static String passIn = "";
     private static final String SECRET_KEY = "HappyWhenItRains";
-//    private static Workshift workshiftActual = null;
     private static DAOConfig daoC = new DAOConfig();
     
     public static void main(String[] args) {

@@ -24,7 +24,7 @@ public class ServicioItemMonitor {
     }
 
     public ArrayList<ItemMonitor> downOpenIMon(ArrayList<ItemMonitor> itemsMntr, Table tableAux) throws Exception {
-        ArrayList<ItemMonitor> ims = new ArrayList<ItemMonitor>();
+        ArrayList<ItemMonitor> ims = new ArrayList<>();
         for (int i = 0; i < itemsMntr.size(); i++) {
             if (itemsMntr.get(i).getTableIMon().getId().equals(tableAux.getId())) {
                 itemsMntr.get(i).setOpenItemMonitor(false);

@@ -413,7 +413,7 @@ public class UtilidadesGraficasSalon {
                         salon.getTableAux().setOpen(true);
                         String nameT = salon.getTableAux().getPos() + salon.getTableAux().getNum();
                         salon.getLabelOrder().setText("MESA:" + nameT);
-                        salon.getTableAux().setOrder(new ArrayList<Itemcard>());
+                        salon.getTableAux().setOrder(new ArrayList<>());
                         try {
                             jButExtSetter(salon);
                         } catch (Exception ex) {
@@ -608,7 +608,7 @@ public class UtilidadesGraficasSalon {
             salon.getTableAux().setOpen(true);
             salon.getLabelOrder().setText("BARRA: B" + salon.getTableAux().getNum());
             salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-            salon.getTableAux().setOrder(new ArrayList<Itemcard>());
+            salon.getTableAux().setOrder(new ArrayList<>());
             try {
                 jButExtSetter(salon);
             } catch (Exception ex) {
@@ -844,7 +844,7 @@ public class UtilidadesGraficasSalon {
             salon.getTableAux().setOpen(true);
             salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
             salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-            salon.getTableAux().setOrder(new ArrayList<Itemcard>());
+            salon.getTableAux().setOrder(new ArrayList<>());
             try {
                 jButExtSetter(salon);
             } catch (Exception ex) {
@@ -904,7 +904,7 @@ public class UtilidadesGraficasSalon {
             salon.getTableAux().setOpen(true);
             salon.getLabelOrder().setText("DELIV.: D" + salon.getTableAux().getNum());
             salon.getLabelWaiter().setText("Cajero: " + salon.getUser().getName() + " " + utili.strShorter(salon.getUser().getLastName(), 2).toUpperCase());
-            salon.getTableAux().setOrder(new ArrayList<Itemcard>());
+            salon.getTableAux().setOrder(new ArrayList<>());
             try {
                 jButExtSetter(salon);
             } catch (Exception ex) {
@@ -1112,7 +1112,7 @@ public class UtilidadesGraficasSalon {
 
     // Select a kind o items
     private void itemCaptionBack(String capt, Salon salon) {
-        ArrayList<Itemcard> aic = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> aic = new ArrayList<>();
         for (Itemcard ic : salon.getItemsDB()) {
             if (ic.getCaption().toLowerCase().equals(capt.toLowerCase())) {
                 aic.add(ic);
@@ -1359,7 +1359,7 @@ public class UtilidadesGraficasSalon {
     private void discounter(Salon salon) {
         if (salon.getItemsPartialPaid().size() > 0) {
             salon.setItemsPartialPaidNoDiscount(salon.getItemsPartialPaid());
-            salon.setItemsPartialPaid(new ArrayList<Itemcard>());
+            salon.setItemsPartialPaid(new ArrayList<>());
             salon.getTableAux().setPartialPayedND(salon.getItemsPartialPaidNoDiscount());
             salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
         }
@@ -1540,10 +1540,10 @@ public class UtilidadesGraficasSalon {
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------        
 //FUNCIONES GENERALES--------------------------------------------------------------------------------------------------         
     public void resetTableValues(Salon salon) throws Exception {
-        salon.setItemsTableAux(new ArrayList<Itemcard>());//items a cobrar de la mesa
-        salon.setItemsGift(new ArrayList<Itemcard>()); //items obsequiados
-        salon.setItemsPartialPaid(new ArrayList<Itemcard>()); // items cobrados por pago parcial
-        salon.setItemsPartialPaidNoDiscount(new ArrayList<Itemcard>()); // items cobrados anted de aplicar descuento
+        salon.setItemsTableAux(new ArrayList<>());//items a cobrar de la mesa
+        salon.setItemsGift(new ArrayList<>()); //items obsequiados
+        salon.setItemsPartialPaid(new ArrayList<>()); // items cobrados por pago parcial
+        salon.setItemsPartialPaidNoDiscount(new ArrayList<>()); // items cobrados anted de aplicar descuento
         salon.setWaiterAux(null);
         salon.setTableAux(null);
         salon.setTotal(0);
@@ -1581,9 +1581,9 @@ public class UtilidadesGraficasSalon {
         salon.setCashFlowElec(0);
         salon.getLabelWorkshift().setText("Turno no iniciado.");
         salon.getButInitWorkshift().setText("ABRIR TURNO");
-        salon.setBarrButtons(new ArrayList<JButtonBarr>());
-        salon.setDeliButtons(new ArrayList<JButtonDelivery>());
-        salon.setDeliButtonsSees(new ArrayList<JButtonDeliverySee>());
+        salon.setBarrButtons(new ArrayList<>());
+        salon.setDeliButtons(new ArrayList<>());
+        salon.setDeliButtonsSees(new ArrayList<>());
         salon.getManager().setSalon(null);
         salon.dispose();
     }

@@ -48,11 +48,11 @@ public class CorrectorItem extends FrameWindow {
     Table tab = new Table();
     JButtonMetalBlu butInGift = new JButtonMetalBlu();
     Salon salon = null;
-    ArrayList<Itemcard> itemsOrder = new ArrayList<Itemcard>();
-    ArrayList<Itemcard> itemsGift = new ArrayList<Itemcard>();
-    ArrayList<Itemcard> itemsPayed = new ArrayList<Itemcard>();
-    ArrayList<Itemcard> itemsPayedNoDiscount = new ArrayList<Itemcard>();
-    ArrayList<Itemcard> itemsCombo = new ArrayList<Itemcard>();
+    ArrayList<Itemcard> itemsOrder = new ArrayList<>();
+    ArrayList<Itemcard> itemsGift = new ArrayList<>();
+    ArrayList<Itemcard> itemsPayed = new ArrayList<>();
+    ArrayList<Itemcard> itemsPayedNoDiscount = new ArrayList<>();
+    ArrayList<Itemcard> itemsCombo = new ArrayList<>();
 
     int numArray = 1;
     String itemCategory = "a Pagar";
@@ -77,7 +77,7 @@ public class CorrectorItem extends FrameWindow {
         itemsGift = tab.getGifts();
         itemsPayed = tab.getPartialPayed();
         itemsPayedNoDiscount = tab.getPartialPayedND();
-        itemsCombo = new ArrayList<Itemcard>();
+        itemsCombo = new ArrayList<>();
 
         JButtonMetalBlu butItemsOrder = utiliGraf.button3("Items A Pagar", 30, 75, 150);
         butItemsOrder.addActionListener(new ActionListener() {

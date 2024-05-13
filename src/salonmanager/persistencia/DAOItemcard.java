@@ -14,7 +14,7 @@ public class DAOItemcard extends DAO {
 //    ServicioRegister sr = new ServicioRegister();
 
     public ArrayList<Itemcard> listarItemsCard() throws Exception {
-        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> items = new ArrayList<>();
         try {
             String sql = "SELECT * FROM itemcards WHERE itemcard_active = true;";
             System.out.println(sql);
@@ -46,7 +46,7 @@ public class DAOItemcard extends DAO {
 
     
     public ArrayList<Integer> listarItemsCardIds() throws Exception {
-        ArrayList<Integer> items = new ArrayList<Integer>();
+        ArrayList<Integer> items = new ArrayList<>();
         try {
             String sql = "SELECT * FROM itemcards WHERE itemcard_active = true;";
             System.out.println(sql);
@@ -66,7 +66,7 @@ public class DAOItemcard extends DAO {
    
     
     public ArrayList<Integer> listarItemsCardId() throws Exception {
-        ArrayList<Integer> itemsId = new ArrayList<Integer>();
+        ArrayList<Integer> itemsId = new ArrayList<>();
         try {
             String sql = "SELECT itemcard_id FROM itemcards WHERE itemcard_active = true;";
             System.out.println(sql);
@@ -85,7 +85,7 @@ public class DAOItemcard extends DAO {
     
 
     public ArrayList<Itemcard> listItemsByCaption(String capt) throws Exception {
-        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> items = new ArrayList<>();
         try {
             String sql = "SELECT * FROM itemcards WHERE itemcard_active = true AND itemcard_caption = '" + capt + "';";
             System.out.println(sql);
@@ -252,12 +252,12 @@ public class DAOItemcard extends DAO {
     }
 
     public ArrayList<Itemcard> listarItemcardOrder(String tabId) throws Exception {
-        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> items = new ArrayList<>();
         try {
             String sql = "SELECT itemcard_order_id_fkey FROM itemcard_order_tabs WHERE table_id_fkey = '" + tabId + "' AND itemcard_order_tabs_active = " + true + ";";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            ArrayList<Integer> idItems = new ArrayList<>();
             while (resultado.next()) {
                 int idIc = resultado.getInt(1);
                 idItems.add(idIc);
@@ -343,8 +343,8 @@ public class DAOItemcard extends DAO {
     }
 
     public ArrayList<Itemcard> listarItemcardGifts(String tabId) throws Exception {
-        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
-        ArrayList<Integer> idItems = new ArrayList<Integer>();
+        ArrayList<Itemcard> items = new ArrayList<>();
+        ArrayList<Integer> idItems = new ArrayList<>();
         try {
             String sql = "SELECT itemcard_gift_id_fkey FROM itemcard_gift_tabs WHERE table_id_fkey = '" + tabId + "' AND itemcard_gift_tabs_active = true;";
             System.out.println(sql);
@@ -434,12 +434,12 @@ public class DAOItemcard extends DAO {
     }
 
     public ArrayList<Itemcard> listarItemcardPartialPayed(String tabId) throws Exception {
-        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> items = new ArrayList<>();
         try {
             String sql = "SELECT itemcard_payed_id_fkey FROM itemcard_payed_tabs WHERE table_id_fkey = '" + tabId + "' AND itemcard_payed_tabs_active = true;";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            ArrayList<Integer> idItems = new ArrayList<>();
             while (resultado.next()) {
                 int idIc = resultado.getInt(1);
                 idItems.add(idIc);
@@ -513,12 +513,12 @@ public class DAOItemcard extends DAO {
     }
 
     public ArrayList<Itemcard> listarItemcardPartialPayedND(String tabId) throws Exception {
-        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> items = new ArrayList<>();
         try {
             String sql = "SELECT itemcard_payed_nd_id_fkey FROM itemcard_payed_nd_tabs WHERE table_id_fkey = '" + tabId + "';";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<Integer> idItems = new ArrayList<Integer>();
+            ArrayList<Integer> idItems = new ArrayList<>();
             while (resultado.next()) {
                 int idIc = resultado.getInt(1);
                 idItems.add(idIc);
@@ -572,7 +572,7 @@ public class DAOItemcard extends DAO {
 
     public String getItemNameById(int i) throws Exception {
         String name = "";
-        ArrayList<Itemcard> items = new ArrayList<Itemcard>();
+        ArrayList<Itemcard> items = new ArrayList<>();
         try {
             String sql = "SELECT * FROM itemcards WHERE itemcard_id = "+ i +" AND itemcard_active = true;";
             System.out.println(sql);

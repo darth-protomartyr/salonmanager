@@ -74,7 +74,7 @@ public class DAOUser extends DAO {
         System.out.println(sql);
         consultarBase(sql);
         String mail = "";
-        ArrayList<String> mails = new ArrayList<String>();
+        ArrayList<String> mails = new ArrayList<>();
         while (resultado.next()) {
             mail = "";
             mail = resultado.getString(1);
@@ -89,7 +89,7 @@ public class DAOUser extends DAO {
         System.out.println(sql);
         consultarBase(sql);
 //        String id = "";
-        ArrayList<String> ids = new ArrayList<String>();
+        ArrayList<String> ids = new ArrayList<>();
         while (resultado.next()) {
             String id = resultado.getString(1);
             ids.add(id);
@@ -129,7 +129,7 @@ public class DAOUser extends DAO {
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
         while (resultado.next()) {
             user = new User();
             user.setId(resultado.getString(1));
@@ -153,7 +153,7 @@ public class DAOUser extends DAO {
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
         while (resultado.next()) {
             user = new User();
             user.setId(resultado.getString(1));
@@ -196,7 +196,7 @@ public class DAOUser extends DAO {
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
         while (resultado.next()) {
             user = new User();
             user.setId(resultado.getString(1));

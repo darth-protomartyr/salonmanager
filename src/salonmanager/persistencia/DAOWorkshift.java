@@ -168,7 +168,7 @@ public class DAOWorkshift extends DAO {
     }
 
     public ArrayList<Workshift> askWorshiftByDate(Timestamp ts1, Timestamp ts2) throws Exception {
-        ArrayList<Workshift> wss = new ArrayList<Workshift>();
+        ArrayList<Workshift> wss = new ArrayList<>();
         if (ts2 == null) {
             ts2 = new Timestamp(new Date().getTime());
         }
@@ -366,7 +366,7 @@ public class DAOWorkshift extends DAO {
     }
 
     public ArrayList<Integer> listIdByDate(Timestamp tsInit, Timestamp tsEnd) throws Exception {
-        ArrayList<Integer> wss = new ArrayList<Integer>();
+        ArrayList<Integer> wss = new ArrayList<>();
         try {
             String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_shift >= '" + tsInit + "' AND workshift_open_shift <= '" + tsEnd + "' AND workshift_state_shift = false AND workshift_active = true;";
             System.out.println(sql);
@@ -385,7 +385,7 @@ public class DAOWorkshift extends DAO {
     }
     
     public ArrayList<Integer> listIdWs() throws Exception {
-        ArrayList<Integer> wssId = new ArrayList<Integer>();
+        ArrayList<Integer> wssId = new ArrayList<>();
         try {
             String sql = "SELECT workshift_id FROM workshifts WHERE workshift_state_shift = false AND workshift_active = true;";
             System.out.println(sql);
@@ -404,7 +404,7 @@ public class DAOWorkshift extends DAO {
 
 
     public ArrayList<Timestamp> listTsIWs() throws Exception {
-        ArrayList<Timestamp> wssTs = new ArrayList<Timestamp>();
+        ArrayList<Timestamp> wssTs = new ArrayList<>();
         try {
             String sql = "SELECT workshift_open_shift FROM workshifts WHERE workshift_state_shift = false AND workshift_active = true;";
             System.out.println(sql);

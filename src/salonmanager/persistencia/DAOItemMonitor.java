@@ -51,7 +51,7 @@ public class DAOItemMonitor extends DAO {
             String sql = "SELECT * FROM item_monits WHERE item_monit_open = true AND item_monit_active = true;";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<ItemMonitor> aims = new ArrayList<ItemMonitor>();
+            ArrayList<ItemMonitor> aims = new ArrayList<>();
             while (resultado.next()) {
                 ItemMonitor im = new ItemMonitor();
                 String idImon = resultado.getString(1);

@@ -206,7 +206,7 @@ public class Utilidades {
     }
 
     public ArrayList<String> captionList() {
-        ArrayList<String> st = new ArrayList<String>();
+        ArrayList<String> st = new ArrayList<>();
         String a = "BEBIDAS";
         String b = "PLATOS";
         String c = "CAFETERIA";
@@ -230,7 +230,7 @@ public class Utilidades {
         ArrayList<Integer> wssId = daoW.listIdWs();
         ArrayList<Timestamp> wssTs = daoW.listTsIWs();
         
-        ArrayList<String> wssSt = new ArrayList<String>();
+        ArrayList<String> wssSt = new ArrayList<>();
         for (int i = 0; i < wssId.size(); i++) {
             String ts = friendlyDate1(wssTs.get(i));
             wssSt.add(wssId.get(i) + ". " + ts);
@@ -406,7 +406,7 @@ public class Utilidades {
     }
 
     public ArrayList<Integer> strToArrayInt(String str) {
-        ArrayList<Integer> arrayInt = new ArrayList<Integer>();
+        ArrayList<Integer> arrayInt = new ArrayList<>();
         String strAux = "";
         for (int i = 0; i < str.length(); i++) {
             String s = str.substring(i, i + 1);
@@ -430,7 +430,7 @@ public class Utilidades {
     }
 
     public ArrayList<String> strToArrayStr(String str) {
-        ArrayList<String> arrayStr = new ArrayList<String>();
+        ArrayList<String> arrayStr = new ArrayList<>();
         String strAux = "";
         for (int i = 0; i < str.length(); i++) {
             String s = str.substring(i, i + 1);
@@ -599,7 +599,7 @@ public class Utilidades {
         String st = "<br>";
         int counter = 0;
         String ref = "";
-        ArrayList<String> iSt = new ArrayList<String>();
+        ArrayList<String> iSt = new ArrayList<>();
         for (Itemcard ic : ali) {
             iSt.add(ic.getName());
         }
@@ -608,8 +608,8 @@ public class Utilidades {
 
         HashSet<String> itemsSt = new HashSet<String>(iSt);
 
-        iSt = new ArrayList<String>(itemsSt);
-        ArrayList<Integer> cant = new ArrayList<Integer>();
+        iSt = new ArrayList<>(itemsSt);
+        ArrayList<Integer> cant = new ArrayList<>();
 
         counter = 0;
         for (String icSt : iSt) {
@@ -640,8 +640,8 @@ public class Utilidades {
     }
 
     ArrayList<Itemcard> unRepeatItems(ArrayList<Itemcard> items) {
-        ArrayList<Itemcard> unRepeatItems = new ArrayList<Itemcard>();
-        ArrayList<Integer> ints = new ArrayList<Integer>();
+        ArrayList<Itemcard> unRepeatItems = new ArrayList<>();
+        ArrayList<Integer> ints = new ArrayList<>();
         for (Itemcard item : items) {
             boolean repeat = false;
             for (Integer inte : ints) {

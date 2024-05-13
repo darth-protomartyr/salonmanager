@@ -82,7 +82,7 @@ public class UtilidadesGraficasStatics {
     }
 
     public XYChart chartCurveBacker(StaticsManager statsM) {
-        ArrayList<Timestamp> turnos = new ArrayList<Timestamp>();
+        ArrayList<Timestamp> turnos = new ArrayList<>();
         ArrayList<Double> sales = new ArrayList<>();
         ArrayList<Workshift> wsS = statsM.getWorkshift();
 
@@ -111,7 +111,7 @@ public class UtilidadesGraficasStatics {
         ArrayList<Integer> itemsId = new ArrayList<>(countItems.keySet());
         ArrayList<Integer> cants = new ArrayList<>(countItems.values());
 
-        ArrayList<String> itemNames = new ArrayList<String>();
+        ArrayList<String> itemNames = new ArrayList<>();
         for (int i : itemsId) {
             String itemName = "--";
             if (i < 100000) {
@@ -168,7 +168,7 @@ public class UtilidadesGraficasStatics {
         chartWaiter.getStyler().setDefaultSeriesRenderStyle(PieSeries.PieSeriesRenderStyle.Pie);
 
         ArrayList<String> waitersAux = new ArrayList<>(hashMap1.keySet());
-        ArrayList<String> waiters = new ArrayList<String>();
+        ArrayList<String> waiters = new ArrayList<>();
 
         for (int i = 0; i < waitersAux.size(); i++) {
             String w = daoU.getUserNameById(waitersAux.get(i));
@@ -252,7 +252,7 @@ public class UtilidadesGraficasStatics {
         countWWs = sStats.orderHsSI(countWWs);
         ArrayList<String> waitersId = new ArrayList<>(countWWs.keySet());
         ArrayList<Integer> wss = new ArrayList<>(countWWs.values());
-        ArrayList<String> waiterNames = new ArrayList<String>();
+        ArrayList<String> waiterNames = new ArrayList<>();
 
         for (String n : waitersId) {
             String name = daoU.getUserNameById(n);

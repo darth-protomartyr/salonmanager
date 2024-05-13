@@ -34,7 +34,7 @@ public class ItemSelector extends FrameWindow {
     Color narMed = new Color(255, 172, 13);
     Color bluLg = new Color(3, 166, 136);
 
-    ArrayList<Itemcard> itemsDB = new ArrayList<Itemcard>();
+    ArrayList<Itemcard> itemsDB = new ArrayList<>();
     Itemcard itemAux = null;
     JLabel labelIngreso = null;
     JList listItem = new JList();

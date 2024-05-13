@@ -42,8 +42,6 @@ import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class Salon extends FrameFull {
-
-    Utilidades utili = new Utilidades();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -55,7 +53,7 @@ public class Salon extends FrameFull {
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
-    ArrayList<String> configSalon = new ArrayList<String>(); //Configuración de l salón
+    ArrayList<String> configSalon = new ArrayList<>(); //Configuración de l salón
     int totalTable = 0;
     int numBut = 1;
     int rowsButtons = 0;
@@ -80,18 +78,18 @@ public class Salon extends FrameFull {
     JPanel panelDeliBut = new JPanel();
     JPanel panelDeliContainer = new JPanel();
 
-    ArrayList<Integer> tableNum = new ArrayList<Integer>(); // número de mesa
-    ArrayList<String> tablePan = new ArrayList<String>(); // Nombre del sector
-    ArrayList<String> tablePanCh = new ArrayList<String>(); // Primer Char del Nombre del sector
+    ArrayList<Integer> tableNum = new ArrayList<>(); // número de mesa
+    ArrayList<String> tablePan = new ArrayList<>(); // Nombre del sector
+    ArrayList<String> tablePanCh = new ArrayList<>(); // Primer Char del Nombre del sector
 
-    ArrayList<User> waiters = new ArrayList<User>(); // mozos
-    ArrayList<Itemcard> itemsDB = new ArrayList<Itemcard>(); // Items Completos
-    ArrayList<Itemcard> itemsTableAux = new ArrayList<Itemcard>();//items a cobrar de la mesa
-    ArrayList<Itemcard> itemsGift = new ArrayList<Itemcard>(); //items obsequiados
-    ArrayList<Itemcard> itemsPartialPaid = new ArrayList<Itemcard>(); // items cobrados por pago parcial
-    ArrayList<Itemcard> itemsPartialPaidNoDiscount = new ArrayList<Itemcard>(); // items cobrados anted de aplicar descuento
-    ArrayList<Itemcard> itemsError = new ArrayList<Itemcard>();
-    ArrayList<ItemMonitor> itemsMntr = new ArrayList<ItemMonitor>();
+    ArrayList<User> waiters = new ArrayList<>(); // mozos
+    ArrayList<Itemcard> itemsDB = new ArrayList<>(); // Items Completos
+    ArrayList<Itemcard> itemsTableAux = new ArrayList<>();//items a cobrar de la mesa
+    ArrayList<Itemcard> itemsGift = new ArrayList<>(); //items obsequiados
+    ArrayList<Itemcard> itemsPartialPaid = new ArrayList<>(); // items cobrados por pago parcial
+    ArrayList<Itemcard> itemsPartialPaidNoDiscount = new ArrayList<>(); // items cobrados anted de aplicar descuento
+    ArrayList<Itemcard> itemsError = new ArrayList<>();
+    ArrayList<ItemMonitor> itemsMntr = new ArrayList<>();
     User user = null;
     User waiterAux = null; // mozo actual
     Table tableAux = null; // mesa actual
@@ -110,12 +108,12 @@ public class Salon extends FrameFull {
     JLabel labelWorkshift = new JLabel();
     
     //Botonera
-    ArrayList<Table> prevTabs = new ArrayList<Table>();
-    ArrayList<JPanel> panelsPane = new ArrayList<JPanel>();
-    ArrayList<JButtonTable> tableButtons = new ArrayList<JButtonTable>();
-    ArrayList<JButtonBarr> barrButtons = new ArrayList<JButtonBarr>();
-    ArrayList<JButtonDelivery> deliButtons = new ArrayList<JButtonDelivery>();
-    ArrayList<JButtonDeliverySee> deliButtonsSees = new ArrayList<JButtonDeliverySee>();
+    ArrayList<Table> prevTabs = new ArrayList<>();
+    ArrayList<JPanel> panelsPane = new ArrayList<>();
+    ArrayList<JButtonTable> tableButtons = new ArrayList<>();
+    ArrayList<JButtonBarr> barrButtons = new ArrayList<>();
+    ArrayList<JButtonDelivery> deliButtons = new ArrayList<>();
+    ArrayList<JButtonDeliverySee> deliButtonsSees = new ArrayList<>();
     ScheduledExecutorService scheduler = null;
     boolean loopBreaker = false;
 
@@ -362,7 +360,7 @@ public class Salon extends FrameFull {
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
         if (prevTabs.size() > 0) {
             utiliGrafSal.tableManager(prevTabs, sal);
-            prevTabs = new ArrayList<Table>();
+            prevTabs = new ArrayList<>();
         }
         
         addWindowListener(new WindowAdapter() {

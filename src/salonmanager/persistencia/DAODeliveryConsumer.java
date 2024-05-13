@@ -79,7 +79,7 @@ public class DAODeliveryConsumer extends DAO {
             String sql = "SELECT consumer_phone FROM consumers WHERE consumer_active = true;";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<String> cmrs = new ArrayList<String>();
+            ArrayList<String> cmrs = new ArrayList<>();
             while (resultado.next()) {
                 String ph = resultado.getString(1);
                 cmrs.add(ph);
@@ -98,7 +98,7 @@ public class DAODeliveryConsumer extends DAO {
             String sql = "SELECT consumers_phone FROM consumers WHERE consumer_active = true;";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<String> phones = new ArrayList<String>();
+            ArrayList<String> phones = new ArrayList<>();
             while (resultado.next()) {
                 String st = resultado.getString(1);
                 phones.add(st);

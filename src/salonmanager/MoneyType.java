@@ -58,7 +58,7 @@ public class MoneyType extends FrameWindow {
     double cash = 0;
     double electronic = 0;
 //    boolean mixedPay = false;
-    ArrayList<Double> amounts = new ArrayList<Double>();
+    ArrayList<Double> amounts = new ArrayList<>();
     ArrayList<Itemcard> itemsPayed = null;
     int cashMix = 0;
 

@@ -143,7 +143,7 @@ public class ServiceStatics {
     }
 
     public void staticBacker(Timestamp timestampInit, Timestamp timestampEnd, StaticsManager statsM, int wsId) throws Exception {
-        ArrayList<Workshift> wsS = new ArrayList<Workshift>();
+        ArrayList<Workshift> wsS = new ArrayList<>();
 
         if (wsId == 0) {
             ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
@@ -156,7 +156,7 @@ public class ServiceStatics {
             wsS.add(ws);
         }
 
-        ArrayList<Timestamp> tsList = new ArrayList<Timestamp>();
+        ArrayList<Timestamp> tsList = new ArrayList<>();
         for (Workshift ws : wsS) {
             Timestamp tsOpen = ws.getOpenWs();
             Timestamp tsClose = ws.getCloseWs();

@@ -69,10 +69,10 @@ public class WorkshiftEndPanel extends FrameHalf {
     ConfigActual cfgAct = null;
     Workshift actualWs = null;
     Workshift newWs = null;
-    ArrayList<Table> actualTabs = new ArrayList<Table>();
-    ArrayList<Table> newTabs = new ArrayList<Table>();
-    ArrayList<Table> toEraseTabs = new ArrayList<Table>();
-    ArrayList<Table> toUpdTabs = new ArrayList<Table>();
+    ArrayList<Table> actualTabs = new ArrayList<>();
+    ArrayList<Table> newTabs = new ArrayList<>();
+    ArrayList<Table> toEraseTabs = new ArrayList<>();
+    ArrayList<Table> toUpdTabs = new ArrayList<>();
     double total = 0;
     double cash = 0;
     double electronic = 0;
@@ -88,19 +88,19 @@ public class WorkshiftEndPanel extends FrameHalf {
         actualTabs = filterClose(actTabs);
 
         if (nTabs == null) {
-            newTabs = new ArrayList<Table>();
+            newTabs = new ArrayList<>();
         } else {
             newTabs = nTabs;
         }
 
         if (toErsdTabs == null) {
-            toEraseTabs = new ArrayList<Table>();
+            toEraseTabs = new ArrayList<>();
         } else {
             toEraseTabs = toErsdTabs;
         }
 
         if (updTabs == null) {
-            toUpdTabs = new ArrayList<Table>();
+            toUpdTabs = new ArrayList<>();
         } else {
             toUpdTabs = updTabs;
         }
@@ -488,7 +488,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     }
 
     private ArrayList<Table> filterClose(ArrayList<Table> actTabs) {
-        ArrayList<Table> closeTabs = new ArrayList<Table>();
+        ArrayList<Table> closeTabs = new ArrayList<>();
         for (Table t : actTabs) {
             if (t.isActiveTable() && t.isOpen() == false) {
                 closeTabs.add(t);

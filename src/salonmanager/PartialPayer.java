@@ -50,8 +50,8 @@ public class PartialPayer extends FrameWindow {
     Table tab = new Table();
     Salon salon = null;
     ArrayList<Itemcard> itemsToPay = null;
-    ArrayList<Itemcard> itemsPartialToPay = new ArrayList<Itemcard>();
-//    ArrayList<Itemcard> itemsPartialPayed = new ArrayList<Itemcard>();
+    ArrayList<Itemcard> itemsPartialToPay = new ArrayList<>();
+//    ArrayList<Itemcard> itemsPartialPayed = new ArrayList<>();
     Itemcard itemAux = new Itemcard();
     double subTotal = 0;
     double total = 0;
@@ -73,7 +73,7 @@ public class PartialPayer extends FrameWindow {
         total = tab.getTotal();
         discount = tab.getDiscount();
         ArrayList<Itemcard> itemsAux = tab.getOrder();
-        itemsToPay = new ArrayList<Itemcard>(itemsAux);
+        itemsToPay = new ArrayList<>(itemsAux);
         setTitle("Pago Parcial");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);

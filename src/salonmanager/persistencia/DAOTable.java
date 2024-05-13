@@ -226,7 +226,7 @@ public class DAOTable extends DAO {
     }
 
     public ArrayList<Table> listarTablesByWorkshift(Workshift ws) throws Exception {
-        ArrayList<Table> tables = new ArrayList<Table>();
+        ArrayList<Table> tables = new ArrayList<>();
         Timestamp open = ws.getOpenWs();
         Timestamp close = ws.getCloseWs();
         if (close == null) {
@@ -266,7 +266,7 @@ public class DAOTable extends DAO {
     }
 
     public ArrayList<Table> listarTablesOpenByWorkshift(Workshift ws) throws Exception {
-        ArrayList<Table> tables = new ArrayList<Table>();
+        ArrayList<Table> tables = new ArrayList<>();
         Timestamp open = ws.getOpenWs();
         Timestamp close = ws.getCloseWs();
         if (close == null) {
@@ -393,7 +393,7 @@ public class DAOTable extends DAO {
     }
 
     public ArrayList<Table> listarTablesByDate(Timestamp open, Timestamp close) throws Exception {
-        ArrayList<Table> tables = new ArrayList<Table>();
+        ArrayList<Table> tables = new ArrayList<>();
         try {
             String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
             System.out.println(sql);

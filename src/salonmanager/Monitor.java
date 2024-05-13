@@ -53,9 +53,9 @@ public class Monitor extends FrameHalf {
     Color viol = new Color(242, 29, 41);
 
     Salon salon = null;
-    ArrayList<Table> tabs = new ArrayList<Table>();
-    ArrayList<ItemMonitor> itemsMnrOld = new ArrayList<ItemMonitor>();
-    ArrayList<ItemMonitor> itemsMnrNew = new ArrayList<ItemMonitor>();
+    ArrayList<Table> tabs = new ArrayList<>();
+    ArrayList<ItemMonitor> itemsMnrOld = new ArrayList<>();
+    ArrayList<ItemMonitor> itemsMnrNew = new ArrayList<>();
 
     User user = null;
 
@@ -264,7 +264,7 @@ public class Monitor extends FrameHalf {
     }
 
     private void panelItemMomFiller() throws Exception {
-        itemsMnrNew = new ArrayList<ItemMonitor>();
+        itemsMnrNew = new ArrayList<>();
         itemsMnrOld = daoIM.getItemsMonitorOpen();
 
         for (int i = 0; i < itemsMnrOld.size(); i++) {

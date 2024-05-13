@@ -58,9 +58,9 @@ public class StaticsManager extends FrameFull {
 
     SalonManager sm = new SalonManager();
     private User userIn = null;
-    ArrayList<Table> tabs = new ArrayList<Table>();
-    ArrayList<ItemSale> iSales = new ArrayList<ItemSale>();
-    ArrayList<Workshift> workshifts = new ArrayList<Workshift>();
+    ArrayList<Table> tabs = new ArrayList<>();
+    ArrayList<ItemSale> iSales = new ArrayList<>();
+    ArrayList<Workshift> workshifts = new ArrayList<>();
     ArrayList<String> captions = null;
     Manager manager = null;
     PieChart chartOrder = null;
@@ -212,10 +212,10 @@ public class StaticsManager extends FrameFull {
         countWSells = new HashMap<String, Double>();
         countWWs = new HashMap<String, Integer>();
         ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
-        ArrayList<String> waiterIds = new ArrayList<String>();
-        ArrayList<Integer> idSales = new ArrayList<Integer>();
-        ArrayList<Integer> cantSales = new ArrayList<Integer>();
-        ArrayList<HashSet<Integer>> listHS = new ArrayList<HashSet<Integer>>();
+        ArrayList<String> waiterIds = new ArrayList<>();
+        ArrayList<Integer> idSales = new ArrayList<>();
+        ArrayList<Integer> cantSales = new ArrayList<>();
+        ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
         for (Table tab : tabs) {
             tot += tab.getTotal();
             if (tab.getPos().equals("barra")) {
@@ -263,7 +263,7 @@ public class StaticsManager extends FrameFull {
             }
         }
 
-        ArrayList<String> ids = new ArrayList<String>(waiterIds);
+        ArrayList<String> ids = new ArrayList<>(waiterIds);
         for (int i = 0; i < ids.size(); i++) {
             String id = ids.get(i);
             countWSells.put(id, 0.0);
@@ -330,9 +330,9 @@ public class StaticsManager extends FrameFull {
 
         //TOP Waiters Sell
         ArrayList<String> waitersSell1 = new ArrayList<>(countWSells.keySet());
-        ArrayList<String> waitersSell2 = new ArrayList<String>();
+        ArrayList<String> waitersSell2 = new ArrayList<>();
         ArrayList<Double> amounts1 = new ArrayList<>(countWSells.values());
-        ArrayList<Double> amounts2 = new ArrayList<Double>();
+        ArrayList<Double> amounts2 = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
             if (i < waitersSell1.size()) {
@@ -347,9 +347,9 @@ public class StaticsManager extends FrameFull {
 
         //TOP Waiters Workshift
         ArrayList<String> waitersWs1 = new ArrayList<>(countWWs.keySet());
-        ArrayList<String> waitersWs2 = new ArrayList<String>();
+        ArrayList<String> waitersWs2 = new ArrayList<>();
         ArrayList<Integer> wss1 = new ArrayList<>(countWWs.values());
-        ArrayList<Integer> wss2 = new ArrayList<Integer>();
+        ArrayList<Integer> wss2 = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
             if (i < waitersWs1.size()) {

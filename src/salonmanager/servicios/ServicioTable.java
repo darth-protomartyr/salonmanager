@@ -49,8 +49,8 @@ public class ServicioTable {
     }
 
     public ArrayList<Table> workshiftTableslistComplete(Workshift ws, int opt) throws Exception {
-        ArrayList<Table> workshiftTabsNew = new ArrayList<Table>();
-        ArrayList<Table> workshiftTabsOld = new ArrayList<Table>();
+        ArrayList<Table> workshiftTabsNew = new ArrayList<>();
+        ArrayList<Table> workshiftTabsOld = new ArrayList<>();
 
         if (opt == 1) {
             workshiftTabsOld = daoT.listarTablesByWorkshift(ws);
