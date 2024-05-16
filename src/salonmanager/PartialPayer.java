@@ -87,12 +87,8 @@ public class PartialPayer extends FrameWindow {
         panelLabel.add(labelTit);
 
         JLabel labelItemsTP = utiliGraf.labelTitleBacker3W("Items a pagar");
-        labelItemsTP.setBounds(20, 40, 180, 20);
+        labelItemsTP.setBounds(anchoUnit * 2, altoUnit * 6, anchoUnit * 10, altoUnit * 3);
         panelPpal.add(labelItemsTP);
-
-        JLabel labelItemsSel = utiliGraf.labelTitleBacker3W("Items Seleccionados");
-        labelItemsSel.setBounds(205, 40, 165, 20);
-        panelPpal.add(labelItemsSel);
 
         listToPay.setModel(utili.itemListModelReturnMono(itemsToPay));
         listToPay.addMouseListener(new MouseAdapter() {
@@ -103,11 +99,14 @@ public class PartialPayer extends FrameWindow {
                 }
             }
         });
-
         JScrollPane jSPtoPay = new JScrollPane(listToPay);
-        jSPtoPay.setBounds(20, 65, 165, 100);
+        jSPtoPay.setBounds(anchoUnit * 2, altoUnit * 9, anchoUnit * 12, altoUnit * 13);
         panelPpal.add(jSPtoPay);
 
+        JLabel labelItemsSel = utiliGraf.labelTitleBacker3W("Items Seleccionados");
+        labelItemsSel.setBounds(anchoUnit * 15, altoUnit * 6, anchoUnit * 12, altoUnit * 3);
+        panelPpal.add(labelItemsSel);
+        
         listPartialToPay.setModel(utili.itemListModelReturnMono(itemsPartialToPay));
         listPartialToPay.addMouseListener(new MouseAdapter() {
             @Override
@@ -119,35 +118,30 @@ public class PartialPayer extends FrameWindow {
         });
 
         JScrollPane jSPPayed = new JScrollPane(listPartialToPay);
-        jSPPayed.setBounds(205, 65, 165, 100);
+        jSPPayed.setBounds(anchoUnit * 15, altoUnit * 9, anchoUnit * 12, altoUnit * 13);
         panelPpal.add(jSPPayed);
 
-        JPanel panelSubTotal = new JPanel();
-        panelSubTotal.setBounds(145, 170, 100, 30);
-        panelPpal.add(panelSubTotal);
-
         labelSubTotal = utiliGraf.labelTitleBacker2W("Subtotal $:");
-        labelSubTotal.setBounds(40, 170, 100, 30);
+        labelSubTotal.setBounds(anchoUnit * 3, altoUnit * 23, anchoUnit * 8, altoUnit * 4);
         panelPpal.add(labelSubTotal);
 
+        JPanel panelSubTotal = new JPanel();
+        panelSubTotal.setBounds(anchoUnit * 10, altoUnit * 23, anchoUnit * 8, altoUnit * 4);
+        panelPpal.add(panelSubTotal);
+        
         labelPrice = utiliGraf.labelTitleBacker2("0.0");
-//        labelPrice.setBounds(100, 170, 40, 30);
+        labelPrice.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 8, altoUnit * 4);
         panelSubTotal.add(labelPrice);
 
-        labelRest = utiliGraf.labelTitleBacker3W("Resto $:" + total);
-        labelRest.setBounds(260, 160, 130, 25);
+        labelRest = utiliGraf.labelTitleBacker3W("Resto $: " + total);
+        labelRest.setBounds(anchoUnit * 19, altoUnit * 23, anchoUnit * 10, altoUnit * 2);
         panelPpal.add(labelRest);
 
-        labelTip = utiliGraf.labelTitleBacker3W("Prop $:" + Math.round(subTotal / 10));
-        labelTip.setBounds(260, 180, 130, 25);
+        labelTip = utiliGraf.labelTitleBacker3W("Prop $: " + Math.round(subTotal / 10));
+        labelTip.setBounds(anchoUnit * 19, altoUnit * 25, anchoUnit * 10, altoUnit * 2);
         panelPpal.add(labelTip);
 
-        JPanel panelBut = new JPanel();
-        panelBut.setBackground(bluSt);
-        panelBut.setBounds(0, 210, 390, 50);
-        panelPpal.add(panelBut);
-
-        butPartialIn = utiliGraf.button1("Pago Parcial", 206, 580, 270);
+        butPartialIn = utiliGraf.button1("Pago Parcial", anchoUnit * 8, altoUnit * 28, anchoUnit * 12);
         butPartialIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -158,7 +152,7 @@ public class PartialPayer extends FrameWindow {
                 }
             }
         });
-        panelBut.add(butPartialIn);
+        panelPpal.add(butPartialIn);
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(this);
         butSalir.addActionListener(new ActionListener() {

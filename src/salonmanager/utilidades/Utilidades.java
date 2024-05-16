@@ -453,7 +453,7 @@ public class Utilidades {
         }
         return ic;
     }
-
+    
     public ListModel itemListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<Itemcard> lma = listMayor;
@@ -481,6 +481,14 @@ public class Utilidades {
         ArrayList<Itemcard> lma = listMayor;
         for (Itemcard ic : lma) {
             modeloLista.addElement(ic.getName());
+        }
+        return modeloLista;
+    }
+    
+    public ListModel spacesListModelReturnMono(ArrayList<String> listMayor) {
+        DefaultListModel<String> modeloLista = new DefaultListModel<String>();
+        for (String st : listMayor) {
+            modeloLista.addElement(st);
         }
         return modeloLista;
     }

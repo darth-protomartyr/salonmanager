@@ -53,25 +53,25 @@ public class ServicioSalon {
         int col = 0;
 
         if (tab == 12) {
-            fontSize = 48;
+            fontSize = 65;
             wUnit = (anchoPane) / 21;
             hUnit = (alturaPane) / 16;
             rows = 3;
             col = 4;
         } else if (tab == 24) {
-            fontSize = 36;
+            fontSize = 50;
             wUnit = (anchoPane) / 31;
             hUnit = (alturaPane) / 21;
             rows = 4;
             col = 6;
         } else if (tab == 35) {
-            fontSize = 24;
+            fontSize = 45;
             wUnit = (anchoPane) / 36;
             hUnit = (alturaPane) / 26;
             rows = 5;
             col = 7;
         } else if (tab == 48) {
-            fontSize = 16;
+            fontSize = 35;
             wUnit = (anchoPane) / 41;
             hUnit = (alturaPane) / 31;
             rows = 6;

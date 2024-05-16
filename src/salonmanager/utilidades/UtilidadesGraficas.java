@@ -122,7 +122,6 @@ public class UtilidadesGraficas extends JFrame {
 
         JMenu menuInicio = new JMenu("Inicio");
         JMenu menuCard = new JMenu("Carta");
-        JMenu menuFacturacion = new JMenu("Facturación");
         JMenu menuSalon = new JMenu("Salón");
         JMenu menuStatics = new JMenu("Estadisticas");
         
@@ -138,7 +137,6 @@ public class UtilidadesGraficas extends JFrame {
 
         applyEmptyBorder(menuInicio, eBorder);
         applyEmptyBorder(menuCard, eBorder);
-        applyEmptyBorder(menuFacturacion, eBorder);
         applyEmptyBorder(menuSalon, eBorder);
         applyEmptyBorder(menuStatics, eBorder);
 
@@ -158,7 +156,6 @@ public class UtilidadesGraficas extends JFrame {
         menuCard.add(itemIngresoItemcard);
         menuCard.add(itemModificacionItemcard);
         menuCard.add(itemConsultaItemcard);
-        menuFacturacion.add(itemTurno);
         menuSalon.add(itemSalon);
         menuStatics.add(itemStatics);
 
@@ -166,7 +163,6 @@ public class UtilidadesGraficas extends JFrame {
         if (sm.rolPermission(2)) {
             menuBar.add(menuCard);
         }
-        menuBar.add(menuFacturacion);
         menuBar.add(menuSalon);
         if (sm.rolPermission(2)) {
             menuBar.add(menuStatics);

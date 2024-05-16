@@ -98,7 +98,7 @@ public class SalonManager {
         setPassIn("");
         setUserIn(null);
         windowCloser();
-        new LandingFrame();
+        
     }
 
     private static void windowCloser() {
