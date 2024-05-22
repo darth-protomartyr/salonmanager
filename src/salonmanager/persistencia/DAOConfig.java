@@ -95,6 +95,7 @@ public class DAOConfig extends DAO {
         }
     }
 
+
     public void updateCfgActOpenIdWs(int idWs) throws Exception {
         try {
             String sql1 = "UPDATE config_actual SET config_open_ws_id = '" + idWs + "';";
@@ -110,8 +111,8 @@ public class DAOConfig extends DAO {
             desconectarBase();
         }
     }
-    
-    
+
+
     public void updateCfgActDeferWs(ArrayList<Integer> arrayDeferWs) throws Exception {
             String stArray =  utili.arrayIntToStr(arrayDeferWs);
         try {

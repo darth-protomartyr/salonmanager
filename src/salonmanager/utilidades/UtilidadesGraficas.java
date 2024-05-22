@@ -89,6 +89,9 @@ public class UtilidadesGraficas extends JFrame {
     public CustomJMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
         cfgGen = daoC.askConfigGeneral();
+        if(cfgGen.isActiveConfig() == false) {
+            cfgGen = utili.cfgBacker();
+        }
         cfgAct = daoC.askConfigActual();
 
         Font menuFont = new Font("Arial", Font.BOLD, 16);

@@ -187,7 +187,7 @@ public class UtilidadesGraficasSalon {
                                 }
                             }
                         } else {
-                            ss.endWorkshift(salon, false); 
+                            ss.endWorkshift(salon, false);
                         }
                     }
                 } catch (Exception ex) {
@@ -212,7 +212,11 @@ public class UtilidadesGraficasSalon {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    new CashFlowManager(salon, 1);
+                    if (salon.getWorkshiftNow() != null) {
+                        new CashFlowManager(salon, 1);
+                    } else {
+                        utiliMsg.errorWorkshift();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -225,7 +229,11 @@ public class UtilidadesGraficasSalon {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    new CashFlowManager(salon, 2);
+                    if (salon.getWorkshiftNow() != null) {
+                        new CashFlowManager(salon, 2);
+                    } else {
+                        utiliMsg.errorWorkshift();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -488,7 +496,7 @@ public class UtilidadesGraficasSalon {
     private void createBarr(Salon salon) throws Exception {
         boolean testN = false;
         boolean emptyButton = false;
-        
+
         if (salon.getBarrButtons().size() > 0) {
             testN = true;
         }
@@ -967,6 +975,9 @@ public class UtilidadesGraficasSalon {
 //PANEL SELECT ITEM....................................................................................................
     public JPanel returnPanelSelItem(Salon salon) throws Exception {
         ArrayList<String> captions = salon.getCfgGen().getTableItemCaptions();
+        while (captions.size() <= 6) {
+            captions.add("--");
+        }
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
         panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 19);
@@ -1113,12 +1124,14 @@ public class UtilidadesGraficasSalon {
     // Select a kind o items
     private void itemCaptionBack(String capt, Salon salon) {
         ArrayList<Itemcard> aic = new ArrayList<>();
-        for (Itemcard ic : salon.getItemsDB()) {
-            if (ic.getCaption().toLowerCase().equals(capt.toLowerCase())) {
-                aic.add(ic);
+        if (!capt.equals("--")) {
+            for (Itemcard ic : salon.getItemsDB()) {
+                if (ic.getCaption().toLowerCase().equals(capt.toLowerCase())) {
+                    aic.add(ic);
+                }
             }
+            salon.getComboItems().setModel(utili.itemsComboModelReturn(aic));
         }
-        salon.getComboItems().setModel(utili.itemsComboModelReturn(aic));
     }
 
     //Add items to order
@@ -1780,7 +1793,7 @@ public class UtilidadesGraficasSalon {
                 salon.getDeliButtons().set(0, d);
                 salon.getJbdAux().setVisible(true);
                 salon.getJbdAux().setVisible(true);
-             } else {
+            } else {
                 for (int j = 0; j < salon.getTableButtons().size(); j++) {
                     if (tab.getNum() == salon.getTableButtons().get(j).getNum()) {
                         salon.getTableButtons().get(j).setTable(tab);

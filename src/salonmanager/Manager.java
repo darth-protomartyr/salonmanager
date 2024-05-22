@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -12,8 +13,6 @@ import javax.swing.JPanel;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
-import salonmanager.entidades.config.ConfigActual;
-import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.PanelPpalCustom;
 import salonmanager.persistencia.DAOConfig;
@@ -87,8 +86,11 @@ public class Manager extends FrameFull {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                sm.frameCloser();
-                System.exit(0);
+                boolean confirm = utiliMsg.cargaConfirmarCierrePrograma();
+                if (confirm) {
+                    sm.frameCloser();
+                    System.exit(0);
+                }
             }
         });
         panelPpal.add(butSalir);
@@ -96,7 +98,7 @@ public class Manager extends FrameFull {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
                 if (confirmation) {
                     sm.frameCloser();
                     System.exit(0);

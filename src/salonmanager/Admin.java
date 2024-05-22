@@ -42,20 +42,20 @@ public class Admin extends FrameHalf {
         labelStatics.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
         panelPpal.add(labelStatics);
 
-        JPanel panelTable = panelCreator("Administrar Mesas", 10);
+        JPanel panelTable = panelCreator("Administrar Mesas", 10, 25);
         panelPpal.add(panelTable);
 
-        JPanel panelUser = panelCreator("Administrar Usuarios", 37);
+        JPanel panelUser = panelCreator("Administrar Usuarios", 37, 25);
         panelPpal.add(panelUser);
 
-        JPanel panelConfig = panelCreator("Administrar Configuración", 64);
+        JPanel panelConfig = panelCreator("Administrar Configuración", 76, 15);
         panelPpal.add(panelConfig);
 
-        JButtonMetalBlu butCfgSalon = utiliGraf.button1("Configurar salón", anchoUnit * 10, altoUnit * 10, anchoUnit * 20);
+        JButtonMetalBlu butCfgSalon = utiliGraf.button1("Configurar salón", anchoUnit * 15, altoUnit * 6, anchoUnit * 17);
         butCfgSalon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirmation = utiliMsg.cargaConfirmarConfigSalon();
                 if (confirmation) {
                     try {
                         configSalonOpener();
@@ -71,7 +71,7 @@ public class Admin extends FrameHalf {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }
@@ -82,7 +82,7 @@ public class Admin extends FrameHalf {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }
@@ -90,11 +90,11 @@ public class Admin extends FrameHalf {
         });
     }
 
-    private JPanel panelCreator(String tit, int i) {
+    private JPanel panelCreator(String tit, int i, int y) {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(bluLg);
-        panel.setBounds(anchoUnit * 2, altoUnit * i, anchoUnit * 47, altoUnit * 25);
+        panel.setBounds(anchoUnit * 2, altoUnit * i, anchoUnit * 47, altoUnit * y);
         JLabel labelStatics = utiliGraf.labelTitleBacker1(tit);
         labelStatics.setHorizontalAlignment(SwingConstants.CENTER);
         labelStatics.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 47, altoUnit * 5);
@@ -105,8 +105,7 @@ public class Admin extends FrameHalf {
 
     private void configSalonOpener() throws Exception {
         if (user.getRol().equals("ADMIN")) {
-            new ConfigSalonFrame();
+            new ConfigSalonFrame(user);
         }
     }
-
 }

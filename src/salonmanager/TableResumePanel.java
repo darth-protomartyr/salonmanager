@@ -109,7 +109,7 @@ public class TableResumePanel extends FrameThird {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }

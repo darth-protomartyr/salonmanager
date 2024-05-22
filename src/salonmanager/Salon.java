@@ -45,7 +45,7 @@ public class Salon extends FrameFull {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-
+    Utilidades utili = new Utilidades();
     SalonManager sm = new SalonManager();
     DAOUser daoU = new DAOUser();
     DAOItemcard daoI = new DAOItemcard();
@@ -174,6 +174,9 @@ public class Salon extends FrameFull {
         add(panelPpal);
 
         cfgGen = daoC.askConfigGeneral();
+        if (cfgGen.isActiveConfig() == false) {
+            cfgGen = utili.cfgBacker();
+        }
         cfgAct = daoC.askConfigActual();
         totalTable = cfgGen.getTotalTable();
         tableNum = cfgGen.getTableNum();
@@ -338,7 +341,6 @@ public class Salon extends FrameFull {
         panelEndInn.setBackground(bluSt);
         panelEndInn.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2 );
         panelEnd.add(panelEndInn);
-
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {

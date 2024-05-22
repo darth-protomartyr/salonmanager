@@ -112,6 +112,9 @@ public class StaticsManager extends FrameFull {
         LocalDateTime today = now.toLocalDateTime();
 
         ConfigGeneral cfgGen = daoC.askConfigGeneral();
+        if (cfgGen.isActiveConfig()) {
+            cfgGen = utili.cfgBacker();
+        }
         captions = cfgGen.getTableItemCaptions();
 
         JLabel labelStatics = utiliGraf.labelTitleBackerA3W("Estadísticas");
@@ -178,7 +181,7 @@ public class StaticsManager extends FrameFull {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }
@@ -189,7 +192,7 @@ public class StaticsManager extends FrameFull {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }

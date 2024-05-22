@@ -1,12 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package salonmanager.entidades.graphics;
 
 import java.awt.Color;
 import java.awt.Font;
-import static java.awt.PageAttributes.ColorType.COLOR;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,16 +18,13 @@ public class PanelNested extends JPanel {
 
     String st = "";
     int y = 0;
-    int x = 0;
-
     Color bluSt = new Color(3, 166, 136);
     Color white = new Color(255, 255, 255);
     ButtonGroup group = new ButtonGroup();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
 
     public PanelNested(String st, int i) {
-      
-        
+        this.st = st;
         y = 1 + i * 8;
 
         setLayout(null);
@@ -48,7 +40,7 @@ public class PanelNested extends JPanel {
         JRadioButton radioButton1 = new JRadioButton("12 Mesas");
         JRadioButton radioButton2 = new JRadioButton("24 Mesas");
         JRadioButton radioButton3 = new JRadioButton("35 Mesas");
-        JRadioButton radioButton4 = new JRadioButton("48 mesas");
+        JRadioButton radioButton4 = new JRadioButton("48 Mesas");
 
         radioButton1.setBounds(anchoUnit * 0, altoUnit * 3, anchoUnit * 7, altoUnit * 3);
         radioButton2.setBounds(anchoUnit * 7, altoUnit * 3, anchoUnit * 7, altoUnit * 3);
@@ -82,13 +74,19 @@ public class PanelNested extends JPanel {
 
     }
 
-    // Método para establecer el texto
     public void setSt(String st) {
         this.st = st;
     }
 
-    // Método para obtener el texto
     public String getSt() {
         return st;
+    }
+
+    public ButtonGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(ButtonGroup group) {
+        this.group = group;
     }
 }

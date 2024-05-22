@@ -192,7 +192,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorWorkshift() {
-        CustomDialog cm = new CustomDialog("Error: Debe iniciar un turno antes de cargar órdenes.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe iniciar un turno antes de iniciar esta acción.", 2);
         cm.setVisible(true);
     }
 
@@ -222,6 +222,13 @@ public class UtilidadesMensajes extends JFrame {
         return confirm;
     }
     
+    
+    public boolean cargaConfirmarCierreVentana() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres cerrar la ventana?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
     
     public boolean cargaConfirmarCierrePrograma() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres cerrar el programa?");
@@ -302,7 +309,6 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
-    
     ////------------------------------Reubicar------------------------------------------
     public void errorTableResume() {
         CustomDialog cm = new CustomDialog("Error: no hay órdenes con esas características.", 2);
@@ -348,7 +354,7 @@ public class UtilidadesMensajes extends JFrame {
 
     public String requestIndication() {
         String indications = "";
-        CustomDialogTextIn cdti = new CustomDialogTextIn("Ingrese indicaciones del cliente:");
+        CustomDialogTextIn cdti = new CustomDialogTextIn("Indicaciones Cliente", "Ingrese indicaciones del cliente:", 1);
         cdti.setVisible(true);
         indications = cdti.getText();
         return indications;
@@ -449,4 +455,47 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un período de tiempo.", 2);
         cm.setVisible(true);
     }
+    
+    public void errorNullSector() {
+        CustomDialog cm = new CustomDialog("Error: Aún no ha designado sectores a la configuración.", 2);
+        cm.setVisible(true); 
+    }
+    
+    public void errorNullTabsQ() {
+        CustomDialog cm = new CustomDialog("Error: Aún no se han designado las cantidades de mesas de todos de los sectores.", 2);
+        cm.setVisible(true); 
+    }
+
+    public void errorCapExcess() {
+        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 6 rubros permitidos.", 2);
+        cm.setVisible(true); 
+    }
+    
+    public void errorSpacesExcess() {
+        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 8 sectores permitidos.", 2);
+        cm.setVisible(true); 
+    }
+
+    public boolean cargaConfirmarConfiguracion() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que desea configurar el salón?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+    
+    public String requestPass() {
+        String indications = "";
+        CustomDialogTextIn cdti = new CustomDialogTextIn("Confirmar operación", "Ingrese su password para confirmar:", 2);
+        cdti.setVisible(true);
+        indications = cdti.getText();
+        return indications;
+    }
+    
+    public boolean cargaConfirmarConfigSalon() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quiere configurar el salón?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
 }

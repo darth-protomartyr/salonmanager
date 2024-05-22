@@ -69,13 +69,13 @@ public class CustomDialogConfirm extends JDialog {
         setContentPane(contentPane);
 
         JPanel panelText = new JPanel();
+        panelText.setLayout(new GridBagLayout());
         panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 26);
         Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
         panelText.setBorder(bordeInterno);
         panelText.setBackground(viol);
         contentPane.add(panelText);
         
-        panelText.setLayout(new GridBagLayout());
         JLabel labelText = new JLabel();
         labelText.setText(utili.stringMsgFrd(message, 25, 2));
         Font nuevaFuente = new Font("Arial", Font.BOLD, 18);
@@ -101,8 +101,7 @@ public class CustomDialogConfirm extends JDialog {
         }
         );
         contentPane.add(rejectButton);
-        
-        
+
         JButtonMetalBlu acceptButton = utiliGraf.button2("Aceptar", anchoUnit * 16, altoUnit * 28, anchoUnit * 10);
         acceptButton.addActionListener(new ActionListener() {
             @Override
@@ -125,7 +124,7 @@ public class CustomDialogConfirm extends JDialog {
         }
         );
     }
-    
+
     public boolean getConfirm() {
         return confirm;
     }

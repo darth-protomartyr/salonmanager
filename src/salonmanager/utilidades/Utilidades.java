@@ -19,6 +19,7 @@ import javax.swing.ListModel;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.persistencia.DAOWorkshift;
 
 public class Utilidades {
@@ -762,5 +763,28 @@ public class Utilidades {
         LocalTime time = LocalTime.of((int) hours, (int) minutes);
 
         return time;
+    }
+
+    public ConfigGeneral cfgBacker() {    
+        ArrayList<Integer> tabsQ = new ArrayList<>();
+        tabsQ.add(35);
+        tabsQ.add(24);
+        ArrayList<String> spaces = new ArrayList<>();
+        spaces.add("salon");
+        spaces.add("vereda");
+        ArrayList<String> captions = new ArrayList<>();
+        captions.add("PLATOS");
+        captions.add("ENTRADAS");
+        captions.add("BEBIDAS");
+        captions.add("POSTRES");
+        captions.add("CAFETERIA");
+        captions.add("OTROS");
+        ArrayList<String> chars = new ArrayList<>();
+        chars.add("s");
+        chars.add("v");
+
+        
+        ConfigGeneral cfgGen = new ConfigGeneral(59, tabsQ, spaces, captions, chars, true);
+        return cfgGen;
     }
 }
