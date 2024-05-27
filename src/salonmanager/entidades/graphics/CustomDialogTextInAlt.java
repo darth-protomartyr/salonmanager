@@ -3,6 +3,7 @@ package salonmanager.entidades.graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,11 +23,13 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesMensajes;
 
-public class CustomDialogTextIn extends JDialog {
+public class CustomDialogTextInAlt extends JDialog {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
+    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Toolkit pantalla = Toolkit.getDefaultToolkit();
     Dimension tamanioPantalla = pantalla.getScreenSize();
     int anchoFrame = tamanioPantalla.width;
@@ -39,10 +42,9 @@ public class CustomDialogTextIn extends JDialog {
     Color narLg = new Color(252, 203, 5);
 
     String text = "";
-    JTextArea textArea = new JTextArea();
-    JPasswordField textField = new JPasswordField();
+    JTextField textField = new JTextField();
 
-    public CustomDialogTextIn(String tit, String message, int size) {
+    public CustomDialogTextInAlt(String tit, String message, int large) {
         setIconImage(icono.getImage());
         setModal(true);
         setTitle(tit);
@@ -55,53 +57,39 @@ public class CustomDialogTextIn extends JDialog {
         contentPane.setBackground(narLg);
         setContentPane(contentPane);
 
-        JPanel panelText = new JPanel(null);
-        panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 26);
+        JPanel panelText = new JPanel(new GridBagLayout());
+        panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 12);
         Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
         panelText.setBorder(bordeInterno);
         panelText.setBackground(narLg);
         contentPane.add(panelText);
 
-//        String mess = "Ingrese indicaciónes del cliente";
-        JLabel labelIText = utiliGraf.labelTitleBacker1W(message);
-        labelIText.setBounds(anchoUnit * 2, altoUnit * 2, anchoUnit * 27, altoUnit * 5);
+        
+        JLabel labelIText = utiliGraf.labelTitleBacker1W(utili.stringMsgFrd(message, 25, 2));
+        labelIText.setBounds(anchoUnit * 2, altoUnit * 2, anchoUnit * 27, altoUnit * 7);
         panelText.add(labelIText);
 
-        JScrollPane scrollPane = null;
         Font newFont = new Font("Arial", Font.PLAIN, 16);
 
-        if (size == 1) {
-            textArea.setRows(3);
-            textArea.setColumns(5);
-            textArea.setLineWrap(true);
-            textArea.setWrapStyleWord(true);
-            textArea.setFont(newFont);
-            textArea.setBackground(narUlg);
-            scrollPane = new JScrollPane(textArea);
-            scrollPane.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 21, altoUnit * 15);
-            scrollPane.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 21, altoUnit * 15);
-            panelText.add(scrollPane);
-            panelText.add(scrollPane);
-        } else {
-            textField.setFont(newFont);
-            textField.setBounds(anchoUnit * 6, altoUnit * 10, anchoUnit * 15, altoUnit * 4);
-            textField.setBackground(narUlg);
-            panelText.add(textField);
-        }
+        textField.setFont(newFont);
+        textField.setBounds(anchoUnit * 6, altoUnit * 18, anchoUnit * 15, altoUnit * 4);
+        textField.setBackground(narUlg);
+        contentPane.add(textField);
 
         JButtonMetalBlu butInText = utiliGraf.button2("Ingresar", anchoUnit * 10, altoUnit * 30, anchoUnit * 10);
         butInText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (size == 1) {
-                        text = textArea.getText();
+                    String st = textField.getText();
+                    if (st.length() <= large) {
+                        text = st;
+                        dispose();
                     } else {
-                        text = textField.getText();
+                        utiliMsg.errorNameLength(large);
                     }
-                    dispose();
                 } catch (Exception ex) {
-                    Logger.getLogger(CustomDialogTextIn.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CustomDialogTextInAlt.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

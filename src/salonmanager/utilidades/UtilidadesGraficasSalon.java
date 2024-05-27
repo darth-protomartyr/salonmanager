@@ -354,11 +354,13 @@ public class UtilidadesGraficasSalon {
 //PANEL TABLE BUTTONS..................................................................................................
 //PANEL TABLE BUTTONS..................................................................................................    
     public void returnTabbedPanes(Salon salon) {
+        int total = salon.getCfgGen().getTotalTable();
         for (int i = 0; i < salon.getTableNum().size(); i++) {
             JPanel panelB = new JPanel();
             panelB.setBackground(narLg);
             panelB.setLayout(null);
-            ArrayList<Integer> configValues = ss.salonConfigValues(salon.getTableNum().get(i), anchoUnit * 72, altoUnit * 72);
+            ArrayList<Integer> configValues = ss.salonConfigValues(total, salon.getTableNum().get(i), anchoUnit * 72, altoUnit * 72);
+            
             salon.setFontSizeTable(configValues.get(0));
             salon.setWUnit(configValues.get(1));
             salon.setHUnit(configValues.get(2));

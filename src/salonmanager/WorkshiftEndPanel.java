@@ -417,7 +417,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirm = utiliMsg.confirmRealWsMount();
+                boolean confirm = utiliMsg.cargaConfirmRealWsMount();
                 if (confirm) {
                     salon.setEnabled(true);
                     dispose();
@@ -428,7 +428,7 @@ public class WorkshiftEndPanel extends FrameHalf {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                boolean confirm = utiliMsg.confirmRealWsMount();
+                boolean confirm = utiliMsg.cargaConfirmRealWsMount();
                 if (confirm) {
                     salon.setEnabled(true);
                     dispose();

@@ -127,6 +127,93 @@ public class DAOConfig extends DAO {
             }
         } finally {
             desconectarBase();
-        }   
+        }
+    }
+    
+    public ArrayList<String> askSpaces() throws Exception {
+        ArrayList<String> spaces = new ArrayList<>();
+        String sql = "SELECT * FROM spaces;";
+        consultarBase(sql);
+        while (resultado.next()) {
+            String space = resultado.getString(1);
+            spaces.add(space);
+        }
+        desconectarBase();
+        return spaces;
+    }
+    
+    public ArrayList<String> askChars() throws Exception {
+        ArrayList<String> chars = new ArrayList<>();
+        String sql = "SELECT * FROM chars;";
+        consultarBase(sql);
+        while (resultado.next()) {
+            String cha = resultado.getString(1);
+            chars.add(cha);
+        }
+        desconectarBase();
+        return chars;
+    }
+    
+    public ArrayList<String> askCaptions() throws Exception {
+        ArrayList<String> captions = new ArrayList<>();
+        String sql = "SELECT * FROM captions;";
+        consultarBase(sql);
+        while (resultado.next()) {
+            String caption = resultado.getString(1);
+            captions.add(caption);
+        }
+        desconectarBase();
+        return captions;
+    }
+
+    public void saveSpace(String space) throws Exception {
+        try {
+            String sql1 = "INSERT INTO spaces(space_name)"
+                    + "VALUES('" + space + "');";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }        
+    }
+    
+    public void saveCaption(String caption) throws Exception {
+        try {
+            String sql1 = "INSERT INTO captions(caption_name)"
+                    + "VALUES('" + caption + "');";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }        
+    }
+    
+    public void saveChar(String cha) throws Exception {
+        try {
+            String sql1 = "INSERT INTO chars(char_name)"
+                    + "VALUES('" + cha + "');";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }        
     }
 }

@@ -44,8 +44,9 @@ public class ServicioSalon {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Salon salon = null;
 
-    public ArrayList<Integer> salonConfigValues(Integer tab, int anchoPane, int alturaPane) {
+    public ArrayList<Integer> salonConfigValues(Integer total, Integer tab, int anchoPane, int alturaPane) {
         ArrayList<Integer> configValues = new ArrayList<>();
+        
         int fontSize = 0;
         int wUnit = 0;
         int hUnit = 0;
@@ -59,19 +60,31 @@ public class ServicioSalon {
             rows = 3;
             col = 4;
         } else if (tab == 24) {
-            fontSize = 50;
+            if(total> 100) {
+                fontSize = 40;
+            } else {
+                fontSize = 50;
+            }
             wUnit = (anchoPane) / 31;
             hUnit = (alturaPane) / 21;
             rows = 4;
             col = 6;
         } else if (tab == 35) {
-            fontSize = 45;
+            if (total > 100) {
+                fontSize = 35;
+            } else {
+                fontSize = 45;
+            }
             wUnit = (anchoPane) / 36;
             hUnit = (alturaPane) / 26;
             rows = 5;
             col = 7;
         } else if (tab == 48) {
-            fontSize = 35;
+            if (total > 100) {
+                fontSize = 30;
+            } else {
+                fontSize = 35;
+            }
             wUnit = (anchoPane) / 41;
             hUnit = (alturaPane) / 31;
             rows = 6;

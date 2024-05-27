@@ -12,8 +12,10 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -25,18 +27,22 @@ public class Admin extends FrameHalf {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     UtilidadesUpdate utiliUpd = new UtilidadesUpdate();
+    DAOConfig daoC = new DAOConfig();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
     User user = null;
+    ConfigActual cfgAct = new ConfigActual();
 
-    public Admin(User u) {
+    public Admin(User u) throws Exception {
         user = u;
         setTitle("Administrador");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
+        cfgAct = daoC.askConfigActual();
+        
 
         JLabel labelStatics = utiliGraf.labelTitleBackerA3W("Administrar");
         labelStatics.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
@@ -58,7 +64,11 @@ public class Admin extends FrameHalf {
                 boolean confirmation = utiliMsg.cargaConfirmarConfigSalon();
                 if (confirmation) {
                     try {
-                        configSalonOpener();
+                        if (!cfgAct.isOpenWs()) {
+                            configSalonOpener();
+                        } else {
+                            utiliMsg.errorWsPendient();
+                        }
                     } catch (Exception ex) {
                         Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
                     }

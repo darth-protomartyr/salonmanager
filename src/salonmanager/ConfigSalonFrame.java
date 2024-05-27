@@ -28,8 +28,6 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelNested;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOTable;
-import salonmanager.persistencia.DAOUser;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -37,8 +35,6 @@ import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ConfigSalonFrame extends FrameThird {
 
-    DAOTable daoT = new DAOTable();
-    DAOUser daoU = new DAOUser();
     DAOConfig daoC = new DAOConfig();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
@@ -56,17 +52,21 @@ public class ConfigSalonFrame extends FrameThird {
     JList listCap = new JList();
     JList listCapSel = new JList();
 
+    ArrayList<String> spacesDB = new ArrayList<>();
     ArrayList<String> spaces = new ArrayList<>();
-    ArrayList<String> selected = new ArrayList<>();
-    ArrayList<String> chars = new ArrayList<>();
+    ArrayList<String> spacesSel = new ArrayList<>();
+    ArrayList<String> charsDB = new ArrayList<>();
+    ArrayList<String> charsSel = new ArrayList<>();
     ArrayList<Integer> quants = new ArrayList<>();
-
+    ArrayList<String> captionsDB = new ArrayList<>();
     ArrayList<String> captions = new ArrayList<>();
     ArrayList<String> captionsSel = new ArrayList<>();
 
     JButtonMetalBlu butConfirm1 = null;
     JButtonMetalBlu butConfirm2 = null;
     JButtonMetalBlu butReset = null;
+    JButtonMetalBlu butAddSpace = null;
+    JButtonMetalBlu butAddCaption = null;
 
     String data1 = "";
     String data2 = "";
@@ -77,41 +77,24 @@ public class ConfigSalonFrame extends FrameThird {
     JPanel panelPanel = new JPanel();
     ArrayList<PanelNested> panels = new ArrayList<>();
 
+    ConfigGeneral cfgGen = new ConfigGeneral();
     User user = null;
+
+    boolean selSectors = false;
 
     public ConfigSalonFrame(User u) throws Exception {
         sm.addFrame(this);
         user = u;
+        cfgGen = daoC.askConfigGeneral();
         setTitle("Configuración Salón");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
-        spaces.add("salón");
-        spaces.add("patio");
-        spaces.add("vereda");
-        spaces.add("frente");
-        spaces.add("fondo");
-        spaces.add("sala arriba");
-        spaces.add("sala adelante");
-        spaces.add("sector norte");
-        spaces.add("sector sur");
-        spaces.add("sector este");
-        spaces.add("sector oeste");
-
-        captions.add("PLATOS");
-        captions.add("BEBIDAS");
-        captions.add("TRAGOS");
-        captions.add("ENTRADAS");
-        captions.add("POSTRES");
-        captions.add("OTROS");
-        captions.add("PIZZAS");
-        captions.add("PASTAS");
-        captions.add("CAFETERÍA");
-        captions.add("PANADERÍA");
-        captions.add("ENSALADAS");
-        captions.add("SANDWICHS");
-        captions.add("VINOS");
-        captions.add("CERVEZAS");
+        spacesDB = daoC.askSpaces();
+        spaces = spacesDB;
+        captionsDB = daoC.askCaptions();
+        captions = captionsDB;
+        charsDB = daoC.askChars();
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("Configurar Salón");
         labelTit.setBounds(anchoUnit * 9, altoUnit * 0, anchoUnit * 18, altoUnit * 5);
@@ -130,8 +113,9 @@ public class ConfigSalonFrame extends FrameThird {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                    if (selected.size() < 8) {
-                        selSpace();
+                    if (spacesSel.size() < 8) {
+                        String selectedValue = (String) listSpaces.getSelectedValue();
+                        selSpace(selectedValue, 1);
                     } else {
                         utiliMsg.errorSpacesExcess();
                     }
@@ -139,14 +123,14 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         JScrollPane jSSpaces = new JScrollPane(listSpaces);
-        jSSpaces.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 13, altoUnit * 10);
+        jSSpaces.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 8, altoUnit * 10);
         panelPpal.add(jSSpaces);
 
         JLabel labelItemsSel = utiliGraf.labelTitleBacker3W("Sectores Seleccionados");
-        labelItemsSel.setBounds(anchoUnit * 19, altoUnit * 8, anchoUnit * 12, altoUnit * 3);
+        labelItemsSel.setBounds(anchoUnit * 15, altoUnit * 8, anchoUnit * 12, altoUnit * 3);
         panelPpal.add(labelItemsSel);
 
-        listSelected.setModel(utili.spacesListModelReturnMono(selected));
+        listSelected.setModel(utili.spacesListModelReturnMono(spacesSel));
         listSelected.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -157,8 +141,21 @@ public class ConfigSalonFrame extends FrameThird {
         });
 
         JScrollPane jSSelected = new JScrollPane(listSelected);
-        jSSelected.setBounds(anchoUnit * 19, altoUnit * 11, anchoUnit * 13, altoUnit * 10);
+        jSSelected.setBounds(anchoUnit * 15, altoUnit * 11, anchoUnit * 8, altoUnit * 10);
         panelPpal.add(jSSelected);
+
+        butAddSpace = utiliGraf.button3("Crear Espacio", anchoUnit * 24, altoUnit * 18, anchoUnit * 9);
+        butAddSpace.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    createSpace();
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelPpal.add(butAddSpace);
 
         JLabel labelIndications2 = utiliGraf.labelTitleBacker2W("Seleccione la cantidad de mesas por sector:");
         labelIndications2.setBounds(anchoUnit * 3, altoUnit * 22, anchoUnit * 28, altoUnit * 3);
@@ -178,7 +175,11 @@ public class ConfigSalonFrame extends FrameThird {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if (panels.size() > 0) {
-                    confirmTables();
+                    try {
+                        confirmTables();
+                    } catch (Exception ex) {
+                        Logger.getLogger(ConfigSalonFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     utiliMsg.errorNullSector();
                 }
@@ -200,7 +201,8 @@ public class ConfigSalonFrame extends FrameThird {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
                     if (captionsSel.size() < 6) {
-                        selCaption();
+                        String selectedValue = (String) listCap.getSelectedValue();
+                        selCaption(selectedValue, 1);
                     } else {
                         utiliMsg.errorCapExcess();
                     }
@@ -208,11 +210,11 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         JScrollPane jSCap = new JScrollPane(listCap);
-        jSCap.setBounds(anchoUnit * 2, altoUnit * 58, anchoUnit * 13, altoUnit * 10);
+        jSCap.setBounds(anchoUnit * 2, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
         panelPpal.add(jSCap);
 
         JLabel labelCapSel = utiliGraf.labelTitleBacker3W("Rubros Seleccionados");
-        labelCapSel.setBounds(anchoUnit * 19, altoUnit * 55, anchoUnit * 12, altoUnit * 3);
+        labelCapSel.setBounds(anchoUnit * 15, altoUnit * 55, anchoUnit * 12, altoUnit * 3);
         panelPpal.add(labelCapSel);
 
         listCapSel.setModel(utili.spacesListModelReturnMono(captionsSel));
@@ -220,14 +222,28 @@ public class ConfigSalonFrame extends FrameThird {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                    unSelCaption();
+                    String selectedValue = (String) listCapSel.getSelectedValue();
+                    unSelCaption(selectedValue);
                 }
             }
         });
 
         JScrollPane jSCapSel = new JScrollPane(listCapSel);
-        jSCapSel.setBounds(anchoUnit * 19, altoUnit * 58, anchoUnit * 13, altoUnit * 10);
+        jSCapSel.setBounds(anchoUnit * 15, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
         panelPpal.add(jSCapSel);
+
+        butAddCaption = utiliGraf.button3("Crear Rubro", anchoUnit * 24, altoUnit * 65, anchoUnit * 9);
+        butAddCaption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    createCaption();
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelPpal.add(butAddCaption);
 
         Font font = new Font("Arial", Font.PLAIN, 16);
         data1 = "<html><b>SECTORES</b>:</html>";
@@ -250,19 +266,26 @@ public class ConfigSalonFrame extends FrameThird {
         butConfirm2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (!panels.isEmpty() || !captions.isEmpty()) {
+                if (captionsSel.size() > 0) {
                     try {
-                        String pass = utiliMsg.requestPass();
-                        if (pass.equals(user.getPassword())) {
-                            createConfig();
-                        } else {
-                            utiliMsg.errorAccessDenied();
-                        }
+                        if (selSectors) {
+                            boolean confirm = utiliMsg.cargaConfirmRestart();
+                            if (confirm) {
+                                String pass = utiliMsg.requestPass();
+                                if (pass.equals(user.getPassword())) {
+                                    createConfig();
+                                } else {
+                                    utiliMsg.errorAccessDenied();
+                                }
+                            } 
+                        } utiliMsg.errorUnconfirmTable();
                     } catch (Exception ex) {
                         Logger.getLogger(ConfigSalonFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else {
+                } else if (quants.size() == 0) {
                     utiliMsg.errorNullSector();
+                } else {
+                    utiliMsg.errorCaptionsNull();
                 }
             }
         });
@@ -273,7 +296,11 @@ public class ConfigSalonFrame extends FrameThird {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if (panels.size() > 0) {
-                    confirmTables();
+                    try {
+                        resetValues();
+                    } catch (Exception ex) {
+                        Logger.getLogger(ConfigSalonFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     utiliMsg.errorNullSector();
                 }
@@ -299,12 +326,17 @@ public class ConfigSalonFrame extends FrameThird {
                 }
             }
         });
+
+        if (cfgGen.getTableItemCaptions() != null) {
+            updateValues();
+        }
     }
 
-    private void selSpace() {
-        String selectedValue = (String) listSpaces.getSelectedValue();
-        selected.add(selectedValue);
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(selected);
+    private void selSpace(String selectedValue, int i) {
+        if (i == 1) {
+            spacesSel.add(selectedValue);
+        }
+        ListModel modeloLista1 = utili.spacesListModelReturnMono(spacesSel);
         listSelected.setModel(modeloLista1);
         Iterator<String> iterador = spaces.iterator();
         while (iterador.hasNext()) {
@@ -326,21 +358,22 @@ public class ConfigSalonFrame extends FrameThird {
         spaces.add(selectedValue);
         ListModel modeloLista1 = utili.spacesListModelReturnMono(spaces);
         listSpaces.setModel(modeloLista1);
-        Iterator<String> iterador = selected.iterator();
+        Iterator<String> iterador = spacesSel.iterator();
         while (iterador.hasNext()) {
             String st = iterador.next();
             if (st.equals(selectedValue)) {
                 iterador.remove();
             }
         }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(selected);
+        ListModel modeloLista2 = utili.spacesListModelReturnMono(spacesSel);
         listSelected.setModel(modeloLista2);
 
         panelManager(null, selectedValue);
     }
 
-    private void confirmTables() {
+    private void confirmTables() throws Exception {
         ArrayList<Integer> tabsQ = new ArrayList<>();
+        spacesDB = daoC.askSpaces();
         boolean zero = false;
         for (int i = 0; i < panels.size(); i++) {
             PanelNested paN = panels.get(i);
@@ -371,45 +404,14 @@ public class ConfigSalonFrame extends FrameThird {
 
         if (zero == false) {
             quants = tabsQ;
-            for (int i = 0; i < selected.size(); i++) {
-                String st = selected.get(i);
-                String ch = "";
-                switch (st) {
-                    case "salón":
-                        ch = "s";
-                        break;
-                    case "patio":
-                        ch = "p";
-                        break;
-                    case "vereda":
-                        ch = "v";
-                        break;
-                    case "fremne":
-                        ch = "f";
-                        break;
-                    case "fondo":
-                        ch = "F";
-                        break;
-                    case "sala arriba":
-                        ch = "a";
-                        break;
-                    case "sala adelante":
-                        ch = "A";
-                        break;
-                    case "sector norte":
-                        ch = "N";
-                        break;
-                    case "sector sur":
-                        ch = "S";
-                        break;
-                    case "sector este":
-                        ch = "E";
-                        break;
-                    case "sector oeste":
-                        ch = "O";
-                        break;
+            for (int i = 0; i < spacesSel.size(); i++) {
+                String st1 = spacesSel.get(i);
+                for (int j = 0; j < spacesDB.size(); j++) {
+                    String st2 = spacesDB.get(j);
+                    if (st1.equals(st2)) {
+                        charsSel.add(charsDB.get(j));
+                    }
                 }
-                chars.add(ch);
             }
 
             for (int i = 0; i < panels.size(); i++) {
@@ -421,14 +423,15 @@ public class ConfigSalonFrame extends FrameThird {
             }
 
             data1Updater();
+            selSectors = true;
             butConfirm1.setEnabled(false);
             listSelected.setEnabled(false);
             listSpaces.setEnabled(false);
+            butAddSpace.setEnabled(false);
         } else {
             utiliMsg.errorNullTabsQ();
             zero = true;
         }
-
     }
 
     private void panelManager(PanelNested pn, String st) {
@@ -471,29 +474,28 @@ public class ConfigSalonFrame extends FrameThird {
         panelPanel.repaint();
     }
 
-    private void selCaption() {
-        String selectedValue = (String) listCap.getSelectedValue();
-        captionsSel.add(selectedValue);
+    private void selCaption(String selectedValue, int i) {
+        if (i == 1) {
+            captionsSel.add(selectedValue);
+        }
         ListModel modeloLista1 = utili.spacesListModelReturnMono(captionsSel);
         listCapSel.setModel(modeloLista1);
-        int counter = 0;
+
         Iterator<String> iterador = captions.iterator();
         while (iterador.hasNext()) {
             String st = iterador.next();
             if (st.equals(selectedValue)) {
                 iterador.remove();
             }
-            counter += 1;
         }
         ListModel modeloLista2 = utili.spacesListModelReturnMono(captions);
         listCap.setModel(modeloLista2);
 
         data2Updater();
-
     }
 
-    private void unSelCaption() {
-        String selectedValue = (String) listCapSel.getSelectedValue();
+    private void unSelCaption(String selectedValue) {
+        selectedValue = (String) listCapSel.getSelectedValue();
         captions.add(selectedValue);
         ListModel modeloLista1 = utili.spacesListModelReturnMono(captions);
         listCap.setModel(modeloLista1);
@@ -512,11 +514,11 @@ public class ConfigSalonFrame extends FrameThird {
 
     private void data1Updater() {
         String st = "<html><b>SECTORES</b>: ";
-        for (int i = 0; i < selected.size(); i++) {
-            if (i == selected.size() - 1) {
-                st += selected.get(i) + "(" + quants.get(i) + ")";
+        for (int i = 0; i < spacesSel.size(); i++) {
+            if (i == spacesSel.size() - 1) {
+                st += spacesSel.get(i) + "(" + quants.get(i) + ")";
             } else {
-                st += selected.get(i) + "(" + quants.get(i) + ") - ";
+                st += spacesSel.get(i) + "(" + quants.get(i) + ") - ";
             }
         }
         st = st + "</html>";
@@ -537,12 +539,113 @@ public class ConfigSalonFrame extends FrameThird {
     }
 
     private void createConfig() throws Exception {
-        ConfigGeneral cfgGen = new ConfigGeneral();
         int totalTab = 0;
         for (int i = 0; i < quants.size(); i++) {
             totalTab += quants.get(i);
         }
-
-        daoC.saveConfigGeneral(totalTab, quants, spaces, captionsSel, chars, rootPaneCheckingEnabled);
+        daoC.saveConfigGeneral(totalTab, quants, spacesSel, captionsSel, charsSel, rootPaneCheckingEnabled);
+        sm.frameCloser();
+        System.exit(0);
     }
+
+    private void resetValues() throws Exception {
+        captionsDB = daoC.askCaptions();
+        captions = captionsDB;
+        spacesDB = daoC.askSpaces();
+        spaces = spacesDB;
+        captionsSel = new ArrayList<>();
+        spacesSel = new ArrayList<>();
+        charsSel = new ArrayList<>();
+        quants = new ArrayList<>();
+        listSpaces.setModel(utili.spacesListModelReturnMono(spaces));
+        listSelected.setModel(utili.spacesListModelReturnMono(spacesSel));
+        listCap.setModel(utili.spacesListModelReturnMono(captions));
+        listCapSel.setModel(utili.spacesListModelReturnMono(captionsSel));
+        data1Updater();
+        data2Updater();
+        panels = new ArrayList<>();
+        butConfirm1.setEnabled(true);
+        butAddSpace.setEnabled(true);
+        selSectors = false;
+        listSelected.setEnabled(true);
+        listSpaces.setEnabled(true);
+        panelPanel.removeAll();
+        panelPanel.revalidate();
+        panelPanel.repaint();
+    }
+
+    private void createSpace() throws Exception {
+        String space = utiliMsg.cargaNewString(1, 15);
+        spaces.add(space);
+        daoC.saveSpace(space);
+        String cha = space.substring(0, 1);
+        charsDB.add(cha);
+        daoC.saveChar(cha);
+        spaces = daoC.askSpaces();
+        listSpaces.setModel(utili.spacesListModelReturnMono(spaces));
+    }
+
+    private void createCaption() throws Exception {
+        String caption = utiliMsg.cargaNewString(2, 10);
+        captions.add(caption);
+        daoC.saveCaption(caption);
+        captions = daoC.askCaptions();
+        listCap.setModel(utili.spacesListModelReturnMono(captions));
+    }
+
+    private void updateValues() throws Exception {
+        captionsSel = cfgGen.getTableItemCaptions();
+        spacesSel = cfgGen.getTablePan();
+        quants = cfgGen.getTableNum();
+
+        for (int i = 0; i < captionsSel.size(); i++) {
+            selCaption(captionsSel.get(i), 0);
+        }
+
+        for (int i = 0; i < spacesSel.size(); i++) {
+            selSpace(spacesSel.get(i), 0);
+        }
+
+        for (int i = 0; i < quants.size(); i++) {
+            PanelNested paN = panels.get(i);
+            ButtonGroup group = paN.getGroup();
+            int m = quants.get(i);
+            String tabs = "";
+            if (m == 12) {
+                tabs = "12 Mesas";
+            } else if (m == 24) {
+                tabs = "24 Mesas";
+            } else if (m == 35) {
+                tabs = "35 Mesas";
+            } else {
+                tabs = "48 Mesas";
+            }
+
+            for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+                AbstractButton button = buttons.nextElement();
+                String selection = button.getText();
+                if (selection.equals(tabs)) {
+                    button.setSelected(true);
+                    break;
+                } else if (selection.equals(tabs)) {
+                    button.setSelected(true);
+                    break;
+                } else if (selection.equals(tabs)) {
+                    button.setSelected(true);
+                    break;
+                } else if (selection.equals(tabs)) {
+                    button.setSelected(true);
+                    break;
+                }
+            }
+        }
+
+        data1Updater();
+        data2Updater();
+
+//        panelPanel.removeAll();
+//        panelPanel.revalidate();
+//        panelPanel.repaint();
+    }
+
 }
