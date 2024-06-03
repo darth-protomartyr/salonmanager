@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -454,6 +455,8 @@ public class ConfigItemList extends FrameFull {
                     double rou = price % round;
                     rou = round - rou;
                     price = price + rou;
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    price = Double.parseDouble(df.format(price));
                     daoI.updateItemPrice(id, price);
                 }
             }
