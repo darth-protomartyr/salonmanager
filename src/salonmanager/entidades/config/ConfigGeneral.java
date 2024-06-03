@@ -5,18 +5,18 @@ public class ConfigGeneral {
     int totalTable; //table quantity
     ArrayList<Integer> tableNum; // quantity of tables for pane
     ArrayList<String> tablePan; // name pane for pane
-    ArrayList<String> tableItemCaptions;
+    ArrayList<String> tableItemCategories;
     ArrayList<String> tablePanCh; // inicial del nombre de cada uno de los sectores  
     boolean activeConfig;
 
     public ConfigGeneral() {
     }
 
-    public ConfigGeneral(int totalTable, ArrayList<Integer> tableNum, ArrayList<String> tablePan, ArrayList<String> tableItemCaptions, ArrayList<String> tablePanCh, boolean activeConfig) {
+    public ConfigGeneral(int totalTable, ArrayList<Integer> tableNum, ArrayList<String> tablePan, ArrayList<String> tableItemCategories, ArrayList<String> tablePanCh, boolean activeConfig) {
         this.totalTable = totalTable;
         this.tableNum = tableNum;
         this.tablePan = tablePan;
-        this.tableItemCaptions = tableItemCaptions;
+        this.tableItemCategories = tableItemCategories;
         this.tablePanCh = tablePanCh;
         this.activeConfig = true;
     }
@@ -45,12 +45,12 @@ public class ConfigGeneral {
         this.tablePan = tablePan;
     }
 
-    public ArrayList<String> getTableItemCaptions() {
-        return tableItemCaptions;
+    public ArrayList<String> getTableItemCategories() {
+        return tableItemCategories;
     }
 
-    public void setTableItemCaptions(ArrayList<String> tableItemCaptions) {
-        this.tableItemCaptions = tableItemCaptions;
+    public void setTableItemCategories(ArrayList<String> tableItemCategories) {
+        this.tableItemCategories = tableItemCategories;
     }
 
     public ArrayList<String> getTablePanCh() {

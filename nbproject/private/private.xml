@@ -13,7 +13,7 @@
             <url>src/salonmanager/servicios/ServicioSalon.java</url>
             <bookmark id="15">
                 <name/>
-                <line>417</line>
+                <line>430</line>
                 <key/>
             </bookmark>
         </file>
@@ -29,37 +29,36 @@
             <url>src/salonmanager/utilidades/UtilidadesGraficasSalon.java</url>
             <bookmark id="13">
                 <name/>
-                <line>1378</line>
+                <line>1380</line>
                 <key/>
             </bookmark>
             <bookmark id="12">
                 <name/>
-                <line>1400</line>
+                <line>1402</line>
                 <key/>
             </bookmark>
             <bookmark id="11">
                 <name/>
-                <line>1448</line>
+                <line>1450</line>
                 <key/>
             </bookmark>
             <bookmark id="17">
                 <name/>
-                <line>1512</line>
+                <line>1514</line>
                 <key/>
             </bookmark>
             <bookmark id="16">
                 <name/>
-                <line>1719</line>
+                <line>1721</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/persistencia/DAOConfig.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/ConfigSalonFrame.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesMensajes.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/graphics/CustomDialogTextInAlt.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/ConfigItemList.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/graphics/PanelNestedItem.java</file>
             <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/Utilidades.java</file>
         </group>
     </open-files>

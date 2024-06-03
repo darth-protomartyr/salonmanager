@@ -25,7 +25,7 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameThird;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.entidades.graphics.PanelNested;
+import salonmanager.entidades.graphics.PanelNestedSpace;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.servicios.ServicioTable;
@@ -49,8 +49,8 @@ public class ConfigSalonFrame extends FrameThird {
     JList listSpaces = new JList();
     JList listSelected = new JList();
 
-    JList listCap = new JList();
-    JList listCapSel = new JList();
+    JList listCat = new JList();
+    JList listCatSel = new JList();
 
     ArrayList<String> spacesDB = new ArrayList<>();
     ArrayList<String> spaces = new ArrayList<>();
@@ -58,15 +58,15 @@ public class ConfigSalonFrame extends FrameThird {
     ArrayList<String> charsDB = new ArrayList<>();
     ArrayList<String> charsSel = new ArrayList<>();
     ArrayList<Integer> quants = new ArrayList<>();
-    ArrayList<String> captionsDB = new ArrayList<>();
-    ArrayList<String> captions = new ArrayList<>();
-    ArrayList<String> captionsSel = new ArrayList<>();
+    ArrayList<String> categoriesDB = new ArrayList<>();
+    ArrayList<String> categories = new ArrayList<>();
+    ArrayList<String> categoriesSel = new ArrayList<>();
 
     JButtonMetalBlu butConfirm1 = null;
     JButtonMetalBlu butConfirm2 = null;
     JButtonMetalBlu butReset = null;
     JButtonMetalBlu butAddSpace = null;
-    JButtonMetalBlu butAddCaption = null;
+    JButtonMetalBlu butAddCategory = null;
 
     String data1 = "";
     String data2 = "";
@@ -75,7 +75,7 @@ public class ConfigSalonFrame extends FrameThird {
     JLabel labelData2 = new JLabel();
 
     JPanel panelPanel = new JPanel();
-    ArrayList<PanelNested> panels = new ArrayList<>();
+    ArrayList<PanelNestedSpace> panels = new ArrayList<>();
 
     ConfigGeneral cfgGen = new ConfigGeneral();
     User user = null;
@@ -92,8 +92,8 @@ public class ConfigSalonFrame extends FrameThird {
 
         spacesDB = daoC.askSpaces();
         spaces = spacesDB;
-        captionsDB = daoC.askCaptions();
-        captions = captionsDB;
+        categoriesDB = daoC.askCategories();
+        categories = categoriesDB;
         charsDB = daoC.askChars();
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("Configurar Salón");
@@ -187,63 +187,63 @@ public class ConfigSalonFrame extends FrameThird {
         });
         panelPpal.add(butConfirm1);
 
-        JLabel labelIndications3 = utiliGraf.labelTitleBacker2W("Seleccione hasta 6 Rubros");
-        labelIndications3.setBounds(anchoUnit * 9, altoUnit * 52, anchoUnit * 16, altoUnit * 3);
+        JLabel labelIndications3 = utiliGraf.labelTitleBacker2W("Seleccione hasta 6 categorías");
+        labelIndications3.setBounds(anchoUnit * 8, altoUnit * 52, anchoUnit * 18, altoUnit * 3);
         panelPpal.add(labelIndications3);
 
-        JLabel labelCap = utiliGraf.labelTitleBacker3W("Rubros a Seleccionar");
-        labelCap.setBounds(anchoUnit * 2, altoUnit * 55, anchoUnit * 12, altoUnit * 3);
-        panelPpal.add(labelCap);
+        JLabel labelCat = utiliGraf.labelTitleBacker3W("Categ. a Seleccionar");
+        labelCat.setBounds(anchoUnit * 2, altoUnit * 55, anchoUnit * 13, altoUnit * 3);
+        panelPpal.add(labelCat);
 
-        listCap.setModel(utili.spacesListModelReturnMono(captions));
-        listCap.addMouseListener(new MouseAdapter() {
+        listCat.setModel(utili.spacesListModelReturnMono(categories));
+        listCat.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                    if (captionsSel.size() < 6) {
-                        String selectedValue = (String) listCap.getSelectedValue();
-                        selCaption(selectedValue, 1);
+                    if (categoriesSel.size() < 6) {
+                        String selectedValue = (String) listCat.getSelectedValue();
+                        selCategory(selectedValue, 1);
                     } else {
-                        utiliMsg.errorCapExcess();
+                        utiliMsg.errorCatExcess();
                     }
                 }
             }
         });
-        JScrollPane jSCap = new JScrollPane(listCap);
-        jSCap.setBounds(anchoUnit * 2, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
-        panelPpal.add(jSCap);
+        JScrollPane jSCat = new JScrollPane(listCat);
+        jSCat.setBounds(anchoUnit * 2, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
+        panelPpal.add(jSCat);
 
-        JLabel labelCapSel = utiliGraf.labelTitleBacker3W("Rubros Seleccionados");
-        labelCapSel.setBounds(anchoUnit * 15, altoUnit * 55, anchoUnit * 12, altoUnit * 3);
-        panelPpal.add(labelCapSel);
+        JLabel labelCatSel = utiliGraf.labelTitleBacker3W("Categ. Seleccionadas");
+        labelCatSel.setBounds(anchoUnit * 15, altoUnit * 55, anchoUnit * 13, altoUnit * 3);
+        panelPpal.add(labelCatSel);
 
-        listCapSel.setModel(utili.spacesListModelReturnMono(captionsSel));
-        listCapSel.addMouseListener(new MouseAdapter() {
+        listCatSel.setModel(utili.spacesListModelReturnMono(categoriesSel));
+        listCatSel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                    String selectedValue = (String) listCapSel.getSelectedValue();
-                    unSelCaption(selectedValue);
+                    String selectedValue = (String) listCatSel.getSelectedValue();
+                    unSelCategory(selectedValue);
                 }
             }
         });
 
-        JScrollPane jSCapSel = new JScrollPane(listCapSel);
-        jSCapSel.setBounds(anchoUnit * 15, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
-        panelPpal.add(jSCapSel);
+        JScrollPane jSCatSel = new JScrollPane(listCatSel);
+        jSCatSel.setBounds(anchoUnit * 15, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
+        panelPpal.add(jSCatSel);
 
-        butAddCaption = utiliGraf.button3("Crear Rubro", anchoUnit * 24, altoUnit * 65, anchoUnit * 9);
-        butAddCaption.addActionListener(new ActionListener() {
+        butAddCategory = utiliGraf.button3("Crear Categoría", anchoUnit * 24, altoUnit * 65, anchoUnit * 9);
+        butAddCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    createCaption();
+                    createCategory();
                 } catch (Exception ex) {
                     Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelPpal.add(butAddCaption);
+        panelPpal.add(butAddCategory);
 
         Font font = new Font("Arial", Font.PLAIN, 16);
         data1 = "<html><b>SECTORES</b>:</html>";
@@ -254,7 +254,7 @@ public class ConfigSalonFrame extends FrameThird {
         labelData1.setBackground(bluLg);
         panelPpal.add(labelData1);
 
-        data2 = "<html><b>RUBROS</b>:</html>";
+        data2 = "<html><b>CATEGORÍAS</b>:</html>";
         labelData2 = utiliGraf.labelTitleBacker2W(data2);
         labelData2.setText(data2);
         labelData2.setBounds(anchoUnit * 1, altoUnit * 78, anchoUnit * 32, altoUnit * 6);
@@ -266,7 +266,7 @@ public class ConfigSalonFrame extends FrameThird {
         butConfirm2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (captionsSel.size() > 0) {
+                if (categoriesSel.size() > 0) {
                     try {
                         if (selSectors) {
                             boolean confirm = utiliMsg.cargaConfirmRestart();
@@ -277,15 +277,16 @@ public class ConfigSalonFrame extends FrameThird {
                                 } else {
                                     utiliMsg.errorAccessDenied();
                                 }
-                            } 
-                        } utiliMsg.errorUnconfirmTable();
+                            }
+                        }
+                        utiliMsg.errorUnconfirmTable();
                     } catch (Exception ex) {
                         Logger.getLogger(ConfigSalonFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else if (quants.size() == 0) {
                     utiliMsg.errorNullSector();
                 } else {
-                    utiliMsg.errorCaptionsNull();
+                    utiliMsg.errorCategoriesNull();
                 }
             }
         });
@@ -312,7 +313,10 @@ public class ConfigSalonFrame extends FrameThird {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                dispose();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                if (confirmation) {
+                    dispose();
+                }
             }
         });
         panelPpal.add(butSalir);
@@ -327,7 +331,7 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
 
-        if (cfgGen.getTableItemCaptions() != null) {
+        if (cfgGen.getTableItemCategories() != null) {
             updateValues();
         }
     }
@@ -348,7 +352,7 @@ public class ConfigSalonFrame extends FrameThird {
         ListModel modeloLista2 = utili.spacesListModelReturnMono(spaces);
         listSpaces.setModel(modeloLista2);
 
-        PanelNested pn = new PanelNested(selectedValue, panels.size());
+        PanelNestedSpace pn = new PanelNestedSpace(selectedValue, panels.size());
 
         panelManager(pn, selectedValue);
     }
@@ -376,7 +380,7 @@ public class ConfigSalonFrame extends FrameThird {
         spacesDB = daoC.askSpaces();
         boolean zero = false;
         for (int i = 0; i < panels.size(); i++) {
-            PanelNested paN = panels.get(i);
+            PanelNestedSpace paN = panels.get(i);
             ButtonGroup group = paN.getGroup();
             int m = 0;
             for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
@@ -434,23 +438,23 @@ public class ConfigSalonFrame extends FrameThird {
         }
     }
 
-    private void panelManager(PanelNested pn, String st) {
+    private void panelManager(PanelNestedSpace pn, String st) {
         panelPanel.removeAll();
         if (pn != null) {
             panels.add(pn);
         } else {
-            Iterator<PanelNested> iterador = panels.iterator();
+            Iterator<PanelNestedSpace> iterador = panels.iterator();
             while (iterador.hasNext()) {
-                PanelNested p = iterador.next();
+                PanelNestedSpace p = iterador.next();
                 if (p.getSt().equals(st)) {
                     iterador.remove();
                 }
             }
 
-            ArrayList<PanelNested> panels2 = new ArrayList<>();
+            ArrayList<PanelNestedSpace> panels2 = new ArrayList<>();
             int counter = 0;
             for (int i = 0; i < panels.size(); i++) {
-                PanelNested pan = new PanelNested(panels.get(i).getSt(), counter);
+                PanelNestedSpace pan = new PanelNestedSpace(panels.get(i).getSt(), counter);
                 panels2.add(pan);
                 counter += 1;
             }
@@ -474,40 +478,40 @@ public class ConfigSalonFrame extends FrameThird {
         panelPanel.repaint();
     }
 
-    private void selCaption(String selectedValue, int i) {
+    private void selCategory(String selectedValue, int i) {
         if (i == 1) {
-            captionsSel.add(selectedValue);
+            categoriesSel.add(selectedValue);
         }
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(captionsSel);
-        listCapSel.setModel(modeloLista1);
+        ListModel modeloLista1 = utili.spacesListModelReturnMono(categoriesSel);
+        listCatSel.setModel(modeloLista1);
 
-        Iterator<String> iterador = captions.iterator();
+        Iterator<String> iterador = categories.iterator();
         while (iterador.hasNext()) {
             String st = iterador.next();
             if (st.equals(selectedValue)) {
                 iterador.remove();
             }
         }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(captions);
-        listCap.setModel(modeloLista2);
+        ListModel modeloLista2 = utili.spacesListModelReturnMono(categories);
+        listCat.setModel(modeloLista2);
 
         data2Updater();
     }
 
-    private void unSelCaption(String selectedValue) {
-        selectedValue = (String) listCapSel.getSelectedValue();
-        captions.add(selectedValue);
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(captions);
-        listCap.setModel(modeloLista1);
-        Iterator<String> iterador = captionsSel.iterator();
+    private void unSelCategory(String selectedValue) {
+        selectedValue = (String) listCatSel.getSelectedValue();
+        categories.add(selectedValue);
+        ListModel modeloLista1 = utili.spacesListModelReturnMono(categories);
+        listCat.setModel(modeloLista1);
+        Iterator<String> iterador = categoriesSel.iterator();
         while (iterador.hasNext()) {
             String st = iterador.next();
             if (st.equals(selectedValue)) {
                 iterador.remove();
             }
         }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(captionsSel);
-        listCapSel.setModel(modeloLista2);
+        ListModel modeloLista2 = utili.spacesListModelReturnMono(categoriesSel);
+        listCatSel.setModel(modeloLista2);
 
         data2Updater();
     }
@@ -526,12 +530,12 @@ public class ConfigSalonFrame extends FrameThird {
     }
 
     private void data2Updater() {
-        String st = "<html><b>RUBROS</b>: ";
-        for (int i = 0; i < captionsSel.size(); i++) {
-            if (i == captionsSel.size() - 1) {
-                st += captionsSel.get(i);
+        String st = "<html><b>CATEGORÍAS</b>: ";
+        for (int i = 0; i < categoriesSel.size(); i++) {
+            if (i == categoriesSel.size() - 1) {
+                st += categoriesSel.get(i);
             } else {
-                st += captionsSel.get(i) + " - ";
+                st += categoriesSel.get(i) + " - ";
             }
         }
         st = st + "</html>";
@@ -543,24 +547,24 @@ public class ConfigSalonFrame extends FrameThird {
         for (int i = 0; i < quants.size(); i++) {
             totalTab += quants.get(i);
         }
-        daoC.saveConfigGeneral(totalTab, quants, spacesSel, captionsSel, charsSel, rootPaneCheckingEnabled);
+        daoC.saveConfigGeneral(totalTab, quants, spacesSel, categoriesSel, charsSel, rootPaneCheckingEnabled);
         sm.frameCloser();
         System.exit(0);
     }
 
     private void resetValues() throws Exception {
-        captionsDB = daoC.askCaptions();
-        captions = captionsDB;
+        categoriesDB = daoC.askCategories();
+        categories = categoriesDB;
         spacesDB = daoC.askSpaces();
         spaces = spacesDB;
-        captionsSel = new ArrayList<>();
+        categoriesSel = new ArrayList<>();
         spacesSel = new ArrayList<>();
         charsSel = new ArrayList<>();
         quants = new ArrayList<>();
         listSpaces.setModel(utili.spacesListModelReturnMono(spaces));
         listSelected.setModel(utili.spacesListModelReturnMono(spacesSel));
-        listCap.setModel(utili.spacesListModelReturnMono(captions));
-        listCapSel.setModel(utili.spacesListModelReturnMono(captionsSel));
+        listCat.setModel(utili.spacesListModelReturnMono(categories));
+        listCatSel.setModel(utili.spacesListModelReturnMono(categoriesSel));
         data1Updater();
         data2Updater();
         panels = new ArrayList<>();
@@ -585,21 +589,21 @@ public class ConfigSalonFrame extends FrameThird {
         listSpaces.setModel(utili.spacesListModelReturnMono(spaces));
     }
 
-    private void createCaption() throws Exception {
-        String caption = utiliMsg.cargaNewString(2, 10);
-        captions.add(caption);
-        daoC.saveCaption(caption);
-        captions = daoC.askCaptions();
-        listCap.setModel(utili.spacesListModelReturnMono(captions));
+    private void createCategory() throws Exception {
+        String category = utiliMsg.cargaNewString(2, 10);
+        categories.add(category);
+        daoC.saveCategory(category);
+        categories = daoC.askCategories();
+        listCat.setModel(utili.spacesListModelReturnMono(categories));
     }
 
     private void updateValues() throws Exception {
-        captionsSel = cfgGen.getTableItemCaptions();
+        categoriesSel = cfgGen.getTableItemCategories();
         spacesSel = cfgGen.getTablePan();
         quants = cfgGen.getTableNum();
 
-        for (int i = 0; i < captionsSel.size(); i++) {
-            selCaption(captionsSel.get(i), 0);
+        for (int i = 0; i < categoriesSel.size(); i++) {
+            selCategory(categoriesSel.get(i), 0);
         }
 
         for (int i = 0; i < spacesSel.size(); i++) {
@@ -607,7 +611,7 @@ public class ConfigSalonFrame extends FrameThird {
         }
 
         for (int i = 0; i < quants.size(); i++) {
-            PanelNested paN = panels.get(i);
+            PanelNestedSpace paN = panels.get(i);
             ButtonGroup group = paN.getGroup();
             int m = quants.get(i);
             String tabs = "";

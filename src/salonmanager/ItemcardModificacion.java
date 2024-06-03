@@ -31,28 +31,21 @@ public class ItemcardModificacion extends FrameHalf {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     DAOItemcard daoIC = new DAOItemcard();
-    ServicioItemcard sic = new ServicioItemcard();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
-    User userIn = null;
-    Itemcard item = null;
 
     ArrayList<Itemcard> itemsCardDB = null;
     String name = "";
-    String caption = "";
+    String category = "";
     String description = "";
     double cost = 0;
     double price = 0;
     int stock = 0;
     boolean tipAlta = false;
     Itemcard itemAux = new Itemcard();
-    ArrayList<String> captionsDB = utili.captionList();
+    ArrayList<String> categoriesDB = utili.categoryList();
 
     JTextField fieldName = new JTextField();
-    JComboBox comboCaption = new JComboBox();
+    JComboBox comboCategory = new JComboBox();
     JTextArea areaDescription = new JTextArea();
     JTextField fieldCost = new JTextField();
     JTextField fieldPrice = new JTextField();
@@ -63,7 +56,6 @@ public class ItemcardModificacion extends FrameHalf {
     public ItemcardModificacion(Itemcard ic) throws Exception {
         itemAux = ic;
         sm.addFrame(this);
-        item = ic;
         setTitle("Modificación Item de la Carta");
         itemsCardDB = daoIC.listarItemsCard();
         PanelPpal panelPpal = new PanelPpal(frame);
@@ -73,7 +65,7 @@ public class ItemcardModificacion extends FrameHalf {
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 
-        JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, captionsDB, itemAux);
+        JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, itemAux);
         panelPpal.add(panelForm);
 
         butModificarItem = utiliGraf.button1("Modificar Item", 206, 600, 270);
@@ -108,7 +100,7 @@ public class ItemcardModificacion extends FrameHalf {
     private void butModificarItemActionPerformed() throws Exception {
         boolean error = false;
         name = fieldName.getText();
-        caption = utili.selectorCaption(comboCaption.getSelectedIndex());
+        category = utili.selectorCategory(comboCategory.getSelectedIndex());
         description = areaDescription.getText();
 
         if (name.length() > 30 || name.length() < 2) {
@@ -185,8 +177,8 @@ public class ItemcardModificacion extends FrameHalf {
         tipAlta = checkTip.isSelected();
 
         if (error == false) {
-//            itemAux = new Itemcard(name, caption, description, cost, price, stock, tipAlta);
-            daoIC.modificarItem(itemAux.getId(), name, caption, description, cost, price, stock, tipAlta);
+//            itemAux = new Itemcard(name, category, description, cost, price, stock, tipAlta);
+            daoIC.modificarItem(itemAux.getId(), name, category, description, cost, price, stock, tipAlta);
             resetItemcard();
             dispose();
         }
@@ -195,7 +187,7 @@ public class ItemcardModificacion extends FrameHalf {
     private void resetItemcard() throws Exception {
         itemsCardDB = daoIC.listarItemsCard();
         name = "";
-        caption = "";
+        category = "";
         description = "";
         cost = 0;
         price = 0;

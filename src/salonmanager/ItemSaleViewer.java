@@ -48,7 +48,7 @@ public class ItemSaleViewer extends FrameFull {
     JTable jTable = new JTable();
     String col1 = "Nro";
     String col2 = "Item";
-    String col3 = "Rubro";
+    String col3 = "Categoría";
     String col4 = "Tipo de orden";
     String col5 = "Mozo";
     String col6 = "Id Turno";
@@ -91,7 +91,7 @@ public class ItemSaleViewer extends FrameFull {
             ItemSale is = iSales.get(i);
             String num = is.getSaleId() + "";
             String item = getItemDataById(is) + "";
-            String caption = is.getItemSaleCaption();
+            String category = is.getItemSaleCategory();
             String kind = utili.getTabPos(is.getItemSaleTabPos());
             String waiter = getWaiterNameById(is) + "";
             String ws = is.getItemSaleWorkshiftId() + "";
@@ -100,7 +100,7 @@ public class ItemSaleViewer extends FrameFull {
 
             data[i][0] = " " + num;
             data[i][1] = " " + item;
-            data[i][2] = " " + caption;
+            data[i][2] = " " + category;
             data[i][3] = " " + kind;
             data[i][4] = " " + waiter;
             data[i][5] = " " + ws;

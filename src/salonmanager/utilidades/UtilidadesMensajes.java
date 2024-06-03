@@ -115,8 +115,8 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true); 
     }
 
-    public void errorCapExcess() {
-        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 6 rubros permitidos.", 2);
+    public void errorCatExcess() {
+        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 6 categorías permitidas.", 2);
         cm.setVisible(true); 
     }
     
@@ -385,8 +385,8 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true); 
     }
     
-    public void errorCaptionsNull() {
-        CustomDialog cm = new CustomDialog("Error: Debe ingresar hasta 6 rubros de venta.", 2);
+    public void errorCategoriesNull() {
+        CustomDialog cm = new CustomDialog("Error: Debe ingresar hasta 6 categorías de venta.", 2);
         cm.setVisible(true); 
     }  
     
@@ -496,8 +496,23 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
+
+    public boolean cargaConfirmarCambioCat() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que quiere cambiar la categoría de los Items seleccionados?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
     
-    ////------------------------------Reubicar------------------------------------------
+    public boolean cargaConfirmarCambioPrice() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que quiere cambiar el precio de los Items seleccionados?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+    
+    ////------------------------------Backers------------------------------------------
+    ////------------------------------Backers------------------------------------------
 
 
     public String requestIndication() {
@@ -547,8 +562,8 @@ public class UtilidadesMensajes extends JFrame {
             tit = "Nuevo espacio";
             question = "Ingrese el nombre de un nuevo espacio de hasta 15 caracteres";
         } else if (i == 2) {
-            tit = "Nuevo Rubro";
-            question = "Ingrese el nombre de un nuevo rubro de hasta 10 caracteres";                
+            tit = "Nuevo Categoría";
+            question = "Ingrese el nombre de una nueva categoría de hasta 10 caracteres";                
         }
         
         CustomDialogTextInAlt cdti = new CustomDialogTextInAlt(tit, question, large);
@@ -561,4 +576,45 @@ public class UtilidadesMensajes extends JFrame {
         }
         return st;           
     }
+    
+    ////------------------------------Reubicar------------------------------------------
+    ////------------------------------Reubicar------------------------------------------
+
+    public void errorCat() {
+        CustomDialog cm = new CustomDialog("Error: no hay Items en esta Categoría.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorCatSelection() {
+        CustomDialog cm = new CustomDialog("Error: No ha seleccionado una categoría.", 2);
+        cm.setVisible(true);
+    }
+    
+    public void errorCatEqual() {
+        CustomDialog cm = new CustomDialog("Error: la categoría seleccionada es igual a la del item.", 2);
+        cm.setVisible(true);
+    }
+
+    public boolean cargeConfirmLowerPrice() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que desea ingresar un precio final inferior o igual al costo?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public void cargaSuccesMod() {
+        CustomDialog cm = new CustomDialog("Las moodificaciones fueron realizadas con éxito.", 1);
+        cm.setVisible(true);
+    }
+
+    public void errorPnlsMod() {
+        CustomDialog cm = new CustomDialog("No hay items para modificar.", 1);
+        cm.setVisible(true);
+    }
+
+    public void errorModDisabled() {
+            CustomDialog cm = new CustomDialog("Los cambios globales no están habilitados.", 1);
+        cm.setVisible(true);
+    }
+    
 }

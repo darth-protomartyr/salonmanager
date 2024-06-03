@@ -12,7 +12,7 @@ public class ItemSale {
     Utilidades utili = new Utilidades();
     private int saleId;
     private int itemSaleId;
-    private String itemSaleCaption;
+    private String itemSaleCategory;
     private String itemSaleTabPos;
     private String itemSaleWaiterId;
     private int itemSaleWorkshiftId;
@@ -23,9 +23,9 @@ public class ItemSale {
     public ItemSale() {
     }
 
-    public ItemSale(int itemSaleId, String itemSaleCaption, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSalePrice, Timestamp itemSaleDate) throws Exception {
+    public ItemSale(int itemSaleId, String itemSaleCategory, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSalePrice, Timestamp itemSaleDate) throws Exception {
         this.itemSaleId = itemSaleId;
-        this.itemSaleCaption = itemSaleCaption;
+        this.itemSaleCategory = itemSaleCategory;
         this.itemSaleTabPos = itemSaleTabPos;
         this.itemSaleWaiterId = itemSaleWaiterId;
         this.itemSaleWorkshiftId = itemSaleWorkshiftId;
@@ -50,12 +50,12 @@ public class ItemSale {
         this.itemSaleId = itemSaleId;
     }
 
-    public String getItemSaleCaption() {
-        return itemSaleCaption;
+    public String getItemSaleCategory() {
+        return itemSaleCategory;
     }
 
-    public void setItemSaleCaption(String itemSaleCaption) {
-        this.itemSaleCaption = itemSaleCaption;
+    public void setItemSaleCategory(String itemSaleCategory) {
+        this.itemSaleCategory = itemSaleCategory;
     }
     
     public String getItemSaleTabPos() {

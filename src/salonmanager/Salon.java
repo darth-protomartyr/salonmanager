@@ -42,6 +42,7 @@ import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class Salon extends FrameFull {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -106,7 +107,7 @@ public class Salon extends FrameFull {
     double error = 0; // dinero faltante a pagar;
 
     JLabel labelWorkshift = new JLabel();
-    
+
     //Botonera
     ArrayList<Table> prevTabs = new ArrayList<>();
     ArrayList<JPanel> panelsPane = new ArrayList<>();
@@ -125,7 +126,7 @@ public class Salon extends FrameFull {
     JButtonDelivery jbdAux = null;
     JButtonDeliverySee jbdSAux = null;
     JButtonTable jbtAux = null; //boton de mesa actual
-    
+
     JTabbedPane tabbedPane = new JTabbedPane();
 
     //Menu Lateral
@@ -182,7 +183,7 @@ public class Salon extends FrameFull {
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
         tablePanCh = cfgGen.getTablePanCh();
-        
+
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
@@ -195,8 +196,8 @@ public class Salon extends FrameFull {
 //PANEL MONITOR--------------------------------------------------------------------------------------------------------
 //PANEL MONITOR--------------------------------------------------------------------------------------------------------
         JPanel panelMonitor = utiliGrafSal.panelMonitor(sal);
-        panelPpal.add(panelMonitor);        
-        
+        panelPpal.add(panelMonitor);
+
 //PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------
 //PANEL BARR_DELIVERY--------------------------------------------------------------------------------------------------      
 //BARR / DELI
@@ -215,7 +216,7 @@ public class Salon extends FrameFull {
         panelBDButtons = new JPanel();
         panelBDButtons.setLayout(null);
         panelBDButtons.setBackground(narLg);
-        panelBDButtons.setBounds(anchoUnit, anchoUnit, anchoUnit * 72,  altoUnit * 75);
+        panelBDButtons.setBounds(anchoUnit, anchoUnit, anchoUnit * 72, altoUnit * 75);
         panelBDButtons.setVisible(false);
         panelA.add(panelBDButtons);
 
@@ -232,8 +233,7 @@ public class Salon extends FrameFull {
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
 //PANEL TABLEBUTTONS--------------------------------------------------------------------------------------------------
         utiliGrafSal.returnTabbedPanes(sal);
-        
-        
+
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
 // PANEL LATERAL------------------------------------------------------------------------------------------------------
@@ -334,41 +334,44 @@ public class Salon extends FrameFull {
         JPanel panelEnd = new JPanel();
         panelEnd.setLayout(null);
         panelEnd.setBackground(bluLg);
-        panelEnd.setBounds(anchoUnit * 76, altoUnit * 95, anchoUnit * 19, altoUnit * 4 );
+        panelEnd.setBounds(anchoUnit * 76, altoUnit * 95, anchoUnit * 19, altoUnit * 4);
         panelPpal.add(panelEnd);
-        
+
         JPanel panelEndInn = new JPanel();
         panelEndInn.setBackground(bluSt);
-        panelEndInn.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2 );
+        panelEndInn.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
         panelEnd.add(panelEndInn);
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                dispose();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                if (confirmation) {
+                    dispose();
+                }
             }
         });
         panelPpal.add(butSalir);
-        
 
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
-
-
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
 //FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
         if (prevTabs.size() > 0) {
             utiliGrafSal.tableManager(prevTabs, sal);
             prevTabs = new ArrayList<>();
         }
-        
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                dispose();
+                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                if (confirmation) {
+                    dispose();
+                }
             }
         });
     }
@@ -428,14 +431,14 @@ public class Salon extends FrameFull {
     public void setCfgAct(ConfigActual cfgAct) {
         this.cfgAct = cfgAct;
     }
-    
+
     public ConfigGeneral getCfgGen() {
         return cfgGen;
     }
 
     public void setCfgGen(ConfigGeneral cfgGen) {
         this.cfgGen = cfgGen;
-    }    
+    }
 
     public ArrayList<String> getConfigSalon() {
         return configSalon;
@@ -516,7 +519,7 @@ public class Salon extends FrameFull {
     public void setFont3(Font font4) {
         this.font3 = font3;
     }
-    
+
     public Font getFont4() {
         return font4;
     }
@@ -524,7 +527,7 @@ public class Salon extends FrameFull {
     public void setFont4(Font font4) {
         this.font4 = font4;
     }
-    
+
     public Font getFont5() {
         return font5;
     }
@@ -1091,5 +1094,5 @@ public class Salon extends FrameFull {
 
     public void setPrevTabs(ArrayList<Table> prevTabs) {
         this.prevTabs = prevTabs;
-    }   
+    }
 }

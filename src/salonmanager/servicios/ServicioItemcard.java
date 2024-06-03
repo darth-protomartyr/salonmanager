@@ -7,10 +7,10 @@ import salonmanager.persistencia.DAOItemcard;
 public class ServicioItemcard {
     DAOItemcard daoIC = new DAOItemcard();
 
-    public String codeCreator(String caption) throws Exception {
+    public String codeCreator(String category) throws Exception {
         DAOItemcard daoIC = new DAOItemcard();
         String code = "";
-        ArrayList<Itemcard> items = daoIC.listItemsByCaption(caption);
+        ArrayList<Itemcard> items = daoIC.listItemsByCategory(category);
         int num1 = 0;
         if (items.size() > 0) {
             for (Itemcard ic : items) {
@@ -23,11 +23,11 @@ public class ServicioItemcard {
             }
         }      
         num1 = num1+1;
-        if (caption.equals("BEBIDAS")) {
+        if (category.equals("BEBIDAS")) {
             code = "B" + num1;
-        } else if (caption.equals("PLATOS")) {
+        } else if (category.equals("PLATOS")) {
             code = "P" + num1;
-        } else if (caption.equals("CAFETERIA")) {
+        } else if (category.equals("CAFETERIA")) {
             code = "C" + num1;
         } else {
             code = "O" + num1;
@@ -39,7 +39,7 @@ public class ServicioItemcard {
 //        daoIC.saveItemcard(itemAux);
 //    }
 //
-//    public void modificarItem(Itemcard itemAux, String name, String caption, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
-//        daoIC.modificarItem(itemAux, name, caption, description, cost, price, stock, tipAlta);
+//    public void modificarItem(Itemcard itemAux, String name, String category, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
+//        daoIC.modificarItem(itemAux, name, category, description, cost, price, stock, tipAlta);
 //    }
 }

@@ -10,7 +10,7 @@ public class Itemcard {
     int id;
     String code;
     String name;
-    String caption;
+    String category;
     String description;
     double cost;
     double price;
@@ -24,10 +24,10 @@ public class Itemcard {
         
     }
 
-    public Itemcard(String name, String caption, String description, double cost, double price, int stock, boolean activeTip) throws Exception {
-        this.code = sic.codeCreator(caption);
+    public Itemcard(String name, String category, String description, double cost, double price, int stock, boolean activeTip) throws Exception {
+        this.code = sic.codeCreator(category);
         this.name = name;
-        this.caption = caption;
+        this.category = category;
         this.description = description;
         this.cost = cost;
         this.price = price;
@@ -37,11 +37,11 @@ public class Itemcard {
         this.activeItem = true;
     }
 
-    public Itemcard(int id, String code, String name, String caption, String description, double cost, double price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
+    public Itemcard(int id, String code, String name, String category, String description, double cost, double price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
         this.id = id;
         this.code = code;
         this.name = name;
-        this.caption = caption;
+        this.category = category;
         this.description = description;
         this.cost = cost;
         this.price = price;
@@ -76,12 +76,12 @@ public class Itemcard {
         this.name = name;
     }
 
-    public String getCaption() {
-        return caption;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getDescription() {

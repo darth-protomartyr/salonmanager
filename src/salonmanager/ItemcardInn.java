@@ -41,17 +41,17 @@ public class ItemcardInn extends FrameHalf {
 
     ArrayList<Itemcard> itemsCardDB = null;
     String name = "";
-    String caption = "";
+    String category = "";
     String description = "";
     double cost = 0;
     double price = 0;
     int stock = 0;
     boolean tipAlta = false;
     Itemcard itemAux = new Itemcard();
-    ArrayList<String> captionsDB = utili.captionList();
+    ArrayList<String> categoriesDB = utili.categoryList();
 
     JTextField fieldName = new JTextField();
-    JComboBox comboCaption = new JComboBox();
+    JComboBox comboCategory = new JComboBox();
     JTextArea areaDescription = new JTextArea();
     JTextField fieldCost = new JTextField();
     JTextField fieldPrice = new JTextField();
@@ -70,7 +70,7 @@ public class ItemcardInn extends FrameHalf {
         labelTit.setBounds(10, 20, 300, 30);
         panelPpal.add(labelTit);
 
-        JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCaption, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, captionsDB, null);
+        JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, null);
         panelPpal.add(panelForm);
 
         butCreateItem = utiliGraf.button1("Crear Item", 206, 600, 270);
@@ -105,7 +105,7 @@ public class ItemcardInn extends FrameHalf {
     private void butCreateItemActionPerformed() throws Exception {
         boolean error = false;
         name = fieldName.getText();
-        caption = utili.selectorCaption(comboCaption.getSelectedIndex());
+        category = utili.selectorCategory(comboCategory.getSelectedIndex());
         description = areaDescription.getText();
 
         if (name.length() > 30 || name.length() < 2) {
@@ -182,7 +182,7 @@ public class ItemcardInn extends FrameHalf {
         tipAlta = checkTip.isSelected();
 
         if (error == false) {
-            itemAux = new Itemcard(name, caption, description, cost, price, stock, tipAlta);
+            itemAux = new Itemcard(name, category, description, cost, price, stock, tipAlta);
             daoIC.saveItemcard(itemAux);
             resetItemcard();
         }
@@ -191,7 +191,7 @@ public class ItemcardInn extends FrameHalf {
     private void resetItemcard() throws Exception {
         itemsCardDB = daoIC.listarItemsCard();
         name = "";
-        caption = "";
+        category = "";
         description = "";
         cost = 0;
         price = 0;

@@ -12,15 +12,15 @@ public class DAOConfig extends DAO {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCapt, ArrayList<String> chartPan, boolean cfgActive) throws Exception {
+    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCat, ArrayList<String> chartPan, boolean cfgActive) throws Exception {
         try {
             deleteConfigGeneral();
             String nums = utili.arrayIntToStr(numTab);
             String pans = utili.arrayStrToStr(strPan);
-            String capts = utili.arrayStrToStr(strCapt);
+            String cats = utili.arrayStrToStr(strCat);
             String charts = utili.arrayStrToStr(chartPan);
-            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_name_captions, config_table_chart_panes, config_active)"
-                    + "VALUES('" + totalTab + "', '" + nums + "', '" + pans + "', '" + capts + "', '" + charts + "', " + cfgActive + ");";
+            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_name_categories, config_table_chart_panes, config_active)"
+                    + "VALUES('" + totalTab + "', '" + nums + "', '" + pans + "', '" + cats + "', '" + charts + "', " + cfgActive + ");";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -58,7 +58,7 @@ public class DAOConfig extends DAO {
             cfnGen.setTotalTable(resultado.getInt(1));
             cfnGen.setTableNum(utili.strToArrayInt(resultado.getString(2)));
             cfnGen.setTablePan(utili.strToArrayStr(resultado.getString(3)));
-            cfnGen.setTableItemCaptions(utili.strToArrayStr(resultado.getString(4)));
+            cfnGen.setTableItemCategories(utili.strToArrayStr(resultado.getString(4)));
             cfnGen.setTablePanCh(utili.strToArrayStr(resultado.getString(5)));
             cfnGen.setActiveConfig(resultado.getBoolean(6));
         }
@@ -154,16 +154,16 @@ public class DAOConfig extends DAO {
         return chars;
     }
     
-    public ArrayList<String> askCaptions() throws Exception {
-        ArrayList<String> captions = new ArrayList<>();
-        String sql = "SELECT * FROM captions;";
+    public ArrayList<String> askCategories() throws Exception {
+        ArrayList<String> categories = new ArrayList<>();
+        String sql = "SELECT * FROM categories;";
         consultarBase(sql);
         while (resultado.next()) {
-            String caption = resultado.getString(1);
-            captions.add(caption);
+            String category = resultado.getString(1);
+            categories.add(category);
         }
         desconectarBase();
-        return captions;
+        return categories;
     }
 
     public void saveSpace(String space) throws Exception {
@@ -183,10 +183,10 @@ public class DAOConfig extends DAO {
         }        
     }
     
-    public void saveCaption(String caption) throws Exception {
+    public void saveCategory(String category) throws Exception {
         try {
-            String sql1 = "INSERT INTO captions(caption_name)"
-                    + "VALUES('" + caption + "');";
+            String sql1 = "INSERT INTO categories(category_name)"
+                    + "VALUES('" + category + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

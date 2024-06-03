@@ -60,8 +60,6 @@ public class JButtonMetalBlu extends JButton{
             }
         });
         setContentAreaFilled(false); // Hace que el área interior del botón sea transparente
-//        setForeground(Color.WHITE); // Cambia el color del texto del botón
-//        setForeground(Color.RED);
         setFocusPainted(false); // Elimina el resaltado del botón cuando tiene el foco
     }
 }

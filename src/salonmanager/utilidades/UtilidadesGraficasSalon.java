@@ -976,92 +976,92 @@ public class UtilidadesGraficasSalon {
 //PANEL SELECT ITEM....................................................................................................
 //PANEL SELECT ITEM....................................................................................................
     public JPanel returnPanelSelItem(Salon salon) throws Exception {
-        ArrayList<String> captions = salon.getCfgGen().getTableItemCaptions();
-        while (captions.size() <= 6) {
-            captions.add("--");
+        ArrayList<String> categories = salon.getCfgGen().getTableItemCategories();
+        while (categories.size() <= 6) {
+            categories.add("--");
         }
         JPanel panelSelItem = new JPanel();
         panelSelItem.setLayout(null);
         panelSelItem.setBounds(anchoUnit, altoUnit * 12, anchoUnit * 24, altoUnit * 19);
         panelSelItem.setBackground(bluLg);
 
-        JButtonMetalBlu butCaption0 = utiliGraf.button3(captions.get(0), anchoUnit, altoUnit, anchoUnit * 7);
-        butCaption0.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCategory0 = utiliGraf.button3(categories.get(0), anchoUnit, altoUnit, anchoUnit * 7);
+        butCategory0.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack(captions.get(0), salon);
+                    itemCategoryBack(categories.get(0), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaption0);
+        panelSelItem.add(butCategory0);
 
-        JButtonMetalBlu butCaption1 = utiliGraf.button3(captions.get(1), anchoUnit * 9, altoUnit, anchoUnit * 6);
-        butCaption1.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCategory1 = utiliGraf.button3(categories.get(1), anchoUnit * 9, altoUnit, anchoUnit * 6);
+        butCategory1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack(captions.get(1), salon);
+                    itemCategoryBack(categories.get(1), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaption1);
+        panelSelItem.add(butCategory1);
 
-        JButtonMetalBlu butCaption2 = utiliGraf.button3(captions.get(2), anchoUnit * 16, altoUnit, anchoUnit * 7);
-        butCaption2.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCategory2 = utiliGraf.button3(categories.get(2), anchoUnit * 16, altoUnit, anchoUnit * 7);
+        butCategory2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack(captions.get(2), salon);
+                    itemCategoryBack(categories.get(2), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaption2);
+        panelSelItem.add(butCategory2);
 
-        JButtonMetalBlu butCaption3 = utiliGraf.button3(captions.get(3), anchoUnit, altoUnit * 5, anchoUnit * 7);
-        butCaption3.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCategory3 = utiliGraf.button3(categories.get(3), anchoUnit, altoUnit * 5, anchoUnit * 7);
+        butCategory3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack(captions.get(3), salon);
+                    itemCategoryBack(categories.get(3), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaption3);
+        panelSelItem.add(butCategory3);
 
-        JButtonMetalBlu butCaption4 = utiliGraf.button3(captions.get(4), anchoUnit * 9, altoUnit * 5, anchoUnit * 6);
-        butCaption4.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCategory4 = utiliGraf.button3(categories.get(4), anchoUnit * 9, altoUnit * 5, anchoUnit * 6);
+        butCategory4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack(captions.get(4), salon);
+                    itemCategoryBack(categories.get(4), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaption4);
+        panelSelItem.add(butCategory4);
 
-        JButtonMetalBlu butCaption5 = utiliGraf.button3(captions.get(5), anchoUnit * 16, altoUnit * 5, anchoUnit * 7);
-        butCaption5.addActionListener(new ActionListener() {
+        JButtonMetalBlu butCategory5 = utiliGraf.button3(categories.get(5), anchoUnit * 16, altoUnit * 5, anchoUnit * 7);
+        butCategory5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    itemCaptionBack(captions.get(5), salon);
+                    itemCategoryBack(categories.get(5), salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelSelItem.add(butCaption5);
+        panelSelItem.add(butCategory5);
 
         salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
         salon.getComboItems().setFont(salon.getFont5());
@@ -1124,11 +1124,11 @@ public class UtilidadesGraficasSalon {
     }
 
     // Select a kind o items
-    private void itemCaptionBack(String capt, Salon salon) {
+    private void itemCategoryBack(String cat, Salon salon) {
         ArrayList<Itemcard> aic = new ArrayList<>();
-        if (!capt.equals("--")) {
+        if (!cat.equals("--")) {
             for (Itemcard ic : salon.getItemsDB()) {
-                if (ic.getCaption().toLowerCase().equals(capt.toLowerCase())) {
+                if (ic.getCategory().toLowerCase().equals(cat.toLowerCase())) {
                     aic.add(ic);
                 }
             }

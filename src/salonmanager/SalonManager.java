@@ -97,8 +97,7 @@ public class SalonManager {
     public void salir() throws Exception {
         setPassIn("");
         setUserIn(null);
-        windowCloser();
-        
+        windowCloser();       
     }
 
     private static void windowCloser() {

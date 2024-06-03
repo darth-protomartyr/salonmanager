@@ -52,9 +52,9 @@ public class ItemcardConsulta extends FrameThird {
         labelNameItem.setBounds(10, 10, 345, 40);
         panelB.add(labelNameItem);
 
-        JLabel labelCaptionItem = utiliGraf.labelTitleBacker2("Rubro: " + itemAux.getCaption());
-        labelCaptionItem.setBounds(10, 60, 345, 40);
-        panelB.add(labelCaptionItem);
+        JLabel labelCategoryItem = utiliGraf.labelTitleBacker2("Categoría: " + itemAux.getCategory());
+        labelCategoryItem.setBounds(10, 60, 345, 40);
+        panelB.add(labelCategoryItem);
 
         JLabel labelCodeItem = utiliGraf.labelTitleBacker2("Código del Item: " + itemAux.getCode());
         labelCodeItem.setBounds(10, 110, 345, 40);

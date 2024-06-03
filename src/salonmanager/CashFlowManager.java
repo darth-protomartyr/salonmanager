@@ -35,15 +35,8 @@ public class CashFlowManager extends FrameWindow {
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
 
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color narLg = new Color(252, 203, 5);
-
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
 
     JTextField fieldCashFlow = new JTextField();
     JTextArea textArea = new JTextArea();
@@ -84,8 +77,6 @@ public class CashFlowManager extends FrameWindow {
         
         optionCash.setForeground(Color.WHITE);
         optionElec.setForeground(Color.WHITE);
-
-
         
         ButtonGroup group = new ButtonGroup();
         group.add(optionCash);

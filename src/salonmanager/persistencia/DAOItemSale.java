@@ -20,8 +20,8 @@ public class DAOItemSale extends DAO {
 
     public void saveItemSale(ItemSale itemSale) throws Exception {
         try {
-            String sql = "INSERT INTO item_sales_statics( item_sale_id, item_sale_waiter_id, item_sale_caption, item_sale_tab_pos, item_sale_workshift_id, item_sale_price, item_sale_date, item_sale_active)"
-                    + "VALUES(" + itemSale.getItemSaleId() + ", '" + itemSale.getItemSaleWaiterId() + "', '" + itemSale.getItemSaleCaption() + "', '"  + itemSale.getItemSaleTabPos() +  "', "   + itemSale.getItemSaleWorkshiftId() + ", " + itemSale.getItemSalePrice() + ", '" + itemSale.getItemSaleDate() + "', " + true + ");";
+            String sql = "INSERT INTO item_sales_statics( item_sale_id, item_sale_waiter_id, item_sale_category, item_sale_tab_pos, item_sale_workshift_id, item_sale_price, item_sale_date, item_sale_active)"
+                    + "VALUES(" + itemSale.getItemSaleId() + ", '" + itemSale.getItemSaleWaiterId() + "', '" + itemSale.getItemSaleCategory() + "', '"  + itemSale.getItemSaleTabPos() +  "', "   + itemSale.getItemSaleWorkshiftId() + ", " + itemSale.getItemSalePrice() + ", '" + itemSale.getItemSaleDate() + "', " + true + ");";
             System.out.println(sql);
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
@@ -71,7 +71,7 @@ public class DAOItemSale extends DAO {
             while (resultado.next()) {
                 iS.setSaleId(resultado.getInt(1));
                 iS.setItemSaleId(resultado.getInt(2));
-                iS.setItemSaleCaption(resultado.getString(3));
+                iS.setItemSaleCategory(resultado.getString(3));
                 iS.setItemSaleTabPos(resultado.getString(4));
                 iS.setItemSaleWaiterId(resultado.getString(5));
                 iS.setItemSaleWorkshiftId(resultado.getInt(6));

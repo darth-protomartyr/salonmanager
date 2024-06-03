@@ -1,7 +1,6 @@
 package salonmanager;
 
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.entidades.bussiness.User;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,13 +25,11 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
-import salonmanager.utilidades.UtilidadesUpdate;
 import org.knowm.xchart.*;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOUser;
-import salonmanager.servicios.ServiceStatics;
 import salonmanager.utilidades.UtilidadesGraficasStatics;
 
 public class StaticsManager extends FrameFull {
@@ -43,30 +40,17 @@ public class StaticsManager extends FrameFull {
     UtilidadesGraficasStatics utiliGrafStats = new UtilidadesGraficasStatics();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    UtilidadesUpdate utiliUpd = new UtilidadesUpdate();
-    ServiceStatics sStats = new ServiceStatics();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
-    Color narUlgX = new Color(255, 255, 210);
-    Color narLg = new Color(252, 203, 5);
 
-    SalonManager sm = new SalonManager();
-    private User userIn = null;
     ArrayList<Table> tabs = new ArrayList<>();
     ArrayList<ItemSale> iSales = new ArrayList<>();
     ArrayList<Workshift> workshifts = new ArrayList<>();
-    ArrayList<String> captions = null;
+    ArrayList<String> categories = null;
     Manager manager = null;
     PieChart chartOrder = null;
     XYChart chartCurveSell = null;
     CategoryChart chartItemsSelled = null;
-    PieChart chartCaptionPie = null;
+    PieChart chartCategoryPie = null;
 
     String period = "";
     double numTabs = 0;
@@ -74,10 +58,10 @@ public class StaticsManager extends FrameFull {
     double numDeli = 0;
     HashMap<String, Double> countWSells = null;
     HashMap<String, Integer> countWWs = null;
-    HashMap<String, Double> countCapt = null;
+    HashMap<String, Double> countCat = null;
     JPanel panelChartByOrder = new JPanel();
     JPanel panelChartSellCurve = new JPanel();
-    JPanel panelChartCaption = new JPanel();
+    JPanel panelChartCategory = new JPanel();
     JPanel panelStatsBySell = new JPanel();
 
     JTextField fieldTotal = null;
@@ -85,12 +69,12 @@ public class StaticsManager extends FrameFull {
     JTextField fieldTimeTab = null;
     JLabel labelPeriod = null;
 
-    JLabel labelCaption0 = null;
-    JLabel labelCaption1 = null;
-    JLabel labelCaption2 = null;
-    JLabel labelCaption3 = null;
-    JLabel labelCaption4 = null;
-    JLabel labelCaption5 = null;
+    JLabel labelCategory0 = null;
+    JLabel labelCategory1 = null;
+    JLabel labelCategory2 = null;
+    JLabel labelCategory3 = null;
+    JLabel labelCategory4 = null;
+    JLabel labelCategory5 = null;
 
     JLabel labelWaiter1 = null;
     JLabel labelWaiter2 = null;
@@ -115,7 +99,7 @@ public class StaticsManager extends FrameFull {
         if (cfgGen.isActiveConfig()) {
             cfgGen = utili.cfgBacker();
         }
-        captions = cfgGen.getTableItemCaptions();
+        categories = cfgGen.getTableItemCategories();
 
         JLabel labelStatics = utiliGraf.labelTitleBackerA3W("Estadísticas");
         labelStatics.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
@@ -157,11 +141,11 @@ public class StaticsManager extends FrameFull {
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
-        JPanel panelItemsCaption = utiliGrafStats.panelItemsStaticsBacker(this);
-        panelItemsCaption.setLayout(null);
-        panelItemsCaption.setBounds(anchoUnit * 21, altoUnit * 49, anchoUnit * 40, altoUnit * 45);
-        panelItemsCaption.setBackground(bluLg);
-        panelPpal.add(panelItemsCaption);
+        JPanel panelItemsCategory = utiliGrafStats.panelItemsStaticsBacker(this);
+        panelItemsCategory.setLayout(null);
+        panelItemsCategory.setBounds(anchoUnit * 21, altoUnit * 49, anchoUnit * 40, altoUnit * 45);
+        panelItemsCategory.setBackground(bluLg);
+        panelPpal.add(panelItemsCategory);
 
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
@@ -211,7 +195,7 @@ public class StaticsManager extends FrameFull {
         double promTab = 0;
         long totTime = 0;
         int tabInt = 0;
-        countCapt = new HashMap<>();
+        countCat = new HashMap<>();
         countWSells = new HashMap<String, Double>();
         countWWs = new HashMap<String, Integer>();
         ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
@@ -240,16 +224,16 @@ public class StaticsManager extends FrameFull {
             }
         }
 
-        for (int i = 0; i < captions.size(); i++) {
-            countCapt.put(captions.get(i), 0.0);
+        for (int i = 0; i < categories.size(); i++) {
+            countCat.put(categories.get(i), 0.0);
         }
 
         for (ItemSale is : iSales) {
-            for (Map.Entry<String, Double> entry : countCapt.entrySet()) {
+            for (Map.Entry<String, Double> entry : countCat.entrySet()) {
                 String key = entry.getKey();
                 double newValue = 0;
                 double value = entry.getValue();
-                if (key.equals(is.getItemSaleCaption())) {
+                if (key.equals(is.getItemSaleCategory())) {
                     newValue = value + is.getItemSalePrice();
                     entry.setValue(newValue);
                 }
@@ -324,12 +308,12 @@ public class StaticsManager extends FrameFull {
         panelChartSellCurve.revalidate();
         panelChartSellCurve.repaint();
 
-        //Volume by item Caption
-        chartCaptionPie = utiliGrafStats.chartCaptionBacker(countCapt, this);
-        panelChartCaption.removeAll();
-        panelChartCaption.add(new XChartPanel<>(chartCaptionPie));
-        panelChartCaption.revalidate();
-        panelChartCaption.repaint();
+        //Volume by item Category
+        chartCategoryPie = utiliGrafStats.chartCategoryBacker(countCat, this);
+        panelChartCategory.removeAll();
+        panelChartCategory.add(new XChartPanel<>(chartCategoryPie));
+        panelChartCategory.revalidate();
+        panelChartCategory.repaint();
 
         //TOP Waiters Sell
         ArrayList<String> waitersSell1 = new ArrayList<>(countWSells.keySet());
@@ -399,12 +383,12 @@ public class StaticsManager extends FrameFull {
         this.panelChartSellCurve = panelChartSellCurve;
     }
 
-    public JPanel getPanelItemsCaption() {
-        return panelChartCaption;
+    public JPanel getPanelItemsCategory() {
+        return panelChartCategory;
     }
 
-    public void setPanelItemsCaption(JPanel panelItemsCaption) {
-        this.panelChartCaption = panelItemsCaption;
+    public void setPanelItemsCategory(JPanel panelItemsCategory) {
+        this.panelChartCategory = panelItemsCategory;
     }
 
     public JPanel getPanelStatsBySell() {
@@ -415,12 +399,12 @@ public class StaticsManager extends FrameFull {
         this.panelStatsBySell = panelStatsBySell;
     }
 
-    public JPanel getPanelChartCaption() {
-        return panelChartCaption;
+    public JPanel getPanelChartCategory() {
+        return panelChartCategory;
     }
 
-    public void setPanelChartCaption(JPanel panelChartCaption) {
-        this.panelChartCaption = panelChartCaption;
+    public void setPanelChartCategory(JPanel panelChartCategory) {
+        this.panelChartCategory = panelChartCategory;
     }
     
     //Charts
@@ -449,12 +433,12 @@ public class StaticsManager extends FrameFull {
         this.chartItemsSelled = chartItemsSelled;
     }
 
-    public PieChart getChartCaptionPie() {
-        return chartCaptionPie;
+    public PieChart getChartCategoryPie() {
+        return chartCategoryPie;
     }
 
-    public void setChartCaptionPie(PieChart chartCaptionPie) {
-        this.chartCaptionPie = chartCaptionPie;
+    public void setChartCategoryPie(PieChart chartCategoryPie) {
+        this.chartCategoryPie = chartCategoryPie;
     }
     
     public void setTabs(ArrayList tables) {
@@ -546,52 +530,52 @@ public class StaticsManager extends FrameFull {
         this.labelPeriod = labelPeriod;
     }
 
-    public JLabel getLabelCaption0() {
-        return labelCaption0;
+    public JLabel getLabelCategory0() {
+        return labelCategory0;
     }
 
-    public void setLabelCaption0(JLabel labelCaption0) {
-        this.labelCaption0 = labelCaption0;
+    public void setLabelCategory0(JLabel labelCategory0) {
+        this.labelCategory0 = labelCategory0;
     }
 
-    public JLabel getLabelCaption1() {
-        return labelCaption1;
+    public JLabel getLabelCategory1() {
+        return labelCategory1;
     }
 
-    public void setLabelCaption1(JLabel labelCaption1) {
-        this.labelCaption1 = labelCaption1;
+    public void setLabelCategory1(JLabel labelCategory1) {
+        this.labelCategory1 = labelCategory1;
     }
 
-    public JLabel getLabelCaption2() {
-        return labelCaption2;
+    public JLabel getLabelCategory2() {
+        return labelCategory2;
     }
 
-    public void setLabelCaption2(JLabel labelCaption2) {
-        this.labelCaption2 = labelCaption2;
+    public void setLabelCategory2(JLabel labelCategory2) {
+        this.labelCategory2 = labelCategory2;
     }
 
-    public JLabel getLabelCaption3() {
-        return labelCaption3;
+    public JLabel getLabelCategory3() {
+        return labelCategory3;
     }
 
-    public void setLabelCaption3(JLabel labelCaption3) {
-        this.labelCaption3 = labelCaption3;
+    public void setLabelCategory3(JLabel labelCategory3) {
+        this.labelCategory3 = labelCategory3;
     }
 
-    public JLabel getLabelCaption4() {
-        return labelCaption4;
+    public JLabel getLabelCategory4() {
+        return labelCategory4;
     }
 
-    public void setLabelCaption4(JLabel labelCaption4) {
-        this.labelCaption4 = labelCaption4;
+    public void setLabelCategory4(JLabel labelCategory4) {
+        this.labelCategory4 = labelCategory4;
     }
 
-    public JLabel getLabelCaption5() {
-        return labelCaption5;
+    public JLabel getLabelCategory5() {
+        return labelCategory5;
     }
 
-    public void setLabelCaption5(JLabel labelCaption5) {
-        this.labelCaption5 = labelCaption5;
+    public void setLabelCategory5(JLabel labelCategory5) {
+        this.labelCategory5 = labelCategory5;
     }
 
     public HashMap<String, Double> getCountWSells() {
@@ -706,20 +690,20 @@ public class StaticsManager extends FrameFull {
         this.fieldTotal = fieldTotal;
     }
 
-    public HashMap<String, Double> getCountCapt() {
-        return countCapt;
+    public HashMap<String, Double> getCountCat() {
+        return countCat;
     }
 
-    public void setCountCapt(HashMap<String, Double> countCapt) {
-        this.countCapt = countCapt;
+    public void setCountCat(HashMap<String, Double> countCat) {
+        this.countCat = countCat;
     }
 
-    public ArrayList<String> getCaptions() {
-        return captions;
+    public ArrayList<String> getCategories() {
+        return categories;
     }
 
-    public void setCaptions(ArrayList<String> captions) {
-        this.captions = captions;
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
     }
     
     

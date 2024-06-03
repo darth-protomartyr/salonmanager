@@ -629,7 +629,7 @@ public class UtilidadesGraficas extends JFrame {
         return scrollPane;
     }
 
-    public JPanel panelItemcardForm(JTextField fieldName, JComboBox comboCaption, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> captionsDB, Itemcard item) {
+    public JPanel panelItemcardForm(JTextField fieldName, JComboBox comboCategory, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> categoriesDB, Itemcard item) {
         JPanel panelA = new JPanel();
         panelA.setLayout(null);
         panelA.setBounds(anchoUnit * 5, altoUnit * 12, anchoUnit * 40, altoUnit * 73);
@@ -641,14 +641,14 @@ public class UtilidadesGraficas extends JFrame {
         panelData1.add(fieldName);
         panelA.add(panelData1);
 
-        JPanel panelData2 = dataPanelBacker("Rubro:", 14);
+        JPanel panelData2 = dataPanelBacker("Categoría:", 14);
         panelData2.setBounds(anchoUnit * 5, altoUnit * 15, anchoUnit * 30, altoUnit * 7);
-        comboCaption.setModel(utili.captionComboModelReturn(captionsDB));
-        comboCaption.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
+        comboCategory.setModel(utili.categoryComboModelReturn(categoriesDB));
+        comboCategory.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
         int f4 = (int) Math.round(anchoUnit * 1.6);
         Font font4 = new Font("Arial", Font.BOLD, f4);
-        comboCaption.setFont(font4);
-        panelData2.add(comboCaption);
+        comboCategory.setFont(font4);
+        panelData2.add(comboCategory);
         panelData2.add(Box.createHorizontalStrut(30));
         panelA.add(panelData2);
 
@@ -689,7 +689,7 @@ public class UtilidadesGraficas extends JFrame {
 
         if (item != null) {
             fieldName.setText(item.getName());
-            comboCaption.setSelectedItem(item.getCaption());
+            comboCategory.setSelectedItem(item.getCategory());
             areaDescription.setText(item.getDescription());
             fieldCost.setText(item.getCost() + "");
             fieldPrice.setText(item.getPrice() + "");

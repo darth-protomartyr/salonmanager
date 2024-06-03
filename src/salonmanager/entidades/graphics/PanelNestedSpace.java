@@ -14,7 +14,7 @@ import salonmanager.utilidades.UtilidadesGraficas;
  *
  * @author Gonzalo
  */
-public class PanelNested extends JPanel {
+public class PanelNestedSpace extends JPanel {
 
     String st = "";
     int y = 0;
@@ -23,7 +23,7 @@ public class PanelNested extends JPanel {
     ButtonGroup group = new ButtonGroup();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
 
-    public PanelNested(String st, int i) {
+    public PanelNestedSpace(String st, int i) {
         this.st = st;
         y = 1 + i * 8;
 

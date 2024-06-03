@@ -206,7 +206,7 @@ public class Utilidades {
         return modeloLista;
     }
 
-    public ArrayList<String> captionList() {
+    public ArrayList<String> categoryList() {
         ArrayList<String> st = new ArrayList<>();
         String a = "BEBIDAS";
         String b = "PLATOS";
@@ -219,11 +219,20 @@ public class Utilidades {
         return st;
     }
 
-    public ComboBoxModel captionComboModelReturn(ArrayList<String> captionsDB) {
+    public ComboBoxModel categoryComboModelReturn(ArrayList<String> categoriesDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
-        for (String i : captionsDB) {
+        for (String i : categoriesDB) {
             modeloCombo.addElement(i);
         }
+        return modeloCombo;
+    }
+    
+    public ComboBoxModel categoryComboModelReturnWNull(ArrayList<String> categoriesDB) {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (String i : categoriesDB) {
+            modeloCombo.addElement(i);
+        }
+        modeloCombo.addElement("");
         return modeloCombo;
     }
     
@@ -296,23 +305,23 @@ public class Utilidades {
         return modeloCombo;
     }
 
-    public String selectorCaption(int comboC) {
-        String caption = "";
+    public String selectorCategory(int comboC) {
+        String category = "";
         switch (comboC) {
             case 0:
-                caption = "BEBIDAS";
+                category = "BEBIDAS";
                 break;
             case 1:
-                caption = "PLATOS";
+                category = "PLATOS";
                 break;
             case 2:
-                caption = "CAFETERIA";
+                category = "CAFETERIA";
                 break;
             case 3:
-                caption = "OTROS";
+                category = "OTROS";
                 break;
         }
-        return caption;
+        return category;
     }
 
     public boolean itemcardRepeat(String ic, ArrayList<Itemcard> items) {
@@ -772,19 +781,19 @@ public class Utilidades {
         ArrayList<String> spaces = new ArrayList<>();
         spaces.add("salon");
         spaces.add("vereda");
-        ArrayList<String> captions = new ArrayList<>();
-        captions.add("PLATOS");
-        captions.add("ENTRADAS");
-        captions.add("BEBIDAS");
-        captions.add("POSTRES");
-        captions.add("CAFETERIA");
-        captions.add("OTROS");
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("PLATOS");
+        categories.add("ENTRADAS");
+        categories.add("BEBIDAS");
+        categories.add("POSTRES");
+        categories.add("CAFETERIA");
+        categories.add("OTROS");
         ArrayList<String> chars = new ArrayList<>();
         chars.add("s");
         chars.add("v");
 
         
-        ConfigGeneral cfgGen = new ConfigGeneral(59, tabsQ, spaces, captions, chars, true);
+        ConfigGeneral cfgGen = new ConfigGeneral(59, tabsQ, spaces, categories, chars, true);
         return cfgGen;
     }
 }

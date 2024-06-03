@@ -138,27 +138,27 @@ public class UtilidadesGraficasStatics {
         return chart;
     }
 
-    public PieChart chartCaptionBacker(HashMap<String, Double> hashMap, StaticsManager statsM) {
-        PieChart chartCaption = new PieChartBuilder().width(anchoUnit * 20).height(altoUnit * 20).build();
+    public PieChart chartCategoryBacker(HashMap<String, Double> hashMap, StaticsManager statsM) {
+        PieChart chartCategory = new PieChartBuilder().width(anchoUnit * 20).height(altoUnit * 20).build();
 
-        chartCaption.getStyler().setLegendVisible(true);
-        chartCaption.getStyler().setDefaultSeriesRenderStyle(PieSeries.PieSeriesRenderStyle.Pie);
+        chartCategory.getStyler().setLegendVisible(true);
+        chartCategory.getStyler().setDefaultSeriesRenderStyle(PieSeries.PieSeriesRenderStyle.Pie);
 
-        ArrayList<String> captions = new ArrayList<>(hashMap.keySet());
+        ArrayList<String> categories = new ArrayList<>(hashMap.keySet());
         ArrayList<Double> amounts = new ArrayList<>(hashMap.values());
 
-        statsM.getLabelCaption0().setText(captions.get(0) + ": $" + amounts.get(0));
-        statsM.getLabelCaption1().setText(captions.get(1) + ": $" + amounts.get(1));
-        statsM.getLabelCaption2().setText(captions.get(2) + ": $" + amounts.get(2));
-        statsM.getLabelCaption3().setText(captions.get(3) + ": $" + amounts.get(3));
-        statsM.getLabelCaption4().setText(captions.get(4) + ": $" + amounts.get(4));
-        statsM.getLabelCaption5().setText(captions.get(5) + ": $" + amounts.get(5));
+        statsM.getLabelCategory0().setText(categories.get(0) + ": $" + amounts.get(0));
+        statsM.getLabelCategory1().setText(categories.get(1) + ": $" + amounts.get(1));
+        statsM.getLabelCategory2().setText(categories.get(2) + ": $" + amounts.get(2));
+        statsM.getLabelCategory3().setText(categories.get(3) + ": $" + amounts.get(3));
+        statsM.getLabelCategory4().setText(categories.get(4) + ": $" + amounts.get(4));
+        statsM.getLabelCategory5().setText(categories.get(5) + ": $" + amounts.get(5));
 
         for (int i = 0; i < hashMap.size(); i++) {
-            chartCaption.addSeries(captions.get(i), amounts.get(i));
+            chartCategory.addSeries(categories.get(i), amounts.get(i));
         }
 
-        return chartCaption;
+        return chartCategory;
     }
 
     public PieChart chartWSellBacker(HashMap<String, Double> hashMap1, StaticsManager statsM) throws Exception {
@@ -493,44 +493,44 @@ public class UtilidadesGraficasStatics {
         labelItemsStatics.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 30, altoUnit * 3);
         panelItemsStatics.add(labelItemsStatics);
 
-        JPanel panelItemsCaption = new JPanel();
-        panelItemsCaption.setLayout(null);
-        panelItemsCaption.setBackground(narUlg);
-        panelItemsCaption.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 34);
-        panelItemsStatics.add(panelItemsCaption);
+        JPanel panelItemsCategory = new JPanel();
+        panelItemsCategory.setLayout(null);
+        panelItemsCategory.setBackground(narUlg);
+        panelItemsCategory.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 34);
+        panelItemsStatics.add(panelItemsCategory);
 
-        JLabel labelItemsCaption = utiliGraf.labelTitleBacker2("Volumen Venta por rubro");
-        labelItemsCaption.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 40, altoUnit * 4);
-        panelItemsCaption.add(labelItemsCaption);
+        JLabel labelItemsCategory = utiliGraf.labelTitleBacker2("Volumen Venta por categoría");
+        labelItemsCategory.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 40, altoUnit * 4);
+        panelItemsCategory.add(labelItemsCategory);
 
-        statsM.getPanelItemsCaption().setLayout(new BorderLayout());
-        statsM.getPanelItemsCaption().setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 24, altoUnit * 29);
-        statsM.getPanelItemsCaption().setBackground(bluSt);
-        panelItemsCaption.add(statsM.getPanelItemsCaption());
+        statsM.getPanelItemsCategory().setLayout(new BorderLayout());
+        statsM.getPanelItemsCategory().setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 24, altoUnit * 29);
+        statsM.getPanelItemsCategory().setBackground(bluSt);
+        panelItemsCategory.add(statsM.getPanelItemsCategory());
 
-        statsM.setLabelCaption0(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCaption0().setBounds(anchoUnit * 26, altoUnit * 5, anchoUnit * 20, altoUnit * 3);
-        panelItemsCaption.add(statsM.getLabelCaption0());
+        statsM.setLabelCategory0(utiliGraf.labelTitleBacker3(""));
+        statsM.getLabelCategory0().setBounds(anchoUnit * 26, altoUnit * 5, anchoUnit * 20, altoUnit * 3);
+        panelItemsCategory.add(statsM.getLabelCategory0());
 
-        statsM.setLabelCaption1(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCaption1().setBounds(anchoUnit * 26, altoUnit * 10, anchoUnit * 20, altoUnit * 3);
-        panelItemsCaption.add(statsM.getLabelCaption1());
+        statsM.setLabelCategory1(utiliGraf.labelTitleBacker3(""));
+        statsM.getLabelCategory1().setBounds(anchoUnit * 26, altoUnit * 10, anchoUnit * 20, altoUnit * 3);
+        panelItemsCategory.add(statsM.getLabelCategory1());
 
-        statsM.setLabelCaption2(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCaption2().setBounds(anchoUnit * 26, altoUnit * 15, anchoUnit * 20, altoUnit * 3);
-        panelItemsCaption.add(statsM.getLabelCaption2());
+        statsM.setLabelCategory2(utiliGraf.labelTitleBacker3(""));
+        statsM.getLabelCategory2().setBounds(anchoUnit * 26, altoUnit * 15, anchoUnit * 20, altoUnit * 3);
+        panelItemsCategory.add(statsM.getLabelCategory2());
 
-        statsM.setLabelCaption3(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCaption3().setBounds(anchoUnit * 26, altoUnit * 20, anchoUnit * 20, altoUnit * 3);
-        panelItemsCaption.add(statsM.getLabelCaption3());
+        statsM.setLabelCategory3(utiliGraf.labelTitleBacker3(""));
+        statsM.getLabelCategory3().setBounds(anchoUnit * 26, altoUnit * 20, anchoUnit * 20, altoUnit * 3);
+        panelItemsCategory.add(statsM.getLabelCategory3());
 
-        statsM.setLabelCaption4(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCaption4().setBounds(anchoUnit * 26, altoUnit * 25, anchoUnit * 20, altoUnit * 3);
-        panelItemsCaption.add(statsM.getLabelCaption4());
+        statsM.setLabelCategory4(utiliGraf.labelTitleBacker3(""));
+        statsM.getLabelCategory4().setBounds(anchoUnit * 26, altoUnit * 25, anchoUnit * 20, altoUnit * 3);
+        panelItemsCategory.add(statsM.getLabelCategory4());
 
-        statsM.setLabelCaption5(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCaption5().setBounds(anchoUnit * 26, altoUnit * 30, anchoUnit * 20, altoUnit * 3);
-        panelItemsCaption.add(statsM.getLabelCaption5());
+        statsM.setLabelCategory5(utiliGraf.labelTitleBacker3(""));
+        statsM.getLabelCategory5().setBounds(anchoUnit * 26, altoUnit * 30, anchoUnit * 20, altoUnit * 3);
+        panelItemsCategory.add(statsM.getLabelCategory5());
 
         return panelItemsStatics;
     }

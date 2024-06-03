@@ -16,23 +16,15 @@ import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
-import salonmanager.utilidades.UtilidadesUpdate;
 
 public class Admin extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-    Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    UtilidadesUpdate utiliUpd = new UtilidadesUpdate();
     DAOConfig daoC = new DAOConfig();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
-    SalonManager sm = new SalonManager();
     User user = null;
     ConfigActual cfgAct = new ConfigActual();
 
@@ -42,7 +34,6 @@ public class Admin extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
         cfgAct = daoC.askConfigActual();
-        
 
         JLabel labelStatics = utiliGraf.labelTitleBackerA3W("Administrar");
         labelStatics.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
@@ -51,8 +42,21 @@ public class Admin extends FrameHalf {
         JPanel panelTable = panelCreator("Administrar Mesas", 10, 25);
         panelPpal.add(panelTable);
 
-        JPanel panelUser = panelCreator("Administrar Usuarios", 37, 25);
-        panelPpal.add(panelUser);
+        JPanel panelItems = panelCreator("Administrar Items", 37, 25);
+        panelPpal.add(panelItems);
+
+        JButtonMetalBlu butCfgItems = utiliGraf.button1("Modificar Lista", anchoUnit * 15, altoUnit * 6, anchoUnit * 17);
+        butCfgItems.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    new ConfigItemList();
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelItems.add(butCfgItems);
 
         JPanel panelConfig = panelCreator("Administrar Configuración", 76, 15);
         panelPpal.add(panelConfig);
@@ -81,10 +85,7 @@ public class Admin extends FrameHalf {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
-                if (confirmation) {
-                    dispose();
-                }
+                dispose();
             }
         });
         panelPpal.add(butSalir);
@@ -92,10 +93,7 @@ public class Admin extends FrameHalf {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
-                if (confirmation) {
-                    dispose();
-                }
+                dispose();
             }
         });
     }

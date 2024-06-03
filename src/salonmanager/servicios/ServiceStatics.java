@@ -17,6 +17,7 @@ import salonmanager.StaticsManager;
 import salonmanager.StaticsSelectorPeriod;
 import salonmanager.StatsItemViewer;
 import salonmanager.StatsWaiterViewer;
+import salonmanager.ConfigItemList;
 import salonmanager.TabViewer;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
