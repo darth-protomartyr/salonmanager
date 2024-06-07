@@ -19,12 +19,12 @@ public class DAOUser extends DAO {
             String apellido = user.getLastName();
             String mail = user.getMail();
             String id = user.getId();
-            String rol = user.getRol();
+            String rol = "";
             String routeImage = user.getRouteImage();
             String nameImage = user.getNameImage();
             String pass = user.getPassword();
             String phone = user.getPhone();
-            boolean activeUser = user.isActiveUser();
+            boolean activeUser = true;
 
             String sql1 = "INSERT INTO users(user_id, user_name, user_last_name, user_mail, user_role, user_image_route, user_image_name, user_password, user_phone, user_active)"
                     + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', " + activeUser + ");";
@@ -149,7 +149,7 @@ public class DAOUser extends DAO {
     }
 
     public ArrayList<User> listarUsersCompleto() throws Exception {
-        String sql = "SELECT * FROM users;";
+        String sql = "SELECT * FROM users WHERE user_role = 'MANAGER' OR user_role = 'MOZO' OR user_role = 'CAJERO' OR user_role = 'DELIVERY' OR user_role = '';";
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
@@ -287,7 +287,7 @@ public class DAOUser extends DAO {
             while (resultado.next()) {
                 String name = resultado.getString(1);
                 String lastName = resultado.getString(2);
-                nameC = name + " " + lastName; 
+                nameC = name + " " + lastName;
             }
             return nameC;
         } catch (Exception e) {
@@ -364,4 +364,76 @@ public class DAOUser extends DAO {
             desconectarBase();
         }
     }
+
+    public void updateActUser(String userId, boolean act) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_active = " + act + " WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }
+
+    public void updateRolUser(String userId, String rol) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_role = '" + rol + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }
+
+    public void updateNameUser(String userId, String name) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_name = '" + name + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }
+    
+    public void updateLastNameUser(String userId, String lastName) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_last_name = '" + lastName + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }
+    
+    public void updateMailUser(String userId, String mail) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_mail = '" + mail + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }    
+
+    public void updateRouteImageUser(String userId, String route) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_image_route = '" + route + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }
+
+    public void updateNameImageUser(String userId, String name) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_image_name = '" + name + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }
+    
+    public void updatePhoneUser(String userId, String phone) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_phone = '" + phone + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }
+
+    public void updatePassUser(String userId, String pass) throws Exception {
+        String sql = "UPDATE users "
+                + "SET user_password = '" + pass + "' WHERE user_id = '" + userId + "';";
+        System.out.println(sql);
+        insertarModificarEliminar(sql);
+        desconectarBase();
+    }    
 }

@@ -7,6 +7,7 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -24,7 +25,7 @@ import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 
-public class CreateAccount extends FrameHalf {
+public class TemplateUser extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -35,6 +36,7 @@ public class CreateAccount extends FrameHalf {
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
+    Font newFont = new Font("Arial", Font.BOLD, 17);
 
     String name = "";
     String lastName = "";
@@ -56,8 +58,12 @@ public class CreateAccount extends FrameHalf {
     JPasswordField fieldPass2 = new JPasswordField();
     JButtonMetalBlu butCreateUser;
     JFrame frame = null;
+    User userMod = null;
+    Admin admin = null;
 
-    public CreateAccount() throws Exception {
+    public TemplateUser(User user, Admin adm) throws Exception {
+        admin = adm;
+        userMod = user;
         frame = this;
         setTitle("Registrar");
         JPanel panelPpal = new PanelPpal(frame);
@@ -76,36 +82,42 @@ public class CreateAccount extends FrameHalf {
         JPanel panelData1 = utiliGraf.dataPanelBacker("Nombre:", 16);
         panelData1.setBounds(anchoUnit * 1, altoUnit * 3, anchoUnit * 30, altoUnit * 7);
         fieldName.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
+        fieldName.setFont(newFont);        
         panelData1.add(fieldName);
         panelA.add(panelData1);
-
+        
         JPanel panelData2 = utiliGraf.dataPanelBacker("Apellido:", 16);
         panelData2.setBounds(anchoUnit * 1, altoUnit * 12, anchoUnit * 30, altoUnit * 7);
         fieldLastName.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
+        fieldLastName.setFont(newFont);
         panelData2.add(fieldLastName);
         panelA.add(panelData2);
 
         JPanel panelData3 = utiliGraf.dataPanelBacker("Mail:", 16);
         panelData3.setBounds(anchoUnit * 1, altoUnit * 21, anchoUnit * 30, altoUnit * 7);
         fieldMail.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
+        fieldMail.setFont(newFont);
         panelData3.add(fieldMail);
         panelA.add(panelData3);
 
         JPanel panelData4 = utiliGraf.dataPanelBacker("Teléfono:", 16);
         panelData4.setBounds(anchoUnit * 1, altoUnit * 30, anchoUnit * 30, altoUnit * 7);
         fieldPhone.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
+        fieldPhone.setFont(newFont);
         panelData4.add(fieldPhone);
         panelA.add(panelData4);
 
         JPanel panelData5 = utiliGraf.dataPanelBacker("Clave:", 16);
         panelData5.setBounds(anchoUnit * 1, altoUnit * 39, anchoUnit * 30, altoUnit * 7);
         fieldPass1.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
+        fieldPass1.setFont(newFont);
         panelData5.add(fieldPass1);
         panelA.add(panelData5);
 
         JPanel panelData6 = utiliGraf.dataPanelBacker("Confirmar Clave:", 16);
         panelData6.setBounds(anchoUnit * 1, altoUnit * 48, anchoUnit * 30, altoUnit * 7);
         fieldPass2.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
+        fieldPass2.setFont(newFont);
         panelData6.add(fieldPass2);
         panelA.add(panelData6);
 
@@ -136,12 +148,26 @@ public class CreateAccount extends FrameHalf {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     butCreateUserActionPerformed();
+
                 } catch (Exception ex) {
-                    Logger.getLogger(CreateAccount.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TemplateUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
         panelPpal.add(butCreateUser);
+
+        if (userMod != null) {
+            fieldName.setText(userMod.getName());
+            fieldLastName.setText(userMod.getLastName());
+            fieldMail.setText(userMod.getMail());
+            fieldPhone.setText(userMod.getPhone());
+            fieldPass1.setText(userMod.getPassword());
+            fieldPass2.setText(userMod.getPassword());
+            routeImage = userMod.getRouteImage();
+            nameImage = userMod.getNameImage();
+            labelImage.setText("Imagen: " + nameImage);
+            butCreateUser.setText("Actualizar datos");
+        }
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
@@ -151,7 +177,7 @@ public class CreateAccount extends FrameHalf {
             }
         });
         panelPpal.add(butSalir);
-        
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -199,7 +225,7 @@ public class CreateAccount extends FrameHalf {
                     charBool = true;
                 }
             }
-            
+
             if (charBool) {
                 utiliMsg.errorPhoneNumber();
                 fieldPhone.setText("");
@@ -232,11 +258,29 @@ public class CreateAccount extends FrameHalf {
         }
 
         if (error == false) {
-            User user = new User(name, lastName, mail, routeImage, nameImage, phone, pass1);
-            utiliMsg.cargaUsuario();
-            daoU.saveUser(user);
-            resetRegister();
-            dispose();
+            if (userMod == null) {
+                User user = new User(name, lastName, mail, routeImage, nameImage, phone, pass1);
+                daoU.saveUser(user);
+                resetRegister();
+                utiliMsg.cargaUsuario();
+                if (admin != null) {
+                    admin.enabledTrue(2);
+                }
+                dispose();
+            } else {
+                String id = userMod.getId();
+                daoU.updateNameUser(id, name);
+                daoU.updateLastNameUser(id, lastName);
+                daoU.updateMailUser(id, mail);
+                daoU.updateNameImageUser(id, nameImage);
+                daoU.updatePhoneUser(id, phone);
+                daoU.updatePassUser(id, pass1);
+                utiliMsg.cargaUpdateUsuario();
+                if (admin != null) {
+                    admin.enabledTrue(2);
+                }
+                dispose();
+            }
         }
     }
 
@@ -258,11 +302,13 @@ public class CreateAccount extends FrameHalf {
         mail = "";
         pass1 = "";
         pass2 = "";
+        phone = "";
         selectedFile = null;
         fieldPass1.setText("");
         fieldPass2.setText("");
         fieldName.setText("");
         fieldLastName.setText("");
+        fieldPhone.setText("");
         fieldMail.setText("");
         labelImage.setText("Imagen: Ninguna");
     }

@@ -10,7 +10,9 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -455,8 +457,10 @@ public class ConfigItemList extends FrameFull {
                     double rou = price % round;
                     rou = round - rou;
                     price = price + rou;
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    price = Double.parseDouble(df.format(price));
+                    DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+                    DecimalFormat df = new DecimalFormat("#.00", symbols);
+                    String st  = df.format(price);
+                    price = Double.parseDouble(st);
                     daoI.updateItemPrice(id, price);
                 }
             }

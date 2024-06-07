@@ -1,6 +1,5 @@
 package salonmanager;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -18,9 +17,7 @@ import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOItemcard;
-import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;

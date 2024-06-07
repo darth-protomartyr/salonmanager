@@ -1,7 +1,6 @@
 package salonmanager;
 
 import salonmanager.entidades.graphics.FrameWindow;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
@@ -28,7 +27,6 @@ import javax.swing.event.DocumentListener;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.servicios.ServicioSalon;
-import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class ErrorTableCount extends FrameWindow {
@@ -36,19 +34,12 @@ public class ErrorTableCount extends FrameWindow {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    Utilidades utili = new Utilidades();
-    ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
 
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
 
     double total = 0;
     double amountCash = 0;
@@ -61,7 +52,6 @@ public class ErrorTableCount extends FrameWindow {
     JCheckBox checkTotalLossMount = new JCheckBox("");
     JTextArea textAreaCause = new JTextArea();
     Salon salon = null;
-    JLabel labelTotalMount = null;
 
     public ErrorTableCount(Salon sal) {
         salon = sal;
@@ -81,7 +71,7 @@ public class ErrorTableCount extends FrameWindow {
         JPanel panelAmount = new JPanel();
         panelAmount.setLayout(null);
         panelAmount.setBackground(bluLg);
-        panelAmount.setBounds(15, 40, 350, 220);
+        panelAmount.setBounds(15, 40, 350, 210);
 
         JLabel labelAmount = utiliGraf.labelTitleBacker1("Ingrese el monto recibido");
         labelAmount.setBounds(60, 5, 240, 30);
@@ -203,7 +193,7 @@ public class ErrorTableCount extends FrameWindow {
         panelAmount.add(labelLoss);
 
         JLabel labelComment = utiliGraf.labelTitleBacker3("Causa del Error (obligatorio):");
-        labelComment.setBounds(70, 140, 250, 20);
+        labelComment.setBounds(70, 130, 250, 20);
         panelPpal.add(labelComment);
 
         textAreaCause.setRows(3);
@@ -214,10 +204,10 @@ public class ErrorTableCount extends FrameWindow {
         textAreaCause.setFont(newFont);
         textAreaCause.setBackground(narUlg);
         JScrollPane scrollPane = new JScrollPane(textAreaCause);
-        scrollPane.setBounds(70, 160, 250, 55);
+        scrollPane.setBounds(70, 150, 250, 55);
         panelPpal.add(scrollPane);
 
-        JButtonMetalBlu butErrorMount = utiliGraf.button2("Confirmar Error", 90, 185, 160);
+        JButtonMetalBlu butErrorMount = utiliGraf.button2("Confirmar Error", 100, 175, 160);
         butErrorMount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -228,7 +218,6 @@ public class ErrorTableCount extends FrameWindow {
                     } else {
                         butErrorMountActionPerformed(cause);
                     }
-
                 } catch (Exception ex) {
                     Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -303,7 +292,6 @@ public class ErrorTableCount extends FrameWindow {
         if (error == false) {
             if (wrong == total) {
                 labelLoss.setText("El monto faltante es total");
-//                fieldAmountCash.setText(total + "");
             } else if (wrong == 0) {
                 labelLoss.setText("No hay monto faltante");
             } else {
@@ -313,6 +301,7 @@ public class ErrorTableCount extends FrameWindow {
     }
 
     private void butErrorMountActionPerformed(String cause) throws Exception {
+        cause = "Causa del Error: " + cause;
         boolean error = false;
         boolean totalLoss = checkTotalLossMount.isSelected();
 
@@ -348,5 +337,4 @@ public class ErrorTableCount extends FrameWindow {
         checkTotalLossMount.setSelected(false);
         fieldAmountCash.setText("");
     }
-
 }

@@ -32,23 +32,13 @@ public class WaiterSelector extends FrameWindow {
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
-    ServicioTable st = new ServicioTable();
-    ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
     DAOUser daoU = new DAOUser();
 
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color narLg = new Color(252, 203, 5);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
 
     Table tableAux = new Table();
     JComboBox comboWaiters = new JComboBox();
-    JButtonMetalBlu butInWaiter = new JButtonMetalBlu();
     Salon salon = null;
     ArrayList<User> waiters = null;
     User waiterAux = null;

@@ -96,7 +96,7 @@ public class StaticsManager extends FrameFull {
         LocalDateTime today = now.toLocalDateTime();
 
         ConfigGeneral cfgGen = daoC.askConfigGeneral();
-        if (cfgGen.isActiveConfig()) {
+        if (!cfgGen.isActiveConfig()) {
             cfgGen = utili.cfgBacker();
         }
         categories = cfgGen.getTableItemCategories();

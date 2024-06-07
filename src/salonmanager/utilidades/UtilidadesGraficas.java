@@ -137,12 +137,10 @@ public class UtilidadesGraficas extends JFrame {
         JMenuItem itemSalon = new JMenuItem("Salón");
         JMenuItem itemStatics = new JMenuItem("Estadísticas");
 
-
         applyEmptyBorder(menuInicio, eBorder);
         applyEmptyBorder(menuCard, eBorder);
         applyEmptyBorder(menuSalon, eBorder);
         applyEmptyBorder(menuStatics, eBorder);
-
 
         applyEmptyBorder(itemAdministrador, eBorder);
         applyEmptyBorder(itemSalir, eBorder);

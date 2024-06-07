@@ -25,8 +25,7 @@ public class SalonManager {
             Logger.getLogger(SalonManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-
+    
     public void setUserIn(User userIn) {
         this.userIn = userIn;
     }

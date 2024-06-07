@@ -12,10 +12,5 @@ public class FrameThird extends FrameGeneral {
         setResizable(false);
         frame = this;
         setBounds(0, 0, anchoFrameThird, alturaFrame);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                dispose();
-            }
-        });
     }
 }

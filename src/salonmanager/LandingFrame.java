@@ -22,9 +22,6 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 public class LandingFrame extends FrameGeneral {
 
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
 
     public LandingFrame() {
@@ -53,7 +50,7 @@ public class LandingFrame extends FrameGeneral {
         butSign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    new CreateAccount();
+                    new TemplateUser(null, null);
                 } catch (Exception ex) {
                     Logger.getLogger(LandingFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -73,7 +70,6 @@ public class LandingFrame extends FrameGeneral {
         });
         panelPpal.add(butLog);
         
-        
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addComponentListener(new ComponentAdapter() {
@@ -85,7 +81,6 @@ public class LandingFrame extends FrameGeneral {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width, screenSize.height);
         setVisible(true);
-        
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {

@@ -287,8 +287,16 @@ public class ServicioSalon {
         salon.getTableAux().setComments(cause);
         daoT.updateComments(salon.getTableAux());
 
+        salon.getTableAux().setCloseTime(new Timestamp(new Date().getTime()));
+        daoT.updateCloseTime(salon.getTableAux());
+
+        
         salon.getTableAux().setOpen(false);
         daoT.updateTableOpen(salon.getTableAux());
+        
+        ArrayList<String> deferTabs = salon.getCfgAct().getArrayDeferWs();
+        deferTabs.add(salon.getTableAux().getId());
+        daoC.updateCfgActDeferWs(deferTabs);
 
         utiliMsg.cargaError();
         salon.setEnabled(true);

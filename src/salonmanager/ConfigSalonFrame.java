@@ -309,6 +309,10 @@ public class ConfigSalonFrame extends FrameThird {
         });
         panelPpal.add(butReset);
 
+        if (cfgGen.getTableItemCategories() != null) {
+            updateValues();
+        }
+        
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
@@ -320,7 +324,7 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         panelPpal.add(butSalir);
-
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -330,10 +334,6 @@ public class ConfigSalonFrame extends FrameThird {
                 }
             }
         });
-
-        if (cfgGen.getTableItemCategories() != null) {
-            updateValues();
-        }
     }
 
     private void selSpace(String selectedValue, int i) {

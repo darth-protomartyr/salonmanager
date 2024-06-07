@@ -167,6 +167,7 @@ public class DAOWorkshift extends DAO {
         }
     }
 
+    /*
     public ArrayList<Workshift> askWorshiftByDate(Timestamp ts1, Timestamp ts2) throws Exception {
         ArrayList<Workshift> wss = new ArrayList<>();
         if (ts2 == null) {
@@ -200,7 +201,40 @@ public class DAOWorkshift extends DAO {
         } finally {
             desconectarBase();
         }
+    }  
+*/
+    
+    
+    public Workshift askWorshiftByTabDate(Timestamp ts1) throws Exception {
+        Workshift ws = new Workshift();
+        try {
+            String sql = "SELECT * FROM workshifts WHERE workshift_open_shift <= '" + ts1 + "' AND workshift_close_shift >= '" + ts1 + "' AND workshift_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                ws.setId(resultado.getInt(1));
+                ws.setOpenWs(resultado.getTimestamp(2));
+                ws.setCloseWs(resultado.getTimestamp(3));
+                ws.setStateWs(resultado.getBoolean(4));
+                ws.setTotalMountCashWs(resultado.getDouble(5));
+                ws.setTotalMountElectronicWs(resultado.getDouble(6));
+                ws.setTotalMountWs(resultado.getDouble(7));
+                ws.setTotalMountRealWs(resultado.getDouble(8));
+                ws.setErrorMountWs(resultado.getDouble(9));
+                ws.setErrorMountRealWs(resultado.getDouble(10));
+                ws.setCashFlowWsCash(resultado.getDouble(11));
+                ws.setCashFlowWsElec(resultado.getDouble(12));
+                ws.setCommentWs(resultado.getString(13));
+                ws.setActiveWs(resultado.getBoolean(14));
+            }
+            return ws;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
     }
+
 
     public Workshift askWorshiftById(int id) throws Exception {
         Workshift ws = new Workshift();

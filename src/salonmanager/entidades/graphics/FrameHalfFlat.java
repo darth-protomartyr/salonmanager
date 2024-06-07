@@ -12,10 +12,5 @@ public class FrameHalfFlat extends FrameGeneral {
         setVisible(true);
         setResizable(false);
         frame = this;
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                dispose();
-            }
-        });
     }
 }

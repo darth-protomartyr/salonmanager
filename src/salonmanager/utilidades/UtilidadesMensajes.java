@@ -12,41 +12,39 @@ public class UtilidadesMensajes extends JFrame {
 
     private javax.swing.JOptionPane optionPaneOk;
 
-
 //Mensajes de confirmación    
 //Mensajes de confirmación    
-
     public void cargaCashFlowSuccess() {
         CustomDialog cm = new CustomDialog("La operación fue confirmada.", 1);
         cm.setVisible(true);
     }
-    
+
     public void cargaError() {
         CustomDialog cm = new CustomDialog("El error fue ingresado al sistema.", 1);
         cm.setVisible(true);
     }
-    
+
     public void cargaItem() {
         CustomDialog cm = new CustomDialog("El item de la Card fue cargado con éxito a la base de datos.", 1);
         cm.setVisible(true);
     }
-    
+
     public void cargaTableErase() {
         CustomDialog cm = new CustomDialog("La orden fue cerrada con éxito.", 1);
         cm.setVisible(true);
     }
-    
+
     public void cargaGift(String item) {
         CustomDialog cm = new CustomDialog("Se ingresó " + item + " a la lista de obsequios.", 1);
         cm.setVisible(true);
     }
-    
+
     public void cargaLateWs() {
         CustomDialog cm = new CustomDialog("Si no tiene los datos de cierre de caja del turno anterior, cierre la ventana. El administrador los podrá cargar luego.", 1);
         cm.setVisible(true);
     }
-    
-        public void cargaUsuario() {
+
+    public void cargaUsuario() {
         CustomDialog cm = new CustomDialog("El usuario fue ingresado. El Administrador le asignara un rol a la brevedad.", 1);
         cm.setVisible(true);
     }
@@ -61,25 +59,23 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
-    
     //Mensajes Error
     //Mensajes Error
-        public void errorMultipleIndications() {
+    public void errorMultipleIndications() {
         CustomDialog cm = new CustomDialog("Error: Las indicaciones se ingresan de forma individual para cada Item.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
 
     public void errorIndiLenghtExcess() {
         CustomDialog cm = new CustomDialog("Error: El texto de las indicaciones excede el límite de caracteres.", 2);
-        cm.setVisible(true);         
+        cm.setVisible(true);
     }
 
     public void errorUnnecesaryOp() {
         CustomDialog cm = new CustomDialog("Error: es innecesario hacer el pago mixto.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
-    
-    
+
     public void errorLackOfFunds() {
         CustomDialog cm = new CustomDialog("Error: fondos insuficientes.", 2);
         cm.setVisible(true);
@@ -99,32 +95,32 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: el item consultado no arroja resultados.", 2);
         cm.setVisible(true);
     }
-    
+
     public void errorPeriodNull() {
         CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un período de tiempo.", 2);
         cm.setVisible(true);
     }
-    
+
     public void errorNullSector() {
         CustomDialog cm = new CustomDialog("Error: Aún no ha designado sectores a la configuración.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
-    
+
     public void errorNullTabsQ() {
         CustomDialog cm = new CustomDialog("Error: Aún no se han designado las cantidades de mesas de todos de los sectores.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
 
     public void errorCatExcess() {
         CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 6 categorías permitidas.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
-    
+
     public void errorSpacesExcess() {
         CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 8 sectores permitidos.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
-    
+
     public void errorRegistroFallido() {
         CustomDialog cm = new CustomDialog("Error: No pudo realizarse el registro.", 2);
         cm.setVisible(true);
@@ -134,7 +130,7 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: El número de caracteres del nombre no debe superar los.", 2);
         cm.setVisible(true);
     }
-    
+
     public void errorCantCharNameUser() {
         CustomDialog cm = new CustomDialog("Error: El número de caracteres no debe superar los 30.", 2);
         cm.setVisible(true);
@@ -144,12 +140,12 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: El teléfono puede tener de 5 a 30 caracteres y estar formado por números, espacios en blanco, '+' y '-'.", 2);
         cm.setVisible(true);
     }
-    
+
     public void errorNameRepeat() {
         CustomDialog cm = new CustomDialog("Error: El nombre ya se encuentra ingresado en nuestra base de datos.", 2);
         cm.setVisible(true);
     }
-    
+
     public void errorPhoneRepeat() {
         CustomDialog cm = new CustomDialog("Error: El teléfono ya se encuentra ingresado en nuestra base de datos.", 2);
         cm.setVisible(true);
@@ -261,7 +257,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorMountNull() {
-        CustomDialog cm = new CustomDialog("Error: El monto ingtresado es nulo.", 2);
+        CustomDialog cm = new CustomDialog("Error: No ha ingresado ingresado ningún monto.", 2);
         cm.setVisible(true);
     }
 
@@ -316,16 +312,16 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorNameLength(int large) {
-        CustomDialog cm = new CustomDialog("Error: el nombre no debe tener más de " + large +" caracteres.", 2);
-        cm.setVisible(true); 
+        CustomDialog cm = new CustomDialog("Error: el nombre no debe tener más de " + large + " caracteres.", 2);
+        cm.setVisible(true);
     }
 
     public void errorUnconfirmTable() {
         CustomDialog cm = new CustomDialog("Error: No ha cofirmado los sectores y/o las cantidades de mesas.", 2);
         cm.setVisible(true);
     }
-    
-        public void errorTableResume() {
+
+    public void errorTableResume() {
         CustomDialog cm = new CustomDialog("Error: no hay órdenes con esas características.", 2);
         cm.setVisible(true);
     }
@@ -337,89 +333,87 @@ public class UtilidadesMensajes extends JFrame {
 
     public void errorEmptyCause() {
         CustomDialog cm = new CustomDialog("Error: debe ingresar el comentario.", 2);
-        cm.setVisible(true);        
+        cm.setVisible(true);
     }
 
     void configNull() {
         CustomDialog cm = new CustomDialog("Error: No hay una configuración habilitada.", 2);
-        cm.setVisible(true);        
+        cm.setVisible(true);
     }
 
     public void erroNotNewButton() {
         CustomDialog cm = new CustomDialog("Error: Antes de crear un nuevo pedido debe dar inicio al anterior.", 2);
-        cm.setVisible(true);         
+        cm.setVisible(true);
     }
 
     public void errorInsufficientMount() {
         CustomDialog cm = new CustomDialog("Error: El monto ingresado no cubre el valor gastado.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
 
     public void errorTableNull() {
         CustomDialog cm = new CustomDialog("Error: No se ha seleccionado una orden.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
-    
-        public void errorDeliveryNull() {
+
+    public void errorDeliveryNull() {
         CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un usuario Delivery para realizar el envío.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
-    
+
     public void errorConsumerNull() {
         CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un cliente para realizar el envío.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
 
     public void errorEmptyFields() {
         CustomDialog cm = new CustomDialog("Error: Todos los campos deben ser completados.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
 
     public void errorNullDeli() {
         CustomDialog cm = new CustomDialog("Error: Aún no hay se han asignado datos al envío.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
 
     public void errorWsPendient() {
         CustomDialog cm = new CustomDialog("Error: Hay un Turno pendiente y no se puede reconfigurar el salón.", 2);
-        cm.setVisible(true); 
+        cm.setVisible(true);
     }
-    
+
     public void errorCategoriesNull() {
         CustomDialog cm = new CustomDialog("Error: Debe ingresar hasta 6 categorías de venta.", 2);
-        cm.setVisible(true); 
-    }  
-    
-    
-    //Mensaje de optativos
-    //Mensaje de optativos
+        cm.setVisible(true);
+    }
 
+    //Mensaje de optativos
+    //Mensaje de optativos
     public boolean cargaConfirmRestart() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma la acción el programa se cerrará y deberá reiniciarlo.");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-        
+
     public boolean cargaConfirmarConfigSalon() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quiere configurar el salón?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     public boolean cargaConfirmarInicioTurno(String name, String lastName) {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que desea iniciar un turno con el usuario " + name + " " + lastName + "?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     public boolean cargaConfirmRealWsMount() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Desea cerrar la ventana sin confirmar el monto final del turno?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
-        return confirm;        
+        return confirm;
     }
 
     public boolean cargaConfirmarCierreTurno(String name, String lastName) {
@@ -435,23 +429,21 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
-    
+
     public boolean cargaConfirmarCierreVentana() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres cerrar la ventana?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     public boolean cargaConfirmarCierrePrograma() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres cerrar el programa?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
-    
+
     public boolean cargaConfirmErrorPriceNull() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres que el precio de venta sea 0?");
         cdc.setVisible(true);
@@ -459,22 +451,20 @@ public class UtilidadesMensajes extends JFrame {
         return confirm;
     }
 
-    
     public boolean cargaConfirmCloseWSByOtherUser() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("Hay un turno abierto por otro cajero. Confirme si desea cerrarlo para iniciar uno nuevo a su nombre.");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
-    
+
     public boolean cargaConfirmarFacturacion(double realMount, double error) {
         String mess = "";
         if (error == 0) {
             mess = "Confirma que el monto ingresado es de $" + realMount + "?";
         } else if (error < 0) {
             mess = "Confirma que el monto ingresado es de $" + realMount + " y hay un faltante de " + error * (-1) + "?";
-        } else  {
+        } else {
             mess = "Confirma que el monto ingresado es de $" + realMount + " y hay un excedente de " + error + "?";
         }
         CustomDialogConfirm cdc = new CustomDialogConfirm(mess);
@@ -482,14 +472,14 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     public boolean cargaConfirmarMontoError(double in, double out) {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que el monto ingresado es de $" + in + " y el faltante  es de $" + out + "?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     public boolean cargaConfirmarCierre() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma el cierre de órdenes, no podrá agregar obsequios ni descuentos.");
         cdc.setVisible(true);
@@ -503,18 +493,16 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     public boolean cargaConfirmarCambioPrice() {
         CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que quiere cambiar el precio de los Items seleccionados?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     ////------------------------------Backers------------------------------------------
     ////------------------------------Backers------------------------------------------
-
-
     public String requestIndication() {
         String indications = "";
         CustomDialogTextIn cdti = new CustomDialogTextIn("Indicaciones Cliente", "Ingrese indicaciones del cliente:", 1);
@@ -544,7 +532,7 @@ public class UtilidadesMensajes extends JFrame {
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
-    
+
     public String requestPass() {
         String indications = "";
         CustomDialogTextIn cdti = new CustomDialogTextIn("Confirmar operación", "Ingrese su clave para confirmar:", 2);
@@ -552,7 +540,6 @@ public class UtilidadesMensajes extends JFrame {
         indications = cdti.getText();
         return indications;
     }
-     
 
     public String cargaNewString(int i, int large) {
         String st = "";
@@ -563,23 +550,22 @@ public class UtilidadesMensajes extends JFrame {
             question = "Ingrese el nombre de un nuevo espacio de hasta 15 caracteres";
         } else if (i == 2) {
             tit = "Nuevo Categoría";
-            question = "Ingrese el nombre de una nueva categoría de hasta 10 caracteres";                
+            question = "Ingrese el nombre de una nueva categoría de hasta 10 caracteres";
         }
-        
+
         CustomDialogTextInAlt cdti = new CustomDialogTextInAlt(tit, question, large);
         cdti.setVisible(true);
         st = cdti.getText();
         if (i == 1) {
             st = st.toLowerCase();
-        } else if(i == 2) {
+        } else if (i == 2) {
             st = st.toUpperCase();
         }
-        return st;           
+        return st;
     }
-    
-    ////------------------------------Reubicar------------------------------------------
-    ////------------------------------Reubicar------------------------------------------
 
+    ////------------------------------Reubicar------------------------------------------
+    ////------------------------------Reubicar------------------------------------------
     public void errorCat() {
         CustomDialog cm = new CustomDialog("Error: no hay Items en esta Categoría.", 2);
         cm.setVisible(true);
@@ -589,7 +575,7 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: No ha seleccionado una categoría.", 2);
         cm.setVisible(true);
     }
-    
+
     public void errorCatEqual() {
         CustomDialog cm = new CustomDialog("Error: la categoría seleccionada es igual a la del item.", 2);
         cm.setVisible(true);
@@ -608,13 +594,46 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorPnlsMod() {
-        CustomDialog cm = new CustomDialog("No hay items para modificar.", 1);
+        CustomDialog cm = new CustomDialog("No hay items para modificar.", 2);
         cm.setVisible(true);
     }
 
     public void errorModDisabled() {
-            CustomDialog cm = new CustomDialog("Los cambios globales no están habilitados.", 1);
+        CustomDialog cm = new CustomDialog("Los cambios globales no están habilitados.", 2);
         cm.setVisible(true);
     }
-    
+
+    public void cargaUserUpdate() {
+        CustomDialog cm = new CustomDialog("Se actualizó la información del Usuario.", 1);
+        cm.setVisible(true);
+    }
+
+    public void errorUserSelected() {
+        CustomDialog cm = new CustomDialog("No ha seleccionado usuario.", 2);
+        cm.setVisible(true);
+    }
+
+    public void cargaUpdateUsuario() {
+        CustomDialog cm = new CustomDialog("Los datos del usuario fueron actualizados.", 2);
+        cm.setVisible(true);
+    }
+
+    public boolean cargaConfirmErrorInsuf() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El monto es insuficiente y no podrá ser corregido luego. ¿Confirma la operación?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean cargaConfirmErrorSuf() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que el mmonto cubre el error?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public void errorWsOpen() {
+        CustomDialog cm = new CustomDialog("Error: para corregir el faltante de dinero, el turno de la mesa debe estar cerrado.", 2);
+        cm.setVisible(true);
+    }
 }

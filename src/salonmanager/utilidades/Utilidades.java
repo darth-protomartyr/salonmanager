@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 import salonmanager.entidades.bussiness.User;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -20,10 +21,12 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigGeneral;
+import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
 
 public class Utilidades {
     DAOWorkshift daoW = new DAOWorkshift();
+    DAOTable daoT = new DAOTable();
     
     public double toNumberD(String str) {
         double d = -1;
@@ -453,6 +456,30 @@ public class Utilidades {
         }
         return arrayStr;
     }
+    
+        public String arrayStrToStrAlt(ArrayList<String> strPane) {
+        String str = "";
+        for (String s : strPane) {
+            str += s + "<";
+        }
+        return str;
+    }
+
+    public ArrayList<String> strToArrayStrAlt(String str) {
+        ArrayList<String> arrayStr = new ArrayList<>();
+        String strAux = "";
+        for (int i = 0; i < str.length(); i++) {
+            String s = str.substring(i, i + 1);
+            if (s.equals("<")) {
+                arrayStr.add(strAux);
+                strAux = "";
+            } else {
+                strAux += s;
+            }
+        }
+        return arrayStr;
+    }
+    
 
     public Itemcard ItemcardBacker(String Card, ArrayList<Itemcard> itemsDB) {
         Itemcard ic = null;
@@ -792,8 +819,52 @@ public class Utilidades {
         chars.add("s");
         chars.add("v");
 
-        
         ConfigGeneral cfgGen = new ConfigGeneral(59, tabsQ, spaces, categories, chars, true);
         return cfgGen;
+    }
+
+    public ArrayList<Table> tabsBacker(ArrayList<String> tabIds) throws Exception {
+        ArrayList<Table> tabs = new ArrayList<>();
+        for (int i = 0; i < tabIds.size(); i++) {
+            Table tab = daoT.getTableById(tabIds.get(i));
+            tabs.add(tab);
+        }
+        return tabs;
+    }
+
+    public ArrayList<String> tabsEasyReader(ArrayList<String> arrayDeferWs) {
+        ArrayList<String> defer = new ArrayList<>();
+        for (int i = 0; i < arrayDeferWs.size(); i++) {
+            String date = "";
+            Timestamp ts = null;
+            String id = arrayDeferWs.get(i);
+            String[] section = id.split("_");
+            String sec1 = section[0];
+            String sec2 = section[1];
+            String sec3 = section[2];
+            date = sec2 + " " + sec3;
+            ts = stringToTs(date);
+            date = sec1 + " " + friendlyDate2(ts);            
+            defer.add(date);
+        }
+        return defer;
+    }
+    
+    public Timestamp stringToTs(String date) {
+        long l = 0;
+        Timestamp ts = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        try {
+            Date dat = dateFormat.parse(date);
+            l = dat.getTime();
+            ts = new Timestamp(l);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ts;
+    }
+
+    public double round2Dec(double value) {
+        return Math.round( value * 100.0) / 100.0;
     }
 }

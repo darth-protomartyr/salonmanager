@@ -18,7 +18,7 @@ public class Workshift {
     double totalMountCashWs;
     double totalMountElectronicWs;
     double totalMountWs;
-    double totalMountRealWs;
+    double totalMountRealWs; //billing plus cashFlow
     double errorMountWs;
     double errorMountRealWs;
     double cashFlowWsCash;

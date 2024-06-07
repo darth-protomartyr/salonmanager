@@ -73,7 +73,7 @@ public class DAOConfig extends DAO {
         while (resultado.next()) {
             cfnAct.setOpenWs(resultado.getBoolean(1));
             cfnAct.setOpenIdWs(resultado.getInt(2));
-            cfnAct.setArrayDeferWs(utili.strToArrayInt(resultado.getString(3)));
+            cfnAct.setArrayDeferWs(utili.strToArrayStrAlt(resultado.getString(3)));
         }
         desconectarBase();
         return cfnAct;
@@ -113,8 +113,8 @@ public class DAOConfig extends DAO {
     }
 
 
-    public void updateCfgActDeferWs(ArrayList<Integer> arrayDeferWs) throws Exception {
-            String stArray =  utili.arrayIntToStr(arrayDeferWs);
+    public void updateCfgActDeferWs(ArrayList<String> arrayDeferWs) throws Exception {
+            String stArray =  utili.arrayStrToStrAlt(arrayDeferWs);
         try {
             String sql1 = "UPDATE config_actual SET congif_defer_close_ws = '" + stArray + "';";
             System.out.println(sql1);

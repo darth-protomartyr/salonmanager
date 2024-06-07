@@ -73,6 +73,8 @@ public class WorkshiftEndPanel extends FrameHalf {
     ArrayList<Table> newTabs = new ArrayList<>();
     ArrayList<Table> toEraseTabs = new ArrayList<>();
     ArrayList<Table> toUpdTabs = new ArrayList<>();
+    ArrayList<String> actualTabsSt = new ArrayList<>();
+
     double total = 0;
     double cash = 0;
     double electronic = 0;
@@ -225,7 +227,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         panelElecSell.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 19, altoUnit * 2);
         panelElec.add(panelElecSell);
 
-        JLabel labelTotalElec1 = utiliGraf.labelTitleBacker3("Flujo Ventas por Transferencia:");
+        JLabel labelTotalElec1 = utiliGraf.labelTitleBacker3("Flujo Ventas por Transf.:");
         panelElecSell.add(labelTotalElec1);
         panelElecSell.add(Box.createHorizontalGlue());
 
@@ -240,7 +242,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         panelElecInn.setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 19, altoUnit * 2);
         panelElec.add(panelElecInn);
 
-        JLabel labelElecInn1 = utiliGraf.labelTitleBacker3("Flujo Auxiliar Transferencia:");
+        JLabel labelElecInn1 = utiliGraf.labelTitleBacker3("Flujo Auxiliar Transf.:");
         panelElecInn.add(labelElecInn1);
         panelElecInn.add(Box.createHorizontalGlue());
 
@@ -371,7 +373,9 @@ public class WorkshiftEndPanel extends FrameHalf {
         labelTabs.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 12, altoUnit * 3);
         panelAskTab.add(labelTabs);
 
-        comboTabs.setModel(utili.tableComboModelReturn(actualTabs));
+        actualTabsSt = tabsIdToAsk(actualTabs);
+        actualTabsSt = utili.tabsEasyReader(actualTabsSt);
+        comboTabs.setModel(utili.categoryComboModelReturn(actualTabsSt));
         comboTabs.setBounds(anchoUnit * 15, altoUnit * 1, anchoUnit * 15, altoUnit * 3);
         DefaultListCellRenderer renderer = new DefaultListCellRenderer();
         renderer.setFont(new Font("Arial", Font.PLAIN, 50));
@@ -443,6 +447,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         try {
             double realAmount = parseDouble(real);
             double realError = realAmount - cashComplete;
+            realError = utili.round2Dec(realError);
             boolean confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
             if (realError > 0 && comment.equals("")) {
                 utiliMsg.errorCommentNull();
@@ -455,7 +460,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                     if (realError < 0) {
                         realError = realError * (-1);
                     } else if (realError > 0) {
-                         realError = 0;
+                        realError = 0;
                     }
                     sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
                     salon.getCfgAct().setOpenIdWs(0);
@@ -472,16 +477,18 @@ public class WorkshiftEndPanel extends FrameHalf {
         }
     }
 
+
     public void getTab() throws Exception {
-        String selection = (String) comboTabs.getSelectedItem();
+        String id1 = (String) comboTabs.getSelectedItem();
         Table tab = new Table();
-        for (Table t : actualTabs) {
-            if (t.getId().equals(selection)) {
-                tab = t;
+        
+        for (int i = 0; i < actualTabs.size(); i++) {
+            if (actualTabsSt.get(i).equals(id1)) {
+                tab = actualTabs.get(i);
             }
         }
-        if (!selection.equals("")) {
-            new TableResumePanel(tab);
+        if (!id1.equals("")) {
+            new TableResumePanel(tab, false, null);
         } else {
             utiliMsg.errorTableResume();
         }
@@ -498,8 +505,8 @@ public class WorkshiftEndPanel extends FrameHalf {
     }
 
     private void buttonDeferWsCloseAction() throws Exception {
-        ArrayList<Integer> deferWsArray = cfgAct.getArrayDeferWs();
-        deferWsArray.add(actualWs.getId());
+        ArrayList<String> deferWsArray = cfgAct.getArrayDeferWs();
+//        deferWsArray.add(actualWs.getId());
         daoC.updateCfgActDeferWs(deferWsArray);
         utiliMsg.cargaWsDefer();
     }
@@ -512,6 +519,14 @@ public class WorkshiftEndPanel extends FrameHalf {
 
     public void setEnableWEP() {
         setEnabled(true);
+    }
+
+    private ArrayList<String> tabsIdToAsk(ArrayList<Table> actualTabs) {
+        ArrayList<String> tabsId = new ArrayList<>();
+        for (Table tab : actualTabs) {
+            tabsId.add(tab.getId());
+        }
+        return tabsId;
     }
 
 }
