@@ -21,6 +21,7 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 
 public class LandingFrame extends FrameGeneral {
 
+    Color whi = new Color(255, 255, 255);
     Color bluSt = new Color(3, 166, 136);
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
 
@@ -34,19 +35,18 @@ public class LandingFrame extends FrameGeneral {
         add(panelPpal);
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setBounds(0, 250, anchoFrame, 200);
+        panelTitle.setBounds(anchoUnit * 0, altoUnit * 40, anchoUnit * 110, altoUnit * 16);
         panelTitle.setBackground(bluSt);
-        panelTitle.setLayout(null);
         panelPpal.add(panelTitle);
 
         JLabel labelTitleProgram = new JLabel("SALON MANAGER");
-        Font font = labelTitleProgram.getFont();
-        Font newFont = font.deriveFont(100f);
+        Font newFont = new Font("Arial", Font.BOLD, 120);
         labelTitleProgram.setFont(newFont);
-        labelTitleProgram.setBounds(230, 50, anchoFrame - 160, 100);
+        labelTitleProgram.setForeground(whi);
+        labelTitleProgram.setPreferredSize(new Dimension(anchoUnit * 85, altoUnit * 16));
         panelTitle.add(labelTitleProgram);
 
-        JButtonMetalBlu butSign = utiliGraf.button1("Sign In", anchoFrame - 140, 20, 100);
+        JButtonMetalBlu butSign = utiliGraf.button1("Sign In", anchoUnit * 90, altoUnit * 5, anchoUnit * 8);
         butSign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -58,7 +58,7 @@ public class LandingFrame extends FrameGeneral {
         });
         panelPpal.add(butSign);
 
-        JButtonMetalBlu butLog = utiliGraf.button1("Login", anchoFrame - 140, 80, 100);
+        JButtonMetalBlu butLog = utiliGraf.button1("Log in",anchoUnit * 90, altoUnit * 13, anchoUnit * 8);
         butLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {

@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
@@ -67,7 +68,7 @@ public class CorrectorItem extends FrameWindow {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
+        panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 4);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Corrector de Ingresos");
@@ -79,7 +80,13 @@ public class CorrectorItem extends FrameWindow {
         itemsPayedNoDiscount = tab.getPartialPayedND();
         itemsCombo = new ArrayList<>();
 
-        JButtonMetalBlu butItemsOrder = utiliGraf.button3("Items A Pagar", 30, 75, 150);
+        JLabel labelComboItems1 = utiliGraf.labelTitleBacker2W("<html>Seleccione una de las 3 listas<br>para quitar uno de los items</html>");
+        labelComboItems.setHorizontalAlignment(SwingConstants.CENTER);
+        labelComboItems1.setBounds(anchoUnit * 6, altoUnit * 4, anchoUnit * 20, altoUnit * 8);
+        panelPpal.add(labelComboItems1);
+        
+        
+        JButtonMetalBlu butItemsOrder = utiliGraf.button2("Items A Pagar", anchoUnit * 2, altoUnit * 13, anchoUnit * 13);
         butItemsOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -93,7 +100,7 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsOrder);
 
-        JButtonMetalBlu butItemsGift = utiliGraf.button3("Items Obsequiados", 30, 105, 150);
+        JButtonMetalBlu butItemsGift = utiliGraf.button2("Items Obsequiados", anchoUnit * 2, altoUnit * 18, anchoUnit * 13);
         butItemsGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -107,7 +114,7 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsGift);
 
-        JButtonMetalBlu butItemsPayed = utiliGraf.button3("Items pagados", 30, 135, 150);
+        JButtonMetalBlu butItemsPayed = utiliGraf.button2("Items pagados", anchoUnit * 2, altoUnit * 23, anchoUnit * 13);
         butItemsPayed.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -121,21 +128,11 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsPayed);
 
-        JLabel labelComboItems1 = utiliGraf.labelTitleBacker2W("Seleccione un item");
-        labelComboItems1.setBounds(200, 70, 170, 20);
-        panelPpal.add(labelComboItems1);
 
-        JLabel labelComboItems2 = utiliGraf.labelTitleBacker2W("para quitar de la");
-        labelComboItems2.setBounds(200, 90, 170, 20);
-        panelPpal.add(labelComboItems2);
-
-        labelComboItems = utiliGraf.labelTitleBacker2W("lista de pedidos:");
-        labelComboItems.setBounds(200, 110, 170, 20);
-        panelPpal.add(labelComboItems);
 
         itemsComboChanger(itemsOrder, 1);
-        comboItems.setBounds(200, 140, 150, 40);
-        comboItems.setFont(salon.getFont3());
+        comboItems.setBounds(anchoUnit * 16, altoUnit * 17, anchoUnit * 12, altoUnit * 6);
+        comboItems.setFont(salon.getFont4());
         panelPpal.add(comboItems);
 
 
@@ -156,6 +153,7 @@ public class CorrectorItem extends FrameWindow {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                salon.setEnabled(true);
                 dispose();
             }
         });

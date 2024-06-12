@@ -176,7 +176,7 @@ public class ServicioSalon {
     }
 
     public void createTable(Salon sal, Table tableAux) throws Exception {
-        daoT.saveTable(tableAux);
+        daoT.saveTable(tableAux, sal.getWorkshiftNow().getOpenWs());
         daoU.saveWaiterTable(tableAux);
     }
 
@@ -277,7 +277,7 @@ public class ServicioSalon {
         daoT.updateTableMountElectronic(salon.getTableAux());
 
         salon.setTotal(countBill(salon.getTableAux()));
-        salon.getTableAux().setTotal(salon.getTotal() - errorBack);
+        salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
 
         salon.setError(errorBack);
@@ -293,6 +293,8 @@ public class ServicioSalon {
         
         salon.getTableAux().setOpen(false);
         daoT.updateTableOpen(salon.getTableAux());
+        
+        sis.createItemSale(salon);
         
         ArrayList<String> deferTabs = salon.getCfgAct().getArrayDeferWs();
         deferTabs.add(salon.getTableAux().getId());
@@ -446,6 +448,9 @@ public class ServicioSalon {
                 salon.setWorkshiftNow(null);
                 salon.getLabelWorkshift().setText("Turno no iniciado.");
                 salon.getButInitWorkshift().setText("ABRIR TURNO");
+                salon.setEnabled(true);
+                salon.dispose();
+            } else {
                 salon.setEnabled(true);
             }
         } else {

@@ -3,21 +3,22 @@ package salonmanager.entidades.bussiness;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import salonmanager.utilidades.Utilidades;
 
 public class Table {
-
+    Utilidades utili = new Utilidades();
     int num;
     String pos;
     Timestamp openTime;
     Timestamp closeTime;
     String id;
-    boolean open;
+    boolean open; //open/close tab
     boolean bill;
     boolean toPay;// indicate tha table has been partial paid 
     ArrayList<Itemcard> order;
     ArrayList<Itemcard> gifts;
-    ArrayList<Itemcard> partialPayed;
-    ArrayList<Itemcard> partialPayedND;
+    ArrayList<Itemcard> partialPayed; //items partial paid
+    ArrayList<Itemcard> partialPayedND; //items partial paid no discount
     User waiter;
     int discount;
     double error;
@@ -26,7 +27,7 @@ public class Table {
     double amountElectronic;
     double total;
     String comments;
-    boolean activeTable;
+    boolean activeTable; //active/inactive tab, to be over watched
 
     public Table() {
     }
@@ -73,11 +74,11 @@ public class Table {
         this.partialPayedND = partialPayedNoDiscount;
         this.waiter = waiter;
         this.discount = discount;
-        this.error = error;
-        this.priceCorrection = priceCorrection;
-        this.amountCash = amountCash;
-        this.amountElectronic = amountElectronic;
-        this.total = total;
+        this.error = utili.round2Dec(error);
+        this.priceCorrection = utili.round2Dec(priceCorrection);
+        this.amountCash = utili.round2Dec(amountCash);
+        this.amountElectronic = utili.round2Dec(amountElectronic);
+        this.total = utili.round2Dec(total);
         this.comments = comments;
         this.activeTable = activeTable;
     }
@@ -100,7 +101,7 @@ public class Table {
         this.discount = discount;
         this.error = 0;
         this.priceCorrection = 0;
-        this.total = total;
+        this.total = utili.round2Dec(total);
         this.comments = comments;
         this.activeTable = activeTable;
     }
@@ -121,11 +122,11 @@ public class Table {
         this.partialPayedND = tab.getPartialPayedND();
         this.waiter = tab.getWaiter();
         this.discount = tab.getDiscount();
-        this.error = tab.getError();
-        this.priceCorrection = tab.getPriceCorrection();
-        this.amountCash = tab.getAmountCash();
-        this.amountElectronic = tab.getAmountElectronic();
-        this.total = tab.getTotal();
+        this.error = utili.round2Dec(tab.getError());
+        this.priceCorrection = utili.round2Dec(tab.getPriceCorrection());
+        this.amountCash = utili.round2Dec(tab.getAmountCash());
+        this.amountElectronic = utili.round2Dec(tab.getAmountElectronic());
+        this.total = utili.round2Dec(tab.getTotal());
         this.comments = tab.getComments();
         this.activeTable = tab.isActiveTable();
     }
@@ -257,7 +258,7 @@ public class Table {
     }
 
     public void setError(double error) {
-        this.error = error;
+        this.error = utili.round2Dec(error);
     }
 
     public double getPriceCorrection() {
@@ -265,7 +266,7 @@ public class Table {
     }
 
     public void setPriceCorrection(double priceCorrection) {
-        this.priceCorrection = priceCorrection;
+        this.priceCorrection = utili.round2Dec(priceCorrection);
     }
 
     public double getAmountCash() {
@@ -273,7 +274,7 @@ public class Table {
     }
 
     public void setAmountCash(double amountCash) {
-        this.amountCash = amountCash;
+        this.amountCash = utili.round2Dec(amountCash);
     }
 
     public double getAmountElectronic() {
@@ -281,7 +282,7 @@ public class Table {
     }
 
     public void setAmountElectronic(double amountElectronic) {
-        this.amountElectronic = amountElectronic;
+        this.amountElectronic = utili.round2Dec(amountElectronic);
     }
 
     public double getTotal() {
@@ -289,7 +290,7 @@ public class Table {
     }
 
     public void setTotal(double total) {
-        this.total = total;
+        this.total = utili.round2Dec(total);
     }
 
     private String emptyEraser(String s) {
@@ -307,6 +308,6 @@ public class Table {
 
     @Override
     public String toString() {
-        return "Table{" + "num=" + num + ", pos=" + pos + ", openTime=" + openTime + ", id=" + id + ", open=" + open + ", bill=" + bill + ", toPay=" + toPay + ", discount=" + discount + ", error=" + error + ", priceCorrection=" + priceCorrection + ", amountCash=" + amountCash + ", amountElectronic=" + amountElectronic + ", total=" + total + ", comments=" + comments + ", activeTable=" + activeTable + '}';
+        return "Table{" + "num=" + num + ", pos=" + pos + ", openTime=" + openTime + ", id=" + id + ", open=" + open + ", bill=" + bill + ", toPay=" + toPay + ", discount=" + discount + ", error=" + utili.round2Dec(error) + ", priceCorrection=" + utili.round2Dec(priceCorrection) + ", amountCash=" + utili.round2Dec(amountCash) + ", amountElectronic=" + utili.round2Dec(amountElectronic) + ", total=" + utili.round2Dec(total) + ", comments=" + comments + ", activeTable=" + activeTable + '}';
     }
 }

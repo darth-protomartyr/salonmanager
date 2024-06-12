@@ -52,7 +52,7 @@ public class BillDiscounter extends FrameWindow {
     int year = 0;
     int month = 0;
     int day = 0;
-    
+
     public BillDiscounter(Salon sal) {
         salon = sal;
         sm.addFrame(this);
@@ -65,7 +65,7 @@ public class BillDiscounter extends FrameWindow {
         year = today.getYear();
         month = today.getMonthValue();
         day = today.getDayOfMonth();
-        
+
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
         panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
@@ -74,15 +74,18 @@ public class BillDiscounter extends FrameWindow {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Elija un porcentaje para descontar");
         panelLabel.add(labelTit);
 
-        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 5);
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 1);
         spinnerDiscount = new JSpinner(spinnerModel);
-        spinnerDiscount.setBounds(90, 90, 140, 80);
+        spinnerDiscount.setBounds(anchoUnit * 7, altoUnit * 12, anchoUnit * 11, altoUnit * 10);
+//                anchoUnit * 5, altoUnit * 5, anchoUnit * 14, altoUnit * 8 
+
         spinnerDiscount.setBackground(bluLg);
         spinnerDiscount.setFont(new Font("Arial", Font.PLAIN, 75)); //
         panelPpal.add(spinnerDiscount);
+
         JLabel labelPercentage = utiliGraf.labelTitleBackerA1("%");
         labelPercentage.setForeground(bluLg);
-        labelPercentage.setBounds(240, 90, 80, 80);
+        labelPercentage.setBounds(anchoUnit * 18, altoUnit * 12, anchoUnit * 5, altoUnit * 10);
         panelPpal.add(labelPercentage);
 
         butInGift = utiliGraf.button1("Descontar", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
@@ -118,9 +121,13 @@ public class BillDiscounter extends FrameWindow {
 
     private void butDiscounterActionPerformed() throws Exception {
         int u = (int) spinnerDiscount.getValue();
-        ss.discountBacker(u, salon);
-        utiliGrafSal.setTableItems(salon);
-        utiliGrafSal.jButExtSetter(salon);
-        dispose();
+        if (u > 0 || u <= 100) {
+            ss.discountBacker(u, salon);
+            utiliGrafSal.setTableItems(salon);
+            utiliGrafSal.jButExtSetter(salon);
+            dispose();
+        } else {
+            utiliMsg.errorForbbidenValue();
+        }
     }
 }

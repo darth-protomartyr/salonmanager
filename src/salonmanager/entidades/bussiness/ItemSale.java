@@ -1,13 +1,8 @@
 package salonmanager.entidades.bussiness;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import salonmanager.utilidades.Utilidades;
 
-/**
- *
- * @author Gonzalo
- */
 public class ItemSale {
     Utilidades utili = new Utilidades();
     private int saleId;
@@ -29,7 +24,7 @@ public class ItemSale {
         this.itemSaleTabPos = itemSaleTabPos;
         this.itemSaleWaiterId = itemSaleWaiterId;
         this.itemSaleWorkshiftId = itemSaleWorkshiftId;
-        this.itemSalePrice = itemSalePrice;
+        this.itemSalePrice = utili.round2Dec(itemSalePrice);
         this.itemSaleDate = itemSaleDate;
         this.itemSaleActive = true;
     }
@@ -87,7 +82,7 @@ public class ItemSale {
     }
 
     public void setItemSalePrice(double itemSalePrice) {
-        this.itemSalePrice = itemSalePrice;
+        this.itemSalePrice = utili.round2Dec(itemSalePrice);
     }
 
     public Timestamp getItemSaleDate() {
@@ -105,6 +100,4 @@ public class ItemSale {
     public void setItemSaleActive(boolean itemSaleActive) {
         this.itemSaleActive = itemSaleActive;
     }
-
-    
 }

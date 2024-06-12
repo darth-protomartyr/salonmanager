@@ -65,6 +65,10 @@ public class StaticsManager extends FrameFull {
     JPanel panelStatsBySell = new JPanel();
 
     JTextField fieldTotal = null;
+    JTextField fieldErrorTab = null;
+    JTextField fieldErrorWs = null;
+    JTextField fieldTotalReal = null;
+
     JTextField fieldPromTab = null;
     JTextField fieldTimeTab = null;
     JLabel labelPeriod = null;
@@ -192,6 +196,9 @@ public class StaticsManager extends FrameFull {
 //FUNCTIONS---------------------------------------------------------------------        
     private void updater(StaticsManager statsM) throws Exception {
         double tot = 0;
+//        double totReal = 0;
+        double errorTab = 0;
+        double errorWs = 0;
         double promTab = 0;
         long totTime = 0;
         int tabInt = 0;
@@ -222,6 +229,11 @@ public class StaticsManager extends FrameFull {
                 totTime += differenceInMillis;
                 tabInt += 1;
             }
+        }
+        
+        for (int i = 0; i < workshifts.size(); i++) {
+            errorTab += workshifts.get(i).getErrorMountWs();
+            errorWs += workshifts.get(i).getErrorMountRealWs() - workshifts.get(i).getErrorMountWs();
         }
 
         for (int i = 0; i < categories.size(); i++) {
@@ -284,15 +296,27 @@ public class StaticsManager extends FrameFull {
         String formattedTotal = df.format(tot);
         fieldTotal.setText("$" + formattedTotal);
 
-        promTab = tot / tabs.size();
-        String formattedPromTab = df.format(promTab);
+        df.setMaximumFractionDigits(0);
+        String formattedErrorTab = df.format(errorTab);
+        fieldErrorTab.setText(formattedErrorTab);
+
+        df.setMaximumFractionDigits(0);
+        String formattedErrorWs = df.format(errorWs);
+        fieldErrorWs.setText(formattedErrorWs);        
+        
+        df.setMaximumFractionDigits(0);
+        String formattedTotalReal = df.format(tot - errorTab - errorWs);
+        fieldTotalReal.setText("$" + formattedTotalReal);         
+        
+        promTab = utili.round2Dec(tot / tabs.size());
+        String formattedPromTab = promTab + "";
         fieldPromTab.setText("$" + formattedPromTab);
 
         long timeTab = totTime / tabInt;
         LocalTime time = utili.toLongHAndM(timeTab);
         fieldTimeTab.setText(time.getHour() + " horas, " + time.getMinute() + " min.");
 
-        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 84);
+        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 89);
 
         //Sells bykind of order
         chartOrder = utiliGrafStats.chartOrderBacker(this);
@@ -705,7 +729,28 @@ public class StaticsManager extends FrameFull {
     public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }
-    
-    
-    
+
+    public JTextField getFieldErrorTab() {
+        return fieldErrorTab;
+    }
+
+    public void setFieldErrorTab(JTextField fieldErrorTab) {
+        this.fieldErrorTab = fieldErrorTab;
+    }
+
+    public JTextField getFieldErrorWs() {
+        return fieldErrorWs;
+    }
+
+    public void setFieldErrorWs(JTextField fieldErrorWs) {
+        this.fieldErrorWs = fieldErrorWs;
+    }
+
+    public JTextField getFieldTotalReal() {
+        return fieldTotalReal;
+    }
+
+    public void setFieldTotalReal(JTextField fieldTotalReal) {
+        this.fieldTotalReal = fieldTotalReal;
+    }
 }

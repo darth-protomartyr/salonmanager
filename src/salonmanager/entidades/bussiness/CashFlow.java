@@ -2,8 +2,10 @@ package salonmanager.entidades.bussiness;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import salonmanager.utilidades.Utilidades;
 
 public class CashFlow {
+    Utilidades utili = new Utilidades();
     int id;
     boolean cashFwKind;
     boolean cashFwMoneyKind;
@@ -19,7 +21,7 @@ public class CashFlow {
     public CashFlow(boolean cashFwKind, boolean cashFwMoneyKind, double cashFwAmount, String cashFwComment, int cashFwWsId) {
         this.cashFwKind = cashFwKind;
         this.cashFwMoneyKind = cashFwMoneyKind;
-        this.cashFwAmount = cashFwAmount;
+        this.cashFwAmount = utili.round2Dec(cashFwAmount);
         this.cashFwComment = cashFwComment;
         this.cashFwTime = new Timestamp(new Date().getTime());
         this.cashFwWsId = cashFwWsId;
@@ -30,7 +32,7 @@ public class CashFlow {
         this.id = id;
         this.cashFwKind = cashFwKind;
         this.cashFwMoneyKind = cashFwMoneyKind;
-        this.cashFwAmount = cashFwAmount;
+        this.cashFwAmount = utili.round2Dec(cashFwAmount);
         this.cashFwComment = cashFwComment;
         this.cashFwTime = cashFwTime;
         this.cashFwWsId = cashFwWsId;
@@ -68,7 +70,7 @@ public class CashFlow {
     }
 
     public void setCashFwAmount(double cashFwAmount) {
-        this.cashFwAmount = cashFwAmount;
+        this.cashFwAmount = utili.round2Dec(cashFwAmount);
     }
 
     public String getCashFwComment() {

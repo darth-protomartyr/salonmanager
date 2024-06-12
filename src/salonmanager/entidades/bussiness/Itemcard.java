@@ -3,9 +3,10 @@ package salonmanager.entidades.bussiness;
 import java.sql.Timestamp;
 import java.util.Date;
 import salonmanager.servicios.ServicioItemcard;
+import salonmanager.utilidades.Utilidades;
 
 public class Itemcard {
-
+    Utilidades utili = new Utilidades();
     ServicioItemcard sic = new ServicioItemcard();
     int id;
     String code;
@@ -29,8 +30,8 @@ public class Itemcard {
         this.name = name;
         this.category = category;
         this.description = description;
-        this.cost = cost;
-        this.price = price;
+        this.cost = utili.round2Dec(cost);
+        this.price = utili.round2Dec(price);
         this.stock = stock;
         this.activeTip = activeTip;
         this.dateCreation = new Timestamp(new Date().getTime());
@@ -43,8 +44,8 @@ public class Itemcard {
         this.name = name;
         this.category = category;
         this.description = description;
-        this.cost = cost;
-        this.price = price;
+        this.cost = utili.round2Dec(cost);;
+        this.price = utili.round2Dec(price);
         this.stock = stock;
         this.dateCreation = dateCreation;
         this.dateUpdate = dateUpdate;
@@ -97,7 +98,7 @@ public class Itemcard {
     }
 
     public void setCost(double cost) {
-        this.cost = cost;
+        this.cost = utili.round2Dec(cost);;
     }
 
     public double getPrice() {
@@ -105,7 +106,7 @@ public class Itemcard {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.price = utili.round2Dec(price);
     }
 
     public int getStock() {
@@ -154,10 +155,4 @@ public class Itemcard {
     public String toString() {
         return "Itemcard{" + ", name=" + name + '}';
     }
-    
-    
-    
-    
-    
-    
 }

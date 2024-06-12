@@ -324,7 +324,9 @@ public class UtilidadesGraficasStatics {
             public void actionPerformed(ActionEvent ae) {
                 String st = (String) comboWs.getSelectedItem();        
                 try {
-                    workshiftSelector(st, statsM);
+                    if (!st.equals("")) {
+                        workshiftSelector(st, statsM);
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(UtilidadesGraficasStatics.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -336,7 +338,7 @@ public class UtilidadesGraficasStatics {
         statsM.getLabelPeriod().setBounds(anchoUnit * 2, altoUnit * 39, anchoUnit * 16, altoUnit * 6);
         panelStatsBySell.add(statsM.getLabelPeriod());
 
-        JButtonMetalBlu butViewAllItemSales = utiliGraf.button2("Ver Ventas", anchoUnit * 2, altoUnit * 46, anchoUnit * 13);
+        JButtonMetalBlu butViewAllItemSales = utiliGraf.button3("Ver Ventas", anchoUnit * 2, altoUnit * 46, anchoUnit * 6);
         butViewAllItemSales.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -350,7 +352,7 @@ public class UtilidadesGraficasStatics {
         });
         panelStatsBySell.add(butViewAllItemSales);
 
-        JButtonMetalBlu butViewAllTabs = utiliGraf.button2("Ver Mesas", anchoUnit * 2, altoUnit * 51, anchoUnit * 13);
+        JButtonMetalBlu butViewAllTabs = utiliGraf.button3("Ver Mesas", anchoUnit * 9, altoUnit * 46, anchoUnit * 6);
         butViewAllTabs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -365,7 +367,7 @@ public class UtilidadesGraficasStatics {
         panelStatsBySell.add(butViewAllTabs);
 
         JLabel labelTotalTitle = utiliGraf.labelTitleBacker2("Facturación período:");
-        labelTotalTitle.setBounds(anchoUnit * 2, altoUnit * 57, anchoUnit * 13, altoUnit * 3);
+        labelTotalTitle.setBounds(anchoUnit * 2, altoUnit * 50, anchoUnit * 13, altoUnit * 3);
         panelStatsBySell.add(labelTotalTitle);
 
         statsM.setFieldTotal(new JTextField());
@@ -373,34 +375,76 @@ public class UtilidadesGraficasStatics {
         Font f = new Font("Arial", Font.BOLD, 35);
         statsM.getFieldTotal().setBorder(null);
         statsM.getFieldTotal().setFont(f);
-        statsM.getFieldTotal().setBounds(anchoUnit * 0, altoUnit * 60, anchoUnit * 17, altoUnit * 5);
+        statsM.getFieldTotal().setBounds(anchoUnit * 0, altoUnit * 53, anchoUnit * 17, altoUnit * 5);
         statsM.getFieldTotal().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldTotal().setEditable(false);
         panelStatsBySell.add(statsM.getFieldTotal());
+        
+        JLabel labelErrorTabs = utiliGraf.labelTitleBacker3("Error Mesas Tot $:");
+        labelErrorTabs.setBounds(anchoUnit * 1, altoUnit * 58, anchoUnit * 9, altoUnit * 3);
+        panelStatsBySell.add(labelErrorTabs);
 
+        statsM.setFieldErrorTab(new JTextField(""));
+        statsM.getFieldErrorTab().setBackground(bluLg);
+        Font f1 = new Font("Arial", Font.BOLD, 14);
+        statsM.getFieldErrorTab().setBorder(null);
+        statsM.getFieldErrorTab().setFont(f1);
+        statsM.getFieldErrorTab().setBounds(anchoUnit * 10, altoUnit * 58, anchoUnit * 7, altoUnit * 3);
+        statsM.getFieldErrorTab().setHorizontalAlignment(SwingConstants.CENTER);
+        statsM.getFieldErrorTab().setEditable(false);
+        panelStatsBySell.add(statsM.getFieldErrorTab());
+
+        JLabel labelErrorWs = utiliGraf.labelTitleBacker3("Error Turnos Tot $:");
+        labelErrorWs.setBounds(anchoUnit * 1, altoUnit * 61, anchoUnit * 9, altoUnit * 2);
+        panelStatsBySell.add(labelErrorWs);
+
+        statsM.setFieldErrorWs(new JTextField(""));
+        statsM.getFieldErrorWs().setBackground(bluLg);
+        statsM.getFieldErrorWs().setBorder(null);
+        statsM.getFieldErrorWs().setFont(f1);
+        statsM.getFieldErrorWs().setBounds(anchoUnit * 10, altoUnit * 61, anchoUnit * 7, altoUnit * 2);
+        statsM.getFieldErrorWs().setHorizontalAlignment(SwingConstants.CENTER);
+        statsM.getFieldErrorWs().setEditable(false);
+        panelStatsBySell.add(statsM.getFieldErrorWs());
+
+        JLabel labelTotalRealTitle = utiliGraf.labelTitleBacker2("Facturación real período:");
+        labelTotalRealTitle.setBounds(anchoUnit * 1, altoUnit * 64, anchoUnit * 15, altoUnit * 3);
+        panelStatsBySell.add(labelTotalRealTitle);
+
+        statsM.setFieldTotalReal(new JTextField("9000000000"));
+        statsM.getFieldTotalReal().setBackground(bluLg);
+        statsM.getFieldTotalReal().setBorder(null);
+        statsM.getFieldTotalReal().setFont(f);
+        statsM.getFieldTotalReal().setBounds(anchoUnit * 0, altoUnit * 67, anchoUnit * 17, altoUnit * 5);
+        statsM.getFieldTotalReal().setHorizontalAlignment(SwingConstants.CENTER);
+        statsM.getFieldTotalReal().setEditable(false);
+        panelStatsBySell.add(statsM.getFieldTotalReal());
+
+        
+        
         JLabel labelPromTab = utiliGraf.labelTitleBacker2("Prom. gasto por orden:");
-        labelPromTab.setBounds(anchoUnit * 2, altoUnit * 66, anchoUnit * 16, altoUnit * 3);
+        labelPromTab.setBounds(anchoUnit * 2, altoUnit * 73, anchoUnit * 16, altoUnit * 3);
         panelStatsBySell.add(labelPromTab);
 
         statsM.setFieldPromTab(new JTextField());
         statsM.getFieldPromTab().setBackground(bluLg);
         statsM.getFieldPromTab().setBorder(null);
         statsM.getFieldPromTab().setFont(f);
-        statsM.getFieldPromTab().setBounds(anchoUnit * 0, altoUnit * 69, anchoUnit * 17, altoUnit * 5);
+        statsM.getFieldPromTab().setBounds(anchoUnit * 0, altoUnit * 76, anchoUnit * 17, altoUnit * 5);
         statsM.getFieldPromTab().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldPromTab().setEditable(false);
         panelStatsBySell.add(statsM.getFieldPromTab());
 
         JLabel labelTimeTab = utiliGraf.labelTitleBacker2("Prom. tiempo por mesa:");
-        labelTimeTab.setBounds(anchoUnit * 2, altoUnit * 75, anchoUnit * 16, altoUnit * 3);
+        labelTimeTab.setBounds(anchoUnit * 2, altoUnit * 82, anchoUnit * 16, altoUnit * 3);
         panelStatsBySell.add(labelTimeTab);
 
         statsM.setFieldTimeTab(new JTextField());
         statsM.getFieldTimeTab().setBackground(bluLg);
         statsM.getFieldTimeTab().setBorder(null);
-        Font f1 = new Font("Arial", Font.BOLD, 20);
-        statsM.getFieldTimeTab().setFont(f1);
-        statsM.getFieldTimeTab().setBounds(anchoUnit * 0, altoUnit * 78, anchoUnit * 17, altoUnit * 3);
+        Font f2 = new Font("Arial", Font.BOLD, 20);
+        statsM.getFieldTimeTab().setFont(f2);
+        statsM.getFieldTimeTab().setBounds(anchoUnit * 0, altoUnit * 85, anchoUnit * 17, altoUnit * 3);
         statsM.getFieldTimeTab().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldTimeTab().setEditable(false);
         panelStatsBySell.add(statsM.getFieldTimeTab());

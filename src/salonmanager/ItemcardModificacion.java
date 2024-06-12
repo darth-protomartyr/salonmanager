@@ -18,6 +18,8 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOTable;
+import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -27,7 +29,9 @@ public class ItemcardModificacion extends FrameHalf {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    ServicioItemcard si = new ServicioItemcard();
     DAOItemcard daoIC = new DAOItemcard();
+    DAOTable daoT = new DAOTable();
     SalonManager sm = new SalonManager();
 
     ArrayList<Itemcard> itemsCardDB = null;
@@ -59,7 +63,7 @@ public class ItemcardModificacion extends FrameHalf {
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("MODIFICAR ITEMS DEL MENÚ");
-        labelTit.setBounds(10, 20, 300, 30);
+        labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 40, altoUnit * 4);
         panelPpal.add(labelTit);
 
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, itemAux);
@@ -174,8 +178,25 @@ public class ItemcardModificacion extends FrameHalf {
         tipAlta = checkTip.isSelected();
 
         if (error == false) {
-//            itemAux = new Itemcard(name, category, description, cost, price, stock, tipAlta);
-            daoIC.modificarItem(itemAux.getId(), name, category, description, cost, price, stock, tipAlta);
+            price = utili.round2Dec(price);
+            cost = utili.round2Dec(cost);
+            boolean confirm = true;
+
+            if (price != itemAux.getPrice()) {
+                ArrayList<String> tabIds = daoT.getActiveIds();
+                ArrayList<String> tabIdsIc = daoT.getActiveIds();
+                for (int i = 0; i < tabIds.size(); i++) {
+                    tabIdsIc = daoT.activeTabIcMod(itemAux.getId());
+                }
+                
+                if (tabIdsIc.size() > 0) {
+                    confirm = utiliMsg.cargaConfirmarCambioPrAct();
+                }
+            }
+
+            if (confirm) {
+                daoIC.modificarItem(itemAux.getId(), name, category, description, cost, price, stock, tipAlta);
+            }
             resetItemcard();
             dispose();
         }

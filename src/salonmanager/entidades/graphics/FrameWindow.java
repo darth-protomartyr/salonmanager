@@ -4,7 +4,7 @@ public class FrameWindow extends FrameGeneral {
 
     public FrameWindow() {
         setVisible(true);
-        setBounds(5, 0, 390, 300);
+        setBounds(anchoUnit, altoUnit, anchoUnit * 30, altoUnit * 43);
         setResizable(false);
         frame = this;
     }

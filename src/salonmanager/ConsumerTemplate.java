@@ -95,7 +95,7 @@ public class ConsumerTemplate extends FrameHalf {
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1(tit);
-        labelTit.setBounds(10, 20, 300, 30);
+        labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 40, altoUnit * 4);
         panelPpal.add(labelTit);
 
         JPanel panelForm = new JPanel();

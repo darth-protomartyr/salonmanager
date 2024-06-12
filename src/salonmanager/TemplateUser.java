@@ -70,12 +70,12 @@ public class TemplateUser extends FrameHalf {
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("REGISTRAR");
-        labelTit.setBounds(50, 20, 300, 30);
+        labelTit.setBounds(anchoUnit * 2, altoUnit * 0, anchoUnit * 20, altoUnit * 4);
         panelPpal.add(labelTit);
 
         JPanel panelA = new JPanel();
         panelA.setLayout(null);
-        panelA.setBounds(134, 70, 416, 490);
+        panelA.setBounds(anchoUnit * 10, altoUnit * 10, anchoUnit * 32, altoUnit * 70);
         panelA.setBackground(bluLg);
         panelPpal.add(panelA);
 
@@ -121,12 +121,12 @@ public class TemplateUser extends FrameHalf {
         panelData6.add(fieldPass2);
         panelA.add(panelData6);
 
-        JPanel panelBut = new JPanel();
+        JPanel panelBut = new JPanel(null);
         panelBut.setBackground(bluLg);
-        panelBut.setBounds(0, 400, 416, 40);
+        panelBut.setBounds(anchoUnit * 0, altoUnit * 57, anchoUnit * 32, altoUnit * 6  );
         panelA.add(panelBut);
 
-        butSelImage = utiliGraf.button2("Seleccionar Imagen", 20, 450, 150);
+        butSelImage = utiliGraf.button2("Seleccionar Imagen", anchoUnit * 9, altoUnit * 1, anchoUnit * 14);
         butSelImage.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 butSelImageActionPerformed();
@@ -136,13 +136,14 @@ public class TemplateUser extends FrameHalf {
 
         JPanel panelLabelImage = new JPanel();
         panelLabelImage.setBackground(bluLg);
-        panelLabelImage.setBounds(0, 440, 416, 25);
+        panelLabelImage.setBounds(anchoUnit * 0, altoUnit * 63, anchoUnit * 32, altoUnit * 4);
         panelA.add(panelLabelImage);
 
-        labelImage.setBounds(20, 430, 60, 30);
+        labelImage.setBounds(anchoUnit * 2, altoUnit * 61, anchoUnit * 9, altoUnit * 4);
         panelLabelImage.add(labelImage);
 
-        butCreateUser = utiliGraf.button1("Crear Usuario", 206, 580, 270);
+        
+        butCreateUser = utiliGraf.button1("Crear Usuario", anchoUnit * 16, altoUnit * 83, anchoUnit * 21);
         butCreateUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

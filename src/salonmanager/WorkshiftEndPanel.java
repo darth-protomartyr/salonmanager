@@ -75,13 +75,13 @@ public class WorkshiftEndPanel extends FrameHalf {
     ArrayList<Table> toUpdTabs = new ArrayList<>();
     ArrayList<String> actualTabsSt = new ArrayList<>();
 
-    double total = 0;
+    double total = 0; //amount billing
     double cash = 0;
     double electronic = 0;
     double cashFlow = 0;
     double electronicFlow = 0;
     double error = 0;
-    double cashComplete = 0;
+    double cashComplete = 0; //cash + electronic + cFlow + eFlow
 
     public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
         cfgAct = sal.getCfgAct();
@@ -289,7 +289,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         panelTotal.add(labelTotal1);
         panelTotal.add(Box.createHorizontalGlue());
 
-        cashComplete = total + cashFlow + electronicFlow;
+        cashComplete = electronic + cash + cashFlow + electronicFlow;
         JLabel labelTotal2 = utiliGraf.labelTitleBackerA3("$" + cashComplete);
         labelTotal2.setAlignmentX(Component.RIGHT_ALIGNMENT);
         panelTotal.add(labelTotal2);
@@ -404,7 +404,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         labelCashFlow.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 24, altoUnit * 3);
         panelAskCashFlow.add(labelCashFlow);
 
-        JButtonMetalBlu butSeeCashFlow = utiliGraf.button3(" Ver Listado", anchoUnit * 31, altoUnit * 1, anchoUnit * 9);
+        JButtonMetalBlu butSeeCashFlow = utiliGraf.button3("Ver Listado", anchoUnit * 31, altoUnit * 1, anchoUnit * 9);
         butSeeCashFlow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -446,30 +446,35 @@ public class WorkshiftEndPanel extends FrameHalf {
         String comment = textArea.getText();
         try {
             double realAmount = parseDouble(real);
-            double realError = realAmount - cashComplete;
+            double realError = (realAmount - cashComplete) * (-1);
             realError = utili.round2Dec(realError);
-            boolean confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
-            if (realError > 0 && comment.equals("")) {
-                utiliMsg.errorCommentNull();
-            } else {
-                if (confirm) {
-                    realAmount = parseDouble(real);
-                    actualWs.setTotalMountRealWs(realAmount);
-                    actualWs.setErrorMountRealWs(realError);
-                    actualWs.setCommentWs(comment);
-                    if (realError < 0) {
-                        realError = realError * (-1);
-                    } else if (realError > 0) {
-                        realError = 0;
-                    }
-                    sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
-                    salon.getCfgAct().setOpenIdWs(0);
-                    salon.getCfgAct().setOpenWs(false);
-
-                    utiliGrafSal.resetWsValues(salon);
-                    salon.setEnabled(true);
-                    dispose();
+            boolean confirm = false;
+            if (realError > 0) {
+                if (!comment.equals("")) {
+                    confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
+                } else {
+                    utiliMsg.errorCommentNull();
                 }
+            } else {
+                confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
+            }
+            
+            if (confirm) {
+                actualWs.setTotalMountRealWs(realAmount);
+                actualWs.setErrorMountRealWs(realError + error);
+                actualWs.setCommentWs(comment);
+                if (realError < 0) {
+                    realError = realError * (-1);
+                } else if (realError > 0) {
+                    realError = 0;
+                }
+                sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
+                salon.getCfgAct().setOpenIdWs(0);
+                salon.getCfgAct().setOpenWs(false);
+
+                utiliGrafSal.resetWsValues(salon);
+                salon.setEnabled(true);
+                dispose();
             }
         } catch (NumberFormatException e) {
             utiliMsg.errorNumerico();
@@ -477,11 +482,10 @@ public class WorkshiftEndPanel extends FrameHalf {
         }
     }
 
-
     public void getTab() throws Exception {
         String id1 = (String) comboTabs.getSelectedItem();
         Table tab = new Table();
-        
+
         for (int i = 0; i < actualTabs.size(); i++) {
             if (actualTabsSt.get(i).equals(id1)) {
                 tab = actualTabs.get(i);
@@ -506,7 +510,6 @@ public class WorkshiftEndPanel extends FrameHalf {
 
     private void buttonDeferWsCloseAction() throws Exception {
         ArrayList<String> deferWsArray = cfgAct.getArrayDeferWs();
-//        deferWsArray.add(actualWs.getId());
         daoC.updateCfgActDeferWs(deferWsArray);
         utiliMsg.cargaWsDefer();
     }
@@ -528,5 +531,4 @@ public class WorkshiftEndPanel extends FrameHalf {
         }
         return tabsId;
     }
-
 }

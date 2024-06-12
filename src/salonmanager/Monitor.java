@@ -3,6 +3,7 @@ package salonmanager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -127,17 +128,23 @@ public class Monitor extends FrameHalf {
         });
         panelPpal.add(butMonitDelis);
 
+        JPanel panelContent = new JPanel(new GridBagLayout());
+//        panelContent.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelContent.setBackground(narSt);
+        panelContent.setBounds(0, altoUnit * 15, anchoFrameHalf - anchoUnit, alturaFrame - altoUnit * 28);
+        panelPpal.add(panelContent);        
+        
         JPanel panelIn = new JPanel();
         panelIn.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelIn.setBackground(narUlg);
-        panelIn.setBounds(0, altoUnit * 15, anchoFrameHalf, alturaFrame - altoUnit * 10);
-        panelPpal.add(panelIn);
+        panelIn.setPreferredSize(new Dimension(640, 510));
+        panelContent.add(panelIn);
 
         panelHeader = panelHeaderBacker();
         panelIn.add(panelHeader);
 
         panelIMon.setBackground(narUlg);
-        panelIMon.setPreferredSize(new Dimension(600, altoUnit * 67));
+        panelIMon.setPreferredSize(new Dimension(600, 450));
 
         labelItemsMnr = utiliGraf.labelTitleBackerA2("<html>Seleccione un tipo de Orden</html>");
         if (itemsMnrOld.size() < 1) {
@@ -148,7 +155,7 @@ public class Monitor extends FrameHalf {
 
         JScrollPane scrPaneBarr = new JScrollPane(panelIMon);
         scrPaneBarr.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrPaneBarr.setPreferredSize(new Dimension(620, altoUnit * 67));
+        scrPaneBarr.setPreferredSize(new Dimension(620, 450));
         panelIn.add(scrPaneBarr);
 
         initTimer();
@@ -171,7 +178,7 @@ public class Monitor extends FrameHalf {
     }
 
     private JPanel panelHeaderBacker() {
-        panelHeader.setPreferredSize(new Dimension(620, altoUnit * 5));
+        panelHeader.setPreferredSize(new Dimension(620, 35));
         panelHeader.setBackground(narUlg);
 
         JLabel labelOrderKind = utiliGraf.labelTitleBacker1("Orden");
@@ -243,7 +250,6 @@ public class Monitor extends FrameHalf {
         panelHeaderSetter();
 
         panelItemMomFiller();
-
     }
 
     private void initTimer() {
@@ -280,11 +286,9 @@ public class Monitor extends FrameHalf {
         panelIMon.removeAll();
 
         int size = itemsMnrNew.size();
-        int height = 0;
-        if ((size * 70) + 10 < altoUnit * 70) {
-            height = altoUnit * 70;
-        } else {
-            height = (size * 70) + 10;
+        int height = 450;
+        if (size * 70 > 450) {
+            height = size * 70 + 10;
         }
 
         panelIMon.setPreferredSize(new Dimension(600, height));

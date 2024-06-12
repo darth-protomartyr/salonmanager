@@ -46,8 +46,6 @@ import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Register;
-import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.CustomJMenuBar;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
@@ -314,7 +312,8 @@ public class UtilidadesGraficas extends JFrame {
         panelListRctDB.setBounds(mWidth, mHeight, width, height);
 
         JLabel labelPanelA = labelTitleBacker2("Seleccione un Usuario");
-        labelPanelA.setBounds(10, 5, width / 4 * 3, 30);
+        labelPanelA.setBounds(anchoUnit * 1, altoUnit * 1, width / 4 * 3, altoUnit *4);
+        
         panelListRctDB.add(labelPanelA);
 
         if (mail) {
@@ -628,6 +627,15 @@ public class UtilidadesGraficas extends JFrame {
     }
 
     public JPanel panelItemcardForm(JTextField fieldName, JComboBox comboCategory, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> categoriesDB, Itemcard item) {
+        int f4 = (int) Math.round(anchoUnit * 1.4);
+        Font font4 = new Font("Arial", Font.BOLD, f4);
+
+        int f3 = (int) Math.round(anchoUnit * 1.2);
+        Font font3 = new Font("Arial", Font.BOLD, f3);
+
+        int f2 = (int) Math.round(anchoUnit * 1.2);
+        Font font2 = new Font("Arial", Font.PLAIN, f2);
+        
         JPanel panelA = new JPanel();
         panelA.setLayout(null);
         panelA.setBounds(anchoUnit * 5, altoUnit * 12, anchoUnit * 40, altoUnit * 73);
@@ -636,6 +644,7 @@ public class UtilidadesGraficas extends JFrame {
         JPanel panelData1 = dataPanelBacker("Nombre:", 14);
         panelData1.setBounds(anchoUnit * 5, altoUnit * 5, anchoUnit * 30, altoUnit * 7);
         fieldName.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
+        fieldName.setFont(font3);
         panelData1.add(fieldName);
         panelA.add(panelData1);
 
@@ -643,8 +652,7 @@ public class UtilidadesGraficas extends JFrame {
         panelData2.setBounds(anchoUnit * 5, altoUnit * 15, anchoUnit * 30, altoUnit * 7);
         comboCategory.setModel(utili.categoryComboModelReturn(categoriesDB));
         comboCategory.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
-        int f4 = (int) Math.round(anchoUnit * 1.6);
-        Font font4 = new Font("Arial", Font.BOLD, f4);
+
         comboCategory.setFont(font4);
         panelData2.add(comboCategory);
         panelData2.add(Box.createHorizontalStrut(30));
@@ -656,6 +664,7 @@ public class UtilidadesGraficas extends JFrame {
         areaDescription.setColumns(5);
         areaDescription.setLineWrap(true);
         areaDescription.setWrapStyleWord(true);
+        areaDescription.setFont(font2);
         JScrollPane scrollPaneDesc = new JScrollPane(areaDescription);
         scrollPaneDesc.setBounds(anchoUnit * 3, altoUnit * 5, anchoUnit * 24, altoUnit * 8);
         panelData3.add(scrollPaneDesc);
@@ -664,18 +673,21 @@ public class UtilidadesGraficas extends JFrame {
         JPanel panelData4 = dataPanelBacker("Costo:", 14);
         panelData4.setBounds(anchoUnit * 5, altoUnit * 42, anchoUnit * 30, altoUnit * 7);
         fieldCost.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
+        fieldCost.setFont(font3);
         panelData4.add(fieldCost);
         panelA.add(panelData4);
 
         JPanel panelData5 = dataPanelBacker("Precio:", 14);
         panelData5.setBounds(anchoUnit * 5, altoUnit * 52, anchoUnit * 30, altoUnit * 7);
         fieldPrice.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
+        fieldPrice.setFont(font3);
         panelData5.add(fieldPrice);
         panelA.add(panelData5);
 
         JPanel panelData6 = dataPanelBacker("Stock:", 14);
         panelData6.setBounds(anchoUnit * 5, altoUnit * 62, anchoUnit * 14, altoUnit * 7);
         fieldStock.setBounds(anchoUnit * 5, altoUnit * 1, anchoUnit * 8, altoUnit * 5);
+        fieldStock.setFont(font3);
         panelData6.add(fieldStock);
         panelA.add(panelData6);
 
@@ -760,5 +772,4 @@ public class UtilidadesGraficas extends JFrame {
             }
         }
     }
-
 }

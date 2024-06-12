@@ -57,28 +57,29 @@ public class Manager extends FrameFull {
 
         JPanel panelUser = new JPanel();
         panelUser.setLayout(null);
-        panelUser.setBounds(anchoUnit * 87, altoUnit, anchoUnit * 17, altoUnit * 17);
+        panelUser.setBounds(anchoUnit * 85, altoUnit * 2, anchoUnit * 19, altoUnit * 18);
         panelUser.setBackground(narSt);
         panelPpal.add(panelUser);
 
         String route = utili.barrReplaceInverse(userIn.getRouteImage());
         ImageIcon imageIcon = new ImageIcon(route);
         JLabel labelImage = new JLabel(imageIcon);
-        labelImage.setBounds(altoUnit, altoUnit, anchoUnit * 8, anchoUnit * 8);
+        labelImage.setBounds(anchoUnit, altoUnit * 2, anchoUnit * 8, altoUnit * 14);
         panelUser.add(labelImage);
 
         JLabel labelName = utiliGraf.labelTitleBacker2(userIn.getName());
-        labelName.setBounds(130, 20, 120, 40);
+        labelName.setBounds(anchoUnit * 10, altoUnit * 3, anchoUnit * 8, altoUnit * 3);
+        
         panelUser.add(labelName);
 
         JLabel labelRol = utiliGraf.labelTitleBacker2(userIn.getRol());
-        labelRol.setBounds(130, 20, 120, 120);
+        labelRol.setBounds(anchoUnit * 10, altoUnit * 9, anchoUnit * 8, altoUnit * 3);
         panelUser.add(labelRol);
 
         JPanel panelWorkshift = new JPanel();
         panelWorkshift.setLayout(null);
         panelWorkshift.setBackground(bluLg);
-        panelWorkshift.setBounds(anchoUnit * 54, altoUnit * 21, anchoUnit * 50, altoUnit * 65);
+        panelWorkshift.setBounds(anchoUnit * 54, altoUnit * 22, anchoUnit * 50, altoUnit * 65);
         panelPpal.add(panelWorkshift);
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(frame, 4);

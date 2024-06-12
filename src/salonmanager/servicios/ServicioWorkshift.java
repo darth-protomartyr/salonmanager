@@ -35,14 +35,15 @@ public class ServicioWorkshift {
         if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
             isTabs = true;
         }
+        
         daoW.updateWorkshiftCash(actualWs);
-        daoW.updateWorkshiftClose(actualWs, isTabs);
         daoW.updateWorkshiftElectronic(actualWs);
+        daoW.updateWorkshiftTotal(actualWs);
+        daoW.updateWorkshiftMountReal(actualWs); 
         daoW.updateWorkshiftError(actualWs);
         daoW.updateWorkshiftErrorReal(actualWs);
-        daoW.updateWorkshiftMountReal(actualWs);
+        daoW.updateWorkshiftClose(actualWs, isTabs);
         daoW.updateWorkshiftState(actualWs);
-        daoW.updateWorkshiftTotal(actualWs);
         daoW.updateWorkshiftComment(actualWs);
         daoC.updateCfgActOpenWs(false);
         daoC.updateCfgActOpenIdWs(0);

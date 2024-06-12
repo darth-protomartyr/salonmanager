@@ -6,6 +6,7 @@ import salonmanager.servicios.ServicioUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,9 +14,8 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOItemcard;
@@ -37,7 +37,9 @@ public class ItemSelector extends FrameWindow {
     ArrayList<Itemcard> itemsDB = new ArrayList<>();
     Itemcard itemAux = null;
     JLabel labelIngreso = null;
-    JList listItem = new JList();
+    int f4 = (int) Math.round(anchoUnit * 1.2);
+    Font font4 = new Font("Arial", Font.BOLD, f4);
+    JComboBox comboItems = new JComboBox();
     JButtonMetalBlu butSelItem = new JButtonMetalBlu();
     String sel = "";
 
@@ -54,22 +56,21 @@ public class ItemSelector extends FrameWindow {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
-        JPanel panelLabel = new JPanel();
-        panelLabel.setBackground(bluLg);
-        panelLabel.setBounds(0, 10, 390, 40);
-        panelPpal.add(panelLabel);
-
         if (s.equals("m")) {
-            labelIngreso = utiliGraf.labelTitleBacker1W("Seleccione el item que desea modificar");
+            labelIngreso = utiliGraf.labelTitleBacker1W("<html>Seleccione un item<br>para modificar</html>");
         } else {
-            labelIngreso = utiliGraf.labelTitleBacker1W("Seleccione el item que desea consultar");
+            labelIngreso = utiliGraf.labelTitleBacker1W("<html>Seleccione un item<br>para consultar</html>");
         }
-        panelLabel.add(labelIngreso);
+        labelIngreso.setBounds(anchoUnit * 8, altoUnit * 2, anchoUnit * 15, altoUnit * 7);
+        panelPpal.add(labelIngreso);
 
-        JPanel panelList = utiliGraf.panelListItemBack(30, 45, 320, 170, listItem, itemsDB, null);
-        panelPpal.add(panelList);
+        comboItems.setBounds(anchoUnit * 7, altoUnit * 14, anchoUnit * 15, altoUnit * 5);
+        comboItems.setFont(font4);
+        comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
+        comboItems.setSelectedItem("");
+        panelPpal.add(comboItems);
 
-        butSelItem = utiliGraf.button2("Seleccionar item", 100, 230, 190);
+        butSelItem = utiliGraf.button1("Seleccionar item", anchoUnit * 5, altoUnit * 24, anchoUnit * 19);
         butSelItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -99,7 +100,7 @@ public class ItemSelector extends FrameWindow {
     }
 
     private void butSelItemActionPerformed() throws Exception {
-        String selectedItem = (String) listItem.getSelectedValue();
+        String selectedItem = (String) comboItems.getSelectedItem();
         if (selectedItem == null) {
             utiliMsg.errorSeleccion();
         } else {

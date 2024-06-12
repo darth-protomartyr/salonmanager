@@ -8,8 +8,10 @@ package salonmanager.entidades.bussiness;
 import salonmanager.entidades.bussiness.User;
 import java.sql.Timestamp;
 import java.util.Date;
+import salonmanager.utilidades.Utilidades;
 
 public class Workshift {
+    Utilidades utili = new Utilidades();
     int id;
     User cashierWs;
     Timestamp openWs;
@@ -54,14 +56,14 @@ public class Workshift {
         this.openWs = openWs;
         this.closeWs = closeWs;
         this.stateWs = stateWs;
-        this.totalMountCashWs = totalMountCashWs;
-        this.totalMountElectronicWs = totalMountElectronicWs;
-        this.errorMountWs = errorWs;
-        this.errorMountRealWs = errorRealWs;
-        this.totalMountWs = totalWs;
-        this.totalMountRealWs = totalRealWs;
-        this.cashFlowWsCash = cashFlowWsCash;
-        this.cashFlowWsElec = cashFlowWsElec;
+        this.totalMountCashWs = utili.round2Dec(totalMountCashWs);
+        this.totalMountElectronicWs = utili.round2Dec(totalMountElectronicWs);
+        this.errorMountWs = utili.round2Dec(errorWs);
+        this.errorMountRealWs = utili.round2Dec(errorRealWs);
+        this.totalMountWs = utili.round2Dec(totalWs);
+        this.totalMountRealWs = utili.round2Dec(totalRealWs);
+        this.cashFlowWsCash = utili.round2Dec(cashFlowWsCash);
+        this.cashFlowWsElec = utili.round2Dec(cashFlowWsElec);
         this.commentWs = commentWs;
         this.activeWs = activeWs;
     }
@@ -111,7 +113,7 @@ public class Workshift {
     }
 
     public void setTotalMountCashWs(double totalMountCashWs) {
-        this.totalMountCashWs = totalMountCashWs;
+        this.totalMountCashWs = utili.round2Dec(totalMountCashWs);
     }
 
     public double getTotalMountElectronicWs() {
@@ -119,7 +121,7 @@ public class Workshift {
     }
 
     public void setTotalMountElectronicWs(double totalMountElectronicWs) {
-        this.totalMountElectronicWs = totalMountElectronicWs;
+        this.totalMountElectronicWs = utili.round2Dec(totalMountElectronicWs);
     }
 
     public double getTotalMountWs() {
@@ -127,7 +129,7 @@ public class Workshift {
     }
 
     public void setTotalMountWs(double totalMountWs) {
-        this.totalMountWs = totalMountWs;
+        this.totalMountWs = utili.round2Dec(totalMountWs);
     }
 
     public double getTotalMountRealWs() {
@@ -135,11 +137,11 @@ public class Workshift {
     }
 
     public void setTotalMountRealWs(double totalMountRealWs) {
-        this.totalMountRealWs = totalMountRealWs;
+        this.totalMountRealWs = utili.round2Dec(totalMountRealWs);
     }
 
     public double getErrorMountWs() {
-        return errorMountWs;
+        return utili.round2Dec(errorMountWs);
     }
 
     public void setErrorMountWs(double errorMountWs) {
@@ -151,7 +153,7 @@ public class Workshift {
     }
 
     public void setErrorMountRealWs(double errorMountRealWs) {
-        this.errorMountRealWs = errorMountRealWs;
+        this.errorMountRealWs = utili.round2Dec(errorMountRealWs);
     }
 
     public double getCashFlowWsCash() {
@@ -159,7 +161,7 @@ public class Workshift {
     }
 
     public void setCashFlowWsCash(double cashFlowWsCash) {
-        this.cashFlowWsCash = cashFlowWsCash;
+        this.cashFlowWsCash = utili.round2Dec(cashFlowWsCash);
     }
     
     public double getCashFlowWsElec() {
@@ -167,7 +169,7 @@ public class Workshift {
     }
 
     public void setCashFlowWsElec(double cashFlowWsElec) {
-        this.cashFlowWsElec = cashFlowWsElec;
+        this.cashFlowWsElec = utili.round2Dec(cashFlowWsElec);
     }
 
     public String getCommentWs() {

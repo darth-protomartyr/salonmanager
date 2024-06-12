@@ -127,7 +127,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorCantCharName() {
-        CustomDialog cm = new CustomDialog("Error: El número de caracteres del nombre no debe superar los.", 2);
+        CustomDialog cm = new CustomDialog("Error: El nombre no debe superar los 20 caracteres.", 2);
         cm.setVisible(true);
     }
 
@@ -252,7 +252,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorTotalLess() {
-        CustomDialog cm = new CustomDialog("Error: el monto ingtresado es mayor al Total de la cuenta.", 2);
+        CustomDialog cm = new CustomDialog("Error: el monto ingtresado es mayor o igual al Total de la cuenta.", 2);
         cm.setVisible(true);
     }
 
@@ -520,7 +520,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaWorkshiftEmpty() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno no registra movimientos. Confirme si desea descartarlo");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno no registra movimientos. Confirme si desea descartarlo y cerrar el turno");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -635,5 +635,17 @@ public class UtilidadesMensajes extends JFrame {
     public void errorWsOpen() {
         CustomDialog cm = new CustomDialog("Error: para corregir el faltante de dinero, el turno de la mesa debe estar cerrado.", 2);
         cm.setVisible(true);
+    }
+
+    public void errorForbbidenValue() {
+        CustomDialog cm = new CustomDialog("Error: el valor ingresado no se ajusta a los límites permitidos.", 2);
+        cm.setVisible(true);
+    }
+    
+    public boolean cargaConfirmarCambioPrAct() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay mesas abiertas que ordenaron el item modificado. ¿Desea modificarlo de todos modos?");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
     }
 }

@@ -48,7 +48,7 @@ public class UserExpressTemplate extends FrameHalf {
     String rol = "";
 
     User userAux = new User();
-    User userFull = new User();
+    User userFull = null;
     ArrayList<String> mailUsers = null;
 
     JTextField fieldName = new JTextField();
@@ -79,7 +79,8 @@ public class UserExpressTemplate extends FrameHalf {
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W(tit.toUpperCase());
-        labelTit.setBounds(10, 15, 300, 30);
+        labelTit.setBounds(anchoUnit * 2, altoUnit * 0, anchoUnit * 25, altoUnit * 5);
+        
         panelPpal.add(labelTit);
 
         JPanel panelForm = new JPanel();
@@ -135,7 +136,7 @@ public class UserExpressTemplate extends FrameHalf {
                     }
                 }
             });
-            butCreateUserExpress.setText("Modificar Usuario" + r);
+            butCreateUserExpress.setText("Modificar Usuario " + r);
         } else {
             butCreateUserExpress.addActionListener(new ActionListener() {
                 @Override

@@ -52,19 +52,18 @@ public class IndicationsShower extends FrameWindow{
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluLg);
-        panelLabel.setBounds(0, 10, 390, 40);
+        panelLabel.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 28, altoUnit * 5);
         panelPpal.add(panelLabel);
         
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Indicaciones del Cliente");
-        labelTit.setBounds(10, 10, 200, 20);
         panelLabel.add(labelTit);
      
         JPanel panelText = new JPanel(new GridBagLayout());
         panelText.setBackground(narUlg);
 
         JLabel labelIndications = new JLabel();
-        labelIndications.setText(utili.stringMsgFrd(im.getIndications(), 25, 2));
-        Font nuevaFuente = new Font("Arial", Font.BOLD, 14);
+        labelIndications.setText(utili.stringMsgFrd(im.getIndications(), 25, 1));
+        Font nuevaFuente = new Font("Arial", Font.BOLD, 18);
         labelIndications.setFont(nuevaFuente);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -74,8 +73,8 @@ public class IndicationsShower extends FrameWindow{
         panelText.add(labelIndications, gbc);
 
         JScrollPane scrollPane = new JScrollPane(panelText);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setBounds(20, 65, 340, 190);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBounds(anchoUnit * 3, altoUnit * 8, anchoUnit * 23, altoUnit * 23);
         panelPpal.add(scrollPane);
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);

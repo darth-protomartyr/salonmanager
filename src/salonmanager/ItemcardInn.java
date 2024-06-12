@@ -67,7 +67,7 @@ public class ItemcardInn extends FrameHalf {
         add(panelPpal);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("INGRESAR ITEMS AL MENÚ");
-        labelTit.setBounds(10, 20, 300, 30);
+        labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 40, altoUnit * 4);
         panelPpal.add(labelTit);
 
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, null);
@@ -108,7 +108,7 @@ public class ItemcardInn extends FrameHalf {
         category = utili.selectorCategory(comboCategory.getSelectedIndex());
         description = areaDescription.getText();
 
-        if (name.length() > 30 || name.length() < 2) {
+        if (name.length() > 20 || name.length() < 2) {
             error = true;
             utiliMsg.errorCantCharName();
         }

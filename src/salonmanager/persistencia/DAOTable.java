@@ -14,8 +14,16 @@ public class DAOTable extends DAO {
 //    ServicioRegister sr = new ServicioRegister();
 //    ServicioSalon ss = new ServicioSalon();
 
-    public void saveTable(Table tab) throws Exception {
+    public void saveTable(Table tab, Timestamp ts) throws Exception {
         boolean error = false;
+        if (ts != null) {
+            ArrayList<String> idTabs = listarIdByWorkshift(ts);
+            for (int i = 0; i < idTabs.size(); i++) {
+                if (idTabs.get(i).equals(tab.getId())) {
+                    error = true;
+                }
+            }
+        }
 
         if (tab.getNum() == 0) {
             utiliMsg.errorIngresoNum();
@@ -336,12 +344,11 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
-    
+
     public int getMaxTab(String st, Timestamp ds) throws Exception {
         int i = 0;
         try {
-            String sql = "SELECT COUNT(*) AS cantidad FROM tabs WHERE table_pos = '" + st + "' AND table_open_time > '"+ ds +"';";
+            String sql = "SELECT COUNT(*) AS cantidad FROM tabs WHERE table_pos = '" + st + "' AND table_open_time > '" + ds + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -354,11 +361,6 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-
-    
-    
-    
-    
 
     public void downActiveTable(Table t) throws Exception {
         try {
@@ -419,6 +421,63 @@ public class DAOTable extends DAO {
                 tables.add(tab);
             }
             return tables;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<String> listarIdByWorkshift(Timestamp ts) throws Exception {
+        ArrayList<String> ids = new ArrayList<>();
+        Timestamp open = ts;
+        Timestamp close = new Timestamp(new Date().getTime());
+        try {
+            String sql = "SELECT table_id FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                String st = "";
+                st = resultado.getString(1);
+                ids.add(st);
+            }
+            return ids;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<String> getActiveIds() throws Exception {
+        ArrayList<String> tables = new ArrayList<>();
+        try {
+            String sql = "SELECT table_id FROM tabs WHERE table_open = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                String tab = resultado.getString(1);
+                tables.add(tab);
+            }
+            return tables;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<String> activeTabIcMod(int id) throws Exception {
+        ArrayList<String> idsTabsIc = new ArrayList<String>();
+        try {
+            String sql = "SELECT table_id FROM tabs WHERE table_open = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                String tab = resultado.getString(1);
+                idsTabsIc.add(tab);
+            }
+            return idsTabsIc;
         } catch (Exception e) {
             throw e;
         } finally {

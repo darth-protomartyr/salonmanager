@@ -3,12 +3,12 @@ package salonmanager.servicios;
 import java.util.ArrayList;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOTable;
 
 public class ServicioItemcard {
     DAOItemcard daoIC = new DAOItemcard();
-
+    DAOTable daoT = new DAOTable();
     public String codeCreator(String category) throws Exception {
-        DAOItemcard daoIC = new DAOItemcard();
         String code = "";
         ArrayList<Itemcard> items = daoIC.listItemsByCategory(category);
         int num1 = 0;
@@ -34,12 +34,19 @@ public class ServicioItemcard {
         }
         return code;
     }
+    
 
-//    public void ingresarItem(Itemcard itemAux) throws Exception {
-//        daoIC.saveItemcard(itemAux);
-//    }
-//
-//    public void modificarItem(Itemcard itemAux, String name, String category, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
-//        daoIC.modificarItem(itemAux, name, category, description, cost, price, stock, tipAlta);
-//    }
+    public void priceUpdater(Itemcard ic, double newPrice) throws Exception {
+        ArrayList<String> tabIds = daoT.getActiveIds();
+        ArrayList<String> tabIdsIc = daoT.getActiveIds();
+        for (int i = 0; i < tabIds.size(); i++) {
+            tabIdsIc = daoT.activeTabIcMod(ic.getId());
+        }
+        
+        
+        
+        
+    }
+
+
 }

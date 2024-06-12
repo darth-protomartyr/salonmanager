@@ -1,11 +1,7 @@
 package salonmanager.entidades.bussiness;
 
-import salonmanager.entidades.bussiness.Itemcard;
-import salonmanager.entidades.bussiness.Table;
 import java.sql.Timestamp;
 import java.util.Date;
-import salonmanager.entidades.bussiness.Itemcard;
-import salonmanager.entidades.bussiness.Table;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -15,12 +11,9 @@ public class ItemMonitor {
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
 
-
     String idIMon;
     Table tableIMon; //alt 1
-//    String stTableIMon; //alt 2
     Itemcard itemIMon;// alt 1
-//    String stItemIMon;// alt 2
     String posIMon;
     boolean initIMon;
     Timestamp dateInitIMon;

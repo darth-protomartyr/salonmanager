@@ -1,5 +1,6 @@
 package salonmanager.servicios;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
@@ -77,7 +78,7 @@ public class ServicioTable {
     }
 
     public void saveTableCompleteChangeWs(Table tab, Salon salon) throws Exception {
-        daoT.saveTable(tab);
+        daoT.saveTable(tab, null);
         daoU.saveWaiterTable(tab);
         if (tab.getPos().equals("delivery")) {
             String deli = salon.getJbdAux().getDelivery().getId();

@@ -67,7 +67,7 @@ public class WaiterSelector extends FrameWindow {
         }
 
         comboWaiters.setModel(utili.userComboModelReturnWNull(waiters));
-        comboWaiters.setBounds(90, 80, 200, 40);
+        comboWaiters.setBounds(anchoUnit * 7, altoUnit * 13, anchoUnit * 15, altoUnit * 6);
         comboWaiters.setFont(salon.getFont4());
         comboWaiters.setSelectedIndex(waiters.size());
         DefaultListCellRenderer renderer = new DefaultListCellRenderer();

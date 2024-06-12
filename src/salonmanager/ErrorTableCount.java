@@ -26,6 +26,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
+import salonmanager.servicios.ServicioItemSale;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
@@ -35,11 +36,12 @@ public class ErrorTableCount extends FrameWindow {
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServicioSalon ss = new ServicioSalon();
+    ServicioItemSale sis = new ServicioItemSale();
     SalonManager sm = new SalonManager();
 
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color bluLg = new Color(194, 242, 206);
+    Color whi = new Color(255, 255, 255);
 
     double total = 0;
     double amountCash = 0;
@@ -65,23 +67,18 @@ public class ErrorTableCount extends FrameWindow {
         panelLabel.setBackground(bluSt);
         panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
-        JLabel labelTit = utiliGraf.labelTitleBacker1W("ERROR");
-        panelLabel.add(labelTit);
+        JLabel labelTit = utiliGraf.labelTitleBackerA4W("ERROR");
+        panelLabel.add(labelTit);        
 
-        JPanel panelAmount = new JPanel();
-        panelAmount.setLayout(null);
-        panelAmount.setBackground(bluLg);
-        panelAmount.setBounds(15, 40, 350, 210);
+        JLabel labelAmount = utiliGraf.labelTitleBacker1W("Ingrese el monto recibido");
+        labelAmount.setBounds(anchoUnit * 5, altoUnit * 5, anchoUnit * 20, altoUnit * 4);
+        panelPpal.add(labelAmount);
 
-        JLabel labelAmount = utiliGraf.labelTitleBacker1("Ingrese el monto recibido");
-        labelAmount.setBounds(60, 5, 240, 30);
-        panelAmount.add(labelAmount);
+        JLabel labelEf = utiliGraf.labelTitleBacker2W("Efect. $:");
+        labelEf.setBounds(anchoUnit, altoUnit * 10, anchoUnit * 5, altoUnit * 4);
+        panelPpal.add(labelEf);
 
-        JLabel labelEf = utiliGraf.labelTitleBacker2("Efect. $:");
-        labelEf.setBounds(10, 40, 70, 25);
-        panelAmount.add(labelEf);
-
-        fieldAmountCash.setBounds(75, 40, 90, 25);
+        fieldAmountCash.setBounds(anchoUnit * 6, altoUnit * 10, anchoUnit * 7, altoUnit * 4);
         fieldAmountCash.setFont(new Font("Arial", Font.PLAIN, 20));
         fieldAmountCash.addKeyListener(new KeyListener() {
             @Override
@@ -122,13 +119,13 @@ public class ErrorTableCount extends FrameWindow {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        panelAmount.add(fieldAmountCash);
+        panelPpal.add(fieldAmountCash);
 
-        JLabel labelEl = utiliGraf.labelTitleBacker2("Transf. $:");
-        labelEl.setBounds(175, 40, 115, 25);
-        panelAmount.add(labelEl);
+        JLabel labelEl = utiliGraf.labelTitleBacker2W("Transf. $:");
+        labelEl.setBounds(anchoUnit * 14, altoUnit * 10, anchoUnit * 6, altoUnit * 4);
+        panelPpal.add(labelEl);
 
-        fieldAmountElectronic.setBounds(250, 40, 90, 25);
+        fieldAmountElectronic.setBounds(anchoUnit * 20, altoUnit * 10, anchoUnit * 7, altoUnit * 4);
         fieldAmountElectronic.setFont(new Font("Arial", Font.PLAIN, 20));
         fieldAmountElectronic.addKeyListener(new KeyListener() {
             @Override
@@ -169,13 +166,13 @@ public class ErrorTableCount extends FrameWindow {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         });
-        panelAmount.add(fieldAmountElectronic);
+        panelPpal.add(fieldAmountElectronic);
 
-        JLabel labelLossCheck = utiliGraf.labelTitleBacker3("Pérdida Total");
-        labelLossCheck.setBounds(220, 70, 120, 20);
-        panelAmount.add(labelLossCheck);
-
-        checkTotalLossMount.setBounds(310, 70, 20, 20);
+        checkTotalLossMount.setText("Perdida Total");
+        
+        checkTotalLossMount.setBounds(anchoUnit * 19, altoUnit * 15, anchoUnit * 8, altoUnit * 3);
+        checkTotalLossMount.setBackground(bluSt);
+        checkTotalLossMount.setForeground(whi);
         checkTotalLossMount.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -186,14 +183,14 @@ public class ErrorTableCount extends FrameWindow {
                 }
             }
         });
-        panelAmount.add(checkTotalLossMount);
+        panelPpal.add(checkTotalLossMount);
 
-        labelLoss = utiliGraf.labelTitleBacker3("No hay monto faltante");
-        labelLoss.setBounds(50, 70, 230, 20);
-        panelAmount.add(labelLoss);
+        labelLoss = utiliGraf.labelTitleBacker3W("Ingrese Información necesaria para realizar");
+        labelLoss.setBounds(anchoUnit * 2, altoUnit * 15, anchoUnit * 16, altoUnit * 3);
+        panelPpal.add(labelLoss);
 
-        JLabel labelComment = utiliGraf.labelTitleBacker3("Causa del Error (obligatorio):");
-        labelComment.setBounds(70, 130, 250, 20);
+        JLabel labelComment = utiliGraf.labelTitleBacker3W("Causa del Error (obligatorio):");
+        labelComment.setBounds(anchoUnit * 2, altoUnit * 18, anchoUnit * 15, altoUnit * 3);
         panelPpal.add(labelComment);
 
         textAreaCause.setRows(3);
@@ -204,10 +201,10 @@ public class ErrorTableCount extends FrameWindow {
         textAreaCause.setFont(newFont);
         textAreaCause.setBackground(narUlg);
         JScrollPane scrollPane = new JScrollPane(textAreaCause);
-        scrollPane.setBounds(70, 150, 250, 55);
+        scrollPane.setBounds(anchoUnit * 2, altoUnit * 21, anchoUnit * 25, altoUnit * 8);
         panelPpal.add(scrollPane);
 
-        JButtonMetalBlu butErrorMount = utiliGraf.button2("Confirmar Error", 100, 175, 160);
+        JButtonMetalBlu butErrorMount = utiliGraf.button2("Confirmar Error", anchoUnit * 8, altoUnit * 30, anchoUnit * 13);
         butErrorMount.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -223,8 +220,7 @@ public class ErrorTableCount extends FrameWindow {
                 }
             }
         });
-        panelAmount.add(butErrorMount);
-        panelPpal.add(panelAmount);
+        panelPpal.add(butErrorMount);
         
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
@@ -309,7 +305,7 @@ public class ErrorTableCount extends FrameWindow {
             wrong = total;
         }
 
-        if (wrong > total) {
+        if (wrong >= total) {
             utiliMsg.errorTotalLess();
             error = true;
         }
@@ -326,7 +322,7 @@ public class ErrorTableCount extends FrameWindow {
                 salon.getTableAux().setTotal(salon.getTotal());
                 ss.errorMountBacker(wrong, cause, salon, amountCash, amountElec);
                 utiliGrafSal.tablePaid(salon);
-                dispose();
+                dispose();               
             }
         } else {
             resetFrame();

@@ -1,7 +1,6 @@
 package salonmanager.entidades.graphics;
 
 import salonmanager.entidades.bussiness.Itemcard;
-import salonmanager.entidades.graphics.PanelPpal;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -79,7 +77,7 @@ public class CustomShowItems extends JDialog {
         }
 
         JLabel labelTit = utiliGraf.labelTitleBacker3(st);
-        labelTit.setBounds(20, 20, 300, 30);
+        labelTit.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(labelTit);
 
         JButtonMetalBlu closeButton = utiliGraf.button2("Cerrar", anchoUnit * 10, altoUnit * 30, anchoUnit * 10);
