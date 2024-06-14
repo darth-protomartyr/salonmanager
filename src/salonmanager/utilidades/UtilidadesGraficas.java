@@ -215,7 +215,7 @@ public class UtilidadesGraficas extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
-                        new ItemSelector("m");
+                        new ItemSelector("m", manager);
                     } else {
                         sm.salir();
                     }
@@ -230,7 +230,7 @@ public class UtilidadesGraficas extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
-                        new ItemSelector("s");
+                        new ItemSelector("s", manager);
                     } else {
                         sm.salir();
                     }
@@ -702,7 +702,7 @@ public class UtilidadesGraficas extends JFrame {
             comboCategory.setSelectedItem(item.getCategory());
             areaDescription.setText(item.getDescription());
             fieldCost.setText(item.getCost() + "");
-            fieldPrice.setText(item.getPrice() + "");
+            fieldPrice.setText(item.getPrice().get(0) + "");
             fieldStock.setText(item.getStock() + "");
             checkTip.setSelected(item.isActiveTip());
         }

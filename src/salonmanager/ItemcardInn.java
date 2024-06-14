@@ -182,7 +182,10 @@ public class ItemcardInn extends FrameHalf {
         tipAlta = checkTip.isSelected();
 
         if (error == false) {
-            itemAux = new Itemcard(name, category, description, cost, price, stock, tipAlta);
+            ArrayList<Double> prices = new ArrayList<>();
+            prices.add(price);
+            prices.add(0.0);
+            itemAux = new Itemcard(name, category, description, cost, prices, stock, tipAlta);
             daoIC.saveItemcard(itemAux);
             resetItemcard();
         }

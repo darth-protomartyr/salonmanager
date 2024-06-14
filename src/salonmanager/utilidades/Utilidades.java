@@ -1,5 +1,6 @@
 package salonmanager.utilidades;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import salonmanager.entidades.bussiness.User;
 import java.security.SecureRandom;
@@ -17,16 +18,18 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
+import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
 
 public class Utilidades {
-    DAOWorkshift daoW = new DAOWorkshift();
-    DAOTable daoT = new DAOTable();
+
     
     public double toNumberD(String str) {
         double d = -1;
@@ -239,23 +242,23 @@ public class Utilidades {
         return modeloCombo;
     }
     
-    public ComboBoxModel wsComboModelReturnWNull() throws Exception {
-        ArrayList<Integer> wssId = daoW.listIdWs();
-        ArrayList<Timestamp> wssTs = daoW.listTsIWs();
-        
-        ArrayList<String> wssSt = new ArrayList<>();
-        for (int i = 0; i < wssId.size(); i++) {
-            String ts = friendlyDate1(wssTs.get(i));
-            wssSt.add(wssId.get(i) + ". " + ts);
-        }
-
-        String wsa = "";
-        int actual = 0;
-        actual = daoW.askWorshiftActualId();
-        if (actual != 0) {
-            wsa = "ACTUAL";
-        }
-        wssSt.add(0,wsa);
+    public DefaultComboBoxModel wsComboModelReturnWNu(ArrayList<String> wssSt) throws Exception {
+//        ArrayList<Integer> wssId = daoW.listIdWs();
+//        ArrayList<Timestamp> wssTs = daoW.listTsIWs();
+//        
+//        ArrayList<String> wssSt = new ArrayList<>();
+//        for (int i = 0; i < wssId.size(); i++) {
+//            String ts = friendlyDate1(wssTs.get(i));
+//            wssSt.add(wssId.get(i) + ". " + ts);
+//        }
+//
+//        String wsa = "";
+//        int actual = 0;
+//        actual = daoW.askWorshiftActualId();
+//        if (actual != 0) {
+//            wsa = "ACTUAL";
+//        }
+//        wssSt.add(0,wsa);
         
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (String i : wssSt) {
@@ -263,6 +266,7 @@ public class Utilidades {
         }
         return modeloCombo;
     }
+    
 
     public ComboBoxModel itemsComboModelReturnWNull(ArrayList<Itemcard> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
@@ -433,6 +437,33 @@ public class Utilidades {
         }
         return arrayInt;
     }
+    
+    
+    public ArrayList<Double> strToArrayDou(String str) {
+        ArrayList<Double> arrayDou = new ArrayList<>();
+        String strAux = "";
+        for (int i = 0; i < str.length(); i++) {
+            String s = str.substring(i, i + 1);
+            if (s.equals("-")) {
+                double num = parseDouble(strAux);
+                arrayDou.add(num);
+                strAux = "";
+            } else {
+                strAux += s;
+            }
+        }
+        return arrayDou;
+    }
+    
+    
+    public String arrayDouToStr(ArrayList<Double> numTab) {
+        String str = "";
+        for (Double i : numTab) {
+            str += i + "-";
+        }
+        return str;
+    }
+    
 
     public String arrayStrToStr(ArrayList<String> strPane) {
         String str = "";
@@ -823,14 +854,6 @@ public class Utilidades {
         return cfgGen;
     }
 
-    public ArrayList<Table> tabsBacker(ArrayList<String> tabIds) throws Exception {
-        ArrayList<Table> tabs = new ArrayList<>();
-        for (int i = 0; i < tabIds.size(); i++) {
-            Table tab = daoT.getTableById(tabIds.get(i));
-            tabs.add(tab);
-        }
-        return tabs;
-    }
 
     public ArrayList<String> tabsEasyReader(ArrayList<String> arrayDeferWs) {
         ArrayList<String> defer = new ArrayList<>();
@@ -866,5 +889,33 @@ public class Utilidades {
 
     public double round2Dec(double value) {
         return Math.round( value * 100.0) / 100.0;
+    }
+
+    public ArrayList<Double> ArrayRound2Dec(ArrayList<Double> prices) {
+        ArrayList<Double> pr = prices;
+        double pr1 = round2Dec(pr.get(0));
+        pr.add(pr1);
+        double pr2 = round2Dec(pr.get(1));
+        pr.add(pr2);
+        
+        return pr;
+    }
+
+    
+    public double priceMod(Itemcard ic, Salon sal) {
+        ConfigActual cfgAct = sal.getCfgAct();
+        ArrayList<String> tabsMod = cfgAct.getArrayUnModTabs();
+        double price = ic.getPrice().get(0);
+        if (tabsMod.size() > 0) {
+            for (int i = 0; i < tabsMod.size()/2; i++) {
+                int index = i * 2;
+                
+                int icId = parseInt(tabsMod.get(index +1));
+                if (sal.getTableAux().getId().equals(tabsMod.get(index)) && ic.getId()== icId) {
+                    price = ic.getPrice().get(1);
+                }
+            }
+        }
+        return price;
     }
 }

@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -57,7 +56,7 @@ public class CustomDialogTextIn extends JDialog {
 
         JPanel panelText = new JPanel(null);
         panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 26);
-        Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+        Border bordeInterno = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         panelText.setBorder(bordeInterno);
         panelText.setBackground(narLg);
         contentPane.add(panelText);

@@ -1,11 +1,11 @@
 package salonmanager.entidades.config;
-
 import java.util.ArrayList;
 
 public class ConfigActual {
     boolean openWs;
     int openIdWs;
     ArrayList<String> arrayDeferWs;
+    ArrayList<String> arrayUnModTabs;
 
     public ConfigActual() {
     }
@@ -26,12 +26,19 @@ public class ConfigActual {
         this.openIdWs = openIdWs;
     }
     
-
     public ArrayList<String> getArrayDeferWs() {
         return arrayDeferWs;
     }
 
     public void setArrayDeferWs(ArrayList<String> arrayDeferWs) {
         this.arrayDeferWs = arrayDeferWs;
+    }
+
+    public ArrayList<String> getArrayUnModTabs() {
+        return arrayUnModTabs;
+    }
+
+    public void setArrayUnModTabs(ArrayList<String> arrayUnModTabs) {
+        this.arrayUnModTabs = arrayUnModTabs;
     }
 }

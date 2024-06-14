@@ -71,7 +71,7 @@ public class CustomDialogConfirm extends JDialog {
         JPanel panelText = new JPanel();
         panelText.setLayout(new GridBagLayout());
         panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 26);
-        Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+        Border bordeInterno = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         panelText.setBorder(bordeInterno);
         panelText.setBackground(viol);
         contentPane.add(panelText);

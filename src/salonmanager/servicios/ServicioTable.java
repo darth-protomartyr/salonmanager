@@ -103,4 +103,13 @@ public class ServicioTable {
         tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
         return tab;
     }
+    
+    public ArrayList<Table> tabsBacke(ArrayList<String> tabIds) throws Exception {
+        ArrayList<Table> tabs = new ArrayList<>();
+        for (int i = 0; i < tabIds.size(); i++) {
+            Table tab = daoT.getTableById(tabIds.get(i));
+            tabs.add(tab);
+        }
+        return tabs;
+    }
 }

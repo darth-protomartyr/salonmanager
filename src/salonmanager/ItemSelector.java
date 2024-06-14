@@ -42,8 +42,10 @@ public class ItemSelector extends FrameWindow {
     JComboBox comboItems = new JComboBox();
     JButtonMetalBlu butSelItem = new JButtonMetalBlu();
     String sel = "";
+    Manager manager = null;
 
-    public ItemSelector(String s) throws Exception {
+    public ItemSelector(String s, Manager man) throws Exception {
+        manager = man;
         sel = s;
         sm.addFrame(this);
         itemsDB = daoIC.listarItemsCard();
@@ -107,7 +109,7 @@ public class ItemSelector extends FrameWindow {
             itemAux = utili.itemSelReturn(selectedItem, itemsDB);
             if (itemAux != null) {
                 if (sel.equals("m")) {
-                    new ItemcardModificacion(itemAux);
+                    new ItemcardModificacion(itemAux, manager);
                 } else {
                     new ItemcardConsulta(itemAux);
                 }

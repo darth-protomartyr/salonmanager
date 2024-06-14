@@ -1,6 +1,7 @@
 package salonmanager.entidades.bussiness;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
@@ -14,7 +15,7 @@ public class Itemcard {
     String category;
     String description;
     double cost;
-    double price;
+    ArrayList<Double> price;
     int stock;
     Timestamp dateCreation;
     Timestamp dateUpdate;
@@ -25,27 +26,29 @@ public class Itemcard {
         
     }
 
-    public Itemcard(String name, String category, String description, double cost, double price, int stock, boolean activeTip) throws Exception {
+    public Itemcard(String name, String category, String description, double cost, ArrayList<Double> price, int stock, boolean activeTip) throws Exception {
+        price = utili.ArrayRound2Dec(price);
         this.code = sic.codeCreator(category);
         this.name = name;
         this.category = category;
         this.description = description;
         this.cost = utili.round2Dec(cost);
-        this.price = utili.round2Dec(price);
+        this.price = price;
         this.stock = stock;
         this.activeTip = activeTip;
         this.dateCreation = new Timestamp(new Date().getTime());
         this.activeItem = true;
     }
 
-    public Itemcard(int id, String code, String name, String category, String description, double cost, double price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
+    public Itemcard(int id, String code, String name, String category, String description, double cost, ArrayList<Double> price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
+        price = utili.ArrayRound2Dec(price);
         this.id = id;
         this.code = code;
         this.name = name;
         this.category = category;
         this.description = description;
         this.cost = utili.round2Dec(cost);;
-        this.price = utili.round2Dec(price);
+        this.price = price;
         this.stock = stock;
         this.dateCreation = dateCreation;
         this.dateUpdate = dateUpdate;
@@ -101,12 +104,13 @@ public class Itemcard {
         this.cost = utili.round2Dec(cost);;
     }
 
-    public double getPrice() {
+    public ArrayList<Double> getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = utili.round2Dec(price);
+    public void setPrice(ArrayList<Double> price) {
+        price = utili.ArrayRound2Dec(price);
+        this.price = price;
     }
 
     public int getStock() {

@@ -2,6 +2,7 @@ package salonmanager.persistencia;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.utilidades.Utilidades;
@@ -74,6 +75,7 @@ public class DAOConfig extends DAO {
             cfnAct.setOpenWs(resultado.getBoolean(1));
             cfnAct.setOpenIdWs(resultado.getInt(2));
             cfnAct.setArrayDeferWs(utili.strToArrayStrAlt(resultado.getString(3)));
+            cfnAct.setArrayUnModTabs(utili.strToArrayStrAlt(resultado.getString(4)));
         }
         desconectarBase();
         return cfnAct;
@@ -95,7 +97,6 @@ public class DAOConfig extends DAO {
         }
     }
 
-
     public void updateCfgActOpenIdWs(int idWs) throws Exception {
         try {
             String sql1 = "UPDATE config_actual SET config_open_ws_id = '" + idWs + "';";
@@ -112,9 +113,8 @@ public class DAOConfig extends DAO {
         }
     }
 
-
     public void updateCfgActDeferWs(ArrayList<String> arrayDeferWs) throws Exception {
-            String stArray =  utili.arrayStrToStrAlt(arrayDeferWs);
+        String stArray = utili.arrayStrToStrAlt(arrayDeferWs);
         try {
             String sql1 = "UPDATE config_actual SET congif_defer_close_ws = '" + stArray + "';";
             System.out.println(sql1);
@@ -129,7 +129,7 @@ public class DAOConfig extends DAO {
             desconectarBase();
         }
     }
-    
+
     public ArrayList<String> askSpaces() throws Exception {
         ArrayList<String> spaces = new ArrayList<>();
         String sql = "SELECT * FROM spaces;";
@@ -141,7 +141,7 @@ public class DAOConfig extends DAO {
         desconectarBase();
         return spaces;
     }
-    
+
     public ArrayList<String> askChars() throws Exception {
         ArrayList<String> chars = new ArrayList<>();
         String sql = "SELECT * FROM chars;";
@@ -153,7 +153,7 @@ public class DAOConfig extends DAO {
         desconectarBase();
         return chars;
     }
-    
+
     public ArrayList<String> askCategories() throws Exception {
         ArrayList<String> categories = new ArrayList<>();
         String sql = "SELECT * FROM categories;";
@@ -180,9 +180,9 @@ public class DAOConfig extends DAO {
             }
         } finally {
             desconectarBase();
-        }        
+        }
     }
-    
+
     public void saveCategory(String category) throws Exception {
         try {
             String sql1 = "INSERT INTO categories(category_name)"
@@ -197,9 +197,9 @@ public class DAOConfig extends DAO {
             }
         } finally {
             desconectarBase();
-        }        
+        }
     }
-    
+
     public void saveChar(String cha) throws Exception {
         try {
             String sql1 = "INSERT INTO chars(char_name)"
@@ -214,6 +214,27 @@ public class DAOConfig extends DAO {
             }
         } finally {
             desconectarBase();
-        }        
+        }
+    }
+
+    public void updateCfgActModTabs(ArrayList<String> unmodTabs) throws Exception {
+        String stArray = "";
+        if (unmodTabs.size() > 0) {
+            stArray = utili.arrayStrToStrAlt(unmodTabs);
+        }
+
+        try {
+            String sql1 = "UPDATE config_actual SET congif_unmod_tabs = '" + stArray + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
     }
 }

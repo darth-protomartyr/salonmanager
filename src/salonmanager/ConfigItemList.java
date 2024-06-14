@@ -452,16 +452,19 @@ public class ConfigItemList extends FrameFull {
                 String mod = panelsN.get(i).getButSel().getText();
                 int id = panelsN.get(i).getIc().getId();
                 if (mod.equals("QUITAR")) {
-                    double price = panelsN.get(i).getIc().getPrice();
-                    price = price * pc / 100;
-                    double rou = price % round;
+                    double oldPrice = panelsN.get(i).getIc().getPrice().get(0);
+                    double newPrice = oldPrice * pc / 100;
+                    double rou = newPrice % round;
                     rou = round - rou;
-                    price = price + rou;
+                    newPrice = newPrice + rou;
                     DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
                     DecimalFormat df = new DecimalFormat("#.00", symbols);
-                    String st  = df.format(price);
-                    price = Double.parseDouble(st);
-                    daoI.updateItemPrice(id, price);
+                    String st  = df.format(newPrice);
+                    newPrice = Double.parseDouble(st);
+                    ArrayList<Double> prices = new ArrayList<>();
+                    prices.add(newPrice);
+                    prices.add(oldPrice);
+                    daoI.updateItemPrice(id, prices);
                 }
             }
             reset();
@@ -518,16 +521,22 @@ public class ConfigItemList extends FrameFull {
 
                 if (error == false) {
                     int id = panelsN.get(i).getIc().getId();
+                    Itemcard ic = panelsN.get(i).getIc();
                     daoI.updateItemCategory(id, cat);
                     daoI.updateItemStock(id, stock);
                     daoI.updateItemCost(id, cost);
+                    
+                    ArrayList<Double> prices = new ArrayList<>();
+                    prices.add(price);
+                    prices.add(ic.getPrice().get(0));
+                    
                     if (price <= cost) {
                         boolean confirm = utiliMsg.cargeConfirmLowerPrice();
                         if (confirm) {
-                            daoI.updateItemPrice(id, price);
+                            daoI.updateItemPrice(id, prices);
                         }
                     } else {
-                        daoI.updateItemPrice(id, price);
+                        daoI.updateItemPrice(id, prices);
                     }
                 }
             }

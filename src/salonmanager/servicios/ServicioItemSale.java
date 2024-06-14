@@ -7,10 +7,11 @@ import salonmanager.Salon;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.persistencia.DAOItemSale;
+import salonmanager.utilidades.Utilidades;
 
 public class ServicioItemSale {
     DAOItemSale daoI = new DAOItemSale();
-
+    Utilidades utili = new Utilidades();
     public void createItemSale(Salon salon) throws Exception {
         ArrayList<Itemcard> items = salon.getItemsTableAux();
         String tabId = salon.getTableAux().getPos();
@@ -28,7 +29,7 @@ public class ServicioItemSale {
         int wsId = salon.getWorkshiftNow().getId();
         for(Itemcard ic : items) {
             Timestamp ts = new Timestamp(new Date().getTime());
-            ItemSale is = new ItemSale(ic.getId(), ic.getCategory(), tabId, waiterId, wsId, ic.getPrice(), ts);
+            ItemSale is = new ItemSale(ic.getId(), ic.getCategory(), tabId, waiterId, wsId, utili.priceMod(ic, salon), ts);
             daoI.saveItemSale(is);
         }
     }

@@ -47,6 +47,7 @@ public class ServicioWorkshift {
         daoW.updateWorkshiftComment(actualWs);
         daoC.updateCfgActOpenWs(false);
         daoC.updateCfgActOpenIdWs(0);
+        daoC.updateCfgActModTabs(new ArrayList<String>());
         if (newWs != null) {
             daoW.saveWorkshift(newWs);
             int id = daoW.askWorshiftActualId();

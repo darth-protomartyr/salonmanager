@@ -16,9 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import salonmanager.utilidades.Utilidades;
@@ -59,7 +56,7 @@ public class CustomDialogTextInAlt extends JDialog {
 
         JPanel panelText = new JPanel(new GridBagLayout());
         panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 12);
-        Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+        Border bordeInterno = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         panelText.setBorder(bordeInterno);
         panelText.setBackground(narLg);
         contentPane.add(panelText);

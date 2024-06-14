@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -69,7 +68,7 @@ public class CustomDialogPass extends JDialog {
 
         JPanel panelText = new JPanel();
         panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 15);
-        Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+        Border bordeInterno = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         panelText.setBorder(bordeInterno);
         panelText.setBackground(viol);
         contentPane.add(panelText);

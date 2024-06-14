@@ -61,7 +61,7 @@ public class CustomDialog extends JDialog {
 
         JPanel panelText = new JPanel();
         panelText.setBounds(anchoUnit, altoUnit, anchoUnit * 27, altoUnit * 28);
-        Border bordeInterno = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+        Border bordeInterno = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         panelText.setBorder(bordeInterno);
         contentPane.add(panelText);
 

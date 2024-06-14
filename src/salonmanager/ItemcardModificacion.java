@@ -15,8 +15,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.servicios.ServicioItemcard;
@@ -32,6 +34,7 @@ public class ItemcardModificacion extends FrameHalf {
     ServicioItemcard si = new ServicioItemcard();
     DAOItemcard daoIC = new DAOItemcard();
     DAOTable daoT = new DAOTable();
+    DAOConfig daoC = new DAOConfig();
     SalonManager sm = new SalonManager();
 
     ArrayList<Itemcard> itemsCardDB = null;
@@ -53,9 +56,11 @@ public class ItemcardModificacion extends FrameHalf {
     JTextField fieldStock = new JTextField();
     JCheckBox checkTip = new JCheckBox("");
     JButtonMetalBlu butModificarItem = null;
+    Manager manager = null;
 
-    public ItemcardModificacion(Itemcard ic) throws Exception {
+    public ItemcardModificacion(Itemcard ic, Manager man) throws Exception {
         itemAux = ic;
+        manager = man;
         sm.addFrame(this);
         setTitle("Modificación Item de la Carta");
         itemsCardDB = daoIC.listarItemsCard();
@@ -178,24 +183,51 @@ public class ItemcardModificacion extends FrameHalf {
         tipAlta = checkTip.isSelected();
 
         if (error == false) {
+            ArrayList<String> tabIds = new ArrayList<>();
+            ArrayList<String> tabIdsIc = new ArrayList<>();
             price = utili.round2Dec(price);
+            double priceOld = itemAux.getPrice().get(0);
             cost = utili.round2Dec(cost);
             boolean confirm = true;
-
-            if (price != itemAux.getPrice()) {
-                ArrayList<String> tabIds = daoT.getActiveIds();
-                ArrayList<String> tabIdsIc = daoT.getActiveIds();
+            ArrayList<Double> prices = new ArrayList<>();
+            prices.add(price);
+            prices.add(priceOld);
+            if (price != priceOld) {
+                tabIds = daoT.getActiveIds();
                 for (int i = 0; i < tabIds.size(); i++) {
-                    tabIdsIc = daoT.activeTabIcMod(itemAux.getId());
+                    ArrayList<Integer> arrayTabIdsIc = daoT.activeTabIcMod(itemAux.getId(), tabIds.get(i));
+                    if (arrayTabIdsIc.size() > 0) {
+                        tabIdsIc.add(tabIds.get(i));
+                    }
                 }
-                
                 if (tabIdsIc.size() > 0) {
                     confirm = utiliMsg.cargaConfirmarCambioPrAct();
                 }
             }
 
             if (confirm) {
-                daoIC.modificarItem(itemAux.getId(), name, category, description, cost, price, stock, tipAlta);
+                if (manager.getSalon() != null) {
+                    boolean confirm2 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+                    if (confirm2) {
+                        ArrayList<String> modTabsNew = new ArrayList<>();
+                        for (int i = 0; i < tabIdsIc.size(); i++) {
+                            modTabsNew.add(tabIdsIc.get(i));
+                            modTabsNew.add(itemAux.getId() + "");
+                        }
+                        ConfigActual cfgAct = daoC.askConfigActual();
+                        ArrayList<String> modTabIds = cfgAct.getArrayUnModTabs();
+                        for (int i = 0; i < modTabsNew.size(); i++) {
+                            modTabIds.add(modTabsNew.get(i));
+                        }
+                        daoC.updateCfgActModTabs(modTabIds);
+                        daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
+                        manager.getSalon().dispose();
+                        manager.setSalon(null);
+                        utiliMsg.cargaUpdateItemActive();
+                    }
+                } else {
+                    daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
+                }
             }
             resetItemcard();
             dispose();

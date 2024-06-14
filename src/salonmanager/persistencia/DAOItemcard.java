@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
+import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DAOItemcard extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-
+    Utilidades utili = new Utilidades();
+    
     public ArrayList<Itemcard> listarItemsCard() throws Exception {
         ArrayList<Itemcard> items = new ArrayList<>();
         try {
@@ -26,7 +28,7 @@ public class DAOItemcard extends DAO {
                 String category = resultado.getString(4);
                 String description = resultado.getString(5);
                 double cost = resultado.getDouble(6);
-                double price = resultado.getDouble(7);
+                ArrayList<Double> price = utili.strToArrayDou(resultado.getString(7));
                 int stock = resultado.getInt(8);
                 Timestamp dateCreation = resultado.getTimestamp(9);
                 Timestamp dateCostUpdate = resultado.getTimestamp(10);
@@ -94,7 +96,7 @@ public class DAOItemcard extends DAO {
                 String category = resultado.getString(4);
                 String description = resultado.getString(5);
                 double cost = resultado.getDouble(6);
-                double price = resultado.getDouble(7);
+                ArrayList<Double> price = utili.strToArrayDou(resultado.getString(7));
                 int stock = resultado.getInt(8);
                 Timestamp dateCreation = resultado.getTimestamp(9);
                 Timestamp dateCostUpdate = resultado.getTimestamp(10);
@@ -124,7 +126,7 @@ public class DAOItemcard extends DAO {
             error = true;
         }
 
-        if (item.getPrice() == 0) {
+        if (item.getPrice().get(0) == 0) {
             utiliMsg.errorPriceItem();
             error = true;
         }
@@ -148,15 +150,15 @@ public class DAOItemcard extends DAO {
         }
     }
 
-    public void modificarItem(int id, String name, String category, String description, double cost, double price, int stock, boolean tipAlta) throws Exception {
+    public void modificarItem(int id, String name, String category, String description, double cost, ArrayList<Double> price, int stock, boolean tipAlta) throws Exception {
         Timestamp upd = new Timestamp(new Date().getTime());
+        String prices = utili.arrayDouToStr(price);
         try {
             String sql = "UPDATE itemcards "
                     + "SET itemcard_name = '" + name + "', itemcard_category = '" + category + "', itemcard_description = '" + description
-                    + "', itemcard_cost = " + cost + ", itemcard_price = " + price + ", itemcard_stock = " + stock + " , "
+                    + "', itemcard_cost = " + cost + ", itemcard_price = '" + prices + "', itemcard_stock = " + stock + " , "
                     + "itemcard_date_creation = '" + upd + "', itemcard_tip = " + tipAlta
                     + " WHERE itemcard_id = " + id + ";";
-
             System.out.println(sql);
             insertarModificarEliminar(sql);
             desconectarBase();
@@ -553,7 +555,7 @@ public class DAOItemcard extends DAO {
                 String category = resultado.getString(4);
                 String description = resultado.getString(5);
                 double cost = resultado.getDouble(6);
-                double price = resultado.getDouble(7);
+                ArrayList<Double> price = utili.strToArrayDou(resultado.getString(7));
                 int stock = resultado.getInt(8);
                 Timestamp dateCreation = resultado.getTimestamp(9);
                 Timestamp dateCostUpdate = resultado.getTimestamp(10);
@@ -613,9 +615,10 @@ public class DAOItemcard extends DAO {
         desconectarBase();
     }
 
-    public void updateItemPrice(int id, double price) throws Exception {
+    public void updateItemPrice(int id, ArrayList<Double> price) throws Exception {
+        String st = utili.arrayDouToStr(price);
         String sql = "UPDATE itemcards "
-                + "SET itemcard_price = '" + price + "' WHERE itemcard_id = '" + id + "';";
+                + "SET itemcard_price = '" + st + "' WHERE itemcard_id = '" + id + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();

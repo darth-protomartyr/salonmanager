@@ -34,19 +34,4 @@ public class ServicioItemcard {
         }
         return code;
     }
-    
-
-    public void priceUpdater(Itemcard ic, double newPrice) throws Exception {
-        ArrayList<String> tabIds = daoT.getActiveIds();
-        ArrayList<String> tabIdsIc = daoT.getActiveIds();
-        for (int i = 0; i < tabIds.size(); i++) {
-            tabIdsIc = daoT.activeTabIcMod(ic.getId());
-        }
-        
-        
-        
-        
-    }
-
-
 }

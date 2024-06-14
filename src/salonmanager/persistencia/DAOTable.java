@@ -11,8 +11,6 @@ import salonmanager.utilidades.UtilidadesMensajes;
 public class DAOTable extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-//    ServicioRegister sr = new ServicioRegister();
-//    ServicioSalon ss = new ServicioSalon();
 
     public void saveTable(Table tab, Timestamp ts) throws Exception {
         boolean error = false;
@@ -467,15 +465,15 @@ public class DAOTable extends DAO {
         }
     }
 
-    public ArrayList<String> activeTabIcMod(int id) throws Exception {
-        ArrayList<String> idsTabsIc = new ArrayList<String>();
+    public ArrayList<Integer> activeTabIcMod(int idItem, String idTab) throws Exception {
+        ArrayList<Integer> idsTabsIc = new ArrayList<>();
         try {
-            String sql = "SELECT table_id FROM tabs WHERE table_open = true;";
+            String sql = "SELECT itemcard_order_id_fkey FROM itemcard_order_tabs WHERE itemcard_order_id_fkey = " + idItem + " AND table_id_fkey = '"+ idTab+"' ;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                String tab = resultado.getString(1);
-                idsTabsIc.add(tab);
+                int ic = resultado.getInt(1);
+                idsTabsIc.add(ic);
             }
             return idsTabsIc;
         } catch (Exception e) {

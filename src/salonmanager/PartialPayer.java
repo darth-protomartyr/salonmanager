@@ -190,10 +190,10 @@ public class PartialPayer extends FrameWindow {
                 }
             }
         }
-        labelPrice.setText(ss.billPartial(itemsPartialToPay, discount) + "");
+        labelPrice.setText(ss.billPartial(itemsPartialToPay, discount, salon) + "");
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsToPay);
         listToPay.setModel(modeloLista2);
-        subTotal = ss.billPartial(itemsPartialToPay, discount);
+        subTotal = ss.billPartial(itemsPartialToPay, discount, salon);
         labelPrice.setText(subTotal + "");
         labelRest.setText("Resto:" + (total - subTotal));
         labelTip.setText("Prop:" + (Math.round(subTotal / 10)));
@@ -220,7 +220,7 @@ public class PartialPayer extends FrameWindow {
             }
         }
 
-        subTotal = ss.billPartial(itemsPartialToPay, discount);
+        subTotal = ss.billPartial(itemsPartialToPay, discount, salon);
         labelPrice.setText(subTotal + "");
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsPartialToPay);
         listPartialToPay.setModel(modeloLista2);
@@ -252,7 +252,7 @@ public class PartialPayer extends FrameWindow {
     private double pricer(ArrayList<Itemcard> iPTP) {
         double toPay = 0;
         for (int i = 0; i < iPTP.size(); i++) {
-            toPay += iPTP.get(i).getPrice();
+            toPay += utili.priceMod(iPTP.get(i), salon);
         }
         return toPay;
     }

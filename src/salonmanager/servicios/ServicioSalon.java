@@ -124,14 +124,14 @@ public class ServicioSalon {
     }
 
 //Resumen de Cuenta Total
-    public double countBill(Table tableAux) {
+    public double countBill(Table tableAux, Salon sal) {
         double bill = 0;
         int discount = tableAux.getDiscount();
         ArrayList<Itemcard> itemsTable = tableAux.getOrder();
 
         for (int i = 0; i < itemsTable.size(); i++) {
             if (itemsTable.get(i).isActiveItem()) {
-                bill = bill + (itemsTable.get(i).getPrice());
+                bill = bill + utili.priceMod(itemsTable.get(i), sal);
             }
         }
 
@@ -143,12 +143,12 @@ public class ServicioSalon {
     }
 
 //resumen de cuenta abonada en pago parcial  
-    public double partialBillPayed(Table tableAux) {
+    public double partialBillPayed(Table tableAux, Salon sal) {
         double partial = 0;
         int discount = tableAux.getDiscount();
         ArrayList<Itemcard> itemsPartial = new ArrayList<>(tableAux.getPartialPayed());
         for (int i = 0; i < itemsPartial.size(); i++) {
-            partial += itemsPartial.get(i).getPrice();
+            partial += utili.priceMod(itemsPartial.get(i), sal);
         }
 
         double disc = (double) discount;
@@ -157,7 +157,7 @@ public class ServicioSalon {
         ArrayList<Itemcard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
-            partialND += itemsPartialAux.get(i).getPrice();
+            partialND += utili.priceMod(itemsPartial.get(i), sal);
         }
 
         partial += partialND /* + tableAux.getErrorMod*/;
@@ -165,10 +165,10 @@ public class ServicioSalon {
     }
 
 //Resumen de cuenta aplicada a ventana de pago parcial
-    public double billPartial(ArrayList<Itemcard> items, int discount) {
+    public double billPartial(ArrayList<Itemcard> items, int discount, Salon sal) {
         double bill = 0;
         for (Itemcard ic : items) {
-            bill += ic.getPrice();
+            bill += utili.priceMod(ic, sal);
         }
         double disc = discount;
         bill = bill * (1 - disc / 100);
@@ -230,7 +230,7 @@ public class ServicioSalon {
         salon.setItemsTableAux(itemTableLesser(salon.getTableAux().getOrder(), ic));
         salon.getTableAux().setOrder(salon.getItemsTableAux());
         utiliMsg.cargaGift(ic.getName());
-        salon.setTotal(countBill(salon.getTableAux()));
+        salon.setTotal(countBill(salon.getTableAux(), salon));
         salon.getTableAux().setTotal(salon.getTotal());
         daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
         daoIC.saveItemGiftTable(ic, salon.getTableAux());
@@ -246,7 +246,7 @@ public class ServicioSalon {
     public void discountBacker(int disc, Salon salon) throws Exception {
         salon.setDiscount(disc);
         salon.getTableAux().setDiscount(disc);
-        salon.setTotal(countBill(salon.getTableAux()));
+        salon.setTotal(countBill(salon.getTableAux(), salon));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
         daoT.updateTableDiscount(salon.getTableAux());
@@ -276,7 +276,7 @@ public class ServicioSalon {
         salon.getTableAux().setAmountElectronic(salon.getAmountElectronic() + elec);
         daoT.updateTableMountElectronic(salon.getTableAux());
 
-        salon.setTotal(countBill(salon.getTableAux()));
+        salon.setTotal(countBill(salon.getTableAux(), salon));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
 
@@ -346,7 +346,7 @@ public class ServicioSalon {
         salon.getItemsPartialPaid().addAll(itemsPayed);
         salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
         salon.getTableAux().setOrder(salon.getItemsTableAux());
-        salon.setTotal(countBill(salon.getTableAux()));
+        salon.setTotal(countBill(salon.getTableAux(), salon));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
         salon.getTableAux().setToPay(true);
@@ -356,7 +356,7 @@ public class ServicioSalon {
             daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
         }
         salon.getLabelCuenta().setText(salon.getTotal() + "");
-        double payed = partialBillPayed(salon.getTableAux());
+        double payed = partialBillPayed(salon.getTableAux(), salon);
         salon.getLabelPartialPay().setText("Pagado: $" + (payed));
         salon.setEnabled(true);
     }
@@ -370,7 +370,7 @@ public class ServicioSalon {
         daoIC.downActiveItemPayedTableAll(salon.getTableAux());
         daoIC.upActiveItemOrderTableAll(salon.getTableAux());
 
-        salon.setTotal(countBill(salon.getTableAux()));
+        salon.setTotal(countBill(salon.getTableAux(), salon));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
 
@@ -512,7 +512,7 @@ public class ServicioSalon {
                     orderNew = tab.getOrder();
                     Table tabNewWs = new Table(tab.getNum(), tab.getPos(), bill, activeTable, orderNew, waiter, discount, total, comments);
                     tabNewWs.setGifts(tab.getGifts());
-                    double total1 = countBill(tabNewWs);
+                    double total1 = countBill(tabNewWs, sal);
                     tabNewWs.setTotal(total1);
                     tabNewWs.setComments("Nueva mesa con elementos no pagados del turno anterior");
 
@@ -521,7 +521,7 @@ public class ServicioSalon {
                     tab.setGifts(new ArrayList<>());
                     tab.setOrder(tab.getPartialPayed());
                     tab.setPartialPayedND(tab.getPartialPayedND());
-                    double total2 = countBill(tab);
+                    double total2 = countBill(tab, sal);
                     tab.setTotal(total2);
                     tab.setCloseTime(new Timestamp(new Date().getTime()));
                     tab.setPartialPayed(new ArrayList<>());
@@ -536,7 +536,7 @@ public class ServicioSalon {
                     Table tabNewWs = new Table(tab.getNum(), tab.getPos(), bill, activeTable, orderNew, waiter, discount, total, comments);
                     tabNewWs.setOrder(tab.getOrder());
                     tabNewWs.setGifts(tab.getGifts());
-                    total = countBill(tabNewWs);
+                    total = countBill(tabNewWs, sal);
                     tabNewWs.setTotal(total);
                     tabNewWs.setComments("La mesa fue dividida por cambio de turno");
                     tab.setActiveTable(false);

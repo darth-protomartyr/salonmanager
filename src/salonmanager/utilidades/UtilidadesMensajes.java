@@ -462,7 +462,7 @@ public class UtilidadesMensajes extends JFrame {
         String mess = "";
         if (error == 0) {
             mess = "Confirma que el monto ingresado es de $" + realMount + "?";
-        } else if (error < 0) {
+        } else if (error > 0) {
             mess = "Confirma que el monto ingresado es de $" + realMount + " y hay un faltante de " + error * (-1) + "?";
         } else {
             mess = "Confirma que el monto ingresado es de $" + realMount + " y hay un excedente de " + error + "?";
@@ -643,9 +643,21 @@ public class UtilidadesMensajes extends JFrame {
     }
     
     public boolean cargaConfirmarCambioPrAct() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay mesas abiertas que ordenaron el item modificado. ¿Desea modificarlo de todos modos?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay mesas abiertas que ordenaron el item modificado. ¿Desea continuar la operación?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
+    }
+
+    public boolean cargaConfirmarUpdateActiveTabs() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Confirme si el precio modificado no se actualizará las mesas que lo ordenaron");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+    
+    public void cargaUpdateItemActive() {
+        CustomDialog cm = new CustomDialog("Precios actualizados, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
+        cm.setVisible(true);
     }
 }

@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -311,8 +313,12 @@ public class UtilidadesGraficasStatics {
         labelStatsWs.setBounds(anchoUnit * 1, altoUnit * 21, anchoUnit * 18, altoUnit * 3);
         panelStatsBySell.add(labelStatsWs);
 
+        
+        
+        
         JComboBox comboWs = new JComboBox();
-        comboWs.setModel(utili.wsComboModelReturnWNull());
+        
+        comboWs.setModel(wsComboBacker());
         Font font = new Font("Arial", Font.BOLD, 16);
         comboWs.setFont(font);
         comboWs.setBounds(anchoUnit * 1, altoUnit * 25, anchoUnit * 15, altoUnit * 4);
@@ -625,5 +631,26 @@ public class UtilidadesGraficasStatics {
         panelWaiterStatics.add(butWSingle);
 
         return panelWaiterStatics;
+    }
+
+    private DefaultComboBoxModel wsComboBacker() throws Exception {
+        ArrayList<Integer> wssId = daoW.listIdWs();
+        ArrayList<Timestamp> wssTs = daoW.listTsIWs();
+        
+        ArrayList<String> wssSt = new ArrayList<>();
+        for (int i = 0; i < wssId.size(); i++) {
+            String ts = utili.friendlyDate1(wssTs.get(i));
+            wssSt.add(wssId.get(i) + ". " + ts);
+        }
+
+        String wsa = "";
+        int actual = 0;
+        actual = daoW.askWorshiftActualId();
+        if (actual != 0) {
+            wsa = "ACTUAL";
+        }
+        wssSt.add(0,wsa);
+        DefaultComboBoxModel<String> modeloCombo = utili.wsComboModelReturnWNu(wssSt);
+        return modeloCombo; 
     }
 }
