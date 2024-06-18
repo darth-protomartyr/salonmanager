@@ -104,21 +104,6 @@ public class UtilidadesGraficasSalon {
 //PANEL ACTUAL.........................................................................................................
 //PANEL ACTUAL.........................................................................................................
     public JPanel panelActualBacker(Salon salon) throws Exception {
-        if (salon.getCfgAct().isOpenWs()) {
-            salon.setWorkshiftNow(daoW.askWorshiftById(salon.getCfgAct().getOpenIdWs()));
-            User cashier = daoU.getCashierByWorkshift(salon.getWorkshiftNow().getId());
-            if (cashier.getId() != null) {
-                salon.getWorkshiftNow().setCashierWs(cashier);
-            } else {
-                salon.getWorkshiftNow().setCashierWs(salon.getUser());
-                daoU.saveCashierWorkshift(salon.getWorkshiftNow());
-            }
-            salon.setCashFlowCash(salon.getWorkshiftNow().getCashFlowWsCash());
-            salon.setCashFlowElec(salon.getWorkshiftNow().getCashFlowWsElec());
-            ArrayList<Table> tabs = st.workshiftTableslistComplete(salon.getWorkshiftNow(), 2);
-            salon.setPrevTabs(tabs);
-
-        }
 
         JPanel panelActual = new JPanel();
         panelActual.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 25, altoUnit * 17);
@@ -177,16 +162,19 @@ public class UtilidadesGraficasSalon {
                                     salon.getButInitWorkshift().setText("CERRAR TURNO");
                                     new CashFlowManager(salon, 0);
                                 }
-                            } else {
-                                salon.getManager().getSalon().setEnabled(false);
-                                boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
-                                if (newWs) {
-                                    utiliMsg.cargaLateWs();
-                                    ss.endWorkshift(salon.getManager().getSalon(), true); //user diferent
-                                } else {
-                                    salon.getManager().getSalon().dispose();
-                                }
                             }
+                            
+//                            else {
+//                                salon.getManager().getSalon().setEnabled(false);
+//                                boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
+//                                if (newWs) {
+//                                    utiliMsg.cargaLateWs();
+//                                    ss.endWorkshift(salon.getManager().getSalon(), true); //user diferent
+//                                } else {
+//                                    salon.getManager().getSalon().dispose();
+//                                }
+//                            }
+                            
                         } else {
                             ss.endWorkshift(salon, false);
                         }
@@ -241,7 +229,6 @@ public class UtilidadesGraficasSalon {
             }
         });
         panelCashFlow.add(butOutFlow);
-
         return panelActual;
     }
 

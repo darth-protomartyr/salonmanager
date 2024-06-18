@@ -82,12 +82,15 @@ public class WorkshiftEndPanel extends FrameHalf {
     double electronicFlow = 0;
     double error = 0;
     double cashComplete = 0; //cash + electronic + cFlow + eFlow
+    boolean errorWsUser = false;
+    
 
-    public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
+    public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorW) throws Exception {
         cfgAct = sal.getCfgAct();
         actualWs = ws1;
         newWs = ws2;
         actualTabs = filterClose(actTabs);
+        errorWsUser = errorW;
 
         if (nTabs == null) {
             newTabs = new ArrayList<>();
@@ -352,7 +355,7 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         });
 
-        if (errorWs) {
+        if (errorWsUser) {
             panelRealAmount.add(buttonConfirm);
             utiliMsg.cargaAdvertNoData();
         }

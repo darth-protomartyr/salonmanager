@@ -46,7 +46,7 @@ public class ServicioSalon {
 
     public ArrayList<Integer> salonConfigValues(Integer total, Integer tab, int anchoPane, int alturaPane) {
         ArrayList<Integer> configValues = new ArrayList<>();
-        
+
         int fontSize = 0;
         int wUnit = 0;
         int hUnit = 0;
@@ -60,7 +60,7 @@ public class ServicioSalon {
             rows = 3;
             col = 4;
         } else if (tab == 24) {
-            if(total> 100) {
+            if (total > 100) {
                 fontSize = 40;
             } else {
                 fontSize = 50;
@@ -290,12 +290,11 @@ public class ServicioSalon {
         salon.getTableAux().setCloseTime(new Timestamp(new Date().getTime()));
         daoT.updateCloseTime(salon.getTableAux());
 
-        
         salon.getTableAux().setOpen(false);
         daoT.updateTableOpen(salon.getTableAux());
-        
+
         sis.createItemSale(salon);
-        
+
         ArrayList<String> deferTabs = salon.getCfgAct().getArrayDeferWs();
         deferTabs.add(salon.getTableAux().getId());
         daoC.updateCfgActDeferWs(deferTabs);
@@ -400,21 +399,45 @@ public class ServicioSalon {
             }
         }
 
-        if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == false) {
-            if (errorWs == false) {
-                boolean confirm3 = utiliMsg.cargaConfirmarCambioTurno(salon.getUser());
-                if (confirm3 == true) {
+        if (errorWs == false) {
+            if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == false) {
+                boolean confirm1 = utiliMsg.cargaConfirmarCambioTurno(salon.getUser());
+                if (confirm1 == true) {
                     salon.setEnabled(false);
                     inconcludeWsCutter(salon, salon.getWorkshiftNow(), errorWs);
                 }
             } else {
-//trABAJAR LUEGO
+                boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
+                if (confirm2 == true) {
+                    salon.setEnabled(false);
+                    closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
+                }
             }
         } else {
-            boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
-            if (confirm2 == true) {
-                salon.setEnabled(false);
-                closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
+            boolean confirm3 = utiliMsg.cargaConfirmarNuevoTurno();
+            if (confirm3) {
+                //Cerrar turno abierto por otro usuario y abrir uno nuevo
+            } else {
+                if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == false) {
+                    boolean confirm4 = utiliMsg.cargaConfirmarOpenTabsOldWs();
+                    if (confirm4) {
+                        //Mesas abiertas delturno anterior y abrir uno nuevo
+                    } else {
+                        utiliMsg.errorCloseSalon();
+                        salon.dispose();
+                    }
+                } else {
+                    boolean confirm5 = utiliMsg.cargaConfirmarCierreTurnoError();
+                    if (confirm5 == true) {
+                        //cieere de turno con dinero e información del turno anterior
+                        salon.setEnabled(false);
+                        closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
+                    }  else {
+                        utiliMsg.errorCloseSalon();
+                        salon.dispose();
+                    }
+                    
+                }
             }
         }
     }

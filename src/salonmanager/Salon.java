@@ -36,6 +36,9 @@ import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.persistencia.DAOUser;
+import salonmanager.persistencia.DAOWorkshift;
+import salonmanager.servicios.ServicioSalon;
+import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
@@ -50,7 +53,11 @@ public class Salon extends FrameFull {
     SalonManager sm = new SalonManager();
     DAOUser daoU = new DAOUser();
     DAOItemcard daoI = new DAOItemcard();
+    DAOWorkshift daoW = new DAOWorkshift();
     DAOConfig daoC = new DAOConfig();
+    ServicioTable st = new ServicioTable();
+    ServicioSalon ss = new ServicioSalon();
+    
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
@@ -178,11 +185,32 @@ public class Salon extends FrameFull {
         if (cfgGen.isActiveConfig() == false) {
             cfgGen = utili.cfgBacker();
         }
-        cfgAct = daoC.askConfigActual();
         totalTable = cfgGen.getTotalTable();
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
         tablePanCh = cfgGen.getTablePanCh();
+
+        cfgAct = daoC.askConfigActual();
+
+        if (cfgAct.isOpenWs()) {
+            workshiftNow = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+            User cashier = daoU.getCashierByWorkshift(workshiftNow.getId());
+            if (cashier.getId() != null) {
+                workshiftNow.setCashierWs(cashier);
+            }
+            cashFlowCash = workshiftNow.getCashFlowWsCash();
+            cashFlowElec = workshiftNow.getCashFlowWsElec();
+            ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
+            if (tabs.size() > 0) {
+                prevTabs = tabs;
+            }
+            
+            if (!cashier.getId().equals(user.getId())) {
+                setEnabled(false);
+                utiliMsg.errorDiferentCashier();
+                ss.endWorkshift(this, true);                
+            }
+        } 
 
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------

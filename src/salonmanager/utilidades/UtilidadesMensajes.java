@@ -59,6 +59,26 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
+    public void cargaSuccesMod() {
+        CustomDialog cm = new CustomDialog("Las modificaciones fueron realizadas con éxito.", 1);
+        cm.setVisible(true);
+    }
+
+    public void cargaUserUpdate() {
+        CustomDialog cm = new CustomDialog("Se actualizó la información del Usuario.", 1);
+        cm.setVisible(true);
+    }
+
+    public void cargaUpdatePriceItemActive() {
+        CustomDialog cm = new CustomDialog("Precios actualizados, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
+        cm.setVisible(true);
+    }
+
+    public void cargaUpdateCaptionItemActive() {
+        CustomDialog cm = new CustomDialog("Categorías actualizadas, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
+        cm.setVisible(true);
+    }
+
     //Mensajes Error
     //Mensajes Error
     public void errorPnlsMod() {
@@ -498,12 +518,12 @@ public class UtilidadesMensajes extends JFrame {
         return confirm;
     }
 
-    public boolean cargaConfirmCloseWSByOtherUser() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay un turno abierto por otro cajero. Presione ACEPTAR si desea cerrarlo para iniciar uno nuevo a su nombre.");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
+//    public boolean cargaConfirmCloseWSByOtherUser() {
+//        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay un turno abierto por otro cajero. Presione ACEPTAR si desea cerrarlo para iniciar uno nuevo a su nombre.");
+//        cdc.setVisible(true);
+//        boolean confirm = cdc.getConfirm();
+//        return confirm;
+//    }
 
     public boolean cargaConfirmarFacturacion(double realMount, double error) {
         String mess = "";
@@ -591,7 +611,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmErrorSuf() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que el mmonto cubre el error");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que el monto cubre el error");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -648,23 +668,34 @@ public class UtilidadesMensajes extends JFrame {
 
     ////------------------------------Reubicar------------------------------------------
     ////------------------------------Reubicar------------------------------------------
-    public void cargaSuccesMod() {
-        CustomDialog cm = new CustomDialog("Las modificaciones fueron realizadas con éxito.", 1);
+    public void errorDiferentCashier() {
+        CustomDialog cm = new CustomDialog("Error: Hay un turno iniciado con un cajero diferente al usuario con el que inició la sesión actual. Deberá resolver el turno abierto", 2);
         cm.setVisible(true);
     }
 
-    public void cargaUserUpdate() {
-        CustomDialog cm = new CustomDialog("Se actualizó la información del Usuario.", 1);
-        cm.setVisible(true);
+    public boolean cargaConfirmarNuevoTurno() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si NO posee el dinero ni la información del turno anterior, presione ACEPTAR para aceptar un nuevo turno");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;        
     }
 
-    public void cargaUpdatePriceItemActive() {
-        CustomDialog cm = new CustomDialog("Precios actualizados, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
-        cm.setVisible(true);
+    public boolean cargaConfirmarOpenTabsOldWs() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno anterior posee mesas abiertas, presione ACEPTAR para resolver dichas mesas y abrir turno");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;    
     }
 
-    public void cargaUpdateCaptionItemActive() {
-        CustomDialog cm = new CustomDialog("Categorías actualizadas, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
-        cm.setVisible(true);
+    public void errorCloseSalon() {
+        CustomDialog cm = new CustomDialog("Error: el salón se cerrará, abralo nuevamente y resuelva el Turno anterior", 2);
+        cm.setVisible(true); 
+    }
+
+    public boolean cargaConfirmarCierreTurnoError() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si posee el dinero y la información del turno anterior, presiones ACEPTAr para cerrarlo y abrir uno nuevo.");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;       
     }
 }
