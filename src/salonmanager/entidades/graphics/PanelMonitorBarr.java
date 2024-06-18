@@ -6,8 +6,10 @@ import salonmanager.entidades.bussiness.Table;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -33,8 +35,12 @@ public class PanelMonitorBarr extends JPanel {
     Graphics interLine2;
     Graphics interLine3;
     JPanel panelContentGr;
-    int anchoUnit = 2;
-    int altoUnit = 2;
+    Toolkit pantalla = Toolkit.getDefaultToolkit();
+    Dimension tamanioPantalla = pantalla.getScreenSize();
+    int anchoFrame = tamanioPantalla.width;
+    int alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
+    int anchoUnit = anchoFrame / 100;
+    int altoUnit = alturaFrame / 100;
     Color white = new Color(255, 255, 255);
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
@@ -232,7 +238,7 @@ public class PanelMonitorBarr extends JPanel {
             labelWaiter.setText("Delivery: " + im.getTableIMon().getWaiter().getName() + " " + utili.strShorter(im.getTableIMon().getWaiter().getLastName(), 1) + ".");
         }
 
-        JButtonMetalBlu butIndi = utiliGraf.button3("Indicaciones", 480, 13, 85);
+        JButtonMetalBlu butIndi = utiliGraf.button3("Indicaciones", anchoUnit * 37, altoUnit * 2, anchoUnit * 7);
         butIndi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

@@ -61,6 +61,36 @@ public class UtilidadesMensajes extends JFrame {
 
     //Mensajes Error
     //Mensajes Error
+    public void errorPnlsMod() {
+        CustomDialog cm = new CustomDialog("No hay items para modificar.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorModDisabled() {
+        CustomDialog cm = new CustomDialog("Los cambios globales no están habilitados.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorUserSelected() {
+        CustomDialog cm = new CustomDialog("No ha seleccionado usuario.", 2);
+        cm.setVisible(true);
+    }
+
+    public void cargaUpdateUsuario() {
+        CustomDialog cm = new CustomDialog("Los datos del usuario fueron actualizados.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorWsOpen() {
+        CustomDialog cm = new CustomDialog("Error: para corregir el faltante de dinero, el turno de la mesa debe estar cerrado.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorForbbidenValue() {
+        CustomDialog cm = new CustomDialog("Error: el valor ingresado no se ajusta a los límites permitidos.", 2);
+        cm.setVisible(true);
+    }
+
     public void errorMultipleIndications() {
         CustomDialog cm = new CustomDialog("Error: Las indicaciones se ingresan de forma individual para cada Item.", 2);
         cm.setVisible(true);
@@ -221,11 +251,6 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
-    public void errorPriceCost() {
-        CustomDialog cm = new CustomDialog("Error: el precio de venta es inferior al costo.", 2);
-        cm.setVisible(true);
-    }
-
     public void errorSeleccion() {
         CustomDialog cm = new CustomDialog("Error: Ningún elemento fue seleccionado.", 2);
         cm.setVisible(true);
@@ -356,6 +381,21 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
+    public void errorCat() {
+        CustomDialog cm = new CustomDialog("Error: no hay Items en esta Categoría.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorCatSelection() {
+        CustomDialog cm = new CustomDialog("Error: No ha seleccionado una categoría.", 2);
+        cm.setVisible(true);
+    }
+
+    public void errorCatEqual() {
+        CustomDialog cm = new CustomDialog("Error: la categoría seleccionada es igual a la del item.", 2);
+        cm.setVisible(true);
+    }
+
     public void errorDeliveryNull() {
         CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un usuario Delivery para realizar el envío.", 2);
         cm.setVisible(true);
@@ -389,70 +429,77 @@ public class UtilidadesMensajes extends JFrame {
     //Mensaje de optativos
     //Mensaje de optativos
     public boolean cargaConfirmRestart() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma la acción el programa se cerrará y deberá reiniciarlo.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presiona ACEPTAR se realizará la acción, el programa se cerrará y deberá reiniciarlo.");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean errorPriceCost() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Error: el precio de venta es inferior o igual al costo. Si presiona ACEPTAR, la operación se realizará de todos modos");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarConfigSalon() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quiere configurar el salón?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si está seguro de que quiere configurar el salón, presione ACEPTAR");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarInicioTurno(String name, String lastName) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que desea iniciar un turno con el usuario " + name + " " + lastName + "?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea iniciar un turno con el usuario " + name + " " + lastName + ", presione ACEPTAR");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmRealWsMount() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Desea cerrar la ventana sin confirmar el monto final del turno?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar la ventana sin confirmar el monto final del turno, presione ACEPTAR. EL Turno NO se cerrará");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarCierreTurno(String name, String lastName) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que desea cerrar el turno?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presionea ACEPTAR, el turno se cerrará");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarCambioTurno(User user) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Aún hay órdenes abiertas, ¿desea iniciar el próximo turno con otro usuario?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar el turno a pesar de que aún hay órdenes abiertas, presione ACEPTAR");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarCierreVentana() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres cerrar la ventana?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si desea cerrar la ventana");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarCierrePrograma() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres cerrar el programa?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si desea cerrar el programa?");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmErrorPriceNull() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que quieres que el precio de venta sea 0?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si está seguro de que quiere que el precio de venta sea 0 (cero)");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmCloseWSByOtherUser() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay un turno abierto por otro cajero. Confirme si desea cerrarlo para iniciar uno nuevo a su nombre.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay un turno abierto por otro cajero. Presione ACEPTAR si desea cerrarlo para iniciar uno nuevo a su nombre.");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -461,11 +508,11 @@ public class UtilidadesMensajes extends JFrame {
     public boolean cargaConfirmarFacturacion(double realMount, double error) {
         String mess = "";
         if (error == 0) {
-            mess = "Confirma que el monto ingresado es de $" + realMount + "?";
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount;
         } else if (error > 0) {
-            mess = "Confirma que el monto ingresado es de $" + realMount + " y hay un faltante de " + error * (-1) + "?";
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + " y hay un faltante de " + error * (-1);
         } else {
-            mess = "Confirma que el monto ingresado es de $" + realMount + " y hay un excedente de " + error + "?";
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + " y hay un excedente de " + error;
         }
         CustomDialogConfirm cdc = new CustomDialogConfirm(mess);
         cdc.setVisible(true);
@@ -474,35 +521,84 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmarMontoError(double in, double out) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Cónfirma que el monto ingresado es de $" + in + " y el faltante  es de $" + out + "?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para cónfirmar que el monto ingresado es de $" + in + " y el faltante  es de $" + out);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarCierre() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si confirma el cierre de órdenes, no podrá agregar obsequios ni descuentos.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar el cierre de la órden, recuerde que no podrá agregar obsequios ni descuentos.");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarCambioCat() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que quiere cambiar la categoría de los Items seleccionados?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que quiere cambiar la categoría de los Items seleccionados");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean cargaConfirmarCambioPrice() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que quiere cambiar el precio de los Items seleccionados?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que quiere cambiar el precio de los Items seleccionados");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
-    ////------------------------------Backers------------------------------------------
-    ////------------------------------Backers------------------------------------------
+    public boolean cargaWorkshiftEmpty() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("No se registran movimientos. Presione ACEPTAR para confirmar que desea descartarlo y cerrar el turno");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean cargaConfirmarConfiguracion() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si está seguro de que desea configurar el salón");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean cargaConfirmarCambioPrAct() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay mesas abiertas que ordenaron el item modificado, presione ACEPTAR si desea continuar la operación");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean cargaConfirmLowerPrice() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que desea ingresar un precio final inferior o igual al costo");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean cargaConfirmarUpdateActiveTabs() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea que el precio modificado NO se actualice en las mesas que ya lo ordenaron, presione ACEPTAR.");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean cargaConfirmErrorInsuf() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El monto es insuficiente y no podrá ser corregido luego. Presione ACEPTAR para confirmar la operación");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    public boolean cargaConfirmErrorSuf() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que el mmonto cubre el error");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+
+    ////-----------------------------Value Takers--------------------------------------
+    ////-----------------------------Value Takers--------------------------------------
     public String requestIndication() {
         String indications = "";
         CustomDialogTextIn cdti = new CustomDialogTextIn("Indicaciones Cliente", "Ingrese indicaciones del cliente:", 1);
@@ -517,20 +613,6 @@ public class UtilidadesMensajes extends JFrame {
         cdp.setVisible(true);
         chars = cdp.getChar();
         return chars;
-    }
-
-    public boolean cargaWorkshiftEmpty() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno no registra movimientos. Confirme si desea descartarlo y cerrar el turno");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-
-    public boolean cargaConfirmarConfiguracion() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Estás seguro de que desea configurar el salón?");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
     }
 
     public String requestPass() {
@@ -566,40 +648,8 @@ public class UtilidadesMensajes extends JFrame {
 
     ////------------------------------Reubicar------------------------------------------
     ////------------------------------Reubicar------------------------------------------
-    public void errorCat() {
-        CustomDialog cm = new CustomDialog("Error: no hay Items en esta Categoría.", 2);
-        cm.setVisible(true);
-    }
-
-    public void errorCatSelection() {
-        CustomDialog cm = new CustomDialog("Error: No ha seleccionado una categoría.", 2);
-        cm.setVisible(true);
-    }
-
-    public void errorCatEqual() {
-        CustomDialog cm = new CustomDialog("Error: la categoría seleccionada es igual a la del item.", 2);
-        cm.setVisible(true);
-    }
-
-    public boolean cargeConfirmLowerPrice() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que desea ingresar un precio final inferior o igual al costo?");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-
     public void cargaSuccesMod() {
-        CustomDialog cm = new CustomDialog("Las moodificaciones fueron realizadas con éxito.", 1);
-        cm.setVisible(true);
-    }
-
-    public void errorPnlsMod() {
-        CustomDialog cm = new CustomDialog("No hay items para modificar.", 2);
-        cm.setVisible(true);
-    }
-
-    public void errorModDisabled() {
-        CustomDialog cm = new CustomDialog("Los cambios globales no están habilitados.", 2);
+        CustomDialog cm = new CustomDialog("Las modificaciones fueron realizadas con éxito.", 1);
         cm.setVisible(true);
     }
 
@@ -608,56 +658,13 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
-    public void errorUserSelected() {
-        CustomDialog cm = new CustomDialog("No ha seleccionado usuario.", 2);
-        cm.setVisible(true);
-    }
-
-    public void cargaUpdateUsuario() {
-        CustomDialog cm = new CustomDialog("Los datos del usuario fueron actualizados.", 2);
-        cm.setVisible(true);
-    }
-
-    public boolean cargaConfirmErrorInsuf() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("El monto es insuficiente y no podrá ser corregido luego. ¿Confirma la operación?");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-
-    public boolean cargaConfirmErrorSuf() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("¿Confirma que el mmonto cubre el error?");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-
-    public void errorWsOpen() {
-        CustomDialog cm = new CustomDialog("Error: para corregir el faltante de dinero, el turno de la mesa debe estar cerrado.", 2);
-        cm.setVisible(true);
-    }
-
-    public void errorForbbidenValue() {
-        CustomDialog cm = new CustomDialog("Error: el valor ingresado no se ajusta a los límites permitidos.", 2);
-        cm.setVisible(true);
-    }
-    
-    public boolean cargaConfirmarCambioPrAct() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay mesas abiertas que ordenaron el item modificado. ¿Desea continuar la operación?");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-
-    public boolean cargaConfirmarUpdateActiveTabs() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Confirme si el precio modificado no se actualizará las mesas que lo ordenaron");
-        cdc.setVisible(true);
-        boolean confirm = cdc.getConfirm();
-        return confirm;
-    }
-    
-    public void cargaUpdateItemActive() {
+    public void cargaUpdatePriceItemActive() {
         CustomDialog cm = new CustomDialog("Precios actualizados, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
+        cm.setVisible(true);
+    }
+
+    public void cargaUpdateCaptionItemActive() {
+        CustomDialog cm = new CustomDialog("Categorías actualizadas, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
         cm.setVisible(true);
     }
 }

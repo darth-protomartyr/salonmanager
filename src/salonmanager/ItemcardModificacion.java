@@ -74,7 +74,7 @@ public class ItemcardModificacion extends FrameHalf {
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, itemAux);
         panelPpal.add(panelForm);
 
-        butModificarItem = utiliGraf.button1("Modificar Item", 206, 600, 270);
+        butModificarItem = utiliGraf.button1("Modificar Item", anchoUnit * 16, altoUnit * 86, anchoUnit * 19);
         butModificarItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -176,8 +176,10 @@ public class ItemcardModificacion extends FrameHalf {
         }
 
         if (cost > price) {
-            utiliMsg.errorPriceCost();
-            error = true;
+            boolean confirm = utiliMsg.errorPriceCost();
+            if (!confirm) {
+                error = true;
+            }            
         }
 
         tipAlta = checkTip.isSelected();
@@ -221,10 +223,11 @@ public class ItemcardModificacion extends FrameHalf {
                         }
                         daoC.updateCfgActModTabs(modTabIds);
                         daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
-                        manager.getSalon().dispose();
-                        manager.setSalon(null);
-                        utiliMsg.cargaUpdateItemActive();
+                        utiliMsg.cargaUpdatePriceItemActive();
+
                     }
+                    manager.getSalon().dispose();
+                    manager.setSalon(null);
                 } else {
                     daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
                 }

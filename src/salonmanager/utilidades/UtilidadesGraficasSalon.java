@@ -117,6 +117,7 @@ public class UtilidadesGraficasSalon {
             salon.setCashFlowElec(salon.getWorkshiftNow().getCashFlowWsElec());
             ArrayList<Table> tabs = st.workshiftTableslistComplete(salon.getWorkshiftNow(), 2);
             salon.setPrevTabs(tabs);
+
         }
 
         JPanel panelActual = new JPanel();
@@ -360,7 +361,7 @@ public class UtilidadesGraficasSalon {
             panelB.setBackground(narLg);
             panelB.setLayout(null);
             ArrayList<Integer> configValues = ss.salonConfigValues(total, salon.getTableNum().get(i), anchoUnit * 72, altoUnit * 72);
-            
+
             salon.setFontSizeTable(configValues.get(0));
             salon.setWUnit(configValues.get(1));
             salon.setHUnit(configValues.get(2));
@@ -1236,7 +1237,7 @@ public class UtilidadesGraficasSalon {
                 int u = st.itemUnitsBacker(salon.getItemsTableAux(), ic);
                 salon.getData()[i][0] = " " + u;
                 salon.getData()[i][1] = " " + ic.getName();
-                salon.getData()[i][2] = " " + utili.priceMod(ic ,salon) * u * (1 - disc);
+                salon.getData()[i][2] = " " + utili.priceMod(ic, salon) * u * (1 - disc);
             }
 
             if (partials.size() > 0 && i >= intAux && i < intPartial) {

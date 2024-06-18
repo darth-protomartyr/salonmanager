@@ -173,7 +173,7 @@ public class UtilidadesGraficas extends JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     try {
                         if (user.getPassword().equals(pass)) {
-                            new Admin(user);
+                            new Admin(manager);
                         } else {
                             sm.salir();
                         }

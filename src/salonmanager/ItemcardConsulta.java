@@ -71,7 +71,7 @@ public class ItemcardConsulta extends FrameThird {
         String descr = itemAux.getDescription();
 //                String descr = "<html>" + chat + "</html>";
 
-        JLabel labelDescriptionTextItem = utiliGraf.labelTitleBacker2(descr);                
+        JLabel labelDescriptionTextItem = utiliGraf.labelTitleBacker2(utili.stringMsgFrd(descr, 22, 1));                
 
         JScrollPane scrollPane = new JScrollPane(labelDescriptionTextItem);
         scrollPane.setBounds(anchoUnit * 4, altoUnit * 28, anchoUnit * 21, altoUnit * 12);
@@ -85,7 +85,7 @@ public class ItemcardConsulta extends FrameThird {
         labelCostItem.setBounds(anchoUnit * 2, altoUnit * 42, anchoUnit * 21, altoUnit * 5);
         panelB.add(labelCostItem);
 
-        JLabel labelPriceItem = utiliGraf.labelTitleBacker1("Precio: $" + itemAux.getPrice());
+        JLabel labelPriceItem = utiliGraf.labelTitleBacker1("Precio: $" + itemAux.getPrice().get(0));
         labelPriceItem.setBounds(anchoUnit * 2, altoUnit * 49, anchoUnit * 21, altoUnit * 5);
         panelB.add(labelPriceItem);
 

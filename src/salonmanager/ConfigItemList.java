@@ -25,6 +25,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
@@ -32,6 +33,7 @@ import salonmanager.entidades.graphics.PanelNestedItem;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -41,11 +43,11 @@ public class ConfigItemList extends FrameFull {
     Color bluSt = new Color(3, 166, 136);
     Color bluLg = new Color(194, 242, 206);
     Color white = new Color(255, 255, 255);
-
     ArrayList<Itemcard> items = new ArrayList<>();
     ArrayList<PanelNestedItem> panelsN = new ArrayList<>();
     DAOItemcard daoI = new DAOItemcard();
     DAOConfig daoC = new DAOConfig();
+    DAOTable daoT = new DAOTable();
     SalonManager sm = new SalonManager();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
@@ -61,8 +63,11 @@ public class ConfigItemList extends FrameFull {
     JComboBox comboCat2 = new JComboBox();
     JComboBox comboRound = new JComboBox();
     JSpinner spinnerPC = new JSpinner();
-    
-    public ConfigItemList() throws Exception {
+    Manager manager = null;
+    boolean vis = true;
+
+    public ConfigItemList(Manager man) throws Exception {
+        manager = man;
         sm.addFrame(this);
         Font newFont = new Font("Arial", Font.PLAIN, 16);
 
@@ -245,8 +250,6 @@ public class ConfigItemList extends FrameFull {
         labelRound.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 12, altoUnit * 4);
         panelModPri.add(labelRound);
 
-        JComboBox comboRound = new JComboBox();
-
         comboRound.setBounds(anchoUnit * 12, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
         comboRound.setFont(font);
         ArrayList<String> rounds = new ArrayList<String>();
@@ -321,6 +324,7 @@ public class ConfigItemList extends FrameFull {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
+
                     cat = "TODOS";
                     select(cat, false);
                     comboCat.setSelectedItem(cat);
@@ -373,7 +377,6 @@ public class ConfigItemList extends FrameFull {
             for (int i = 0; i < itemsSel.size(); i++) {
                 PanelNestedItem pni = new PanelNestedItem(itemsSel.get(i), i, categories);
                 if (type) {
-                    boolean vis = pni.getButSel().isVisible();
                     if (vis) {
                         pni.getButSel().setVisible(false);
                         pni.getTextF2().setEnabled(true);
@@ -390,6 +393,12 @@ public class ConfigItemList extends FrameFull {
                 }
                 panelsN.add(pni);
                 panelPanel.add(pni);
+            }
+
+            if (vis) {
+                vis = false;
+            } else {
+                vis = true;
             }
 
             panelPanel.revalidate();
@@ -431,6 +440,10 @@ public class ConfigItemList extends FrameFull {
                 }
             }
         }
+        if (manager.getSalon() != null) {
+            manager.getSalon().dispose();
+            manager.setSalon(null);
+        }
         reset();
     }
 
@@ -438,6 +451,13 @@ public class ConfigItemList extends FrameFull {
         int pc = 100 + p;
         double round = 0;
         boolean error = false;
+        boolean confirm1 = true;
+        boolean confirm2 = true;
+
+        int counter1 = 0;
+        int counter2 = 0;
+        int counter3 = 0;
+
         try {
             round = utili.toNumberD(r);
         } catch (NumberFormatException e) {
@@ -450,7 +470,7 @@ public class ConfigItemList extends FrameFull {
         if (error == false) {
             for (int i = 0; i < panelsN.size(); i++) {
                 String mod = panelsN.get(i).getButSel().getText();
-                int id = panelsN.get(i).getIc().getId();
+                int idIc = panelsN.get(i).getIc().getId();
                 if (mod.equals("QUITAR")) {
                     double oldPrice = panelsN.get(i).getIc().getPrice().get(0);
                     double newPrice = oldPrice * pc / 100;
@@ -459,16 +479,73 @@ public class ConfigItemList extends FrameFull {
                     newPrice = newPrice + rou;
                     DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
                     DecimalFormat df = new DecimalFormat("#.00", symbols);
-                    String st  = df.format(newPrice);
+                    String st = df.format(newPrice);
                     newPrice = Double.parseDouble(st);
                     ArrayList<Double> prices = new ArrayList<>();
                     prices.add(newPrice);
                     prices.add(oldPrice);
-                    daoI.updateItemPrice(id, prices);
+                    
+                    if (newPrice <= panelsN.get(i).getIc().getCost()) {
+                        confirm1 = utiliMsg.errorPriceCost();
+                    }
+                    
+                    
+                    
+                    ArrayList<String> tabIds = new ArrayList<>();
+                    ArrayList<String> tabIdsIc = new ArrayList<>();
+                    tabIds = daoT.getActiveIds();
+                    for (int x = 0; x < tabIds.size(); x++) {
+                        ArrayList<Integer> arrayTabIdsIc = daoT.activeTabIcMod(idIc, tabIds.get(x));
+                        if (arrayTabIdsIc.size() > 0) {
+                            tabIdsIc.add(tabIds.get(x));
+                        }
+                    }
+
+                    if (tabIdsIc.size() > 0) {
+                        if (counter1 < 1) {
+                            confirm1 = utiliMsg.cargaConfirmarCambioPrAct();
+                            counter1 += 1;
+                        }
+                    }
+
+                    if (confirm1) {
+                        if (manager.getSalon() != null) {
+                            if (counter2 < 1) {
+                                confirm2 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+                                counter2 += 1;
+                            }
+                            if (confirm2) {
+                                ArrayList<String> modTabsNew = new ArrayList<>();
+                                for (int y = 0; y < tabIdsIc.size(); y++) {
+                                    modTabsNew.add(tabIdsIc.get(y));
+                                    modTabsNew.add(idIc + "");
+                                }
+                                ConfigActual cfgAct = daoC.askConfigActual();
+                                ArrayList<String> modTabIds = cfgAct.getArrayUnModTabs();
+                                for (int y = 0; y < modTabsNew.size(); y++) {
+                                    modTabIds.add(modTabsNew.get(y));
+                                }
+                                daoC.updateCfgActModTabs(modTabIds);
+
+                                daoI.updateItemPrice(idIc, prices);
+
+                                manager.getSalon().dispose();
+                                manager.setSalon(null);
+                                if (counter3 < 1) {
+                                    utiliMsg.cargaUpdatePriceItemActive();
+                                    counter3 += 1;
+
+                                }
+                            }
+                        } else {
+                            daoI.updateItemPrice(idIc, prices);
+                        }
+
+                    }
                 }
             }
-            reset();
         }
+        reset();
     }
 
     private void changeSaver() throws Exception {
@@ -515,8 +592,10 @@ public class ConfigItemList extends FrameFull {
                 } catch (NumberFormatException e) {
                     utiliMsg.errorNumerico();
                     error = true;
+
                 } catch (Exception ex) {
-                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ItemcardInn.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
 
                 if (error == false) {
@@ -525,25 +604,64 @@ public class ConfigItemList extends FrameFull {
                     daoI.updateItemCategory(id, cat);
                     daoI.updateItemStock(id, stock);
                     daoI.updateItemCost(id, cost);
-                    
+
                     ArrayList<Double> prices = new ArrayList<>();
                     prices.add(price);
                     prices.add(ic.getPrice().get(0));
-                    
+
+                    boolean confirm1 = true;
                     if (price <= cost) {
-                        boolean confirm = utiliMsg.cargeConfirmLowerPrice();
-                        if (confirm) {
-                            daoI.updateItemPrice(id, prices);
+                        confirm1 = utiliMsg.cargaConfirmLowerPrice();
+                    }
+
+                    if (confirm1) {
+                        ArrayList<String> tabIds = new ArrayList<>();
+                        ArrayList<String> tabIdsIc = new ArrayList<>();
+                        tabIds = daoT.getActiveIds();
+                        for (int x = 0; x < tabIds.size(); x++) {
+                            ArrayList<Integer> arrayTabIdsIc = daoT.activeTabIcMod(ic.getId(), tabIds.get(x));
+                            if (arrayTabIdsIc.size() > 0) {
+                                tabIdsIc.add(tabIds.get(x));
+                            }
                         }
-                    } else {
-                        daoI.updateItemPrice(id, prices);
+
+                        boolean confirm2 = true;
+                        if (tabIdsIc.size() > 0) {
+                            confirm2 = utiliMsg.cargaConfirmarCambioPrAct();
+                        }
+
+                        if (confirm2) {
+                            if (manager.getSalon() != null) {
+                                boolean confirm3 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+                                if (confirm3) {
+                                    ArrayList<String> modTabsNew = new ArrayList<>();
+                                    for (int y = 0; y < tabIdsIc.size(); y++) {
+                                        modTabsNew.add(tabIdsIc.get(y));
+                                        modTabsNew.add(ic.getId() + "");
+                                    }
+                                    ConfigActual cfgAct = daoC.askConfigActual();
+                                    ArrayList<String> modTabIds = cfgAct.getArrayUnModTabs();
+                                    for (int y = 0; y < modTabsNew.size(); y++) {
+                                        modTabIds.add(modTabsNew.get(y));
+                                    }
+
+                                    daoC.updateCfgActModTabs(modTabIds);
+                                    daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
+                                    manager.getSalon().dispose();
+                                    manager.setSalon(null);
+                                    utiliMsg.cargaUpdatePriceItemActive();
+                                }
+                            } else {
+                                daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
+                            }
+                        }
                     }
                 }
             }
         }
         reset();
     }
-    
+
     private void reset() throws Exception {
         items = daoI.listarItemsCard();
         utiliMsg.cargaSuccesMod();
@@ -554,7 +672,7 @@ public class ConfigItemList extends FrameFull {
         comboCat2.setSelectedItem("");
         comboRound.setSelectedItem("1");
         spinnerPC.setValue(0);
-        select("TODOS", false);        
+        select("TODOS", false);
     }
 
     private boolean modifyPnls() {

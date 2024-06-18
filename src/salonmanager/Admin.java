@@ -50,10 +50,12 @@ public class Admin extends FrameHalf {
     JComboBox comboTabs = new JComboBox();
     JLabel labelUserMod = null;
     Admin adm = null;
+    Manager manager = null;
 
-    public Admin(User u) throws Exception {
+    public Admin(Manager man) throws Exception {
+        manager = man;
         adm = this;
-        user = u;
+        user = manager.getUser();
         setTitle("Administrador");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -228,7 +230,7 @@ public class Admin extends FrameHalf {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    new ConfigItemList();
+                    new ConfigItemList(manager);
                 } catch (Exception ex) {
                     Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -112,7 +112,7 @@ public class PanelNestedItem extends JPanel {
 
         textF5.setBounds(anchoUnit * 65, altoUnit, anchoUnit * 5, altoUnit * 3);
         textF5.setFont(font);
-        textF5.setText(ic.getPrice() + "");
+        textF5.setText(ic.getPrice().get(0) + "");
         textF5.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 fieldModified();
@@ -164,7 +164,7 @@ public class PanelNestedItem extends JPanel {
         textF2.setSelectedItem(ic.getCategory());
         textF3.setValue(ic.getStock());
         textF4.setText(ic.getCost() + "");
-        textF5.setText(ic.getPrice() + "");
+        textF5.setText(ic.getPrice().get(0) + "");
         setBackground(bluSt);
         butSel.setText("ELEGIR");
     }

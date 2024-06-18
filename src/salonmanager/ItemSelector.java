@@ -110,6 +110,7 @@ public class ItemSelector extends FrameWindow {
             if (itemAux != null) {
                 if (sel.equals("m")) {
                     new ItemcardModificacion(itemAux, manager);
+                    dispose();
                 } else {
                     new ItemcardConsulta(itemAux);
                 }

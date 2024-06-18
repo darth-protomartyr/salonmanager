@@ -74,7 +74,7 @@ public class WaiterSelector extends FrameWindow {
         renderer.setFont(new Font("Arial", Font.PLAIN, 50));
         comboWaiters.setRenderer(renderer);
         panelPpal.add(comboWaiters);
-        JButtonMetalBlu butSelWaiter = utiliGraf.button1("Elija mozo", 90, 180, 200);
+        JButtonMetalBlu butSelWaiter = utiliGraf.button1("Elija mozo", anchoUnit * 7, altoUnit * 24, anchoUnit * 15);
         butSelWaiter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -41,7 +42,6 @@ public class Manager extends FrameFull {
 
     public Manager(User userIn, String passIn) throws Exception {
         sm.addFrame(this);
-
         user = userIn;
         pass = passIn;
         setTitle("Salón Manager");
@@ -114,6 +114,8 @@ public class Manager extends FrameFull {
         } else {
             salon.setVisible(true);
             salon.toFront();
+            salon.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            salon.requestFocus();
         }
     }
 

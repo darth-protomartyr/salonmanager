@@ -60,7 +60,7 @@ public class ItemcardInn extends FrameHalf {
     JButtonMetalBlu butCreateItem = null;
 
     public ItemcardInn() throws Exception {
-        sm.addFrame(this);        
+        sm.addFrame(this);
         setTitle("Ingreso Item de Carta");
         itemsCardDB = daoIC.listarItemsCard();
         PanelPpal panelPpal = new PanelPpal(frame);
@@ -73,7 +73,8 @@ public class ItemcardInn extends FrameHalf {
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, null);
         panelPpal.add(panelForm);
 
-        butCreateItem = utiliGraf.button1("Crear Item", 206, 600, 270);
+        butCreateItem = utiliGraf.button1("Crear Item", anchoUnit * 16, altoUnit * 86, anchoUnit * 19);
+        
         butCreateItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -94,7 +95,7 @@ public class ItemcardInn extends FrameHalf {
             }
         });
         panelPpal.add(butSalir);
-        
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -174,9 +175,11 @@ public class ItemcardInn extends FrameHalf {
             Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (cost > price) {
-            utiliMsg.errorPriceCost();
-            error = true;
+        if (cost >= price) {
+            boolean confirm = utiliMsg.errorPriceCost();
+            if (!confirm) {
+                error = true;
+            }
         }
 
         tipAlta = checkTip.isSelected();
