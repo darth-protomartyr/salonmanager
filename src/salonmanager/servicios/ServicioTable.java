@@ -54,9 +54,9 @@ public class ServicioTable {
         ArrayList<Table> workshiftTabsOld = new ArrayList<>();
 
         if (opt == 1) {
-            workshiftTabsOld = daoT.listarTablesByWorkshift(ws);
+            workshiftTabsOld = daoT.listarTablesByWorkshift(ws); //All tabs
         } else if (opt == 2) {
-            workshiftTabsOld = daoT.listarTablesOpenByWorkshift(ws);
+            workshiftTabsOld = daoT.listarTablesOpenByWorkshift(ws); //Open tabs
         }
         for (Table tab : workshiftTabsOld) {
             tab.setOrder(daoI.listarItemcardOrder(tab.getId()));

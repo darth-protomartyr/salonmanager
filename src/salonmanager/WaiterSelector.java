@@ -22,8 +22,6 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOUser;
-import salonmanager.servicios.ServicioSalon;
-import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class WaiterSelector extends FrameWindow {

@@ -83,10 +83,16 @@ public class WorkshiftEndPanel extends FrameHalf {
     double error = 0;
     double cashComplete = 0; //cash + electronic + cFlow + eFlow
     boolean errorWsUser = false;
-    
+    Manager manager = null;
 
-    public WorkshiftEndPanel(Salon sal, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorW) throws Exception {
-        cfgAct = sal.getCfgAct();
+    public WorkshiftEndPanel(Salon sal, Manager man, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorW) throws Exception {
+        manager = man;
+        if (sal != null) {
+            cfgAct = sal.getCfgAct();
+        } else {
+            cfgAct = daoC.askConfigActual();
+        }
+
         actualWs = ws1;
         newWs = ws2;
         actualTabs = filterClose(actTabs);
@@ -125,12 +131,21 @@ public class WorkshiftEndPanel extends FrameHalf {
         String nomCashier = cashier.getName();
         String pronomCashier = cashier.getLastName();
 
+        String nomCashierEnd = manager.getUser().getName();
+        String pronomCashierEnd = manager.getUser().getLastName();
+
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("CIERRE DE TURNO");
         panelLabel.add(labelTit);
 
-        JLabel labelCashier = utiliGraf.labelTitleBacker1W("Titular caja: " + nomCashier.toUpperCase() + " " + pronomCashier.toUpperCase());
-        labelCashier.setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 30, altoUnit * 4);
+        JLabel labelCashier = utiliGraf.labelTitleBacker2W("Titular caja: " + nomCashier.toUpperCase() + " " + pronomCashier.toUpperCase());
+        labelCashier.setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 30, altoUnit * 3);
         panelPpal.add(labelCashier);
+
+        if (salon == null) {
+            JLabel labelCashierEnd = utiliGraf.labelTitleBacker2W("Titular cierre caja: " + nomCashierEnd.toUpperCase() + " " + pronomCashierEnd.toUpperCase());
+            labelCashierEnd.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 30, altoUnit * 3);
+            panelPpal.add(labelCashierEnd);
+        }
 
         JLabel labelOpen = utiliGraf.labelTitleBacker2W("Inicio: " + utili.friendlyDate2(actualWs.getOpenWs()));
         labelOpen.setBounds(anchoUnit * 35, altoUnit * 7, anchoUnit * 18, altoUnit * 3);
@@ -343,23 +358,6 @@ public class WorkshiftEndPanel extends FrameHalf {
         });
         panelRealAmount.add(buttonConfirm);
 
-        JButtonMetalBlu buttonDeferWsClose = utiliGraf.button2("Arbritrar", 330, 35, 120); //por si hay un turno previo abierto con otro usuario.
-        buttonDeferWsClose.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    buttonDeferWsCloseAction();
-                } catch (Exception ex) {
-                    Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        if (errorWsUser) {
-            panelRealAmount.add(buttonConfirm);
-            utiliMsg.cargaAdvertNoData();
-        }
-
         //Consultas
         JPanel panelAsk = new JPanel();
         panelAsk.setLayout(null);
@@ -426,7 +424,9 @@ public class WorkshiftEndPanel extends FrameHalf {
             public void actionPerformed(ActionEvent ae) {
                 boolean confirm = utiliMsg.cargaConfirmRealWsMount();
                 if (confirm) {
-                    salon.setEnabled(true);
+                    if (salon != null) {
+                        salon.setEnabled(true);
+                    }
                     dispose();
                 }
             }
@@ -437,7 +437,9 @@ public class WorkshiftEndPanel extends FrameHalf {
             public void windowClosing(WindowEvent e) {
                 boolean confirm = utiliMsg.cargaConfirmRealWsMount();
                 if (confirm) {
-                    salon.setEnabled(true);
+                    if (salon != null) {
+                        salon.setEnabled(true);
+                    }
                     dispose();
                 }
             }
@@ -446,7 +448,17 @@ public class WorkshiftEndPanel extends FrameHalf {
 
     private void confirmRealAmount() throws Exception {
         String real = fieldFinalAmount.getText();
-        String comment = textArea.getText();
+        String comment = "";
+        if (errorWsUser) {
+
+            comment = "El turno fue iniciado por " + actualWs.getCashierWs().getName() + " " + actualWs.getCashierWs().getLastName() + " y fue finalizado por "
+                    + manager.getUser().getName() + " " + manager.getUser().getLastName() + ".\n";
+
+            String comment1 = textArea.getText();
+            comment += comment1;
+        } else {
+            comment = textArea.getText();
+        }
         try {
             double realAmount = parseDouble(real);
             double realError = (realAmount - cashComplete) * (-1);
@@ -461,7 +473,7 @@ public class WorkshiftEndPanel extends FrameHalf {
             } else {
                 confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
             }
-            
+
             if (confirm) {
                 actualWs.setTotalMountRealWs(realAmount);
                 actualWs.setErrorMountRealWs(realError + error);
@@ -472,11 +484,12 @@ public class WorkshiftEndPanel extends FrameHalf {
                     realError = 0;
                 }
                 sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
-                salon.getCfgAct().setOpenIdWs(0);
-                salon.getCfgAct().setOpenWs(false);
-
-                utiliGrafSal.resetWsValues(salon);
-                salon.setEnabled(true);
+                if (salon != null) {
+                    salon.getCfgAct().setOpenIdWs(0);
+                    salon.getCfgAct().setOpenWs(false);
+                    utiliGrafSal.resetWsValues(salon);
+                    salon.setEnabled(true);
+                }
                 dispose();
             }
         } catch (NumberFormatException e) {
@@ -495,7 +508,7 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         }
         if (!id1.equals("")) {
-            new TableResumePanel(tab, false, null);
+            new TableResumePanel(null, tab, 0, null);
         } else {
             utiliMsg.errorTableResume();
         }

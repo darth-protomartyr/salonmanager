@@ -3,7 +3,9 @@ package salonmanager.servicios;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import salonmanager.Manager;
 import salonmanager.Salon;
+import salonmanager.TabsToEnd;
 import salonmanager.WorkshiftEndPanel;
 import salonmanager.entidades.bussiness.CashFlow;
 import salonmanager.entidades.bussiness.Delivery;
@@ -12,6 +14,7 @@ import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.persistencia.DAOCashFlow;
@@ -385,17 +388,19 @@ public class ServicioSalon {
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
-    public void endWorkshift(Salon salon, boolean errorWs) throws Exception { //errorWs shows 
-        salon.setEnabled(true);
-        if (salon.getBarrButtons().size() > 0) {
-            if (salon.getBarrButtons().get(0).isOpenJBB() && salon.getBarrButtons().get(0).getTable().getTotal() == 0) {
-                salon.getBarrButtons().get(0).setOpenJBB(false);
+    public void endWorkshift(Salon salon, Manager manager, boolean errorWs) throws Exception { //errorWs shows 
+//        salon.setEnabled(true);
+        if (salon != null) {
+            if (salon.getBarrButtons().size() > 0) {
+                if (salon.getBarrButtons().get(0).isOpenJBB() && salon.getBarrButtons().get(0).getTable().getTotal() == 0) {
+                    salon.getBarrButtons().get(0).setOpenJBB(false);
+                }
             }
-        }
 
-        if (salon.getDeliButtons().size() > 0 && salon.getDeliButtons().get(0).getTable().getTotal() == 0) {
-            if (salon.getDeliButtons().get(0).isOpenJBD()) {
-                salon.getDeliButtons().get(0).setOpenJBD(false);
+            if (salon.getDeliButtons().size() > 0 && salon.getDeliButtons().get(0).getTable().getTotal() == 0) {
+                if (salon.getDeliButtons().get(0).isOpenJBD()) {
+                    salon.getDeliButtons().get(0).setOpenJBD(false);
+                }
             }
         }
 
@@ -410,92 +415,121 @@ public class ServicioSalon {
                 boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
                 if (confirm2 == true) {
                     salon.setEnabled(false);
-                    closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
+                    closeWorkshift(salon, salon.getManager(), salon.getWorkshiftNow(), null, null, null, null, null, errorWs, 0);
                 }
             }
         } else {
+            ConfigActual cfgAct = daoC.askConfigActual();
+            Workshift ws = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+            User cashier = daoU.getCashierByWorkshift(ws.getId());
+            ws.setCashierWs(cashier);
+            ArrayList<Table> prevTabs = st.workshiftTableslistComplete(ws, 2);
+            utiliMsg.errorDiferentCashier();
             boolean confirm3 = utiliMsg.cargaConfirmarNuevoTurno();
             if (confirm3) {
+                closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 1);
                 //Cerrar turno abierto por otro usuario y abrir uno nuevo
             } else {
-                if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == false) {
-                    boolean confirm4 = utiliMsg.cargaConfirmarOpenTabsOldWs();
-                    if (confirm4) {
-                        //Mesas abiertas delturno anterior y abrir uno nuevo
-                    } else {
-                        utiliMsg.errorCloseSalon();
-                        salon.dispose();
+                boolean confirm4 = utiliMsg.cargaConfirmAddTables();
+                if (confirm4) {
+
+                }
+
+                if (prevTabs.size() > 0) {
+                    boolean confirm5 = utiliMsg.cargaConfirmarOpenTabsOldWs();
+                    if (confirm5) {
+//            Mesas abiertas del turno anterior y abrir uno nuevo
+                        new TabsToEnd(manager, ws, errorWs);
+//                        closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs, 2);
                     }
                 } else {
-                    boolean confirm5 = utiliMsg.cargaConfirmarCierreTurnoError();
-                    if (confirm5 == true) {
-                        //cieere de turno con dinero e información del turno anterior
-                        salon.setEnabled(false);
-                        closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs);
-                    }  else {
-                        utiliMsg.errorCloseSalon();
-                        salon.dispose();
+                    boolean confirm6 = utiliMsg.cargaConfirmarCierreTurnoError();
+                    if (confirm6 == true) {
+                        //cierre de turno con dinero e información del turno anterior
+                        closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 3);
                     }
-                    
                 }
             }
         }
+//        salon.setEnabled(true);
     }
 
-    public void closeWorkshift(Salon salon, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
-        Workshift actualWs = actWs;
-        Workshift newWs = nWs;
-        ArrayList<Table> actualTabs = actTabs;
-        ArrayList<Table> upTabs = nTabs;
-        ArrayList<Table> downTabs = ersdTabs;
-        ArrayList<Table> toUpdTabs = updTabs;
-        if (salon.getDeliButtons().size() > 0) {
-            Delivery deli = salon.getDeliButtons().get(0).getDelivery();
-            if (deli.getTab() == null) {
-                daoD.updateDownAct(deli);
-            }
-        }
-
-        if (newWs == null) {
-            actualWs = setWsEnd(actualWs);
-            actualTabs = st.workshiftTableslistComplete(actualWs, 1);
-        }
-
-        if (actualTabs.size() == 0) {
-            boolean confirm = utiliMsg.cargaWorkshiftEmpty();
-            if (confirm) {
-                daoW.updateWorkshiftState(actualWs);
-                daoW.downWorkshiftActive(actualWs);
-                daoC.updateCfgActOpenWs(false);
+    public void closeWorkshift(Salon salon, Manager manager, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs, int error) throws Exception {
+        if (errorWs) {
+            if (error == 1) {
+                actWs.setCloseWs(new Timestamp(new Date().getTime()));
+                daoW.updateWorkshiftClose(actWs, false);
+                actWs.setStateWs(false);
+                daoW.updateWorkshiftState(actWs);
+                actWs.setCommentWs("El turno fue cerrado para continuar con el próximo, a la espera de ser completado por el Administrador");
+                daoW.updateWorkshiftComment(actWs);
+                actWs.setError(true);
+                daoW.updateWorkshiftErrorBool(actWs);
+                utiliMsg.cargaErrorWs();
                 daoC.updateCfgActOpenIdWs(0);
-                salon.setWorkshiftNow(null);
-                salon.getLabelWorkshift().setText("Turno no iniciado.");
-                salon.getButInitWorkshift().setText("ABRIR TURNO");
-                salon.setEnabled(true);
-                salon.dispose();
-            } else {
-                salon.setEnabled(true);
+                daoC.updateCfgActOpenWs(false);
+            } else if (error == 2) {
+                workshiftConclusive(salon, manager, actWs, nWs, actTabs, nTabs, ersdTabs, updTabs, errorWs);
+            } else if (error == 3) {
+                workshiftConclusive(salon, manager, actWs, nWs, actTabs, nTabs, ersdTabs, updTabs, errorWs);
             }
         } else {
-            double mount = 0;
-            double mountError = 0;
-            double mountCash = 0;
-            double mountElectronic = 0;
-            for (int i = 0; i < actualTabs.size(); i++) {
-                if (actualTabs.get(i).isOpen() == false && actualTabs.get(i).isActiveTable() == true) {
-                    Table tab = actualTabs.get(i);
-                    mount += tab.getTotal();
-                    mountError += tab.getError();
-                    mountCash += tab.getAmountCash();
-                    mountElectronic += tab.getAmountElectronic();
-                }
-            }
-            actualWs.setTotalMountWs(mount);
-            actualWs.setErrorMountWs(mountError);
-            actualWs.setTotalMountCashWs(mountCash);
-            actualWs.setTotalMountElectronicWs(mountElectronic);
-            new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
-            salon.setEnabled(false);
+            workshiftConclusive(salon, salon.getManager(), actWs, nWs, actTabs, nTabs, ersdTabs, updTabs, errorWs);
+
+//            Workshift actualWs = actWs;
+//            Workshift newWs = nWs;
+//            ArrayList<Table> actualTabs = actTabs;
+//            ArrayList<Table> upTabs = nTabs;
+//            ArrayList<Table> downTabs = ersdTabs;
+//            ArrayList<Table> toUpdTabs = updTabs;
+//            if (salon.getDeliButtons().size() > 0) {
+//                Delivery deli = salon.getDeliButtons().get(0).getDelivery();
+//                if (deli.getTab() == null) {
+//                    daoD.updateDownAct(deli);
+//                }
+//            }
+//
+//            if (newWs == null) {
+//                actualWs = setWsEnd(actualWs);
+//                actualTabs = st.workshiftTableslistComplete(actualWs, 1);
+//            }
+//
+//            if (actualTabs.size() == 0) {
+//                boolean confirm = utiliMsg.cargaWorkshiftEmpty();
+//                if (confirm) {
+//                    daoW.updateWorkshiftState(actualWs);
+//                    daoW.downWorkshiftActive(actualWs);
+//                    daoC.updateCfgActOpenWs(false);
+//                    daoC.updateCfgActOpenIdWs(0);
+//                    salon.setWorkshiftNow(null);
+//                    salon.getLabelWorkshift().setText("Turno no iniciado.");
+//                    salon.getButInitWorkshift().setText("ABRIR TURNO");
+//                    salon.setEnabled(true);
+//                    salon.dispose();
+//                } else {
+//                    salon.setEnabled(true);
+//                }
+//            } else {
+//                double mount = 0;
+//                double mountError = 0;
+//                double mountCash = 0;
+//                double mountElectronic = 0;
+//                for (int i = 0; i < actualTabs.size(); i++) {
+//                    if (actualTabs.get(i).isOpen() == false && actualTabs.get(i).isActiveTable() == true) {
+//                        Table tab = actualTabs.get(i);
+//                        mount += tab.getTotal();
+//                        mountError += tab.getError();
+//                        mountCash += tab.getAmountCash();
+//                        mountElectronic += tab.getAmountElectronic();
+//                    }
+//                }
+//                actualWs.setTotalMountWs(mount);
+//                actualWs.setErrorMountWs(mountError);
+//                actualWs.setTotalMountCashWs(mountCash);
+//                actualWs.setTotalMountElectronicWs(mountElectronic);
+//                new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
+//                salon.setEnabled(false);
+//            }
         }
     }
 
@@ -572,7 +606,7 @@ public class ServicioSalon {
         Timestamp close = new Timestamp(new Date().getTime());
         newWs.setCloseWs(close);
         newWs.setCloseWs(null);
-        closeWorkshift(sal, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
+        closeWorkshift(sal, sal.getManager(), actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs, 0);
     }
 
     private Workshift setWsEnd(Workshift ws) throws Exception {
@@ -623,6 +657,69 @@ public class ServicioSalon {
                 salon.getWorkshiftNow().setCashFlowWsCash(salon.getCashFlowCash());
                 daoW.updateWorkshiftCashFlowCash(salon.getWorkshiftNow());
                 daoCF.saveCashFlow(cf);
+            }
+        }
+    }
+
+    private void workshiftConclusive(Salon salon, Manager manager, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
+        Workshift actualWs = actWs;
+        Workshift newWs = nWs;
+        ArrayList<Table> actualTabs = actTabs;
+        ArrayList<Table> upTabs = nTabs;
+        ArrayList<Table> downTabs = ersdTabs;
+        ArrayList<Table> toUpdTabs = updTabs;
+        if (salon != null) {
+            if (salon.getDeliButtons().size() > 0) {
+                Delivery deli = salon.getDeliButtons().get(0).getDelivery();
+                if (deli.getTab() == null) {
+                    daoD.updateDownAct(deli);
+                }
+            }
+        }
+
+        if (newWs == null) {
+            actualWs = setWsEnd(actualWs);
+            actualTabs = st.workshiftTableslistComplete(actualWs, 1);
+        }
+
+        if (actualTabs.size() == 0) {
+            if (salon != null) {
+                boolean confirm = utiliMsg.cargaWorkshiftEmpty();
+                if (confirm) {
+                    daoW.updateWorkshiftState(actualWs);
+                    daoW.downWorkshiftActive(actualWs);
+                    daoC.updateCfgActOpenWs(false);
+                    daoC.updateCfgActOpenIdWs(0);
+                    salon.setWorkshiftNow(null);
+                    salon.getLabelWorkshift().setText("Turno no iniciado.");
+                    salon.getButInitWorkshift().setText("ABRIR TURNO");
+                    salon.setEnabled(true);
+                    salon.dispose();
+                } else {
+                    salon.setEnabled(true);
+                }
+            }
+        } else {
+            double mount = 0;
+            double mountError = 0;
+            double mountCash = 0;
+            double mountElectronic = 0;
+            for (int i = 0; i < actualTabs.size(); i++) {
+                if (actualTabs.get(i).isOpen() == false && actualTabs.get(i).isActiveTable() == true) {
+                    Table tab = actualTabs.get(i);
+                    mount += tab.getTotal();
+                    mountError += tab.getError();
+                    mountCash += tab.getAmountCash();
+                    mountElectronic += tab.getAmountElectronic();
+                }
+            }
+            actualWs.setTotalMountWs(mount);
+            actualWs.setErrorMountWs(mountError);
+            actualWs.setTotalMountCashWs(mountCash);
+            actualWs.setTotalMountElectronicWs(mountElectronic);
+            new WorkshiftEndPanel(salon, manager, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
+            if (salon != null) {
+                salon.setEnabled(false);
             }
         }
     }

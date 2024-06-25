@@ -106,20 +106,43 @@ public class SalonManager {
         }
     }
 
-    public boolean rolPermission(int i) throws Exception {
+    
+    public boolean rolPermission(int auth) throws Exception {
         boolean rol = false;
         String r = userIn.getRol();
-        if (userIn.getRol() != "CAJERO") {
-            if (r.equals("ADMIN")) {
-                rol = true;
-            }
-            if (r.equals("MANAGER") && i == 2) {
-                rol = true;
-            }    
+        boolean adm = true;
+        boolean man = false;
+        boolean cash = false;
+        switch (auth) {
+            case 1:
+                adm = true;
+                man = false;
+                cash = false;
+                break;
+            case 2:
+                adm = true;
+                man = true;
+                cash = false;
+                break;
+            case 3:
+                adm = true;
+                man = true;
+                cash = true;
+                break;
         }
+        
+        if (r.equals("ADMIN")) {
+            rol = adm;
+        } else if (r.equals("MANAGER")) {
+            rol = man;
+        } else if (r.equals("CASHIER")){
+            rol = cash;
+        }
+        
         return rol;
     }
-    
+
+
     public void addFrame(JFrame of) {
         framesOpen.add(of);
     }

@@ -66,11 +66,11 @@ public class UtilidadesGraficas extends JFrame {
 
     Utilidades utili = new Utilidades();
     ServicioSalon ss = new ServicioSalon();
-    ServicioTable st = new ServicioTable(); 
+    ServicioTable st = new ServicioTable();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
-    DAOConfig daoC = new DAOConfig(); 
+    DAOConfig daoC = new DAOConfig();
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOTable daoT = new DAOTable();
@@ -83,11 +83,10 @@ public class UtilidadesGraficas extends JFrame {
     ConfigGeneral cfgGen = null;
     ConfigActual cfgAct = null;
 
-    
     public CustomJMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
         cfgGen = daoC.askConfigGeneral();
-        if(cfgGen.isActiveConfig() == false) {
+        if (cfgGen.isActiveConfig() == false) {
             cfgGen = utili.cfgBacker();
         }
         cfgAct = daoC.askConfigActual();
@@ -112,20 +111,19 @@ public class UtilidadesGraficas extends JFrame {
         UIManager.put("MenuItem.selectionBackground", selectionColor);
 
         UIManager.put("Menu.selectionForeground", fontColor);
-        UIManager.put("MenuItem.selectionForeground", fontColor);        
-        
+        UIManager.put("MenuItem.selectionForeground", fontColor);
+
         CustomJMenuBar menuBar = new CustomJMenuBar(altoUnit * 4);
         Border emptyBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
         EmptyBorder eBorder = new EmptyBorder(0, 0, 0, 0);
 
-        
         ((JComponent) menuBar).setBorder(emptyBorder);
 
         JMenu menuInicio = new JMenu("Inicio");
         JMenu menuCard = new JMenu("Carta");
         JMenu menuSalon = new JMenu("Salón");
         JMenu menuStatics = new JMenu("Estadisticas");
-        
+
         JMenuItem itemAdministrador = new JMenuItem("Administrador");
         JMenuItem itemSalir = new JMenuItem("Salir");
         JMenuItem itemIngresoItemcard = new JMenuItem("Ingreso Itemcarta");
@@ -165,7 +163,7 @@ public class UtilidadesGraficas extends JFrame {
         menuBar.add(menuSalon);
         if (sm.rolPermission(2)) {
             menuBar.add(menuStatics);
-        }        
+        }
 
 //---------------------------------------------------------------------------------------------------------        
         if (sm.rolPermission(2)) {
@@ -241,21 +239,21 @@ public class UtilidadesGraficas extends JFrame {
         }
         );
 
-        if (sm.rolPermission(2)) {
-            itemSalon.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        if (user.getPassword().equals(pass)) {
-                            salonOpener(user, cfgGen, cfgAct);
-                        } else {
-                            sm.salir();
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(UtilidadesGraficas.class.getName()).log(Level.SEVERE, null, ex);
+        
+        itemSalon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    if (user.getPassword().equals(pass)) {
+                        salonOpener(user, cfgGen, cfgAct);
+                    } else {
+                        sm.salir();
                     }
+                } catch (Exception ex) {
+                    Logger.getLogger(UtilidadesGraficas.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            });
-        }
+            }
+        });
+
         
         if (sm.rolPermission(2)) {
             itemStatics.addActionListener(new java.awt.event.ActionListener() {
@@ -312,8 +310,8 @@ public class UtilidadesGraficas extends JFrame {
         panelListRctDB.setBounds(mWidth, mHeight, width, height);
 
         JLabel labelPanelA = labelTitleBacker2("Seleccione un Usuario");
-        labelPanelA.setBounds(anchoUnit * 1, altoUnit * 1, width / 4 * 3, altoUnit *4);
-        
+        labelPanelA.setBounds(anchoUnit * 1, altoUnit * 1, width / 4 * 3, altoUnit * 4);
+
         panelListRctDB.add(labelPanelA);
 
         if (mail) {
@@ -503,7 +501,7 @@ public class UtilidadesGraficas extends JFrame {
         butSalir = button2("salir", width - anchoUnit * 10, height - altoUnit * 11, anchoUnit * 8);
         return butSalir;
     }
-    
+
     public JButtonMetalBlu buttonSalirRedux(JFrame frame) {
         int width = frame.getWidth();
         int height = frame.getHeight();
@@ -635,7 +633,7 @@ public class UtilidadesGraficas extends JFrame {
 
         int f2 = (int) Math.round(anchoUnit * 1.2);
         Font font2 = new Font("Arial", Font.PLAIN, f2);
-        
+
         JPanel panelA = new JPanel();
         panelA.setLayout(null);
         panelA.setBounds(anchoUnit * 5, altoUnit * 12, anchoUnit * 40, altoUnit * 73);
@@ -760,7 +758,7 @@ public class UtilidadesGraficas extends JFrame {
 
         return panelBack;
     }
- 
+
     private static void applyEmptyBorder(Component component, EmptyBorder emptyBorder) {
         if (component instanceof JComponent) {
             ((JComponent) component).setBorder(emptyBorder);

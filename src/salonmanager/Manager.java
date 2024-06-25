@@ -1,6 +1,7 @@
 package salonmanager;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,11 +14,13 @@ import javax.swing.JPanel;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.PanelPpalCustom;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
+import salonmanager.servicios.ServicioSalon;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -27,6 +30,7 @@ public class Manager extends FrameFull {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
+    ServicioSalon ss = new ServicioSalon();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
@@ -39,6 +43,16 @@ public class Manager extends FrameFull {
     DAOWorkshift daoW = new DAOWorkshift();
     DAOUser daoU = new DAOUser();
     Salon salon = null;
+    int f1 = anchoUnit * 3;
+    Font font1 = new Font("Arial", Font.BOLD, f1);
+    int f2 = (int) Math.round(anchoUnit * 2.3);
+    Font font2 = new Font("Arial", Font.BOLD, f2);
+    int f3 = (int) Math.round(anchoUnit * 1.6);
+    Font font3 = new Font("Arial", Font.BOLD, f3);
+    int f4 = (int) Math.round(anchoUnit * 1.2);
+    Font font4 = new Font("Arial", Font.BOLD, f4);
+    int f5 = (int) Math.round(anchoUnit * 1.1);
+    Font font5 = new Font("Arial", Font.BOLD, f5);
 
     public Manager(User userIn, String passIn) throws Exception {
         sm.addFrame(this);
@@ -69,7 +83,7 @@ public class Manager extends FrameFull {
 
         JLabel labelName = utiliGraf.labelTitleBacker2(userIn.getName());
         labelName.setBounds(anchoUnit * 10, altoUnit * 3, anchoUnit * 8, altoUnit * 3);
-        
+
         panelUser.add(labelName);
 
         JLabel labelRol = utiliGraf.labelTitleBacker2(userIn.getRol());
@@ -110,7 +124,22 @@ public class Manager extends FrameFull {
     public void salonFrameManager() throws Exception {
         Manager man = this;
         if (salon == null) {
-            salon = new Salon(man);
+            ConfigActual cfgAct = daoC.askConfigActual();
+            User userWs = null;
+            if (cfgAct.isOpenWs()) {
+                userWs = daoU.getCashierByWorkshift(cfgAct.getOpenIdWs());
+            }
+    
+            if (userWs != null) {
+                if (!userWs.getId().equals(user.getId())) {
+                    ss.endWorkshift(null, man, true);
+                } else {
+                    salon = new Salon(man, cfgAct);                
+                }
+            } else {
+                salon = new Salon(man, cfgAct);
+            }
+            
         } else {
             salon.setVisible(true);
             salon.toFront();
@@ -146,4 +175,52 @@ public class Manager extends FrameFull {
     public void setSalon(Salon salon) {
         this.salon = salon;
     }
+
+    public void nullSalon() {
+        this.salon = null;
+        this.pass = "27949874";
+
+    }
+
+    public Font getFont1() {
+        return font1;
+    }
+
+    public void setFont1(Font font1) {
+        this.font1 = font1;
+    }
+
+    public Font getFont2() {
+        return font2;
+    }
+
+    public void setFont2(Font font2) {
+        this.font2 = font2;
+    }
+
+    public Font getFont3() {
+        return font3;
+    }
+
+    public void setFont3(Font font3) {
+        this.font3 = font3;
+    }
+
+    public Font getFont4() {
+        return font4;
+    }
+
+    public void setFont4(Font font4) {
+        this.font4 = font4;
+    }
+
+    public Font getFont5() {
+        return font5;
+    }
+
+    public void setFont5(Font font5) {
+        this.font5 = font5;
+    }
+    
+    
 }

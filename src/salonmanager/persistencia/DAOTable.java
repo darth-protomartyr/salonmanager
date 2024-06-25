@@ -482,4 +482,21 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
+
+    public String askComment(Table tabAux) throws Exception {
+        String comment = "";
+        try {
+            String sql = "SELECT table_comment FROM tabs WHERE table_id = '" + tabAux.getId() +"';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                comment = resultado.getString(1);
+            }
+            return comment;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
 }

@@ -26,6 +26,7 @@ public class Workshift {
     double cashFlowWsCash;
     double cashFlowWsElec;
     String commentWs;
+    boolean error;
     boolean activeWs;
 
     public Workshift() {
@@ -46,27 +47,29 @@ public class Workshift {
         this.cashFlowWsCash = 0;
         this.cashFlowWsElec = 0;
         this.commentWs = "";
+        this.error = false;
         this.activeWs = true;
     }
 
     //Consulta Turno
-    public Workshift(int id, User cashierWs, Timestamp openWs, Timestamp closeWs, boolean stateWs, double totalMountCashWs, double totalMountElectronicWs, double errorWs, double errorRealWs, double totalWs, double totalRealWs, double cashFlowWsCash, double cashFlowWsElec, String commentWs, boolean activeWs) {
-        this.id = id;
-        this.cashierWs = cashierWs;
-        this.openWs = openWs;
-        this.closeWs = closeWs;
-        this.stateWs = stateWs;
-        this.totalMountCashWs = utili.round2Dec(totalMountCashWs);
-        this.totalMountElectronicWs = utili.round2Dec(totalMountElectronicWs);
-        this.errorMountWs = utili.round2Dec(errorWs);
-        this.errorMountRealWs = utili.round2Dec(errorRealWs);
-        this.totalMountWs = utili.round2Dec(totalWs);
-        this.totalMountRealWs = utili.round2Dec(totalRealWs);
-        this.cashFlowWsCash = utili.round2Dec(cashFlowWsCash);
-        this.cashFlowWsElec = utili.round2Dec(cashFlowWsElec);
-        this.commentWs = commentWs;
-        this.activeWs = activeWs;
-    }
+//    public Workshift(int id, User cashierWs, Timestamp openWs, Timestamp closeWs, boolean stateWs, double totalMountCashWs, double totalMountElectronicWs, double errorWs, double errorRealWs, double totalWs, double totalRealWs, double cashFlowWsCash, double cashFlowWsElec, String commentWs, boolean error, boolean activeWs) {
+//        this.id = id;
+//        this.cashierWs = cashierWs;
+//        this.openWs = openWs;
+//        this.closeWs = closeWs;
+//        this.stateWs = stateWs;
+//        this.totalMountCashWs = utili.round2Dec(totalMountCashWs);
+//        this.totalMountElectronicWs = utili.round2Dec(totalMountElectronicWs);
+//        this.errorMountWs = utili.round2Dec(errorWs);
+//        this.errorMountRealWs = utili.round2Dec(errorRealWs);
+//        this.totalMountWs = utili.round2Dec(totalWs);
+//        this.totalMountRealWs = utili.round2Dec(totalRealWs);
+//        this.cashFlowWsCash = utili.round2Dec(cashFlowWsCash);
+//        this.cashFlowWsElec = utili.round2Dec(cashFlowWsElec);
+//        this.commentWs = commentWs;
+//        this.error = error;
+//        this.activeWs = activeWs;
+//    }
 
     public int getId() {
         return id;
@@ -179,6 +182,14 @@ public class Workshift {
     public void setCommentWs(String commentWs) {
         this.commentWs = commentWs;
     }
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
+    }    
 
     public boolean isActiveWs() {
         return activeWs;

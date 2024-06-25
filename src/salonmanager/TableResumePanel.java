@@ -9,7 +9,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Double.parseDouble;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +30,9 @@ import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
-import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -40,6 +42,7 @@ public class TableResumePanel extends FrameThird {
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOConfig daoC = new DAOConfig();
+    DAOItemcard daoI = new DAOItemcard();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -53,21 +56,30 @@ public class TableResumePanel extends FrameThird {
     double sum = 0;
     double wrong = 0;
     double loss = 0;
+    double totalMount = 0;
 
     JTextField textFieldCash = new JTextField();
     JTextField textFieldElec = new JTextField();
     JLabel labelLoss = new JLabel();
     Table tabAux = new Table();
     Admin admin = null;
+    TabsToEnd tte = null;
+    int kind = 0;
 
-    TableResumePanel(Table tab, boolean mod, Admin adm) throws Exception {
+    
+    TableResumePanel(TabsToEnd ttEnd, Table tab, int k, Admin adm) throws Exception {
+        tte = ttEnd;
+        kind = k;
         sm.addFrame(this);
         tabAux = tab;
         admin = adm;
         String tit = "Consulta Mesa";
-        if (mod) {
+        if (kind == 1) {
             tit = "Corrección Mesa";
             loss = tab.getError();
+        } else if (kind == 2) {
+            tit = "Finalizar Mesa";
+            totalMount = tab.getTotal();
         }
         setTitle(tit);
         PanelPpal panelPpal = new PanelPpal(frame);
@@ -84,7 +96,13 @@ public class TableResumePanel extends FrameThird {
         JPanel panelInit = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 12, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Inicio de mesa: ", dateOpen);
         panelPpal.add(panelInit);
 
-        String dateClose = utili.friendlyDate1(tabAux.getCloseTime());
+        String dateClose = "";
+        if (tabAux.getCloseTime() != null) {
+            dateClose = utili.friendlyDate1(tabAux.getCloseTime());
+        } else {
+            tabAux.setCloseTime(new Timestamp(new Date().getTime()));
+            dateClose = utili.friendlyDate1(tabAux.getCloseTime());
+        }
         JPanel panelEnd = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 17, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Fin de mesa: ", dateClose);
         panelPpal.add(panelEnd);
 
@@ -97,22 +115,29 @@ public class TableResumePanel extends FrameThird {
         JPanel panelFact = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 32, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Facturación: ", "$" + tabAux.getTotal() + "");
         panelPpal.add(panelFact);
 
-        JPanel panelCash = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Efectivo: ", "$" + tabAux.getAmountCash() + "");
-        panelPpal.add(panelCash);
+        if (kind == 0 || kind == 1) {
+            JPanel panelCash = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Efectivo: ", "$" + tabAux.getAmountCash() + "");
+            panelPpal.add(panelCash);
 
-        JPanel panelElectronic = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 42, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Transferencia: ", "$" + tabAux.getAmountElectronic());
-        panelPpal.add(panelElectronic);
+            JPanel panelElectronic = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 42, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Transferencia: ", "$" + tabAux.getAmountElectronic());
+            panelPpal.add(panelElectronic);
 
-        JPanel panelError = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 47, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Error: ", "$" + tabAux.getError());
-        panelPpal.add(panelError);
+            JPanel panelError = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 47, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Error: ", "$" + tabAux.getError());
+            panelPpal.add(panelError);
+        }
 
-        JPanel panelCorrection = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 52, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Corrección precio: ", "$" + tabAux.getPriceCorrection());
+        JPanel panelCorrection = null;
+        if (kind == 0 || kind == 1) {
+            panelCorrection = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 52, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Corrección precio: ", "$" + tabAux.getPriceCorrection());
+        } else {
+            panelCorrection = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Corrección precio: ", "$" + tabAux.getPriceCorrection());
+        }
         panelPpal.add(panelCorrection);
 
         String message = utili.listarItems(tabAux);
 
         JLabel labelMess = new JLabel(message);
-        Font customFont = new Font("Arial", Font.BOLD, 15); // Puedes ajustar el tipo de fuente, estilo y tamaño
+        Font customFont = new Font("Arial", Font.BOLD, 15);
         labelMess.setFont(customFont);
         labelMess.setVerticalAlignment(SwingConstants.TOP);
         labelMess.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
@@ -120,15 +145,26 @@ public class TableResumePanel extends FrameThird {
         scrollPane.setBounds(anchoUnit * 4, altoUnit * 59, anchoUnit * 26, altoUnit * 32);
         panelPpal.add(scrollPane);
 
-        if (mod) {
-            scrollPane.setBounds(anchoUnit * 4, altoUnit * 57, anchoUnit * 26, altoUnit * 14);
+        if (kind == 1 || kind == 2) {
+            if (kind == 1) {
+                scrollPane.setBounds(anchoUnit * 4, altoUnit * 57, anchoUnit * 26, altoUnit * 14);
+            } else {
+                scrollPane.setBounds(anchoUnit * 4, altoUnit * 42, anchoUnit * 26, altoUnit * 29);
+            }
 
             JPanel panelCorrect = new JPanel(null);
             panelCorrect.setBackground(narLg);
             panelCorrect.setBounds(anchoUnit * 4, altoUnit * 71, anchoUnit * 26, altoUnit * 21);
             panelPpal.add(panelCorrect);
 
-            JLabel labelCorrect = utiliGraf.labelTitleBacker1("Corrección de Error");
+            String t = "";
+            if (kind == 1) {
+                t = "Corregir Error";
+            } else {
+                t = "Cerrar mesa";
+            }
+
+            JLabel labelCorrect = utiliGraf.labelTitleBacker1(t);
             labelCorrect.setBounds(anchoUnit * 6, altoUnit * 0, anchoUnit * 26, altoUnit * 4);
             panelCorrect.add(labelCorrect);
 
@@ -222,6 +258,13 @@ public class TableResumePanel extends FrameThird {
             });
             panelCorrect.add(textFieldElec);
 
+            String st1 = "";
+            if (kind == 1) {
+                st1 = "El monto faltante es de $" + loss + ".";
+            } else if (kind == 2) {
+                st1 = "El monto a pagar es de $" + totalMount + ".";
+            }
+
             labelLoss = utiliGraf.labelTitleBacker2("El monto faltante es de $" + loss + ".");
             labelLoss.setHorizontalAlignment(SwingConstants.CENTER);
             labelLoss.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 22, altoUnit * 4);
@@ -232,7 +275,12 @@ public class TableResumePanel extends FrameThird {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        confirmMount();
+                        if (kind == 1) {
+                            confirmMount();
+                        } else {
+                            closeTab();
+                        }
+
                     } catch (Exception ex) {
                         Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -246,12 +294,14 @@ public class TableResumePanel extends FrameThird {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (mod) {
+                if (kind == 1) {
                     try {
                         admin.enabledTrue(0);
                     } catch (Exception ex) {
                         Logger.getLogger(TableResumePanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } else if (kind == 2) {
+                    tte.setEnabled(true);
                 }
                 dispose();
             }
@@ -262,13 +312,15 @@ public class TableResumePanel extends FrameThird {
             @Override
             public void windowClosing(WindowEvent e) {
                 boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
-                if (mod) {
+                if (kind == 1) {
                     try {
                         admin.enabledTrue(0);
                     } catch (Exception ex) {
                         Logger.getLogger(TableResumePanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }                
+                } else if (kind == 2) {
+                    tte.setEnabled(true);
+                }
                 dispose();
             }
         });
@@ -305,18 +357,34 @@ public class TableResumePanel extends FrameThird {
 
         sum = amountCash + amountElec;
 
-        if (sum <= loss) {
-            wrong = loss - sum;
-        } else {
-            labelLoss.setText("El monto supera el Total");
-            error = true;
-        }
-
-        if (error == false) {
-            if (wrong == loss) {
-                labelLoss.setText("El faltante está cubierto");
+        if (kind == 1) {
+            if (sum <= loss) {
+                wrong = loss - sum;
             } else {
-                labelLoss.setText("El monto faltante es $" + wrong + ".");
+                labelLoss.setText("El monto supera el Total");
+                error = true;
+            }
+
+            if (error == false) {
+                if (wrong == loss) {
+                    labelLoss.setText("El faltante está cubierto");
+                } else {
+                    labelLoss.setText("El monto faltante es $" + wrong + ".");
+                }
+            }
+        } else if (kind == 2) {
+            if (error == false) {
+                if (sum < totalMount) {
+                    labelLoss.setText("El monto faltante es de $" + (totalMount - sum) + ".");
+                }
+
+                if (sum == totalMount) {
+                    labelLoss.setText("El monto total está cubierto.");
+                }
+
+                if (sum > totalMount) {
+                    labelLoss.setText("El monto excede el total en " + (sum - totalMount) + ".");
+                }
             }
         }
     }
@@ -390,6 +458,45 @@ public class TableResumePanel extends FrameThird {
                 admin.enabledTrue(1);
                 dispose();
             }
+        }
+    }
+
+    private void closeTab() throws Exception {
+        boolean confirm = utiliMsg.cargaConfirmarFacturacion(totalMount, sum - totalMount);
+        if (confirm) {
+            daoT.updateCloseTime(tabAux);
+            tabAux.setOpen(false);
+            daoT.updateTableOpen(tabAux);
+            tabAux.setBill(true);
+            daoT.updateTableBill(tabAux);
+            tabAux.setAmountCash(amountCash);
+            daoT.updateTableMountCash(tabAux);
+            tabAux.setAmountElectronic(amountElec);
+            daoT.updateTableMountElectronic(tabAux);
+            tabAux.setTotal(totalMount);
+            daoT.updateTableTotal(tabAux);
+            String comment3 = "Mesa cerrada en turno diferido.<br>";
+            tabAux.setComments(tabAux.getComments() + comment3);
+            if (totalMount - sum > 0) {
+                tabAux.setError(totalMount - sum);
+                daoT.updateError(tabAux);
+                ConfigActual cfgAct = daoC.askConfigActual();
+                ArrayList<String> errorTabs = cfgAct.getArrayDeferWs();
+                errorTabs.add(tabAux.getId());
+                daoC.updateCfgActDeferWs(errorTabs);
+                String comment2 = "La mesa contiene un error y deberá ser revisada.<br>";
+                tabAux.setComments(tabAux.getComments() + comment2);
+            }
+            daoT.updateComments(tabAux);
+
+            if (tabAux.isToPay()) {
+                tabAux.setToPay(false);
+                daoT.updateToPay(tabAux);
+                daoI.downActiveItemPayedTableAll(tabAux);
+                daoI.upActiveItemOrderTableAll(tabAux);
+            }
+            tte.confirmEndTable(tabAux);
+            dispose();
         }
     }
 }

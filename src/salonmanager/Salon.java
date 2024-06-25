@@ -57,7 +57,7 @@ public class Salon extends FrameFull {
     DAOConfig daoC = new DAOConfig();
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
-    
+
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
@@ -71,16 +71,11 @@ public class Salon extends FrameFull {
     int hUnit = 0;
     boolean tabsBut = true;
 
-    int f1 = anchoUnit * 3;
-    Font font1 = new Font("Arial", Font.BOLD, f1);
-    int f2 = (int) Math.round(anchoUnit * 2.3);
-    Font font2 = new Font("Arial", Font.BOLD, f2);
-    int f3 = (int) Math.round(anchoUnit * 1.6);
-    Font font3 = new Font("Arial", Font.BOLD, f3);
-    int f4 = (int) Math.round(anchoUnit * 1.2);
-    Font font4 = new Font("Arial", Font.BOLD, f4);
-    int f5 = (int) Math.round(anchoUnit * 1.1);
-    Font font5 = new Font("Arial", Font.BOLD, f5);
+    Font font1 = null;
+    Font font2 = null;
+    Font font3 = null;
+    Font font4 = null;
+    Font font5 = null;
     JScrollPane scrPaneBarr = new JScrollPane();
     JPanel panelBarrBut = new JPanel();
     JPanel panelDeliBut = new JPanel();
@@ -170,10 +165,16 @@ public class Salon extends FrameFull {
     ConfigActual cfgAct = null;
     ConfigGeneral cfgGen = null;
 
-    public Salon(Manager man) throws Exception {
+    public Salon(Manager man, ConfigActual cfgA) throws Exception {
         manager = man;
         sm.addFrame(this);
         user = man.getUser();
+        font1 = man.getFont1();
+        font2 = man.getFont2();
+        font3 = man.getFont3();
+        font4 = man.getFont4();
+        font5 = man.getFont5();
+
         setTitle("Salón Manager");
         sal = this;
         itemsDB = daoI.listarItemsCard();
@@ -190,7 +191,7 @@ public class Salon extends FrameFull {
         tablePan = cfgGen.getTablePan();
         tablePanCh = cfgGen.getTablePanCh();
 
-        cfgAct = daoC.askConfigActual();
+        cfgAct = cfgA;
 
         if (cfgAct.isOpenWs()) {
             workshiftNow = daoW.askWorshiftById(cfgAct.getOpenIdWs());
@@ -198,20 +199,41 @@ public class Salon extends FrameFull {
             if (cashier.getId() != null) {
                 workshiftNow.setCashierWs(cashier);
             }
+
             cashFlowCash = workshiftNow.getCashFlowWsCash();
             cashFlowElec = workshiftNow.getCashFlowWsElec();
             ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
             if (tabs.size() > 0) {
                 prevTabs = tabs;
             }
-            
-            if (!cashier.getId().equals(user.getId())) {
-                setEnabled(false);
-                utiliMsg.errorDiferentCashier();
-                ss.endWorkshift(this, true);                
-            }
-        } 
 
+            if (prevTabs.size() > 0) {
+                utiliGrafSal.tableManager(prevTabs, sal);
+                prevTabs = new ArrayList<>();
+            }
+        }
+
+//        cfgAct = daoC.askConfigActual();
+//
+//        if (cfgAct.isOpenWs()) {
+//            workshiftNow = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+//            User cashier = daoU.getCashierByWorkshift(workshiftNow.getId());
+//            if (cashier.getId() != null) {
+//                workshiftNow.setCashierWs(cashier);
+//            }
+//            cashFlowCash = workshiftNow.getCashFlowWsCash();
+//            cashFlowElec = workshiftNow.getCashFlowWsElec();
+//            ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
+//            if (tabs.size() > 0) {
+//                prevTabs = tabs;
+//            }
+//            
+//            if (!cashier.getId().equals(user.getId())) {
+//                setEnabled(false);
+//                utiliMsg.errorDiferentCashier();
+//                ss.endWorkshift(this, true);                
+//            }
+//        } 
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
@@ -370,6 +392,10 @@ public class Salon extends FrameFull {
         panelEndInn.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
         panelEnd.add(panelEndInn);
 
+//EXTRAS--------------------------------------------------------------------------------------------------------------
+//EXTRAS--------------------------------------------------------------------------------------------------------------
+//EXTRAS--------------------------------------------------------------------------------------------------------------
+//EXTRAS--------------------------------------------------------------------------------------------------------------
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override
@@ -381,17 +407,6 @@ public class Salon extends FrameFull {
             }
         });
         panelPpal.add(butSalir);
-
-//EXTRAS--------------------------------------------------------------------------------------------------------------
-//EXTRAS--------------------------------------------------------------------------------------------------------------
-//EXTRAS--------------------------------------------------------------------------------------------------------------
-//EXTRAS--------------------------------------------------------------------------------------------------------------
-//FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
-//FUNCTION UPDATE BUTTONS---------------------------------------------------------------------------------------------
-        if (prevTabs.size() > 0) {
-            utiliGrafSal.tableManager(prevTabs, sal);
-            prevTabs = new ArrayList<>();
-        }
 
         addWindowListener(new WindowAdapter() {
             @Override

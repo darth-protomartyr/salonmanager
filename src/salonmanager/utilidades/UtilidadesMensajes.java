@@ -669,12 +669,12 @@ public class UtilidadesMensajes extends JFrame {
     ////------------------------------Reubicar------------------------------------------
     ////------------------------------Reubicar------------------------------------------
     public void errorDiferentCashier() {
-        CustomDialog cm = new CustomDialog("Error: Hay un turno iniciado con un cajero diferente al usuario con el que inició la sesión actual. Deberá resolver el turno abierto", 2);
+        CustomDialog cm = new CustomDialog("Error: Hay un turno iniciado con cajero diferente al usuario con el que inició la sesión actual.", 2);
         cm.setVisible(true);
     }
 
     public boolean cargaConfirmarNuevoTurno() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si NO posee el dinero ni la información del turno anterior, presione ACEPTAR para aceptar un nuevo turno");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si NO posee el dinero ni la información del turno anterior, presione ACEPTAR para abrir un nuevo turno");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;        
@@ -693,9 +693,26 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmarCierreTurnoError() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si posee el dinero y la información del turno anterior, presiones ACEPTAr para cerrarlo y abrir uno nuevo.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si posee el dinero y la información del turno anterior, presione ACEPTAR para completar la información.");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;       
+    }
+
+    public void cargaErrorWs() {
+        CustomDialog cm = new CustomDialog("EL turno fue cerrado pero deberá ser revisado por el administrador para completar su información", 1);
+        cm.setVisible(true); 
+    }
+
+    public boolean cargaConfirmAddTables() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si en el turno anterior se facturaron nuevas mesas, presione ACEPTAR para cargar la información.");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;  
+    }
+
+    public void cargaLoadTabAdvert() {
+        CustomDialog cm = new CustomDialog("Recuerde que solo podrá ingresar monto final y el error en caso de producirse", 1);
+        cm.setVisible(true); 
     }
 }

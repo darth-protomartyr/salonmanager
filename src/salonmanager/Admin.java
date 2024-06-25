@@ -356,7 +356,7 @@ public class Admin extends FrameHalf {
             }
         }
         tabAux = st.getCompleteTableById(id2);
-        new TableResumePanel(tabAux, true, this);
+        new TableResumePanel(null, tabAux, 1, this);
         setEnabled(false);
     }
 

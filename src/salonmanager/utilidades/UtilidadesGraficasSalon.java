@@ -104,7 +104,6 @@ public class UtilidadesGraficasSalon {
 //PANEL ACTUAL.........................................................................................................
 //PANEL ACTUAL.........................................................................................................
     public JPanel panelActualBacker(Salon salon) throws Exception {
-
         JPanel panelActual = new JPanel();
         panelActual.setBounds(anchoUnit * 1, altoUnit * 2, anchoUnit * 25, altoUnit * 17);
         panelActual.setBackground(bluLg);
@@ -162,21 +161,9 @@ public class UtilidadesGraficasSalon {
                                     salon.getButInitWorkshift().setText("CERRAR TURNO");
                                     new CashFlowManager(salon, 0);
                                 }
-                            }
-                            
-//                            else {
-//                                salon.getManager().getSalon().setEnabled(false);
-//                                boolean newWs = utiliMsg.cargaConfirmCloseWSByOtherUser();
-//                                if (newWs) {
-//                                    utiliMsg.cargaLateWs();
-//                                    ss.endWorkshift(salon.getManager().getSalon(), true); //user diferent
-//                                } else {
-//                                    salon.getManager().getSalon().dispose();
-//                                }
-//                            }
-                            
+                            }                            
                         } else {
-                            ss.endWorkshift(salon, false);
+                            ss.endWorkshift(salon, salon.getManager(), false);
                         }
                     }
                 } catch (Exception ex) {
