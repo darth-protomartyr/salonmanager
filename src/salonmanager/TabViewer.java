@@ -87,7 +87,7 @@ public class TabViewer extends FrameFull {
             String cash = tab.getAmountCash() + "";
             String transf = tab.getAmountElectronic() + "";
             String total = tab.getTotal() + "";
-            String comment = tab.getComments() + "";
+            String comment = tab.getComments().replace("<br>", " ");
 
             data[i][0] = " " + num;
             data[i][1] = " " + pos;

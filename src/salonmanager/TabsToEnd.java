@@ -21,7 +21,6 @@ import javax.swing.JPanel;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -35,6 +34,7 @@ public class TabsToEnd extends FrameWindow {
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServicioTable st = new ServicioTable();
+    ServicioSalon ss = new ServicioSalon();
     Utilidades utili = new Utilidades();
     SalonManager sm = new SalonManager();
     DAOUser daoU = new DAOUser();
@@ -42,17 +42,21 @@ public class TabsToEnd extends FrameWindow {
     ArrayList<Table> openTabs = new ArrayList<>();
     ArrayList<String> tabsSt1 = new ArrayList<>();
     ArrayList<String> tabsSt2 = new ArrayList<>();
+    Manager manager = null;
 
     Color bluSt = new Color(3, 166, 136);
 
+    Workshift ws = null;
     JComboBox comboOtabs = new JComboBox();
     TabsToEnd tte = null;
+    
 
-    public TabsToEnd(Manager manager, Workshift ws, boolean error) throws Exception {
+    public TabsToEnd(Manager man, Workshift w, boolean error) throws Exception {
         sm.addFrame(this);
         setTitle("Resolución Mesas Pendientes");
         tte = this;
-        
+        manager = man;
+        ws = w;
         
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -103,7 +107,12 @@ public class TabsToEnd extends FrameWindow {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-
+                        boolean confirm4 = utiliMsg.cargaConfirmAddTables();
+                        if (confirm4) {
+                            new TableAdder(ws, manager, null);
+                        } else {
+                            ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
+                        }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -140,7 +149,8 @@ public class TabsToEnd extends FrameWindow {
             }
         }
         utiliMsg.cargaLoadTabAdvert();
-        new TableResumePanel(tte, tab, 2, null);
+//        new TableResumePanel(tte, tab, 2, null);
+        new TableAdder(ws,manager,tab);
         setEnabled(false);
     }
 

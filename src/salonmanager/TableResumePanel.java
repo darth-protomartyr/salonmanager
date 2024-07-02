@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import static javax.swing.SwingConstants.CENTER;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import salonmanager.entidades.graphics.FrameThird;
@@ -62,25 +63,26 @@ public class TableResumePanel extends FrameThird {
     JTextField textFieldElec = new JTextField();
     JLabel labelLoss = new JLabel();
     Table tabAux = new Table();
-    Admin admin = null;
-    TabsToEnd tte = null;
-    int kind = 0;
+//    Admin admin = null;
+//    TabsToEnd tte = null;
+//    int kind = 0;
 
-    
-    TableResumePanel(TabsToEnd ttEnd, Table tab, int k, Admin adm) throws Exception {
-        tte = ttEnd;
-        kind = k;
+    TableResumePanel(Table tab) throws Exception {
+
+//    TableResumePanel(TabsToEnd ttEnd, Table tab, int k, Admin adm) throws Exception {
+//        tte = ttEnd;
+//        kind = k;
         sm.addFrame(this);
         tabAux = tab;
-        admin = adm;
+//        admin = adm;
         String tit = "Consulta Mesa";
-        if (kind == 1) {
-            tit = "Corrección Mesa";
-            loss = tab.getError();
-        } else if (kind == 2) {
-            tit = "Finalizar Mesa";
-            totalMount = tab.getTotal();
-        }
+//        if (kind == 1) {
+//            tit = "Corrección Mesa";
+//            loss = tab.getError();
+//        } else if (kind == 2) {
+//            tit = "Finalizar Mesa";
+//            totalMount = tab.getTotal();
+//        }
         setTitle(tit);
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -115,7 +117,7 @@ public class TableResumePanel extends FrameThird {
         JPanel panelFact = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 32, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Facturación: ", "$" + tabAux.getTotal() + "");
         panelPpal.add(panelFact);
 
-        if (kind == 0 || kind == 1) {
+//        if (kind == 0 || kind == 1) {
             JPanel panelCash = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Efectivo: ", "$" + tabAux.getAmountCash() + "");
             panelPpal.add(panelCash);
 
@@ -124,15 +126,15 @@ public class TableResumePanel extends FrameThird {
 
             JPanel panelError = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 47, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Error: ", "$" + tabAux.getError());
             panelPpal.add(panelError);
-        }
+//        }
 
-        JPanel panelCorrection = null;
-        if (kind == 0 || kind == 1) {
-            panelCorrection = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 52, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Corrección precio: ", "$" + tabAux.getPriceCorrection());
-        } else {
-            panelCorrection = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Corrección precio: ", "$" + tabAux.getPriceCorrection());
-        }
-        panelPpal.add(panelCorrection);
+//        JPanel panelCorrection = null;
+//        if (kind == 0 || kind == 1) {
+//            panelCorrection = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 52, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Corrección precio: ", "$" + tabAux.getPriceCorrection());
+//        } else {
+//            panelCorrection = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Corrección precio: ", "$" + tabAux.getPriceCorrection());
+//        }
+//        panelPpal.add(panelCorrection);
 
         String message = utili.listarItems(tabAux);
 
@@ -145,164 +147,173 @@ public class TableResumePanel extends FrameThird {
         scrollPane.setBounds(anchoUnit * 4, altoUnit * 59, anchoUnit * 26, altoUnit * 32);
         panelPpal.add(scrollPane);
 
-        if (kind == 1 || kind == 2) {
-            if (kind == 1) {
-                scrollPane.setBounds(anchoUnit * 4, altoUnit * 57, anchoUnit * 26, altoUnit * 14);
-            } else {
-                scrollPane.setBounds(anchoUnit * 4, altoUnit * 42, anchoUnit * 26, altoUnit * 29);
-            }
+//        if (kind == 1 || kind == 2) {
+//            if (kind == 1) {
+//                scrollPane.setBounds(anchoUnit * 4, altoUnit * 57, anchoUnit * 26, altoUnit * 14);
+//            } else if (kind == 2) {
+//                scrollPane.setBounds(anchoUnit * 4, altoUnit * 42, anchoUnit * 26, altoUnit * 29);
+//            }
 
             JPanel panelCorrect = new JPanel(null);
             panelCorrect.setBackground(narLg);
+
+
+//            if (kind == 1) {
+//                panelCorrect.setBounds(anchoUnit * 4, altoUnit * 71, anchoUnit * 26, altoUnit * 21);
+//            } else if (kind == 2) {
+//                panelCorrect.setBounds(anchoUnit * 4, altoUnit * 71, anchoUnit * 26, altoUnit * 21);
+//            }
+            
             panelCorrect.setBounds(anchoUnit * 4, altoUnit * 71, anchoUnit * 26, altoUnit * 21);
             panelPpal.add(panelCorrect);
 
-            String t = "";
-            if (kind == 1) {
-                t = "Corregir Error";
-            } else {
-                t = "Cerrar mesa";
-            }
+//            String t = "";
+//            if (kind == 1) {
+//                t = "Corregir Error";
+//            } else {
+//                t = "Cerrar mesa";
+//            }
 
-            JLabel labelCorrect = utiliGraf.labelTitleBacker1(t);
-            labelCorrect.setBounds(anchoUnit * 6, altoUnit * 0, anchoUnit * 26, altoUnit * 4);
-            panelCorrect.add(labelCorrect);
+//            JLabel labelCorrect = utiliGraf.labelTitleBacker1(t);
+//            labelCorrect.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 26, altoUnit * 4);
+//            labelCorrect.setHorizontalAlignment(CENTER);
+//            panelCorrect.add(labelCorrect);
 
-            JLabel labelCorrectCash = utiliGraf.labelTitleBacker3("Ingresar Efectivo");
-            labelCorrectCash.setBounds(anchoUnit * 4, altoUnit * 4, anchoUnit * 12, altoUnit * 3);
-            panelCorrect.add(labelCorrectCash);
-
-            textFieldCash.setBounds(anchoUnit * 4, altoUnit * 7, anchoUnit * 8, altoUnit * 4);
-            textFieldCash.setFont(newFont);
-            textFieldCash.addKeyListener(new KeyListener() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    char keyChar = e.getKeyChar();
-                    if (keyChar == KeyEvent.VK_DELETE || keyChar == KeyEvent.CHAR_UNDEFINED) {
-                        e.consume(); // Consume la tecla para evitar que se procese como entrada
-                    }
-                    if (e.getKeyChar() == '-') {
-                        e.consume();
-                    }
-                }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                }
-            });
-
-            textFieldCash.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent de) {
-                    updateMount();
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent de) {
-                    updateMount();
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent de) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-            });
-            panelCorrect.add(textFieldCash);
-
-            JLabel labelCorrectElec = utiliGraf.labelTitleBacker3("Ingresar Trasferencia");
-            labelCorrectElec.setBounds(anchoUnit * 14, altoUnit * 4, anchoUnit * 15, altoUnit * 3);
-            panelCorrect.add(labelCorrectElec);
-
-            textFieldElec.setBounds(anchoUnit * 14, altoUnit * 7, anchoUnit * 8, altoUnit * 4);
-            textFieldElec.setFont(newFont);
-            textFieldElec.addKeyListener(new KeyListener() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    char keyChar = e.getKeyChar();
-                    if (keyChar == KeyEvent.VK_DELETE || keyChar == KeyEvent.CHAR_UNDEFINED) {
-                        e.consume(); // Consume la tecla para evitar que se procese como entrada
-                    }
-                    if (e.getKeyChar() == '-') {
-                        e.consume();
-                    }
-                }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                }
-            });
-
-            textFieldElec.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent de) {
-                    updateMount();
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent de) {
-                    updateMount();
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent de) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-            });
-            panelCorrect.add(textFieldElec);
-
-            String st1 = "";
-            if (kind == 1) {
-                st1 = "El monto faltante es de $" + loss + ".";
-            } else if (kind == 2) {
-                st1 = "El monto a pagar es de $" + totalMount + ".";
-            }
-
-            labelLoss = utiliGraf.labelTitleBacker2("El monto faltante es de $" + loss + ".");
-            labelLoss.setHorizontalAlignment(SwingConstants.CENTER);
-            labelLoss.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 22, altoUnit * 4);
-            panelCorrect.add(labelLoss);
-
-            JButtonMetalBlu butConfirmMount = utiliGraf.button2("Confirmar pago", anchoUnit * 6, altoUnit * 16, anchoUnit * 14);
-            butConfirmMount.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        if (kind == 1) {
-                            confirmMount();
-                        } else {
-                            closeTab();
-                        }
-
-                    } catch (Exception ex) {
-                        Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            });
-            panelCorrect.add(butConfirmMount);
-
-        }
+//            JLabel labelCorrectCash = utiliGraf.labelTitleBacker3("Ingresar Efectivo");
+//            labelCorrectCash.setBounds(anchoUnit * 4, altoUnit * 4, anchoUnit * 12, altoUnit * 3);
+//            panelCorrect.add(labelCorrectCash);
+//
+//            textFieldCash.setBounds(anchoUnit * 4, altoUnit * 7, anchoUnit * 8, altoUnit * 4);
+//            textFieldCash.setFont(newFont);
+//            textFieldCash.addKeyListener(new KeyListener() {
+//                @Override
+//                public void keyTyped(KeyEvent e) {
+//                    char keyChar = e.getKeyChar();
+//                    if (keyChar == KeyEvent.VK_DELETE || keyChar == KeyEvent.CHAR_UNDEFINED) {
+//                        e.consume(); // Consume la tecla para evitar que se procese como entrada
+//                    }
+//                    if (e.getKeyChar() == '-') {
+//                        e.consume();
+//                    }
+//                }
+//
+//                @Override
+//                public void keyPressed(KeyEvent e) {
+//                }
+//
+//                @Override
+//                public void keyReleased(KeyEvent e) {
+//                }
+//            });
+//
+//            textFieldCash.getDocument().addDocumentListener(new DocumentListener() {
+//                @Override
+//                public void insertUpdate(DocumentEvent de) {
+//                    updateMount();
+//                }
+//
+//                @Override
+//                public void removeUpdate(DocumentEvent de) {
+//                    updateMount();
+//                }
+//
+//                @Override
+//                public void changedUpdate(DocumentEvent de) {
+//                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                }
+//            });
+//            panelCorrect.add(textFieldCash);
+//
+//            JLabel labelCorrectElec = utiliGraf.labelTitleBacker3("Ingresar Trasferencia");
+//            labelCorrectElec.setBounds(anchoUnit * 14, altoUnit * 4, anchoUnit * 15, altoUnit * 3);
+//            panelCorrect.add(labelCorrectElec);
+//
+//            textFieldElec.setBounds(anchoUnit * 14, altoUnit * 7, anchoUnit * 8, altoUnit * 4);
+//            textFieldElec.setFont(newFont);
+//            textFieldElec.addKeyListener(new KeyListener() {
+//                @Override
+//                public void keyTyped(KeyEvent e) {
+//                    char keyChar = e.getKeyChar();
+//                    if (keyChar == KeyEvent.VK_DELETE || keyChar == KeyEvent.CHAR_UNDEFINED) {
+//                        e.consume(); // Consume la tecla para evitar que se procese como entrada
+//                    }
+//                    if (e.getKeyChar() == '-') {
+//                        e.consume();
+//                    }
+//                }
+//
+//                @Override
+//                public void keyPressed(KeyEvent e) {
+//                }
+//
+//                @Override
+//                public void keyReleased(KeyEvent e) {
+//                }
+//            });
+//
+//            textFieldElec.getDocument().addDocumentListener(new DocumentListener() {
+//                @Override
+//                public void insertUpdate(DocumentEvent de) {
+//                    updateMount();
+//                }
+//
+//                @Override
+//                public void removeUpdate(DocumentEvent de) {
+//                    updateMount();
+//                }
+//
+//                @Override
+//                public void changedUpdate(DocumentEvent de) {
+//                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                }
+//            });
+//            panelCorrect.add(textFieldElec);
+//
+//            String st1 = "";
+//            if (kind == 1) {
+//                st1 = "El monto faltante es de $" + loss + ".";
+//            } else if (kind == 2) {
+//                st1 = "El monto a pagar es de $" + totalMount + ".";
+//            }
+//
+//            labelLoss = utiliGraf.labelTitleBacker2("El monto faltante es de $" + loss + ".");
+//            labelLoss.setHorizontalAlignment(SwingConstants.CENTER);
+//            labelLoss.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 22, altoUnit * 4);
+//            panelCorrect.add(labelLoss);
+//
+//            JButtonMetalBlu butConfirmMount = utiliGraf.button2("Confirmar pago", anchoUnit * 6, altoUnit * 16, anchoUnit * 14);
+//            butConfirmMount.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent ae) {
+//                    try {
+//                        if (kind == 1) {
+//                            confirmMount();
+//                        } else {
+//                            closeTab();
+//                        }
+//
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            });
+//            panelCorrect.add(butConfirmMount);
+//
+//        }
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (kind == 1) {
-                    try {
-                        admin.enabledTrue(0);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TableResumePanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else if (kind == 2) {
-                    tte.setEnabled(true);
-                }
+//                if (kind == 1) {
+//                    try {
+//                        admin.enabledTrue(0);
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(TableResumePanel.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                } else if (kind == 2) {
+//                    tte.setEnabled(true);
+//                }
                 dispose();
             }
         });
@@ -312,82 +323,82 @@ public class TableResumePanel extends FrameThird {
             @Override
             public void windowClosing(WindowEvent e) {
                 boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
-                if (kind == 1) {
-                    try {
-                        admin.enabledTrue(0);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TableResumePanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else if (kind == 2) {
-                    tte.setEnabled(true);
-                }
+//                if (kind == 1) {
+//                    try {
+//                        admin.enabledTrue(0);
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(TableResumePanel.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                } else if (kind == 2) {
+//                    tte.setEnabled(true);
+//                }
                 dispose();
             }
         });
     }
 
-    private void updateMount() {
-        String erC = textFieldCash.getText();
-        String erE = textFieldElec.getText();
-
-        boolean error = false;
-
-        if (erC.equals("")) {
-            erC = "0";
-        }
-
-        if (erE.equals("")) {
-            erE = "0";
-        }
-
-        try {
-            if (!erC.equals("")) {
-                amountCash = parseDouble(erC);
-            }
-
-            if (!erE.equals("")) {
-                amountElec = parseDouble(erE);
-            }
-        } catch (NumberFormatException e) {
-            utiliMsg.errorNumerico();
-            error = true;
-        } catch (Exception ex) {
-            Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        sum = amountCash + amountElec;
-
-        if (kind == 1) {
-            if (sum <= loss) {
-                wrong = loss - sum;
-            } else {
-                labelLoss.setText("El monto supera el Total");
-                error = true;
-            }
-
-            if (error == false) {
-                if (wrong == loss) {
-                    labelLoss.setText("El faltante está cubierto");
-                } else {
-                    labelLoss.setText("El monto faltante es $" + wrong + ".");
-                }
-            }
-        } else if (kind == 2) {
-            if (error == false) {
-                if (sum < totalMount) {
-                    labelLoss.setText("El monto faltante es de $" + (totalMount - sum) + ".");
-                }
-
-                if (sum == totalMount) {
-                    labelLoss.setText("El monto total está cubierto.");
-                }
-
-                if (sum > totalMount) {
-                    labelLoss.setText("El monto excede el total en " + (sum - totalMount) + ".");
-                }
-            }
-        }
-    }
+//    private void updateMount() {
+//        String erC = textFieldCash.getText();
+//        String erE = textFieldElec.getText();
+//
+//        boolean error = false;
+//
+//        if (erC.equals("")) {
+//            erC = "0";
+//        }
+//
+//        if (erE.equals("")) {
+//            erE = "0";
+//        }
+//
+//        try {
+//            if (!erC.equals("")) {
+//                amountCash = parseDouble(erC);
+//            }
+//
+//            if (!erE.equals("")) {
+//                amountElec = parseDouble(erE);
+//            }
+//        } catch (NumberFormatException e) {
+//            utiliMsg.errorNumerico();
+//            error = true;
+//        } catch (Exception ex) {
+//            Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        sum = amountCash + amountElec;
+//
+//        if (kind == 1) {
+//            if (sum <= loss) {
+//                wrong = loss - sum;
+//            } else {
+//                labelLoss.setText("El monto supera el Total");
+//                error = true;
+//            }
+//
+//            if (error == false) {
+//                if (wrong == loss) {
+//                    labelLoss.setText("El faltante está cubierto");
+//                } else {
+//                    labelLoss.setText("El monto faltante es $" + wrong + ".");
+//                }
+//            }
+//        } else if (kind == 2) {
+//            if (error == false) {
+//                if (sum < totalMount) {
+//                    labelLoss.setText("El monto faltante es de $" + (totalMount - sum) + ".");
+//                }
+//
+//                if (sum == totalMount) {
+//                    labelLoss.setText("El monto total está cubierto.");
+//                }
+//
+//                if (sum > totalMount) {
+//                    labelLoss.setText("El monto excede el total en " + (sum - totalMount) + ".");
+//                }
+//            }
+//        }
+//    }
 
     private void confirmMount() throws Exception {
         boolean error = false;
@@ -412,18 +423,18 @@ public class TableResumePanel extends FrameThird {
             boolean confirm = false;
             if (loss > sum) {
                 confirm = utiliMsg.cargaConfirmErrorInsuf();
-                String mess = tabAux.getComments() + "\n El error fue revisado y quedó un monto pendiente.";
+                String mess = tabAux.getComments() + "El error fue revisado y quedó un monto pendiente.<br>";
                 tabAux.setComments(mess);
             } else {
                 confirm = utiliMsg.cargaConfirmErrorSuf();
-                String mess = tabAux.getComments() + "\n El monto pendiente fue subsanado.";
+                String mess = tabAux.getComments() + "El monto pendiente fue subsanado.<br>";
                 tabAux.setComments(mess);
             }
 
             if (confirm) {
                 tabAux.setAmountCash(tabAux.getAmountCash() + amountCash);
                 tabAux.setAmountElectronic(tabAux.getAmountElectronic() + amountElec);
-                tabAux.setTotal(tabAux.getTotal() + sum);
+                tabAux.setTotal(tabAux.getTotal() - tabAux.getError() + sum);
                 tabAux.setError(tabAux.getError() - sum);
                 daoT.updateTableMountCash(tabAux);
                 daoT.updateTableMountElectronic(tabAux);
@@ -455,7 +466,7 @@ public class TableResumePanel extends FrameThird {
 
                 cfgAct.setArrayDeferWs(ids);
                 daoC.updateCfgActDeferWs(ids);
-                admin.enabledTrue(1);
+//                admin.enabledTrue(1);
                 dispose();
             }
         }
@@ -495,7 +506,7 @@ public class TableResumePanel extends FrameThird {
                 daoI.downActiveItemPayedTableAll(tabAux);
                 daoI.upActiveItemOrderTableAll(tabAux);
             }
-            tte.confirmEndTable(tabAux);
+//            tte.confirmEndTable(tabAux);
             dispose();
         }
     }

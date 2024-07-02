@@ -9,11 +9,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -30,7 +35,6 @@ import salonmanager.persistencia.DAOWorkshift;
 
 public class Utilidades {
 
-    
     public double toNumberD(String str) {
         double d = -1;
         if (str != "") {
@@ -232,7 +236,7 @@ public class Utilidades {
         }
         return modeloCombo;
     }
-    
+
     public ComboBoxModel categoryComboModelReturnWNull(ArrayList<String> categoriesDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (String i : categoriesDB) {
@@ -241,7 +245,7 @@ public class Utilidades {
         modeloCombo.addElement("");
         return modeloCombo;
     }
-    
+
     public DefaultComboBoxModel wsComboModelReturnWNu(ArrayList<String> wssSt) throws Exception {
 //        ArrayList<Integer> wssId = daoW.listIdWs();
 //        ArrayList<Timestamp> wssTs = daoW.listTsIWs();
@@ -259,14 +263,13 @@ public class Utilidades {
 //            wsa = "ACTUAL";
 //        }
 //        wssSt.add(0,wsa);
-        
+
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (String i : wssSt) {
             modeloCombo.addElement(i);
         }
         return modeloCombo;
     }
-    
 
     public ComboBoxModel itemsComboModelReturnWNull(ArrayList<Itemcard> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
@@ -437,8 +440,7 @@ public class Utilidades {
         }
         return arrayInt;
     }
-    
-    
+
     public ArrayList<Double> strToArrayDou(String str) {
         ArrayList<Double> arrayDou = new ArrayList<>();
         String strAux = "";
@@ -454,8 +456,7 @@ public class Utilidades {
         }
         return arrayDou;
     }
-    
-    
+
     public String arrayDouToStr(ArrayList<Double> numTab) {
         String str = "";
         for (Double i : numTab) {
@@ -463,7 +464,6 @@ public class Utilidades {
         }
         return str;
     }
-    
 
     public String arrayStrToStr(ArrayList<String> strPane) {
         String str = "";
@@ -487,8 +487,8 @@ public class Utilidades {
         }
         return arrayStr;
     }
-    
-        public String arrayStrToStrAlt(ArrayList<String> strPane) {
+
+    public String arrayStrToStrAlt(ArrayList<String> strPane) {
         String str = "";
         for (String s : strPane) {
             str += s + "<";
@@ -510,7 +510,6 @@ public class Utilidades {
         }
         return arrayStr;
     }
-    
 
     public Itemcard ItemcardBacker(String Card, ArrayList<Itemcard> itemsDB) {
         Itemcard ic = null;
@@ -521,7 +520,7 @@ public class Utilidades {
         }
         return ic;
     }
-    
+
     public ListModel itemListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         ArrayList<Itemcard> lma = listMayor;
@@ -552,7 +551,7 @@ public class Utilidades {
         }
         return modeloLista;
     }
-    
+
     public ListModel spacesListModelReturnMono(ArrayList<String> listMayor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         for (String st : listMayor) {
@@ -715,20 +714,30 @@ public class Utilidades {
         return hour;
     }
 
-    ArrayList<Itemcard> unRepeatItems(ArrayList<Itemcard> items) {
+    public ArrayList<Itemcard> unRepeatItems(ArrayList<Itemcard> items) {
+        HashSet<Itemcard> hs = new HashSet<>(items);
+        items = new ArrayList<>(hs);
+        return items;
+    }
+
+    public ArrayList<Itemcard> unRepeatItems2(ArrayList<Itemcard> items) {
+        Collections.sort(items, new Comparator<Itemcard>() {
+            @Override
+            public int compare(Itemcard ic1, Itemcard ic2) {
+                return ic1.getName().compareTo(ic2.getName());
+            }
+        });
+        
         ArrayList<Itemcard> unRepeatItems = new ArrayList<>();
-        ArrayList<Integer> ints = new ArrayList<>();
-        for (Itemcard item : items) {
+        for (Itemcard item1 : items) {
             boolean repeat = false;
-            for (Integer inte : ints) {
-                if (item.getId() == inte) {
+            for (Itemcard item2 : unRepeatItems ) {
+                if(item1.getId() == item2.getId()) {
                     repeat = true;
-                    break;
                 }
             }
-            if (repeat == false) {
-                ints.add(item.getId());
-                unRepeatItems.add(item);
+            if (!repeat) {
+                unRepeatItems.add(item1);
             }
         }
         return unRepeatItems;
@@ -761,29 +770,29 @@ public class Utilidades {
         int w2 = 10;
         int w3 = 3;
         int w4 = 3;
-        
+
         if (length == 3) {
             w1 = 5;
-            w2 = 5; 
+            w2 = 5;
             w3 = 5;
-        } else if(length == 4) {
+        } else if (length == 4) {
             w1 = 1;
-            w2 = 1; 
+            w2 = 1;
             w3 = 1;
             w4 = 10;
         }
 
-        if (k == 2 ) {
+        if (k == 2) {
             limit = 8;
 
             w1 = 1;
-            w2 = 4; 
+            w2 = 4;
             w3 = 1;
             w4 = 1;
-            
+
             if (length > 2) {
                 w2 = 1;
-            }   
+            }
         }
 
         if (name.length() > limit) {
@@ -808,7 +817,7 @@ public class Utilidades {
                 }
                 words[2] = thirdWord;
             }
-            
+
             if (length > 3) {
                 String thirdWord = words[3];
                 if (thirdWord.length() > 4) {
@@ -816,10 +825,10 @@ public class Utilidades {
                 }
                 words[3] = thirdWord;
             }
-            
-            name = String.join(" ", words); 
+
+            name = String.join(" ", words);
         }
-        
+
         return name;
     }
 
@@ -832,7 +841,7 @@ public class Utilidades {
         return time;
     }
 
-    public ConfigGeneral cfgBacker() {    
+    public ConfigGeneral cfgBacker() {
         ArrayList<Integer> tabsQ = new ArrayList<>();
         tabsQ.add(35);
         tabsQ.add(24);
@@ -854,7 +863,6 @@ public class Utilidades {
         return cfgGen;
     }
 
-
     public ArrayList<String> tabsEasyReader(ArrayList<String> arrayDeferWs) {
         ArrayList<String> defer = new ArrayList<>();
         for (int i = 0; i < arrayDeferWs.size(); i++) {
@@ -867,12 +875,12 @@ public class Utilidades {
             String sec3 = section[2];
             date = sec2 + " " + sec3;
             ts = stringToTs(date);
-            date = sec1 + " " + friendlyDate2(ts);            
+            date = sec1 + " " + friendlyDate2(ts);
             defer.add(date);
         }
         return defer;
     }
-    
+
     public Timestamp stringToTs(String date) {
         long l = 0;
         Timestamp ts = null;
@@ -888,7 +896,7 @@ public class Utilidades {
     }
 
     public double round2Dec(double value) {
-        return Math.round( value * 100.0) / 100.0;
+        return Math.round(value * 100.0) / 100.0;
     }
 
     public ArrayList<Double> ArrayRound2Dec(ArrayList<Double> prices) {
@@ -897,25 +905,31 @@ public class Utilidades {
         pr.add(pr1);
         double pr2 = round2Dec(pr.get(1));
         pr.add(pr2);
-        
         return pr;
     }
 
-    
     public double priceMod(Itemcard ic, Salon sal) {
         ConfigActual cfgAct = sal.getCfgAct();
         ArrayList<String> tabsMod = cfgAct.getArrayUnModTabs();
         double price = ic.getPrice().get(0);
         if (tabsMod.size() > 0) {
-            for (int i = 0; i < tabsMod.size()/2; i++) {
+            for (int i = 0; i < tabsMod.size() / 2; i++) {
                 int index = i * 2;
-                
-                int icId = parseInt(tabsMod.get(index +1));
-                if (sal.getTableAux().getId().equals(tabsMod.get(index)) && ic.getId()== icId) {
+                int icId = parseInt(tabsMod.get(index + 1));
+                if (sal.getTableAux().getId().equals(tabsMod.get(index)) && ic.getId() == icId) {
                     price = ic.getPrice().get(1);
                 }
             }
         }
         return price;
+    }
+
+    public Timestamp updateTmestamp(Timestamp dateOpen, int i) {
+        Timestamp mod = dateOpen;
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(mod.getTime());
+        cal.add(Calendar.MILLISECOND, i);
+        mod = new Timestamp(cal.getTimeInMillis());
+        return mod;
     }
 }

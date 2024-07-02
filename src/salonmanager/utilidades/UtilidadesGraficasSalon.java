@@ -161,7 +161,7 @@ public class UtilidadesGraficasSalon {
                                     salon.getButInitWorkshift().setText("CERRAR TURNO");
                                     new CashFlowManager(salon, 0);
                                 }
-                            }                            
+                            }
                         } else {
                             ss.endWorkshift(salon, salon.getManager(), false);
                         }
@@ -1174,7 +1174,6 @@ public class UtilidadesGraficasSalon {
     }
 
     public void setTableItems(Salon salon) {
-
         ArrayList<Itemcard> itemsAux = utili.unRepeatItems(salon.getItemsTableAux());
         ArrayList<Itemcard> partials = utili.unRepeatItems(salon.getItemsPartialPaid());
         ArrayList<Itemcard> partialsND = utili.unRepeatItems(salon.getItemsPartialPaidNoDiscount());
@@ -1195,13 +1194,15 @@ public class UtilidadesGraficasSalon {
         if (salon.getPriceCorrection() > 0) {
             aux += 1;
         }
+        
+        if (salon.getItemsPartialPaidNoDiscount().size() > 0) {
+            aux += 1;
+        }
 
         salon.setData(new String[salon.getRowsItems() + aux][salon.getColItems()]);
-
         int intAux = itemsAux.size();
         int intPartial = itemsAux.size() + partials.size();
         int intPartialND = itemsAux.size() + partials.size() + partialsND.size();
-
         double disc = (double) salon.getDiscount() / 100;
 
         for (int i = 0; i < salon.getRowsItems(); i++) {
@@ -1224,7 +1225,7 @@ public class UtilidadesGraficasSalon {
             if (partialsND.size() > 0 && i >= intPartial && i < intPartialND) {
                 int u = st.itemUnitsBacker(salon.getItemsPartialPaidNoDiscount(), ic);
                 salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " PAG*." + ic.getName();
+                salon.getData()[i][1] = " PAG.* " + ic.getName();
                 salon.getData()[i][2] = "PAGADO";
             }
 
@@ -1250,12 +1251,22 @@ public class UtilidadesGraficasSalon {
             salon.getData()[salon.getRowsItems()][1] = "DESCUENTO: " + salon.getDiscount() + "%";
         }
 
+        if (partialsND.size() > 0) {
+            if (salon.getDiscount() > 0) {
+                salon.getData()[salon.getRowsItems()][1] = "DESCUENTO: " + salon.getDiscount() + "%";
+                salon.getData()[salon.getRowsItems() + 1][1] = "* PAGADO S/DTO";
+            } else {
+                salon.getData()[salon.getRowsItems()][1] = "* PAGADO S/DTO";
+            }
+        }
+
         DefaultTableModel tableModel = new DefaultTableModel(salon.getData(), salon.getColNames());
         salon.getJTableItems().setModel(tableModel);
         salon.getJTableItems().setDefaultEditor(Object.class, null);
 
         JTableHeader header = salon.getJTableItems().getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 16));
+        header.setForeground(new Color(255, 255, 255));
         header.setBackground(bluSt);
 
         Font cellFont = new Font("Arial", Font.BOLD, 14);
@@ -1318,7 +1329,7 @@ public class UtilidadesGraficasSalon {
 
     private void gifter(Salon salon) {
         salon.setItemsTableAux(salon.getTableAux().getOrder());
-        GiftSelector gs = new GiftSelector(salon);
+        GiftSelector gs = new GiftSelector(salon, null, null, null);
         gs.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         gs.setAlwaysOnTop(true);
         salon.setEnabled(false);
@@ -1353,7 +1364,7 @@ public class UtilidadesGraficasSalon {
             salon.getTableAux().setPartialPayedND(salon.getItemsPartialPaidNoDiscount());
             salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
         }
-        BillDiscounter bd = new BillDiscounter(salon);
+        BillDiscounter bd = new BillDiscounter(salon, null);
         bd.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         bd.setAlwaysOnTop(true);
         salon.setEnabled(false);

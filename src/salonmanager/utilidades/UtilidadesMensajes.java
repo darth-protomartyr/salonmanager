@@ -715,4 +715,11 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Recuerde que solo podrá ingresar monto final y el error en caso de producirse", 1);
         cm.setVisible(true); 
     }
+
+    public boolean cargaConfirmNewTab() {
+        CustomDialogConfirm cdc = new CustomDialogConfirm("La mesa fue cargada. Si desea ingresar una nueva mesa presione ACEPTAR.");
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;  
+    }
 }

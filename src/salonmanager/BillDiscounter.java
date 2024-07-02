@@ -48,13 +48,16 @@ public class BillDiscounter extends FrameWindow {
     JButtonMetalBlu butInGift = new JButtonMetalBlu();
     JSpinner spinnerDiscount = null;
     Salon salon = null;
-
+    TableAdder tAdd = null;
     int year = 0;
     int month = 0;
     int day = 0;
 
-    public BillDiscounter(Salon sal) {
-        salon = sal;
+    public BillDiscounter(Salon sal, TableAdder ta) {
+        if (sal != null) {
+            salon = sal;
+        }
+        tAdd = ta;
         sm.addFrame(this);
         setTitle("Descuento");
         PanelPpal panelPpal = new PanelPpal(frame);
@@ -70,7 +73,6 @@ public class BillDiscounter extends FrameWindow {
         panelLabel.setBackground(bluSt);
         panelLabel.setBounds(0, 0, anchoUnit * 29, altoUnit * 5);
         panelPpal.add(panelLabel);
-
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Elija un porcentaje para descontar");
         panelLabel.add(labelTit);
 
@@ -105,7 +107,11 @@ public class BillDiscounter extends FrameWindow {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                salon.setEnabled(true);
+                if (salon != null) {
+                    salon.setEnabled(true);
+                } else {
+                    tAdd.setEnabled(true);
+                }
                 dispose();
             }
         });
@@ -113,7 +119,11 @@ public class BillDiscounter extends FrameWindow {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                salon.setEnabled(true);
+                if (salon != null) {
+                    salon.setEnabled(true);
+                } else {
+                    tAdd.setEnabled(true);
+                }
                 dispose();
             }
         });
@@ -122,9 +132,14 @@ public class BillDiscounter extends FrameWindow {
     private void butDiscounterActionPerformed() throws Exception {
         int u = (int) spinnerDiscount.getValue();
         if (u > 0 || u <= 100) {
-            ss.discountBacker(u, salon);
-            utiliGrafSal.setTableItems(salon);
-            utiliGrafSal.jButExtSetter(salon);
+            if (salon != null) {
+                ss.discountBacker(u, salon);
+                utiliGrafSal.setTableItems(salon);
+                utiliGrafSal.jButExtSetter(salon);
+            } else {
+                tAdd.setDiscount(u);
+                tAdd.setEnabled(true);
+            }
             dispose();
         } else {
             utiliMsg.errorForbbidenValue();

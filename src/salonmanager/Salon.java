@@ -136,7 +136,7 @@ public class Salon extends FrameFull {
     int colItems = 3; //nro columnas de las tablas
     String col1 = "Uni.";
     String col2 = "Items";
-    String col3 = "Total $";
+    String col3 = "Subtotal";
     boolean indiBool = false;
 
     String[] colNames = {col1, col2, col3};
@@ -213,27 +213,6 @@ public class Salon extends FrameFull {
             }
         }
 
-//        cfgAct = daoC.askConfigActual();
-//
-//        if (cfgAct.isOpenWs()) {
-//            workshiftNow = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-//            User cashier = daoU.getCashierByWorkshift(workshiftNow.getId());
-//            if (cashier.getId() != null) {
-//                workshiftNow.setCashierWs(cashier);
-//            }
-//            cashFlowCash = workshiftNow.getCashFlowWsCash();
-//            cashFlowElec = workshiftNow.getCashFlowWsElec();
-//            ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
-//            if (tabs.size() > 0) {
-//                prevTabs = tabs;
-//            }
-//            
-//            if (!cashier.getId().equals(user.getId())) {
-//                setEnabled(false);
-//                utiliMsg.errorDiferentCashier();
-//                ss.endWorkshift(this, true);                
-//            }
-//        } 
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------

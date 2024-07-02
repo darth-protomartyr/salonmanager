@@ -143,7 +143,7 @@ public class CashFlowManager extends FrameWindow {
             setTitle("Ingresos a Caja");
             labelTit.setText(utili.stringMsgFrd("Introduzca el monto a ingresar", 20, 1));
             labelComment.setText("Introduzca el motivo del ingreso:");
-            butCashFlow.setText("INGERSar");
+            butCashFlow.setText("INGERSAR");
         } else {
             setTitle("Salidas de Caja");
             labelTit.setText(utili.stringMsgFrd("Introduzca el monto a extraer", 20, 1));
@@ -177,7 +177,7 @@ public class CashFlowManager extends FrameWindow {
         boolean error = false;
         
         if (flowKind == 0) {
-            comment = "Dinero ingresado en caja inicial. \n" + comment;
+            comment = "Dinero ingresado en caja inicial.<br>" + comment;
         }
         
         try {

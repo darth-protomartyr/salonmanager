@@ -185,7 +185,7 @@ public class ErrorTableCount extends FrameWindow {
         });
         panelPpal.add(checkTotalLossMount);
 
-        labelLoss = utiliGraf.labelTitleBacker3W("Ingrese Información necesaria para realizar");
+        labelLoss = utiliGraf.labelTitleBacker3W("Ingrese Información requerida");
         labelLoss.setBounds(anchoUnit * 2, altoUnit * 15, anchoUnit * 16, altoUnit * 3);
         panelPpal.add(labelLoss);
 
@@ -297,7 +297,7 @@ public class ErrorTableCount extends FrameWindow {
     }
 
     private void butErrorMountActionPerformed(String cause) throws Exception {
-        cause = "Causa del Error: " + cause;
+        cause = "Causa del Error: " + cause + "<br>";
         boolean error = false;
         boolean totalLoss = checkTotalLossMount.isSelected();
 

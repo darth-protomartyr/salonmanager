@@ -450,14 +450,14 @@ public class WorkshiftEndPanel extends FrameHalf {
         String real = fieldFinalAmount.getText();
         String comment = "";
         if (errorWsUser) {
+            comment = actualWs.getCommentWs();
+            comment += "El turno fue iniciado por " + actualWs.getCashierWs().getName() + " " + actualWs.getCashierWs().getLastName() + " y fue finalizado por "
+                    + manager.getUser().getName() + " " + manager.getUser().getLastName() + "<br>";
 
-            comment = "El turno fue iniciado por " + actualWs.getCashierWs().getName() + " " + actualWs.getCashierWs().getLastName() + " y fue finalizado por "
-                    + manager.getUser().getName() + " " + manager.getUser().getLastName() + ".\n";
-
-            String comment1 = textArea.getText();
+            String comment1 = textArea.getText() + "<br>";
             comment += comment1;
         } else {
-            comment = textArea.getText();
+            comment = actualWs.getCommentWs() + textArea.getText() + "<br>";
         }
         try {
             double realAmount = parseDouble(real);
@@ -508,7 +508,7 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         }
         if (!id1.equals("")) {
-            new TableResumePanel(null, tab, 0, null);
+            new TableResumePanel(tab);
         } else {
             utiliMsg.errorTableResume();
         }

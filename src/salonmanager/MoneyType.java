@@ -330,7 +330,7 @@ public class MoneyType extends FrameWindow {
     }
 
     private String getCommentIn() {
-        String comment = textArea.getText();
+        String comment = textArea.getText() + "<br>";
         return comment;
     }
 

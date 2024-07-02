@@ -32,10 +32,7 @@ public class TemplateUser extends FrameHalf {
     Utilidades utili = new Utilidades();
     ServicioUser su = new ServicioUser();
     DAOUser daoU = new DAOUser();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
     Font newFont = new Font("Arial", Font.BOLD, 17);
 
     String name = "";

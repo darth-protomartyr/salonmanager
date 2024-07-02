@@ -3,6 +3,7 @@ package salonmanager.entidades.bussiness;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 import salonmanager.utilidades.Utilidades;
 
 public class Table {
@@ -131,7 +132,20 @@ public class Table {
         this.activeTable = tab.isActiveTable();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Itemcard itemcard = (Itemcard) obj;
+        return id.equals(itemcard.id); // Comparar basándose en el campo que identifica unívocamente al objeto
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // Usar el mismo campo que en equals
+    }
+    
+    
 
     public int getNum() {
         return num;

@@ -499,4 +499,28 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
+
+    public int maxBarrTab(Workshift ws) throws Exception {
+        Integer id = 0;
+        Timestamp ts2 = ws.getCloseWs();
+        if (ts2 == null) {
+            ts2 = new Timestamp(new Date().getTime());
+        }
+        try {
+            String sql = "SELECT MAX(table_num) FROM tabs WHERE table_pos = 'barra' AND table_open_time >= '"+ ws.getOpenWs() +"' AND table_open_time<= '" + ts2 +"' AND table_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                id = resultado.getInt(1);
+                if (id == null) {
+                    id = 0;
+                } 
+            }
+            return id;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
 }

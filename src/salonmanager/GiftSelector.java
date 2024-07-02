@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
@@ -36,27 +34,29 @@ public class GiftSelector extends FrameWindow {
     ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
 
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color narLg = new Color(252, 203, 5);
-
     Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
-
+    
+    int f4 = (int) Math.round(anchoUnit * 1.3);
+    Font font4 = new Font("Arial", Font.BOLD, f4);
+    
     JComboBox comboItems = new JComboBox();
-    JTextArea textAreaGifts = new JTextArea();
-    Table tab = new Table();
+    Table tab = null;
     JButtonMetalBlu butInGift = new JButtonMetalBlu();
     Salon salon = null;
+    TableAdder tadd = null;
     ArrayList<Itemcard> aIC = null;
 
-    public GiftSelector(Salon sal) {
-        salon = sal;
+    public GiftSelector(Salon sal, Table tabAux, TableAdder ta, ArrayList<Itemcard> order) {
+        if (sal != null) {
+            salon = sal;
+            tab = salon.getTableAux();
+        } else {
+            tadd = ta;
+        }
         sm.addFrame(this);
-        tab = salon.getTableAux();
+        
         setTitle("Selector de Obsequios");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -69,24 +69,16 @@ public class GiftSelector extends FrameWindow {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Selecione un item para obsequiar");
         panelLabel.add(labelTit);
 
-        aIC = tab.getOrder();
-
+        if ( salon != null) {
+            aIC = tab.getOrder();
+        } else {
+            aIC = order;
+        }
         comboItems.setModel(utili.itemsComboModelReturn(aIC));
-        comboItems.setFont(salon.getFont5());
-        comboItems.setBounds( anchoUnit * 1, altoUnit * 8, anchoUnit * 13, altoUnit * 4);
+        comboItems.setFont(font4);
+        comboItems.setBounds(anchoUnit * 5, altoUnit * 15, anchoUnit * 19, altoUnit * 5);
         panelPpal.add(comboItems);
-
-        textAreaGifts.setBackground(bluLg);
-        Font newFont = new Font("Arial", Font.PLAIN, 16);
-        textAreaGifts.setFont(newFont);
-        textAreaGifts.setBackground(narUlg);
-        JScrollPane scrollPane = new JScrollPane(textAreaGifts);
-        scrollPane.setBounds(anchoUnit * 15, altoUnit * 8, anchoUnit * 13, altoUnit * 20);
-        panelPpal.add(scrollPane);
-
-        String txt = st.listarGifts(tab.getGifts());
-        textAreaGifts.setText(txt);
-
+        
         butInGift = utiliGraf.button1("Obsequiar", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
         butInGift.addActionListener(new ActionListener() {
             @Override
@@ -99,12 +91,16 @@ public class GiftSelector extends FrameWindow {
             }
         });
         panelPpal.add(butInGift);
-        
+
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                salon.setEnabled(true);
+                if (salon != null) {
+                    salon.setEnabled(true);
+                } else {
+                    tadd.setEnabled(true);
+                }
                 dispose();
             }
         });
@@ -112,7 +108,11 @@ public class GiftSelector extends FrameWindow {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                salon.setEnabled(true);
+                if (salon != null) {
+                    salon.setEnabled(true);
+                } else {
+                    tadd.setEnabled(true);
+                }
                 dispose();
             }
         });
@@ -121,9 +121,13 @@ public class GiftSelector extends FrameWindow {
     private void butInGiftActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
         Itemcard ic = aIC.get(i);
-        ss.giftBacker(ic, salon);
-        utiliGrafSal.setTableItems(salon);
-        utiliGrafSal.jButExtSetter(salon);
+        if (salon != null) {
+            ss.giftBacker(ic, salon);
+            utiliGrafSal.setTableItems(salon);
+            utiliGrafSal.jButExtSetter(salon);
+        } else {
+            tadd.addGift(ic);
+        }
         dispose();
     }
 }

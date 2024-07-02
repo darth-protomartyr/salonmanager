@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.Manager;
 import salonmanager.Salon;
+import salonmanager.TableAdder;
 import salonmanager.TabsToEnd;
 import salonmanager.WorkshiftEndPanel;
 import salonmanager.entidades.bussiness.CashFlow;
@@ -27,10 +28,6 @@ import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-/**
- *
- * @author Gonzalo
- */
 public class ServicioSalon {
 
     DAOUser daoU = new DAOUser();
@@ -160,7 +157,7 @@ public class ServicioSalon {
         ArrayList<Itemcard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
-            partialND += utili.priceMod(itemsPartial.get(i), sal);
+            partialND += utili.priceMod(itemsPartialAux.get(i), sal);
         }
 
         partial += partialND /* + tableAux.getErrorMod*/;
@@ -427,31 +424,34 @@ public class ServicioSalon {
             utiliMsg.errorDiferentCashier();
             boolean confirm3 = utiliMsg.cargaConfirmarNuevoTurno();
             if (confirm3) {
-                closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 1);
                 //Cerrar turno abierto por otro usuario y abrir uno nuevo
+                closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 1);
             } else {
-                boolean confirm4 = utiliMsg.cargaConfirmAddTables();
-                if (confirm4) {
-
-                }
-
                 if (prevTabs.size() > 0) {
+                    //Mesas abiertas del turno anterior y abrir uno nuevo
                     boolean confirm5 = utiliMsg.cargaConfirmarOpenTabsOldWs();
                     if (confirm5) {
-//            Mesas abiertas del turno anterior y abrir uno nuevo
                         new TabsToEnd(manager, ws, errorWs);
-//                        closeWorkshift(salon, salon.getWorkshiftNow(), null, null, null, null, null, errorWs, 2);
+//                        boolean confirm4 = utiliMsg.cargaConfirmAddTables();
+//                        if (confirm4) {
+//                            new TableAdder(ws, manager);
+//                        } else {
+//                            closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 2);
+//                        }
                     }
                 } else {
                     boolean confirm6 = utiliMsg.cargaConfirmarCierreTurnoError();
                     if (confirm6 == true) {
-                        //cierre de turno con dinero e información del turno anterior
-                        closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 3);
+                        boolean confirm4 = utiliMsg.cargaConfirmAddTables();
+                        if (confirm4) {
+                            new TableAdder(ws, manager, null);
+                        } else {
+                            closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 2);
+                        }                                                
                     }
                 }
             }
         }
-//        salon.setEnabled(true);
     }
 
     public void closeWorkshift(Salon salon, Manager manager, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs, int error) throws Exception {
@@ -461,7 +461,7 @@ public class ServicioSalon {
                 daoW.updateWorkshiftClose(actWs, false);
                 actWs.setStateWs(false);
                 daoW.updateWorkshiftState(actWs);
-                actWs.setCommentWs("El turno fue cerrado para continuar con el próximo, a la espera de ser completado por el Administrador");
+                actWs.setCommentWs(actWs.getCommentWs() + "El turno fue cerrado para continuar con el próximo, a la espera de ser completado por el Administrador.<br>");
                 daoW.updateWorkshiftComment(actWs);
                 actWs.setError(true);
                 daoW.updateWorkshiftErrorBool(actWs);
@@ -470,66 +470,9 @@ public class ServicioSalon {
                 daoC.updateCfgActOpenWs(false);
             } else if (error == 2) {
                 workshiftConclusive(salon, manager, actWs, nWs, actTabs, nTabs, ersdTabs, updTabs, errorWs);
-            } else if (error == 3) {
-                workshiftConclusive(salon, manager, actWs, nWs, actTabs, nTabs, ersdTabs, updTabs, errorWs);
             }
         } else {
             workshiftConclusive(salon, salon.getManager(), actWs, nWs, actTabs, nTabs, ersdTabs, updTabs, errorWs);
-
-//            Workshift actualWs = actWs;
-//            Workshift newWs = nWs;
-//            ArrayList<Table> actualTabs = actTabs;
-//            ArrayList<Table> upTabs = nTabs;
-//            ArrayList<Table> downTabs = ersdTabs;
-//            ArrayList<Table> toUpdTabs = updTabs;
-//            if (salon.getDeliButtons().size() > 0) {
-//                Delivery deli = salon.getDeliButtons().get(0).getDelivery();
-//                if (deli.getTab() == null) {
-//                    daoD.updateDownAct(deli);
-//                }
-//            }
-//
-//            if (newWs == null) {
-//                actualWs = setWsEnd(actualWs);
-//                actualTabs = st.workshiftTableslistComplete(actualWs, 1);
-//            }
-//
-//            if (actualTabs.size() == 0) {
-//                boolean confirm = utiliMsg.cargaWorkshiftEmpty();
-//                if (confirm) {
-//                    daoW.updateWorkshiftState(actualWs);
-//                    daoW.downWorkshiftActive(actualWs);
-//                    daoC.updateCfgActOpenWs(false);
-//                    daoC.updateCfgActOpenIdWs(0);
-//                    salon.setWorkshiftNow(null);
-//                    salon.getLabelWorkshift().setText("Turno no iniciado.");
-//                    salon.getButInitWorkshift().setText("ABRIR TURNO");
-//                    salon.setEnabled(true);
-//                    salon.dispose();
-//                } else {
-//                    salon.setEnabled(true);
-//                }
-//            } else {
-//                double mount = 0;
-//                double mountError = 0;
-//                double mountCash = 0;
-//                double mountElectronic = 0;
-//                for (int i = 0; i < actualTabs.size(); i++) {
-//                    if (actualTabs.get(i).isOpen() == false && actualTabs.get(i).isActiveTable() == true) {
-//                        Table tab = actualTabs.get(i);
-//                        mount += tab.getTotal();
-//                        mountError += tab.getError();
-//                        mountCash += tab.getAmountCash();
-//                        mountElectronic += tab.getAmountElectronic();
-//                    }
-//                }
-//                actualWs.setTotalMountWs(mount);
-//                actualWs.setErrorMountWs(mountError);
-//                actualWs.setTotalMountCashWs(mountCash);
-//                actualWs.setTotalMountElectronicWs(mountElectronic);
-//                new WorkshiftEndPanel(salon, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
-//                salon.setEnabled(false);
-//            }
         }
     }
 
@@ -553,7 +496,7 @@ public class ServicioSalon {
         newWs.setTotalMountRealWs(0);
         newWs.setErrorMountWs(0);
         newWs.setErrorMountRealWs(0);
-        newWs.setCommentWs("Turno creado a partir de mesas no cerradas del turno anterior.");
+        newWs.setCommentWs(newWs.getCommentWs() + "Turno creado a partir de mesas no cerradas del turno anterior.<br>");
         for (int i = 0; i < actualTabs.size(); i++) {
             Table tab = actualTabs.get(i);
             if (tab.isOpen() == true) {
@@ -571,7 +514,7 @@ public class ServicioSalon {
                     tabNewWs.setGifts(tab.getGifts());
                     double total1 = countBill(tabNewWs, sal);
                     tabNewWs.setTotal(total1);
-                    tabNewWs.setComments("Nueva mesa con elementos no pagados del turno anterior");
+                    tabNewWs.setComments(tabNewWs.getComments() + "Nueva mesa con elementos no pagados del turno anterior.<br>");
 
                     tab.setOpen(false);
                     tab.setToPay(false);
@@ -583,7 +526,7 @@ public class ServicioSalon {
                     tab.setCloseTime(new Timestamp(new Date().getTime()));
                     tab.setPartialPayed(new ArrayList<>());
                     tab.setPartialPayedND(new ArrayList<>());
-                    tab.setComments(tab.getComments() + "<br>Los elementos no pagados fueron enviados al siguiente turno");
+                    tab.setComments(tab.getComments() + "Los elementos no pagados fueron enviados al siguiente turno.<br>");
                     tab.setActiveTable(true);
 
                     toUpdTabs.add(tab);
@@ -595,7 +538,7 @@ public class ServicioSalon {
                     tabNewWs.setGifts(tab.getGifts());
                     total = countBill(tabNewWs, sal);
                     tabNewWs.setTotal(total);
-                    tabNewWs.setComments("La mesa fue dividida por cambio de turno");
+                    tabNewWs.setComments(tabNewWs.getComments() + "La mesa fue dividida por cambio de turno.<br>");
                     tab.setActiveTable(false);
                     upTabs.add(tabNewWs);
                     downTabs.add(tab);
