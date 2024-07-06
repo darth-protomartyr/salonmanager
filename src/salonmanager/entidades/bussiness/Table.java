@@ -145,8 +145,6 @@ public class Table {
         return Objects.hash(id); // Usar el mismo campo que en equals
     }
     
-    
-
     public int getNum() {
         return num;
     }

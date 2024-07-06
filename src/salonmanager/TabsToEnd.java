@@ -101,18 +101,22 @@ public class TabsToEnd extends FrameWindow {
             }
         });
         panelPpal.add(butResolveTab);
-        
+
         JButtonMetalBlu butConfirm = utiliGraf.button1("Continuar", anchoUnit * 8, altoUnit * 24, anchoUnit * 12);
         butConfirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
+                    if (openTabs.size() == 0) {
                         boolean confirm4 = utiliMsg.cargaConfirmAddTables();
                         if (confirm4) {
                             new TableAdder(ws, manager, null);
                         } else {
                             ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
                         }
+                    } else {
+                        utiliMsg.errorTabsToResolve();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -148,8 +152,6 @@ public class TabsToEnd extends FrameWindow {
                 }
             }
         }
-        utiliMsg.cargaLoadTabAdvert();
-//        new TableResumePanel(tte, tab, 2, null);
         new TableAdder(ws,manager,tab);
         setEnabled(false);
     }

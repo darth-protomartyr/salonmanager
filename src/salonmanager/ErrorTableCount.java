@@ -58,7 +58,7 @@ public class ErrorTableCount extends FrameWindow {
     public ErrorTableCount(Salon sal) {
         salon = sal;
         sm.addFrame(this);
-        salon.setTotal(ss.countBill(salon.getTableAux(), salon));
+        salon.setTotal(ss.countBill(salon.getTableAux(), salon, false));
         total = salon.getTotal();
         setTitle("Error Mesa");
         PanelPpal panelPpal = new PanelPpal(frame);

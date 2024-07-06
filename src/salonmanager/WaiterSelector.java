@@ -11,9 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -65,31 +62,22 @@ public class WaiterSelector extends FrameWindow {
         }
 
         comboWaiters.setModel(utili.userComboModelReturnWNull(waiters));
-        comboWaiters.setBounds(anchoUnit * 7, altoUnit * 13, anchoUnit * 15, altoUnit * 6);
-        comboWaiters.setFont(salon.getFont4());
+        comboWaiters.setBounds(anchoUnit * 6, altoUnit * 16, anchoUnit * 17, altoUnit * 6);
+        comboWaiters.setFont(salon.getFont3());
         comboWaiters.setSelectedIndex(waiters.size());
-        DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-        renderer.setFont(new Font("Arial", Font.PLAIN, 50));
-        comboWaiters.setRenderer(renderer);
-        panelPpal.add(comboWaiters);
-        JButtonMetalBlu butSelWaiter = utiliGraf.button1("Elija mozo", anchoUnit * 7, altoUnit * 24, anchoUnit * 15);
-        butSelWaiter.addActionListener(new ActionListener() {
+        comboWaiters.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (tableAux == null) {
-                        if (waiterAux == null) {
-                            getWaiter();
-                        }
-                    } else {
-                        utiliMsg.errorBillSend();
+            public void actionPerformed(ActionEvent e) {
+                if (tableAux == null) {
+                    if (waiterAux == null) {
+                        getWaiter();
                     }
-                } catch (Exception ex) {
-                    Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
+                } else {
+                    utiliMsg.errorBillSend();
                 }
             }
         });
-        panelPpal.add(butSelWaiter);
+        panelPpal.add(comboWaiters);
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(this);
         butSalir.addActionListener(new ActionListener() {
@@ -100,7 +88,7 @@ public class WaiterSelector extends FrameWindow {
             }
         });
         panelPpal.add(butSalir);
-        
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 salon.setEnabled(true);
@@ -112,7 +100,7 @@ public class WaiterSelector extends FrameWindow {
     public void getWaiter() {
         User waiter = new User();
         String selection = (String) comboWaiters.getSelectedItem();
-        if(!selection.equals("")) {
+        if (!selection.equals("")) {
             waiter = utili.userSelReturn(selection, waiters);
             utiliGrafSal.waiterBacker(waiter, salon);
             dispose();

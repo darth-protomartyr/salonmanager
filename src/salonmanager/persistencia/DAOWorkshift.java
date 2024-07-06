@@ -25,10 +25,21 @@ public class DAOWorkshift extends DAO {
         try {
             if (ws.getCloseWs() == null) {
                 sql = "INSERT INTO workshifts(workshift_open_shift, workshift_close_shift, workshift_state_shift, workshift_mount_cash, workshift_mount_electronic, workshift_error_mount, workshift_error_mount_real, workshift_total_mount, workshift_total_mount_real, workshift_cash_flow_cash, workshift_cash_flow_elec, workshift_comment, workshift_error, workshift_active) "
-                        + "VALUES( '" + ws.getOpenWs() + "', " + ws.getCloseWs() + ", " + ws.isStateWs() + ", "
-                        + ws.getTotalMountCashWs() + ", " + ws.getTotalMountElectronicWs() + ", " + ws.getErrorMountWs() + ", "
-                        + ws.getErrorMountRealWs() + ", " + ws.getTotalMountWs() + ", " + ws.getTotalMountRealWs() + ", "
-                        + ws.getCashFlowWsCash() + ", " + ws.getCashFlowWsElec() + ", '" + ws.getCommentWs() + "', " + ws.isError() + ", " + true + ");";
+                        + "VALUES( '"
+                        + ws.getOpenWs() + "', " 
+                        + ws.getCloseWs() + ", " 
+                        + ws.isStateWs() + ", "
+                        + ws.getTotalMountCashWs() + ", " 
+                        + ws.getTotalMountElectronicWs() + ", " 
+                        + ws.getErrorMountWs() + ", "
+                        + ws.getErrorMountRealWs() + ", "
+                        + ws.getTotalMountWs() + ", "
+                        + ws.getTotalMountRealWs() + ", "
+                        + ws.getCashFlowWsCash() + ", " 
+                        + ws.getCashFlowWsElec() + ", '" 
+                        + ws.getCommentWs() + "', " 
+                        + ws.isError() + ", " 
+                        + true + ");";
             } else {
                 sql = "INSERT INTO workshifts(workshift_open_shift, workshift_close_shift, workshift_state_shift, workshift_mount_cash, workshift_mount_electronic, workshift_error_mount, workshift_error_mount_real, workshift_total_mount, workshift_total_mount_real, workshift_cash_flow_cash, workshift_cash_flow_elec, workshift_comment, workshift_error, workshift_active) "
                         + "VALUES( '" + ws.getOpenWs() + "', '" + ws.getCloseWs() + "', " + ws.isStateWs() + ", "
@@ -458,6 +469,25 @@ public class DAOWorkshift extends DAO {
                 wssTs.add(wsTs);
             }
             return wssTs;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<Integer> listarErrorId() throws Exception {
+        ArrayList<Integer> ids = new ArrayList<>();
+        try {
+            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_error = true AND workshift_active = true;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                int wsId = 0;
+                wsId = resultado.getInt(1);
+                ids.add(wsId);
+            }
+            return ids;
         } catch (Exception e) {
             throw e;
         } finally {

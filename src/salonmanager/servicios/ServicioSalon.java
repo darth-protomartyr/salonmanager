@@ -124,21 +124,26 @@ public class ServicioSalon {
     }
 
 //Resumen de Cuenta Total
-    public double countBill(Table tableAux, Salon sal) {
+    public double countBill(Table tableAux, Salon sal, boolean total) {
         double bill = 0;
         int discount = tableAux.getDiscount();
         ArrayList<Itemcard> itemsTable = tableAux.getOrder();
-
+        ArrayList<Itemcard> itemsTableND = tableAux.getPartialPayedND();
         for (int i = 0; i < itemsTable.size(); i++) {
             if (itemsTable.get(i).isActiveItem()) {
                 bill = bill + utili.priceMod(itemsTable.get(i), sal);
             }
         }
-
         if (discount > 0) {
             bill = bill - Math.round(bill * discount / 100);
         }
-
+        if (total) {
+            for (int i = 0; i < itemsTableND.size(); i++) {
+                if (itemsTableND.get(i).isActiveItem()) {
+                    bill = bill + utili.priceMod(itemsTableND.get(i), sal);
+                }
+            }
+        }
         return bill;
     }
 
@@ -150,10 +155,8 @@ public class ServicioSalon {
         for (int i = 0; i < itemsPartial.size(); i++) {
             partial += utili.priceMod(itemsPartial.get(i), sal);
         }
-
         double disc = (double) discount;
         partial = partial * (1 - disc / 100);
-
         ArrayList<Itemcard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
@@ -230,7 +233,7 @@ public class ServicioSalon {
         salon.setItemsTableAux(itemTableLesser(salon.getTableAux().getOrder(), ic));
         salon.getTableAux().setOrder(salon.getItemsTableAux());
         utiliMsg.cargaGift(ic.getName());
-        salon.setTotal(countBill(salon.getTableAux(), salon));
+        salon.setTotal(countBill(salon.getTableAux(), salon, false));
         salon.getTableAux().setTotal(salon.getTotal());
         daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
         daoIC.saveItemGiftTable(ic, salon.getTableAux());
@@ -244,9 +247,19 @@ public class ServicioSalon {
     //DISCOUNT-----------------------------------------------------------------------------------------
     //DISCOUNT-----------------------------------------------------------------------------------------
     public void discountBacker(int disc, Salon salon) throws Exception {
+        if (salon.getItemsPartialPaid().size() > 0) {
+            salon.setItemsPartialPaidNoDiscount(salon.getItemsPartialPaid());
+            salon.getTableAux().setPartialPayedND(salon.getItemsPartialPaidNoDiscount());
+            for (int i = 0; i < salon.getTableAux().getPartialPayed().size(); i++) {
+                daoIC.saveItemPayedNDTable(salon.getTableAux().getPartialPayed().get(i), salon.getTableAux());
+            }            
+            salon.setItemsPartialPaid(new ArrayList<>());
+            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+            daoIC.downActiveItemPayedTableAll(salon.getTableAux());
+        }
         salon.setDiscount(disc);
         salon.getTableAux().setDiscount(disc);
-        salon.setTotal(countBill(salon.getTableAux(), salon));
+        salon.setTotal(countBill(salon.getTableAux(), salon, false));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
         daoT.updateTableDiscount(salon.getTableAux());
@@ -276,7 +289,7 @@ public class ServicioSalon {
         salon.getTableAux().setAmountElectronic(salon.getAmountElectronic() + elec);
         daoT.updateTableMountElectronic(salon.getTableAux());
 
-        salon.setTotal(countBill(salon.getTableAux(), salon));
+        salon.setTotal(countBill(salon.getTableAux(), salon, true));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
 
@@ -345,7 +358,7 @@ public class ServicioSalon {
         salon.getItemsPartialPaid().addAll(itemsPayed);
         salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
         salon.getTableAux().setOrder(salon.getItemsTableAux());
-        salon.setTotal(countBill(salon.getTableAux(), salon));
+        salon.setTotal(countBill(salon.getTableAux(), salon, false));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
         salon.getTableAux().setToPay(true);
@@ -369,7 +382,7 @@ public class ServicioSalon {
         daoIC.downActiveItemPayedTableAll(salon.getTableAux());
         daoIC.upActiveItemOrderTableAll(salon.getTableAux());
 
-        salon.setTotal(countBill(salon.getTableAux(), salon));
+        salon.setTotal(countBill(salon.getTableAux(), salon, true));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
 
@@ -447,7 +460,7 @@ public class ServicioSalon {
                             new TableAdder(ws, manager, null);
                         } else {
                             closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 2);
-                        }                                                
+                        }
                     }
                 }
             }
@@ -512,23 +525,21 @@ public class ServicioSalon {
                     orderNew = tab.getOrder();
                     Table tabNewWs = new Table(tab.getNum(), tab.getPos(), bill, activeTable, orderNew, waiter, discount, total, comments);
                     tabNewWs.setGifts(tab.getGifts());
-                    double total1 = countBill(tabNewWs, sal);
+                    double total1 = countBill(tabNewWs, sal, true);
                     tabNewWs.setTotal(total1);
                     tabNewWs.setComments(tabNewWs.getComments() + "Nueva mesa con elementos no pagados del turno anterior.<br>");
-
                     tab.setOpen(false);
                     tab.setToPay(false);
                     tab.setGifts(new ArrayList<>());
                     tab.setOrder(tab.getPartialPayed());
                     tab.setPartialPayedND(tab.getPartialPayedND());
-                    double total2 = countBill(tab, sal);
+                    double total2 = countBill(tab, sal, true);
                     tab.setTotal(total2);
                     tab.setCloseTime(new Timestamp(new Date().getTime()));
                     tab.setPartialPayed(new ArrayList<>());
                     tab.setPartialPayedND(new ArrayList<>());
                     tab.setComments(tab.getComments() + "Los elementos no pagados fueron enviados al siguiente turno.<br>");
                     tab.setActiveTable(true);
-
                     toUpdTabs.add(tab);
                     upTabs.add(tabNewWs);
                 } else {
@@ -536,7 +547,7 @@ public class ServicioSalon {
                     Table tabNewWs = new Table(tab.getNum(), tab.getPos(), bill, activeTable, orderNew, waiter, discount, total, comments);
                     tabNewWs.setOrder(tab.getOrder());
                     tabNewWs.setGifts(tab.getGifts());
-                    total = countBill(tabNewWs, sal);
+                    total = countBill(tabNewWs, sal, true);
                     tabNewWs.setTotal(total);
                     tabNewWs.setComments(tabNewWs.getComments() + "La mesa fue dividida por cambio de turno.<br>");
                     tab.setActiveTable(false);
@@ -567,7 +578,6 @@ public class ServicioSalon {
             kind = false;
         }
         int wsId = salon.getWorkshiftNow().getId();
-
         CashFlow cf = new CashFlow(kind, moneyKind, cashFlow, comment, wsId);
         if (kind == false) { //substr
             if (moneyKind == false) {

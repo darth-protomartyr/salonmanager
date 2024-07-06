@@ -27,6 +27,7 @@ import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class CashFlowManager extends FrameWindow {
+
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -74,10 +75,10 @@ public class CashFlowManager extends FrameWindow {
 
         optionCash.setBackground(bluSt);
         optionElec.setBackground(bluSt);
-        
+
         optionCash.setForeground(Color.WHITE);
         optionElec.setForeground(Color.WHITE);
-        
+
         ButtonGroup group = new ButtonGroup();
         group.add(optionCash);
         group.add(optionElec);
@@ -92,21 +93,21 @@ public class CashFlowManager extends FrameWindow {
                     cashKind = true;
                 } else {
                     optionCash.setSelected(false);
-                    cashKind = false;                    
+                    cashKind = false;
                 }
             }
         };
 
         optionCash.addActionListener(listener);
         optionElec.addActionListener(listener);
-        
+
         panelPpal.add(optionCash);
         panelPpal.add(optionElec);
 
         JLabel labelComment = utiliGraf.labelTitleBacker3W("");
         labelComment.setBounds(anchoUnit * 4, altoUnit * 17, anchoUnit * 22, altoUnit * 4);
         panelPpal.add(labelComment);
-        
+
         textArea.setRows(3);
         textArea.setColumns(5);
         textArea.setLineWrap(true);
@@ -119,7 +120,6 @@ public class CashFlowManager extends FrameWindow {
         panelPpal.add(scrollPane);
         panelPpal.add(fieldCashFlow);
 
-
         butCashFlow = utiliGraf.button1("", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
         butCashFlow.addActionListener(new ActionListener() {
             @Override
@@ -131,8 +131,8 @@ public class CashFlowManager extends FrameWindow {
                 }
             }
         });
-        panelPpal.add(butCashFlow);       
-        
+        panelPpal.add(butCashFlow);
+
         if (flowKind == 0) {
             setTitle("Caja Inicial");
             labelTit.setText(utili.stringMsgFrd("Introduzca la caja inicial", 20, 1));
@@ -150,7 +150,7 @@ public class CashFlowManager extends FrameWindow {
             labelComment.setText("Introduzca el motivo de la extracción:");
             butCashFlow.setText("EXTRAER");
         }
-        
+
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
         butSalir.addActionListener(new ActionListener() {
             @Override
@@ -159,7 +159,6 @@ public class CashFlowManager extends FrameWindow {
             }
         });
         panelPpal.add(butSalir);
-
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -175,30 +174,34 @@ public class CashFlowManager extends FrameWindow {
         double cashFlow = 0;
         String comment = textArea.getText();
         boolean error = false;
-        
+
         if (flowKind == 0) {
             comment = "Dinero ingresado en caja inicial.<br>" + comment;
         }
-        
-        try {
-            cashFlow = parseDouble(cashFlowSt);
-        } catch (NumberFormatException e) {
-            utiliMsg.errorNumerico();
-            error = true;
-        } catch (Exception ex) {
-            Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if (comment.equals("")) {
-            utiliMsg.errorEmptyCause();
-            error = true;
-        }
-        
-        if (error == false) {
-            ss.cashFlowAdd(flowKind, cashKind, cashFlow, comment, salon);
+
+        if (cashFlowSt.equals("") || cashFlowSt.equals("0")) {
             dispose();
         } else {
-            resetValues();
+            try {
+                cashFlow = parseDouble(cashFlowSt);
+            } catch (NumberFormatException e) {
+                utiliMsg.errorNumerico();
+                error = true;
+            } catch (Exception ex) {
+                Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (comment.equals("")) {
+                utiliMsg.errorEmptyCause();
+                error = true;
+            }
+
+            if (error == false) {
+                ss.cashFlowAdd(flowKind, cashKind, cashFlow, comment, salon);
+                dispose();
+            } else {
+                resetValues();
+            }
         }
     }
 

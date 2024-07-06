@@ -123,7 +123,7 @@ public class TableAdder extends FrameThird {
             tabAux = tab;
             setTabElements();
         } else {
-            num = daoT.maxBarrTab(ws) + 1;        
+            num = daoT.maxBarrTab(ws) + 1;
         }
         if (ws.getCloseWs() != null) {
             dateOpenTab = ws.getCloseWs();
@@ -387,7 +387,6 @@ public class TableAdder extends FrameThird {
         setTableItems();
         comboItems.setSelectedItem("");
         spinner.setValue(1);
-
     }
 
     private void actionButtonGift() {
@@ -399,34 +398,79 @@ public class TableAdder extends FrameThird {
     private void closeTab() throws Exception {
         boolean confirm = utiliMsg.cargaConfirmarFacturacion(totalMount, sum - totalMount);
         if (confirm) {
-            Table tab = new Table(num, "barra", manager.getUser());
-            tab.setDiscount(discount);
-            tab.setOpenTime(dateOpenTab);
-            tab.setCloseTime(dateCloseTab);
-            tab.setOpen(false);
-            tab.setBill(true);
-            double error = totalMount - sum;
-            tab.setError(error);
-            tab.setAmountCash(amountCash);
-            tab.setAmountElectronic(amountElec);
-            tab.setTotal(totalMount - error);
-            tab.setComments("Los datos de la mesa fueron ingrsados con posterirdad.");
-            daoT.saveTable(tab, dateCloseWs);
-            tab.setOrder(items);
-            for (int i = 0; i < tab.getOrder().size(); i++) {
-                daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
-            }
-            for (int i = 0; i < tab.getGifts().size(); i++) {
-                daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
-            }
-            daoU.saveWaiterTable(tab);
-            boolean confirm1 = utiliMsg.cargaConfirmNewTab();
-            if (confirm1) {
-                new TableAdder(ws, manager, null);
-                dispose();
+            if (tabAux == null) {
+                Table tab = new Table(num, "barra", manager.getUser());
+                tab.setDiscount(discount);
+                tab.setOpenTime(dateOpenTab);
+                tab.setCloseTime(dateCloseTab);
+                tab.setOpen(false);
+                tab.setBill(true);
+                double error = totalMount - sum;
+                tab.setError(error);
+                tab.setAmountCash(amountCash);
+                tab.setAmountElectronic(amountElec);
+                tab.setTotal(totalMount - error);
+                tab.setComments("Los datos de la mesa fueron ingresados con posterirdad.");
+                daoT.saveTable(tab, dateCloseWs);
+                tab.setOrder(items);
+                for (int i = 0; i < tab.getOrder().size(); i++) {
+                    daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
+                }
+                for (int i = 0; i < tab.getGifts().size(); i++) {
+                    daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
+                }
+                daoU.saveWaiterTable(tab);
+                boolean confirm1 = utiliMsg.cargaConfirmNewTab();
+                if (confirm1) {
+                    new TableAdder(ws, manager, null);
+                    dispose();
+                } else {
+                    ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
+                    dispose();
+                }
             } else {
-                ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
-                dispose();
+                tabAux.setDiscount(discount);
+                daoT.updateTableDiscount(tabAux);
+                tabAux.setCloseTime(dateCloseTab);
+                daoT.updateCloseTime(tabAux);
+                tabAux.setOpen(false);
+                daoT.updateTableOpen(tabAux);
+                tabAux.setBill(true);
+                daoT.updateTableBill(tabAux);
+                double error = totalMount - sum;
+                if (error > 0) {
+                    tabAux.setError(error);
+                    daoT.updateError(tabAux);
+                }
+                tabAux.setAmountCash(amountCash);
+                daoT.updateTableMountCash(tabAux);
+                tabAux.setAmountElectronic(amountElec);
+                daoT.updateTableMountElectronic(tabAux);
+                tabAux.setTotal(totalMount - error);
+                daoT.updateTableTotal(tabAux);
+                tabAux.setComments(tabAux.getComments() + "<br>" + "La mesa fue cerrada con posteridad por " + manager.getUser().getName() + " " + manager.getUser().getLastName() + ".");
+                daoT.updateComments(tabAux);
+                tabAux.setOrder(items);
+                daoI.downActiveItemOrderTableAll(tabAux);
+                for (int i = 0; i < tabAux.getOrder().size(); i++) {
+                    daoI.saveItemOrderTable(tabAux.getOrder().get(i), tabAux);
+                }
+                
+                tabAux.setGifts(itemsGift);
+                for (int i = 0; i < tabAux.getGifts().size(); i++) {
+                    daoI.saveItemGiftTable(tabAux.getGifts().get(i), tabAux);
+                }
+                
+                daoI.downActiveItemPayedTableAll(tabAux);
+                daoI.downActiveItemPayedNDTableAll(tabAux);
+                boolean confirm1 = utiliMsg.cargaConfirmNewTab();
+                if (confirm1) {
+                    new TableAdder(ws, manager, null);
+                    dispose();
+                } else {
+                    ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
+                    dispose();
+                }
             }
         }
     }
@@ -435,7 +479,7 @@ public class TableAdder extends FrameThird {
         ArrayList<Itemcard> itemsAux = utili.unRepeatItems2(items);
         ArrayList<Itemcard> partialsND = itemsPartialPayedND;
         ArrayList<Itemcard> gifts = itemsGift;
-        ArrayList<Itemcard>totalItems = itemsAux;
+        ArrayList<Itemcard> totalItems = itemsAux;
         totalItems.addAll(utili.unRepeatItems2(partialsND));
         totalItems.addAll(utili.unRepeatItems2(gifts));
         int rowsItems = totalItems.size();
@@ -444,14 +488,12 @@ public class TableAdder extends FrameThird {
         if (discount > 0) {
             aux += 1;
         }
-        
+
         if (partialsND.size() > 0) {
             aux += 1;
         }
-  
+
         data = (new String[rowsItems + aux][3]);
-//        int intAux = itemsAux.size();
-//        int intPartialND = intAux + partialsND.size();
         double disc = (double) discount / 100;
 
         for (int i = 0; i < totalItems.size(); i++) {
@@ -462,14 +504,14 @@ public class TableAdder extends FrameThird {
                 data[i][1] = " " + ic.getName();
                 data[i][2] = " " + ic.getPrice().get(0) * u * (1 - disc);
             }
-            
+
             if (partialsND.size() > 0 && i >= itemsAux.size() && i < (totalItems.size() - gifts.size())) {
                 int u = st.itemUnitsBacker(itemsPartialPayedND, ic);
                 data[i][0] = " " + u;
                 data[i][1] = " PAG.* " + ic.getName();
                 data[i][2] = "PAGADO";
-            }          
-            
+            }
+
             if (i >= totalItems.size() - gifts.size()) {
                 int u = st.itemUnitsBacker(itemsGift, ic);
                 data[i][0] = " " + u;
@@ -481,7 +523,7 @@ public class TableAdder extends FrameThird {
         if (discount > 0) {
             data[rowsItems][1] = "DESCUENTO: " + discount + "%";
         }
-        
+
         if (partialsND.size() > 0) {
             if (discount > 0) {
                 data[rowsItems][1] = "DESCUENTO: " + discount + "%";
@@ -531,8 +573,8 @@ public class TableAdder extends FrameThird {
                 double pr = ic.getPrice().get(0);
                 totalMount = totalMount + pr;
             }
-        }        
-        
+        }
+
         labelTot2.setText(totalMount + "");
         updateMount();
     }
@@ -624,20 +666,11 @@ public class TableAdder extends FrameThird {
         totalMount = 0;
         discount = 0;
         items = new ArrayList<>();
-        if (tabAux != null) {
-            items = tabAux.getOrder();
-        }
         itemsGift = new ArrayList<>();
-        if (tabAux != null) {
-            itemsGift = tabAux.getGifts();
-        }
         itemsPartialPayed = new ArrayList<>();
+        itemsPartialPayedND = new ArrayList<>();
         if (tabAux != null) {
-            itemsPartialPayed = tabAux.getPartialPayed();
-        }
-        itemsPartialPayedND = new ArrayList<>(); 
-        if (tabAux != null) {
-            itemsPartialPayedND = tabAux.getPartialPayedND();
+            setTabElements();
         }
         spinner.setValue(1);
         setTableItems();

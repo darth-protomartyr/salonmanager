@@ -79,8 +79,6 @@ public class BillDiscounter extends FrameWindow {
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 1);
         spinnerDiscount = new JSpinner(spinnerModel);
         spinnerDiscount.setBounds(anchoUnit * 7, altoUnit * 12, anchoUnit * 11, altoUnit * 10);
-//                anchoUnit * 5, altoUnit * 5, anchoUnit * 14, altoUnit * 8 
-
         spinnerDiscount.setBackground(bluLg);
         spinnerDiscount.setFont(new Font("Arial", Font.PLAIN, 75)); //
         panelPpal.add(spinnerDiscount);

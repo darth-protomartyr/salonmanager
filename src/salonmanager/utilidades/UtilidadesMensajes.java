@@ -15,441 +15,441 @@ public class UtilidadesMensajes extends JFrame {
 //Mensajes de confirmación    
 //Mensajes de confirmación    
     public void cargaCashFlowSuccess() {
-        CustomDialog cm = new CustomDialog("La operación fue confirmada.", 1);
+        CustomDialog cm = new CustomDialog("La operación fue confirmada", 1);
         cm.setVisible(true);
     }
 
     public void cargaError() {
-        CustomDialog cm = new CustomDialog("El error fue ingresado al sistema.", 1);
+        CustomDialog cm = new CustomDialog("El error fue ingresado al sistema", 1);
         cm.setVisible(true);
     }
 
     public void cargaItem() {
-        CustomDialog cm = new CustomDialog("El item de la Card fue cargado con éxito a la base de datos.", 1);
+        CustomDialog cm = new CustomDialog("El item de la Card fue cargado con éxito a la base de datos", 1);
         cm.setVisible(true);
     }
 
     public void cargaTableErase() {
-        CustomDialog cm = new CustomDialog("La orden fue cerrada con éxito.", 1);
+        CustomDialog cm = new CustomDialog("La orden fue cerrada con éxito", 1);
         cm.setVisible(true);
     }
 
     public void cargaGift(String item) {
-        CustomDialog cm = new CustomDialog("Se ingresó " + item + " a la lista de obsequios.", 1);
+        CustomDialog cm = new CustomDialog("Se ingresó " + item + " a la lista de obsequios", 1);
         cm.setVisible(true);
     }
 
     public void cargaLateWs() {
-        CustomDialog cm = new CustomDialog("Si no tiene los datos de cierre de caja del turno anterior, cierre la ventana. El administrador los podrá cargar luego.", 1);
+        CustomDialog cm = new CustomDialog("Si no tiene los datos de cierre de caja del turno anterior, cierre la ventana. El administrador los podrá cargar luego", 1);
         cm.setVisible(true);
     }
 
     public void cargaUsuario() {
-        CustomDialog cm = new CustomDialog("El usuario fue ingresado. El Administrador le asignara un rol a la brevedad.", 1);
+        CustomDialog cm = new CustomDialog("El usuario fue ingresado. El Administrador le asignara un rol a la brevedad", 1);
         cm.setVisible(true);
     }
 
     public void cargaWsDefer() {
-        CustomDialog cm = new CustomDialog("La carga de datos de cierre de turno fue almacenada para el posterior arbitraje del administrador.", 1);
+        CustomDialog cm = new CustomDialog("La carga de datos de cierre de turno fue almacenada para el posterior arbitraje del administrador", 1);
         cm.setVisible(true);
     }
 
     public void cargaAdvertNoData() {
-        CustomDialog cm = new CustomDialog("Si posee los datos de cierre de turno presione el botón ARBITRAR para que luego el administrador lo haga.", 1);
+        CustomDialog cm = new CustomDialog("Si posee los datos de cierre de turno presione el botón ARBITRAR para que luego el administrador lo haga", 1);
         cm.setVisible(true);
     }
 
     public void cargaSuccesMod() {
-        CustomDialog cm = new CustomDialog("Las modificaciones fueron realizadas con éxito.", 1);
+        CustomDialog cm = new CustomDialog("Las modificaciones fueron realizadas con éxito", 1);
         cm.setVisible(true);
     }
 
     public void cargaUserUpdate() {
-        CustomDialog cm = new CustomDialog("Se actualizó la información del Usuario.", 1);
+        CustomDialog cm = new CustomDialog("Se actualizó la información del Usuario", 1);
         cm.setVisible(true);
     }
 
     public void cargaUpdatePriceItemActive() {
-        CustomDialog cm = new CustomDialog("Precios actualizados, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
+        CustomDialog cm = new CustomDialog("Precios actualizados, el salon fue cerrado y deberá abrirlo para continuar con el turno", 1);
         cm.setVisible(true);
     }
 
     public void cargaUpdateCaptionItemActive() {
-        CustomDialog cm = new CustomDialog("Categorías actualizadas, el salon fue cerrado y deberá abrirlo para continuar con el turno.", 1);
+        CustomDialog cm = new CustomDialog("Categorías actualizadas, el salon fue cerrado y deberá abrirlo para continuar con el turno", 1);
         cm.setVisible(true);
     }
 
     //Mensajes Error
     //Mensajes Error
     public void errorPnlsMod() {
-        CustomDialog cm = new CustomDialog("No hay items para modificar.", 2);
+        CustomDialog cm = new CustomDialog("No hay items para modificar", 2);
         cm.setVisible(true);
     }
 
     public void errorModDisabled() {
-        CustomDialog cm = new CustomDialog("Los cambios globales no están habilitados.", 2);
+        CustomDialog cm = new CustomDialog("Los cambios globales no están habilitados", 2);
         cm.setVisible(true);
     }
 
     public void errorUserSelected() {
-        CustomDialog cm = new CustomDialog("No ha seleccionado usuario.", 2);
+        CustomDialog cm = new CustomDialog("No ha seleccionado usuario", 2);
         cm.setVisible(true);
     }
 
     public void cargaUpdateUsuario() {
-        CustomDialog cm = new CustomDialog("Los datos del usuario fueron actualizados.", 2);
+        CustomDialog cm = new CustomDialog("Los datos del usuario fueron actualizados", 2);
         cm.setVisible(true);
     }
 
     public void errorWsOpen() {
-        CustomDialog cm = new CustomDialog("Error: para corregir el faltante de dinero, el turno de la mesa debe estar cerrado.", 2);
+        CustomDialog cm = new CustomDialog("Error: para corregir el faltante de dinero, el turno de la mesa debe estar cerrado", 2);
         cm.setVisible(true);
     }
 
     public void errorForbbidenValue() {
-        CustomDialog cm = new CustomDialog("Error: el valor ingresado no se ajusta a los límites permitidos.", 2);
+        CustomDialog cm = new CustomDialog("Error: el valor ingresado no se ajusta a los límites permitidos", 2);
         cm.setVisible(true);
     }
 
     public void errorMultipleIndications() {
-        CustomDialog cm = new CustomDialog("Error: Las indicaciones se ingresan de forma individual para cada Item.", 2);
+        CustomDialog cm = new CustomDialog("Error: Las indicaciones se ingresan de forma individual para cada Item", 2);
         cm.setVisible(true);
     }
 
     public void errorIndiLenghtExcess() {
-        CustomDialog cm = new CustomDialog("Error: El texto de las indicaciones excede el límite de caracteres.", 2);
+        CustomDialog cm = new CustomDialog("Error: El texto de las indicaciones excede el límite de caracteres", 2);
         cm.setVisible(true);
     }
 
     public void errorUnnecesaryOp() {
-        CustomDialog cm = new CustomDialog("Error: es innecesario hacer el pago mixto.", 2);
+        CustomDialog cm = new CustomDialog("Error: es innecesario hacer el pago mixto", 2);
         cm.setVisible(true);
     }
 
     public void errorLackOfFunds() {
-        CustomDialog cm = new CustomDialog("Error: fondos insuficientes.", 2);
+        CustomDialog cm = new CustomDialog("Error: fondos insuficientes", 2);
         cm.setVisible(true);
     }
 
     public void errorCommentNull() {
-        CustomDialog cm = new CustomDialog("Error: Debe adjuntar la causa del faltante en los comentarios.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe adjuntar la causa del faltante en los comentarios", 2);
         cm.setVisible(true);
     }
 
     public void errorNullDates() {
-        CustomDialog cm = new CustomDialog("Error: el período consultado no arroja resultados.", 2);
+        CustomDialog cm = new CustomDialog("Error: el período consultado no arroja resultados", 2);
         cm.setVisible(true);
     }
 
     public void errorNullItemDates() {
-        CustomDialog cm = new CustomDialog("Error: el item consultado no arroja resultados.", 2);
+        CustomDialog cm = new CustomDialog("Error: el item consultado no arroja resultados", 2);
         cm.setVisible(true);
     }
 
     public void errorPeriodNull() {
-        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un período de tiempo.", 2);
+        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar un período de tiempo", 2);
         cm.setVisible(true);
     }
 
     public void errorNullSector() {
-        CustomDialog cm = new CustomDialog("Error: Aún no ha designado sectores a la configuración.", 2);
+        CustomDialog cm = new CustomDialog("Error: Aún no ha designado sectores a la configuración", 2);
         cm.setVisible(true);
     }
 
     public void errorNullTabsQ() {
-        CustomDialog cm = new CustomDialog("Error: Aún no se han designado las cantidades de mesas de todos de los sectores.", 2);
+        CustomDialog cm = new CustomDialog("Error: Aún no se han designado las cantidades de mesas de todos de los sectores", 2);
         cm.setVisible(true);
     }
 
     public void errorCatExcess() {
-        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 6 categorías permitidas.", 2);
+        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 6 categorías permitidas", 2);
         cm.setVisible(true);
     }
 
     public void errorSpacesExcess() {
-        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 8 sectores permitidos.", 2);
+        CustomDialog cm = new CustomDialog("Error: ya se han seleccionado los 8 sectores permitidos", 2);
         cm.setVisible(true);
     }
 
     public void errorRegistroFallido() {
-        CustomDialog cm = new CustomDialog("Error: No pudo realizarse el registro.", 2);
+        CustomDialog cm = new CustomDialog("Error: No pudo realizarse el registro", 2);
         cm.setVisible(true);
     }
 
     public void errorCantCharName() {
-        CustomDialog cm = new CustomDialog("Error: El nombre no debe superar los 20 caracteres.", 2);
+        CustomDialog cm = new CustomDialog("Error: El nombre no debe superar los 20 caracteres", 2);
         cm.setVisible(true);
     }
 
     public void errorCantCharNameUser() {
-        CustomDialog cm = new CustomDialog("Error: El número de caracteres no debe superar los 30.", 2);
+        CustomDialog cm = new CustomDialog("Error: El número de caracteres no debe superar los 30", 2);
         cm.setVisible(true);
     }
 
     public void errorPhoneNumber() {
-        CustomDialog cm = new CustomDialog("Error: El teléfono puede tener de 5 a 30 caracteres y estar formado por números, espacios en blanco, '+' y '-'.", 2);
+        CustomDialog cm = new CustomDialog("Error: El teléfono puede tener de 5 a 30 caracteres y estar formado por números, espacios en blanco, '+' y '-'", 2);
         cm.setVisible(true);
     }
 
     public void errorNameRepeat() {
-        CustomDialog cm = new CustomDialog("Error: El nombre ya se encuentra ingresado en nuestra base de datos.", 2);
+        CustomDialog cm = new CustomDialog("Error: El nombre ya se encuentra ingresado en nuestra base de datos", 2);
         cm.setVisible(true);
     }
 
     public void errorPhoneRepeat() {
-        CustomDialog cm = new CustomDialog("Error: El teléfono ya se encuentra ingresado en nuestra base de datos.", 2);
+        CustomDialog cm = new CustomDialog("Error: El teléfono ya se encuentra ingresado en nuestra base de datos", 2);
         cm.setVisible(true);
     }
 
     public void errorMailRepeat() {
-        CustomDialog cm = new CustomDialog("Error: El mail ya se encuentra ingresado en nuestra base de datos.", 2);
+        CustomDialog cm = new CustomDialog("Error: El mail ya se encuentra ingresado en nuestra base de datos", 2);
         cm.setVisible(true);
     }
 
     public void errorMail() {
-        CustomDialog cm = new CustomDialog("Error: el mail ingresado no es válido.", 2);
+        CustomDialog cm = new CustomDialog("Error: el mail ingresado no es válido", 2);
         cm.setVisible(true);
     }
 
     public void errorPassChar() {
-        CustomDialog cm = new CustomDialog("Error: el password debe tener entre 8 y 30 caracteres.", 2);
+        CustomDialog cm = new CustomDialog("Error: el password debe tener entre 8 y 30 caracteres", 2);
         cm.setVisible(true);
     }
 
     public void errorPassCoincidence() {
-        CustomDialog cm = new CustomDialog("Error: las contraseñas ingresadas no coinciden.", 2);
+        CustomDialog cm = new CustomDialog("Error: las contraseñas ingresadas no coinciden", 2);
         cm.setVisible(true);
     }
 
     public void errorDataNull() {
-        CustomDialog cm = new CustomDialog("Error: Usted no ingresó todos los datos requeridos.", 2);
+        CustomDialog cm = new CustomDialog("Error: Usted no ingresó todos los datos requeridos", 2);
         cm.setVisible(true);
     }
 
     public void errorUserNull() {
-        CustomDialog cm = new CustomDialog("Error: no hay un usuario registrado con el mail ingresado.", 2);
+        CustomDialog cm = new CustomDialog("Error: no hay un usuario registrado con el mail ingresado", 2);
         cm.setVisible(true);
     }
 
     public void errorAccessDenied() {
-        CustomDialog cm = new CustomDialog("Error: Acceso denegado.", 2);
+        CustomDialog cm = new CustomDialog("Error: Acceso denegado", 2);
         cm.setVisible(true);
     }
 
     public void errorCantCharDescription() {
-        CustomDialog cm = new CustomDialog("Error: el número de caracteres el límite establecido en uno de los campos.", 2);
+        CustomDialog cm = new CustomDialog("Error: el número de caracteres el límite establecido en uno de los campos", 2);
         cm.setVisible(true);
     }
 
     public void errorNumerico() {
-        CustomDialog cm = new CustomDialog("Error: el dato ingresado no es numérico.", 2);
+        CustomDialog cm = new CustomDialog("Error: el dato ingresado no es numérico", 2);
         cm.setVisible(true);
     }
 
     public void errorCantCharNum() {
-        CustomDialog cm = new CustomDialog("Error: el número de caracteres del numero ingresado no debe superar los 12.", 2);
+        CustomDialog cm = new CustomDialog("Error: el número de caracteres del numero ingresado no debe superar los 12", 2);
         cm.setVisible(true);
     }
 
     public void errorIngresoItem() {
-        CustomDialog cm = new CustomDialog("Error: no se generó un item.", 2);
+        CustomDialog cm = new CustomDialog("Error: no se generó un item", 2);
         cm.setVisible(true);
     }
 
     public void errorNameItem() {
-        CustomDialog cm = new CustomDialog("Error: item debe tener un nombre.", 2);
+        CustomDialog cm = new CustomDialog("Error: item debe tener un nombre", 2);
         cm.setVisible(true);
     }
 
     public void errorPriceItem() {
-        CustomDialog cm = new CustomDialog("Error: el item debe tener un precio.", 2);
+        CustomDialog cm = new CustomDialog("Error: el item debe tener un precio", 2);
         cm.setVisible(true);
     }
 
     public void errorCargaDB() {
-        CustomDialog cm = new CustomDialog("Error: no pudo cargarse la información en la Base de Datos.", 2);
+        CustomDialog cm = new CustomDialog("Error: no pudo cargarse la información en la Base de Datos", 2);
         cm.setVisible(true);
     }
 
     public void errorSeleccion() {
-        CustomDialog cm = new CustomDialog("Error: Ningún elemento fue seleccionado.", 2);
+        CustomDialog cm = new CustomDialog("Error: Ningún elemento fue seleccionado", 2);
         cm.setVisible(true);
     }
 
     public void errorWaiterNull() {
-        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar una mesa, pedido en barra o delivery del panel ubicado a la izquierda.", 2);
+        CustomDialog cm = new CustomDialog("Error: Antes debe seleccionar una mesa, pedido en barra o delivery del panel ubicado a la izquierda", 2);
         cm.setVisible(true);
     }
 
     public void errorItemsTableNull() {
-        CustomDialog cm = new CustomDialog("Error: Imposible realizar esta acción antes debe haber items cargados en la orden.", 2);
+        CustomDialog cm = new CustomDialog("Error: Imposible realizar esta acción antes debe haber items cargados en la orden", 2);
         cm.setVisible(true);
     }
 
     public void errorItemGift(String item) {
-        CustomDialog cm = new CustomDialog("Error: No queda " + item + " por obsequiar en esta orden.", 2);
+        CustomDialog cm = new CustomDialog("Error: No queda " + item + " por obsequiar en esta orden", 2);
         cm.setVisible(true);
     }
 
     public void errorBillSend() {
-        CustomDialog cm = new CustomDialog("Error: La cuenta ya fue enviada, no se puede realizar la acción.", 2);
+        CustomDialog cm = new CustomDialog("Error: La cuenta ya fue enviada, no se puede realizar la acción", 2);
         cm.setVisible(true);
     }
 
     public void errorTotalLess() {
-        CustomDialog cm = new CustomDialog("Error: el monto ingtresado es mayor o igual al Total de la cuenta.", 2);
+        CustomDialog cm = new CustomDialog("Error: el monto ingtresado es mayor o igual al Total de la cuenta", 2);
         cm.setVisible(true);
     }
 
     public void errorMountNull() {
-        CustomDialog cm = new CustomDialog("Error: No ha ingresado ingresado ningún monto.", 2);
+        CustomDialog cm = new CustomDialog("Error: No ha ingresado ingresado ningún monto", 2);
         cm.setVisible(true);
     }
 
     public void errorBillUnsend() {
-        CustomDialog cm = new CustomDialog("Error: La acción no puede realizarse, el cierre de la orden no ha sido iniciado.", 2);
+        CustomDialog cm = new CustomDialog("Error: La acción no puede realizarse, el cierre de la orden no ha sido iniciado", 2);
         cm.setVisible(true);
     }
 
     public void errorItemNull() {
-        CustomDialog cm = new CustomDialog("Error: No seleccionó ningún Item.", 2);
+        CustomDialog cm = new CustomDialog("Error: No seleccionó ningún Item", 2);
         cm.setVisible(true);
     }
 
     public void errorDiscountRepeat() {
-        CustomDialog cm = new CustomDialog("Error: Ya fue aplicado un descuento y no puede ser modificado.", 2);
+        CustomDialog cm = new CustomDialog("Error: Ya fue aplicado un descuento y no puede ser modificado", 2);
         cm.setVisible(true);
     }
 
     public void errorIngresoNum() {
-        CustomDialog cm = new CustomDialog("El número de la mesa no fue ingresado.", 2);
+        CustomDialog cm = new CustomDialog("El número de la mesa no fue ingresado", 2);
         cm.setVisible(true);
     }
 
     public void errorIngresoPos() {
-        CustomDialog cm = new CustomDialog("Error: La ubicación de la mesa no fue ingresada.", 2);
+        CustomDialog cm = new CustomDialog("Error: La ubicación de la mesa no fue ingresada", 2);
         cm.setVisible(true);
     }
 
     public void errorIngresoOpenTime() {
-        CustomDialog cm = new CustomDialog("Error: El momento de apertura de la oreden no fue ingresado.", 2);
+        CustomDialog cm = new CustomDialog("Error: El momento de apertura de la oreden no fue ingresado", 2);
         cm.setVisible(true);
     }
 
     public void errorIngresoId() {
-        CustomDialog cm = new CustomDialog("Error: La orden no tiene identificador.", 2);
+        CustomDialog cm = new CustomDialog("Error: La orden no tiene identificador", 2);
         cm.setVisible(true);
     }
 
     public void errorMixedPayUp() {
-        CustomDialog cm = new CustomDialog("Error: Debe ingresar el pago mixto en la parte inferior del cuadro o cerrar la ventana y volverla abrir.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe ingresar el pago mixto en la parte inferior del cuadro o cerrar la ventana y volverla abrir", 2);
         cm.setVisible(true);
     }
 
     public void errorWorkshift() {
-        CustomDialog cm = new CustomDialog("Error: Debe iniciar un turno antes de iniciar esta acción.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe iniciar un turno antes de iniciar esta acción", 2);
         cm.setVisible(true);
     }
 
     public void errorCashierNull() {
-        CustomDialog cm = new CustomDialog("Error: No hay un cajero para administrar el salón.", 2);
+        CustomDialog cm = new CustomDialog("Error: No hay un cajero para administrar el salón", 2);
         cm.setVisible(true);
     }
 
     public void errorNameLength(int large) {
-        CustomDialog cm = new CustomDialog("Error: el nombre no debe tener más de " + large + " caracteres.", 2);
+        CustomDialog cm = new CustomDialog("Error: el nombre no debe tener más de " + large + " caracteres", 2);
         cm.setVisible(true);
     }
 
     public void errorUnconfirmTable() {
-        CustomDialog cm = new CustomDialog("Error: No ha cofirmado los sectores y/o las cantidades de mesas.", 2);
+        CustomDialog cm = new CustomDialog("Error: No ha cofirmado los sectores y/o las cantidades de mesas", 2);
         cm.setVisible(true);
     }
 
     public void errorTableResume() {
-        CustomDialog cm = new CustomDialog("Error: no hay órdenes con esas características.", 2);
+        CustomDialog cm = new CustomDialog("Error: no hay órdenes con esas características", 2);
         cm.setVisible(true);
     }
 
     public void itemNull() {
-        CustomDialog cm = new CustomDialog("Error: no se registraron items en esta lista.", 2);
+        CustomDialog cm = new CustomDialog("Error: no se registraron items en esta lista", 2);
         cm.setVisible(true);
     }
 
     public void errorEmptyCause() {
-        CustomDialog cm = new CustomDialog("Error: debe ingresar el comentario.", 2);
+        CustomDialog cm = new CustomDialog("Error: debe ingresar el comentario", 2);
         cm.setVisible(true);
     }
 
     void configNull() {
-        CustomDialog cm = new CustomDialog("Error: No hay una configuración habilitada.", 2);
+        CustomDialog cm = new CustomDialog("Error: No hay una configuración habilitada", 2);
         cm.setVisible(true);
     }
 
     public void erroNotNewButton() {
-        CustomDialog cm = new CustomDialog("Error: Antes de crear un nuevo pedido debe dar inicio al anterior.", 2);
+        CustomDialog cm = new CustomDialog("Error: Antes de crear un nuevo pedido debe dar inicio al anterior", 2);
         cm.setVisible(true);
     }
 
     public void errorInsufficientMount() {
-        CustomDialog cm = new CustomDialog("Error: El monto ingresado no cubre el valor gastado.", 2);
+        CustomDialog cm = new CustomDialog("Error: El monto ingresado no cubre el valor gastado", 2);
         cm.setVisible(true);
     }
 
     public void errorTableNull() {
-        CustomDialog cm = new CustomDialog("Error: No se ha seleccionado una orden.", 2);
+        CustomDialog cm = new CustomDialog("Error: No se ha seleccionado una orden", 2);
         cm.setVisible(true);
     }
 
     public void errorCat() {
-        CustomDialog cm = new CustomDialog("Error: no hay Items en esta Categoría.", 2);
+        CustomDialog cm = new CustomDialog("Error: no hay Items en esta Categoría", 2);
         cm.setVisible(true);
     }
 
     public void errorCatSelection() {
-        CustomDialog cm = new CustomDialog("Error: No ha seleccionado una categoría.", 2);
+        CustomDialog cm = new CustomDialog("Error: No ha seleccionado una categoría", 2);
         cm.setVisible(true);
     }
 
     public void errorCatEqual() {
-        CustomDialog cm = new CustomDialog("Error: la categoría seleccionada es igual a la del item.", 2);
+        CustomDialog cm = new CustomDialog("Error: la categoría seleccionada es igual a la del item", 2);
         cm.setVisible(true);
     }
 
     public void errorDeliveryNull() {
-        CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un usuario Delivery para realizar el envío.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un usuario Delivery para realizar el envío", 2);
         cm.setVisible(true);
     }
 
     public void errorConsumerNull() {
-        CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un cliente para realizar el envío.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe crear o seleccionar un cliente para realizar el envío", 2);
         cm.setVisible(true);
     }
 
     public void errorEmptyFields() {
-        CustomDialog cm = new CustomDialog("Error: Todos los campos deben ser completados.", 2);
+        CustomDialog cm = new CustomDialog("Error: Todos los campos deben ser completados", 2);
         cm.setVisible(true);
     }
 
     public void errorNullDeli() {
-        CustomDialog cm = new CustomDialog("Error: Aún no hay se han asignado datos al envío.", 2);
+        CustomDialog cm = new CustomDialog("Error: Aún no hay se han asignado datos al envío", 2);
         cm.setVisible(true);
     }
 
     public void errorWsPendient() {
-        CustomDialog cm = new CustomDialog("Error: Hay un Turno pendiente y no se puede reconfigurar el salón.", 2);
+        CustomDialog cm = new CustomDialog("Error: Hay un Turno pendiente y no se puede reconfigurar el salón", 2);
         cm.setVisible(true);
     }
 
     public void errorCategoriesNull() {
-        CustomDialog cm = new CustomDialog("Error: Debe ingresar hasta 6 categorías de venta.", 2);
+        CustomDialog cm = new CustomDialog("Error: Debe ingresar hasta 6 categorías de venta", 2);
         cm.setVisible(true);
     }
 
     //Mensaje de optativos
     //Mensaje de optativos
     public boolean cargaConfirmRestart() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presiona ACEPTAR se realizará la acción, el programa se cerrará y deberá reiniciarlo.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presiona ACEPTAR se realizará la acción, el programa se cerrará y deberá reiniciarlo");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -548,7 +548,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmarCierre() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar el cierre de la órden, recuerde que no podrá agregar obsequios ni descuentos.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar el cierre de la órden, recuerde que no podrá agregar obsequios ni descuentos");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -597,7 +597,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmarUpdateActiveTabs() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea que el precio modificado NO se actualice en las mesas que ya lo ordenaron, presione ACEPTAR.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea que el precio modificado NO se actualice en las mesas que ya lo ordenaron, presione ACEPTAR");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -669,7 +669,7 @@ public class UtilidadesMensajes extends JFrame {
     ////------------------------------Reubicar------------------------------------------
     ////------------------------------Reubicar------------------------------------------
     public void errorDiferentCashier() {
-        CustomDialog cm = new CustomDialog("Error: Hay un turno iniciado con cajero diferente al usuario con el que inició la sesión actual.", 2);
+        CustomDialog cm = new CustomDialog("Error: Hay un turno iniciado con cajero diferente al usuario con el que inició la sesión actual", 2);
         cm.setVisible(true);
     }
 
@@ -693,7 +693,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmarCierreTurnoError() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si posee el dinero y la información del turno anterior, presione ACEPTAR para completar la información.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si posee el dinero y la información del turno anterior, presione ACEPTAR para completar la información");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;       
@@ -705,21 +705,21 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmAddTables() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si en el turno anterior se facturaron nuevas mesas, presione ACEPTAR para cargar la información.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si en el turno anterior se facturaron nuevas mesas, presione ACEPTAR para cargar la información");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;  
-    }
-
-    public void cargaLoadTabAdvert() {
-        CustomDialog cm = new CustomDialog("Recuerde que solo podrá ingresar monto final y el error en caso de producirse", 1);
-        cm.setVisible(true); 
     }
 
     public boolean cargaConfirmNewTab() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("La mesa fue cargada. Si desea ingresar una nueva mesa presione ACEPTAR.");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("La mesa fue cargada. Si desea ingresar una nueva mesa presione ACEPTAR");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;  
+    }
+
+    public void errorTabsToResolve() {
+        CustomDialog cm = new CustomDialog("Error: Para continuar debe resolver las mesas del turno", 2);
+        cm.setVisible(true); 
     }
 }

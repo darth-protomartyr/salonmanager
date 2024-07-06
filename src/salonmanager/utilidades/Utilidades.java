@@ -659,6 +659,13 @@ public class Utilidades {
         } else {
             st += "<br>No se registraron items obsequiados.<br>";
         }
+        
+        st += "<br>LISTA DE ITEMS PAGADOS SIN DESCUENTO";
+        if (ta.getGifts().size() > 0) {
+            st += listarItemsQuant(ta.getGifts());
+        } else {
+            st += "<br>No se registraron items obsequiados.<br>";
+        }       
 
         if (ta.getComments().equals("")) {
             st += "<br>COMENTARIOS:<br>" + "No se registraron.";
@@ -714,11 +721,11 @@ public class Utilidades {
         return hour;
     }
 
-    public ArrayList<Itemcard> unRepeatItems(ArrayList<Itemcard> items) {
-        HashSet<Itemcard> hs = new HashSet<>(items);
-        items = new ArrayList<>(hs);
-        return items;
-    }
+//    public ArrayList<Itemcard> unRepeatItems(ArrayList<Itemcard> items) {
+//        HashSet<Itemcard> hs = new HashSet<>(items);
+//        items = new ArrayList<>(hs);
+//        return items;
+//    }
 
     public ArrayList<Itemcard> unRepeatItems2(ArrayList<Itemcard> items) {
         Collections.sort(items, new Comparator<Itemcard>() {

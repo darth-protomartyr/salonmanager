@@ -37,32 +37,20 @@ public class MoneyType extends FrameWindow {
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    Utilidades utili = new Utilidades();
-    ServicioTable st = new ServicioTable();
-    ServicioSalon ss = new ServicioSalon();
     SalonManager sm = new SalonManager();
 
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color narLg = new Color(252, 203, 5);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
 
-    Table tab = new Table();
     Salon salon = null;
     boolean endex = false; //cierre o no de la operación
     double total = 0;
     double cash = 0;
     double electronic = 0;
-//    boolean mixedPay = false;
     ArrayList<Double> amounts = new ArrayList<>();
     ArrayList<Itemcard> itemsPayed = null;
     int cashMix = 0;
 
-    JLabel labelSubTotal = new JLabel();
     JLabel labelMixed = new JLabel();
     JLabel labelChange = new JLabel();
     JTextField fieldAmountCash = new JTextField();
@@ -76,7 +64,6 @@ public class MoneyType extends FrameWindow {
     public MoneyType(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed1, double amountToPay) {
         salon = sal;
         sm.addFrame(this);
-        tab = salon.getTableAux();
         itemsPayed = itemsPayed1;
         endex = end;
         total = amountToPay;
@@ -120,7 +107,6 @@ public class MoneyType extends FrameWindow {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-
                     butMixedIn.setVisible(false);
                     butCashIn.setVisible(false);
                     butElectronicIn.setVisible(false);

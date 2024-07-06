@@ -193,26 +193,6 @@ public class Salon extends FrameFull {
 
         cfgAct = cfgA;
 
-        if (cfgAct.isOpenWs()) {
-            workshiftNow = daoW.askWorshiftById(cfgAct.getOpenIdWs());
-            User cashier = daoU.getCashierByWorkshift(workshiftNow.getId());
-            if (cashier.getId() != null) {
-                workshiftNow.setCashierWs(cashier);
-            }
-
-            cashFlowCash = workshiftNow.getCashFlowWsCash();
-            cashFlowElec = workshiftNow.getCashFlowWsElec();
-            ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
-            if (tabs.size() > 0) {
-                prevTabs = tabs;
-            }
-
-            if (prevTabs.size() > 0) {
-                utiliGrafSal.tableManager(prevTabs, sal);
-                prevTabs = new ArrayList<>();
-            }
-        }
-
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
 //HEADER---------------------------------------------------------------------------------------------------------------
@@ -375,6 +355,26 @@ public class Salon extends FrameFull {
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------
+        if (cfgAct.isOpenWs()) {
+            workshiftNow = daoW.askWorshiftById(cfgAct.getOpenIdWs());
+            User cashier = daoU.getCashierByWorkshift(workshiftNow.getId());
+            if (cashier.getId() != null) {
+                workshiftNow.setCashierWs(cashier);
+            }
+
+            cashFlowCash = workshiftNow.getCashFlowWsCash();
+            cashFlowElec = workshiftNow.getCashFlowWsElec();
+            ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
+            if (tabs.size() > 0) {
+                prevTabs = tabs;
+            }
+
+            if (prevTabs.size() > 0) {
+                utiliGrafSal.tableManager(prevTabs, sal);
+                prevTabs = new ArrayList<>();
+            }
+        }
+
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
             @Override

@@ -1149,7 +1149,7 @@ public class UtilidadesGraficasSalon {
             }
             salon.getTableAux().setOrder(salon.getItemsTableAux());
             salon.getSpinnerUnitsItem().setValue(1);
-            salon.setTotal(ss.countBill(salon.getTableAux(), salon));
+            salon.setTotal(ss.countBill(salon.getTableAux(), salon, false));
             salon.getTableAux().setTotal(salon.getTotal());
             daoT.updateTableTotal(salon.getTableAux());
             ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
@@ -1174,11 +1174,11 @@ public class UtilidadesGraficasSalon {
     }
 
     public void setTableItems(Salon salon) {
-        ArrayList<Itemcard> itemsAux = utili.unRepeatItems(salon.getItemsTableAux());
-        ArrayList<Itemcard> partials = utili.unRepeatItems(salon.getItemsPartialPaid());
-        ArrayList<Itemcard> partialsND = utili.unRepeatItems(salon.getItemsPartialPaidNoDiscount());
-        ArrayList<Itemcard> gifts = utili.unRepeatItems(salon.getItemsGift());
-        ArrayList<Itemcard> totalItems = utili.unRepeatItems(itemsAux);
+        ArrayList<Itemcard> itemsAux = utili.unRepeatItems2(salon.getItemsTableAux());
+        ArrayList<Itemcard> partials = utili.unRepeatItems2(salon.getItemsPartialPaid());
+        ArrayList<Itemcard> partialsND = utili.unRepeatItems2(salon.getItemsPartialPaidNoDiscount());
+        ArrayList<Itemcard> gifts = utili.unRepeatItems2(salon.getItemsGift());
+        ArrayList<Itemcard> totalItems = utili.unRepeatItems2(itemsAux);
 
         totalItems.addAll(partials);
         totalItems.addAll(partialsND);
@@ -1194,7 +1194,7 @@ public class UtilidadesGraficasSalon {
         if (salon.getPriceCorrection() > 0) {
             aux += 1;
         }
-        
+
         if (salon.getItemsPartialPaidNoDiscount().size() > 0) {
             aux += 1;
         }
@@ -1358,12 +1358,12 @@ public class UtilidadesGraficasSalon {
     }
 
     private void discounter(Salon salon) {
-        if (salon.getItemsPartialPaid().size() > 0) {
-            salon.setItemsPartialPaidNoDiscount(salon.getItemsPartialPaid());
-            salon.setItemsPartialPaid(new ArrayList<>());
-            salon.getTableAux().setPartialPayedND(salon.getItemsPartialPaidNoDiscount());
-            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
-        }
+//        if (salon.getItemsPartialPaid().size() > 0) {
+//            salon.setItemsPartialPaidNoDiscount(salon.getItemsPartialPaid());
+//            salon.setItemsPartialPaid(new ArrayList<>());
+//            salon.getTableAux().setPartialPayedND(salon.getItemsPartialPaidNoDiscount());
+//            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
+//        }
         BillDiscounter bd = new BillDiscounter(salon, null);
         bd.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         bd.setAlwaysOnTop(true);
@@ -1411,7 +1411,7 @@ public class UtilidadesGraficasSalon {
 //TABLE CLOSER.........................................................................................................
 //TABLE CLOSER.........................................................................................................
     public void tableClose(Salon salon) throws Exception {
-        salon.setTotal(ss.countBill(salon.getTableAux(), salon));
+        salon.setTotal(ss.countBill(salon.getTableAux(), salon, false));
         salon.getTableAux().setTotal(salon.getTotal());
         daoT.updateTableTotal(salon.getTableAux());
         salon.getTableAux().setBill(true);
@@ -1457,7 +1457,6 @@ public class UtilidadesGraficasSalon {
         daoT.updateTableMountCash(salon.getTableAux());
         daoT.updateTableMountElectronic(salon.getTableAux());
         daoT.updateCloseTime(salon.getTableAux());
-
         if (itemsPayed != null) {
             if (endex == true) {
                 ss.totalPayTaker(itemsPayed, salon);
@@ -1471,8 +1470,7 @@ public class UtilidadesGraficasSalon {
             salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
             sis.createItemSale(salon);
             salon.getTableAux().setOrder(salon.getItemsTableAux());
-            salon.setTotal(ss.countBill(salon.getTableAux(), salon));
-
+            salon.setTotal(ss.countBill(salon.getTableAux(), salon, true));
             salon.getTableAux().setTotal(salon.getTotal());
             daoT.updateTableTotal(salon.getTableAux());
             salon.getTableAux().setOpen(false);
@@ -1488,6 +1486,16 @@ public class UtilidadesGraficasSalon {
 
         if (endex == true) {
             salon.setItemsMntr(sim.downOpenIMon(salon.getItemsMntr(), salon.getTableAux()));
+            if (salon.getTableAux().getPartialPayed().size() > 0) {
+                for (int i = 0; i < salon.getTableAux().getPartialPayed().size(); i++) {
+                    Itemcard ic = salon.getTableAux().getPartialPayed().get(i);
+                    daoI.downActiveItemPayedTable(ic, salon.getTableAux());
+                    daoI.upActiveItemOrderTable(ic, salon.getTableAux());
+                    salon.setTotal(ss.countBill(salon.getTableAux(), salon, true));
+                    salon.getTableAux().setTotal(salon.getTotal());
+                    daoT.updateTableTotal(salon.getTableAux());
+                }
+            }
             tablePaid(salon);
         }
         salon.setEnabled(true);

@@ -22,6 +22,7 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
+import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -31,6 +32,7 @@ public class Admin extends FrameHalf {
 
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
+    DAOWorkshift daoW = new DAOWorkshift();
     ServicioTable st = new ServicioTable();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -42,12 +44,15 @@ public class Admin extends FrameHalf {
     ArrayList<User> users = new ArrayList<>();
     ArrayList<String> defer1 = new ArrayList<>();
     ArrayList<String> defer2 = new ArrayList<>();
+    ArrayList<Integer> defer1Ws = new ArrayList<>();
+    ArrayList<Integer> defer2Ws = new ArrayList<>();
     Table tabAux = null;
     User userMod = null;
     JComboBox comboUsers = new JComboBox();
     JComboBox comboAct = new JComboBox();
     JComboBox comboRol = new JComboBox();
     JComboBox comboTabs = new JComboBox();
+    JComboBox comboWs = new JComboBox();
     JLabel labelUserMod = null;
     Admin adm = null;
     Manager manager = null;
@@ -190,7 +195,7 @@ public class Admin extends FrameHalf {
         JPanel panelTables = new JPanel();
         panelTables.setLayout(null);
         panelTables.setBackground(bluLg);
-        panelTables.setBounds(anchoUnit * 26, altoUnit * 10, anchoUnit * 23, altoUnit * 47);
+        panelTables.setBounds(anchoUnit * 26, altoUnit * 10, anchoUnit * 23, altoUnit * 23);
         panelPpal.add(panelTables);
 
         defer1 = cfgAct.getArrayDeferWs();
@@ -201,13 +206,13 @@ public class Admin extends FrameHalf {
         labelTables.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
         panelTables.add(labelTables);
 
-        comboTabs.setBounds(anchoUnit * 5, altoUnit * 7, anchoUnit * 13, altoUnit * 4);
+        comboTabs.setBounds(anchoUnit * 5, altoUnit * 8, anchoUnit * 13, altoUnit * 4);
         comboTabs.setModel(utili.categoryComboModelReturn(defer2));
         comboTabs.setSelectedItem("");
         comboTabs.setFont(newFont);
         panelTables.add(comboTabs);
 
-        JButtonMetalBlu butSelTabs = utiliGraf.button2("Elegir Mesa", anchoUnit * 5, altoUnit * 13, anchoUnit * 13);
+        JButtonMetalBlu butSelTabs = utiliGraf.button2("Elegir Mesa", anchoUnit * 5, altoUnit * 15, anchoUnit * 13);
         butSelTabs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -220,6 +225,40 @@ public class Admin extends FrameHalf {
         });
         panelTables.add(butSelTabs);
 
+//----------------Panel Workshifts -------------------------------------------
+//----------------Panel Workshifts -------------------------------------------
+        JPanel panelWs = new JPanel();
+        panelWs.setLayout(null);
+        panelWs.setBackground(bluLg);
+        panelWs.setBounds(anchoUnit * 26, altoUnit * 34, anchoUnit * 23, altoUnit * 23);
+        panelPpal.add(panelWs);
+
+        defer1Ws = daoW.listarErrorId();
+//        defer2Ws = utili.tabsEasyReader(defer1);
+
+        JLabel labelWs = utiliGraf.labelTitleBacker1("Administrar Turnos erróneos");
+        labelWs.setHorizontalAlignment(SwingConstants.CENTER);
+        labelWs.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
+        panelWs.add(labelWs);
+
+        comboWs.setBounds(anchoUnit * 5, altoUnit * 8, anchoUnit * 13, altoUnit * 4);
+        comboWs.setModel(utili.categoryComboModelReturn(defer2));
+        comboWs.setSelectedItem("");
+        comboWs.setFont(newFont);
+        panelWs.add(comboWs);
+
+        JButtonMetalBlu butSelWs = utiliGraf.button2("Elegir Turno", anchoUnit * 5, altoUnit * 15, anchoUnit * 13);
+        butSelWs.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    selectTab();
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelWs.add(butSelWs);
 //----------------Panel Items-------------------------------------------------
 //----------------Panel Items-------------------------------------------------
         JPanel panelItems = panelCreator("Administrar Items", 59, 15);
@@ -333,16 +372,15 @@ public class Admin extends FrameHalf {
         } else {
             utiliMsg.errorDataNull();
         }
-    }  
-    
-    
+    }
+
     private void reset() {
         comboUsers.setSelectedItem("");
         comboAct.setSelectedItem("");
         comboRol.setSelectedItem("");
         userMod = null;
         labelUserMod.setText("");
-        
+
         comboTabs.setSelectedItem("");
         tabAux = null;
     }

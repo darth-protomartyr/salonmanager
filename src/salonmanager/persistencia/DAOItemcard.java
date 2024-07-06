@@ -467,7 +467,7 @@ public class DAOItemcard extends DAO {
 //Tabla ItemcardpayedND_tabs-----------------------------------------------------------------------      
     public void saveItemPayedNDTable(Itemcard ic, Table tab) throws Exception {
         try {
-            String sql = "INSERT INTO itemcard_payed_nd_tabs( itemcard_payed_nd_tabs_active,itemcard_payed_nd_id_fkey, table_id_fkey) ";
+            String sql = "INSERT INTO itemcard_payed_nd_tabs( itemcard_payed_nd_tab_active, itemcard_payed_nd_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES(" + true + ", " + ic.getId() + ", '" + tab.getId() + "');";
             sql += parcialA;
             System.out.println(sql);

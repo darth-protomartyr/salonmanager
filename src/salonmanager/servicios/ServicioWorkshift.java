@@ -21,21 +21,18 @@ import salonmanager.persistencia.DAOWorkshift;
  * @author Gonzalo
  */
 public class ServicioWorkshift {
-
     DAOConfig daoC = new DAOConfig();
     DAOItemcard daoI = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioTable st = new ServicioTable();
-    
     public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs, Salon salon) throws Exception {
         boolean isTabs = false;
-
         if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
             isTabs = true;
         }
-        
+
         daoW.updateWorkshiftCash(actualWs);
         daoW.updateWorkshiftElectronic(actualWs);
         daoW.updateWorkshiftTotal(actualWs);

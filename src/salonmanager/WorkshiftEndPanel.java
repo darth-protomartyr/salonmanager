@@ -461,7 +461,10 @@ public class WorkshiftEndPanel extends FrameHalf {
         }
         try {
             double realAmount = parseDouble(real);
-            double realError = (realAmount - cashComplete) * (-1);
+            double realError = (realAmount - cashComplete);
+            if (error < 0) {
+                realError *= (-1);
+            }
             realError = utili.round2Dec(realError);
             boolean confirm = false;
             if (realError > 0) {
