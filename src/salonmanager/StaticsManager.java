@@ -232,8 +232,8 @@ public class StaticsManager extends FrameFull {
         }
         
         for (int i = 0; i < workshifts.size(); i++) {
-            errorTab += workshifts.get(i).getErrorMountWs();
-            errorWs += workshifts.get(i).getErrorMountRealWs() - workshifts.get(i).getErrorMountWs();
+            errorTab += workshifts.get(i).getErrorMountTabs();
+            errorWs += workshifts.get(i).getErrorMountWs() - workshifts.get(i).getErrorMountTabs();
         }
 
         for (int i = 0; i < categories.size(); i++) {

@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import static java.awt.font.TextAttribute.FONT;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -20,7 +21,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.ListModel;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameThird;
@@ -44,6 +50,7 @@ public class ConfigSalonFrame extends FrameThird {
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
+    Font font1 = new Font("Arial", Font.BOLD, 20);
     SalonManager sm = new SalonManager();
 
     JList listSpaces = new JList();
@@ -67,7 +74,7 @@ public class ConfigSalonFrame extends FrameThird {
     JButtonMetalBlu butReset = null;
     JButtonMetalBlu butAddSpace = null;
     JButtonMetalBlu butAddCategory = null;
-
+    JSpinner spinnerTip = new JSpinner();
     String data1 = "";
     String data2 = "";
 
@@ -123,7 +130,7 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         JScrollPane jSSpaces = new JScrollPane(listSpaces);
-        jSSpaces.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 8, altoUnit * 10);
+        jSSpaces.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 8, altoUnit * 8);
         panelPpal.add(jSSpaces);
 
         JLabel labelItemsSel = utiliGraf.labelTitleBacker3W("Sectores Seleccionados");
@@ -141,10 +148,10 @@ public class ConfigSalonFrame extends FrameThird {
         });
 
         JScrollPane jSSelected = new JScrollPane(listSelected);
-        jSSelected.setBounds(anchoUnit * 15, altoUnit * 11, anchoUnit * 8, altoUnit * 10);
+        jSSelected.setBounds(anchoUnit * 15, altoUnit * 11, anchoUnit * 8, altoUnit * 8);
         panelPpal.add(jSSelected);
 
-        butAddSpace = utiliGraf.button3("Crear Espacio", anchoUnit * 24, altoUnit * 18, anchoUnit * 9);
+        butAddSpace = utiliGraf.button3("Crear Espacio", anchoUnit * 24, altoUnit * 16, anchoUnit * 9);
         butAddSpace.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -156,9 +163,13 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         panelPpal.add(butAddSpace);
+        
+        JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
+        separator1.setBounds(anchoUnit * 1, altoUnit * 19 + 3, anchoUnit * 32, 2); // Posición y tamaño del separador
+        panelPpal.add(separator1);
 
         JLabel labelIndications2 = utiliGraf.labelTitleBacker2W("Seleccione la cantidad de mesas por sector:");
-        labelIndications2.setBounds(anchoUnit * 3, altoUnit * 22, anchoUnit * 28, altoUnit * 3);
+        labelIndications2.setBounds(anchoUnit * 3, altoUnit * 20, anchoUnit * 28, altoUnit * 3);
         panelPpal.add(labelIndications2);
 
         panelPanel.setLayout(null);
@@ -166,11 +177,11 @@ public class ConfigSalonFrame extends FrameThird {
         panelPanel.setPreferredSize(new Dimension(anchoUnit * 30, altoUnit * 20));
 
         JScrollPane scrollPane = new JScrollPane(panelPanel);
-        scrollPane.setBounds(anchoUnit * 1, altoUnit * 25, anchoUnit * 32, altoUnit * 20);
+        scrollPane.setBounds(anchoUnit * 1, altoUnit * 23, anchoUnit * 32, altoUnit * 17);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         panelPpal.add(scrollPane);
 
-        butConfirm1 = utiliGraf.button2("Confirmar Sectores", anchoUnit * 9, altoUnit * 46, anchoUnit * 16);
+        butConfirm1 = utiliGraf.button2("Confirmar Sectores", anchoUnit * 9, altoUnit * 40 + 4, anchoUnit * 16);
         butConfirm1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -186,13 +197,17 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         panelPpal.add(butConfirm1);
+        
+        JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
+        separator2.setBounds(anchoUnit * 1, altoUnit * 45, anchoUnit * 32, 4); // Posición y tamaño del separador
+        panelPpal.add(separator2);
 
         JLabel labelIndications3 = utiliGraf.labelTitleBacker2W("Seleccione hasta 6 categorías");
-        labelIndications3.setBounds(anchoUnit * 8, altoUnit * 52, anchoUnit * 18, altoUnit * 3);
+        labelIndications3.setBounds(anchoUnit * 8, altoUnit * 46, anchoUnit * 18, altoUnit * 3);
         panelPpal.add(labelIndications3);
 
         JLabel labelCat = utiliGraf.labelTitleBacker3W("Categ. a Seleccionar");
-        labelCat.setBounds(anchoUnit * 2, altoUnit * 55, anchoUnit * 13, altoUnit * 3);
+        labelCat.setBounds(anchoUnit * 2, altoUnit * 49, anchoUnit * 13, altoUnit * 3);
         panelPpal.add(labelCat);
 
         listCat.setModel(utili.spacesListModelReturnMono(categories));
@@ -210,11 +225,11 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         JScrollPane jSCat = new JScrollPane(listCat);
-        jSCat.setBounds(anchoUnit * 2, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
+        jSCat.setBounds(anchoUnit * 2, altoUnit * 52, anchoUnit * 8, altoUnit * 8);
         panelPpal.add(jSCat);
 
         JLabel labelCatSel = utiliGraf.labelTitleBacker3W("Categ. Seleccionadas");
-        labelCatSel.setBounds(anchoUnit * 15, altoUnit * 55, anchoUnit * 13, altoUnit * 3);
+        labelCatSel.setBounds(anchoUnit * 15, altoUnit * 49, anchoUnit * 13, altoUnit * 3);
         panelPpal.add(labelCatSel);
 
         listCatSel.setModel(utili.spacesListModelReturnMono(categoriesSel));
@@ -229,10 +244,10 @@ public class ConfigSalonFrame extends FrameThird {
         });
 
         JScrollPane jSCatSel = new JScrollPane(listCatSel);
-        jSCatSel.setBounds(anchoUnit * 15, altoUnit * 58, anchoUnit * 8, altoUnit * 10);
+        jSCatSel.setBounds(anchoUnit * 15, altoUnit * 52, anchoUnit * 8, altoUnit * 8);
         panelPpal.add(jSCatSel);
 
-        butAddCategory = utiliGraf.button3("Crear Categoría", anchoUnit * 24, altoUnit * 65, anchoUnit * 9);
+        butAddCategory = utiliGraf.button3("Crear Categoría", anchoUnit * 24, altoUnit * 57, anchoUnit * 9);
         butAddCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -244,6 +259,29 @@ public class ConfigSalonFrame extends FrameThird {
             }
         });
         panelPpal.add(butAddCategory);
+        
+        JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
+        separator3.setBounds(anchoUnit * 1, altoUnit * 60 + 3, anchoUnit * 32, 4); // Posición y tamaño del separador
+        panelPpal.add(separator3);
+
+        JLabel labelIndications4 = utiliGraf.labelTitleBacker2W("Seleccione el porcentaje de las Propinas:");
+        labelIndications4.setBounds(anchoUnit * 4, altoUnit * 61, anchoUnit * 25, altoUnit * 3);
+        panelPpal.add(labelIndications4);
+        
+        JLabel labelPorcentaje = utiliGraf.labelTitleBacker1W("Porcentaje %:");
+        labelPorcentaje.setBounds(anchoUnit * 8, altoUnit * 64, anchoUnit * 11, altoUnit * 4);
+        panelPpal.add(labelPorcentaje);        
+
+        SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
+        spinnerTip.setModel(model);
+        spinnerTip.setBounds(anchoUnit * 19, altoUnit * 64, anchoUnit * 4, altoUnit * 4);
+        spinnerTip.setFont(font1);
+        spinnerTip.setValue(10);
+        panelPpal.add(spinnerTip);
+        
+        JSeparator separator4 = new JSeparator(SwingConstants.HORIZONTAL);
+        separator4.setBounds(anchoUnit * 1, altoUnit * 69 + 3, anchoUnit * 32, 4); // Posición y tamaño del separador
+        panelPpal.add(separator4);
 
         Font font = new Font("Arial", Font.PLAIN, 16);
         data1 = "<html><b>SECTORES</b>:</html>";
@@ -512,10 +550,9 @@ public class ConfigSalonFrame extends FrameThird {
         }
         ListModel modeloLista2 = utili.spacesListModelReturnMono(categoriesSel);
         listCatSel.setModel(modeloLista2);
-
         data2Updater();
     }
-
+    
     private void data1Updater() {
         String st = "<html><b>SECTORES</b>: ";
         for (int i = 0; i < spacesSel.size(); i++) {
@@ -544,10 +581,11 @@ public class ConfigSalonFrame extends FrameThird {
 
     private void createConfig() throws Exception {
         int totalTab = 0;
+        int tipPc = (int) spinnerTip.getValue();
         for (int i = 0; i < quants.size(); i++) {
             totalTab += quants.get(i);
         }
-        daoC.saveConfigGeneral(totalTab, quants, spacesSel, categoriesSel, charsSel, rootPaneCheckingEnabled);
+        daoC.saveConfigGeneral(totalTab, quants, spacesSel, categoriesSel, charsSel, rootPaneCheckingEnabled, tipPc);
         sm.frameCloser();
         System.exit(0);
     }
@@ -565,6 +603,7 @@ public class ConfigSalonFrame extends FrameThird {
         listSelected.setModel(utili.spacesListModelReturnMono(spacesSel));
         listCat.setModel(utili.spacesListModelReturnMono(categories));
         listCatSel.setModel(utili.spacesListModelReturnMono(categoriesSel));
+        spinnerTip.setValue(10);
         data1Updater();
         data2Updater();
         panels = new ArrayList<>();
@@ -646,10 +685,5 @@ public class ConfigSalonFrame extends FrameThird {
 
         data1Updater();
         data2Updater();
-
-//        panelPanel.removeAll();
-//        panelPanel.revalidate();
-//        panelPanel.repaint();
     }
-
 }

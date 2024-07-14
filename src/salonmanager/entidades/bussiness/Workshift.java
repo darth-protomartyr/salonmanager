@@ -5,7 +5,6 @@
  */
 package salonmanager.entidades.bussiness;
 
-import salonmanager.entidades.bussiness.User;
 import java.sql.Timestamp;
 import java.util.Date;
 import salonmanager.utilidades.Utilidades;
@@ -19,12 +18,12 @@ public class Workshift {
     boolean stateWs;
     double totalMountCashWs;
     double totalMountElectronicWs;
-    double totalMountWs;
-    double totalMountRealWs; //billing plus cashFlow
+    double totalMountTabs;
+    double totalMountWs; //billing plus moneyFlow
+    double errorMountTabs;
     double errorMountWs;
-    double errorMountRealWs;
-    double cashFlowWsCash;
-    double cashFlowWsElec;
+    double moneyFlowWsCash;
+    double moneyFlowWsElec;
     String commentWs;
     boolean error;
     boolean activeWs;
@@ -40,36 +39,17 @@ public class Workshift {
         this.stateWs = true;
         this.totalMountCashWs = 0;
         this.totalMountElectronicWs = 0;
+        this.errorMountTabs = 0;
         this.errorMountWs = 0;
-        this.errorMountRealWs = 0;
+        this.totalMountTabs = 0;
         this.totalMountWs = 0;
-        this.totalMountRealWs = 0;
-        this.cashFlowWsCash = 0;
-        this.cashFlowWsElec = 0;
+        this.moneyFlowWsCash = 0;
+        this.moneyFlowWsElec = 0;
         this.commentWs = "";
         this.error = false;
         this.activeWs = true;
     }
 
-    //Consulta Turno
-//    public Workshift(int id, User cashierWs, Timestamp openWs, Timestamp closeWs, boolean stateWs, double totalMountCashWs, double totalMountElectronicWs, double errorWs, double errorRealWs, double totalWs, double totalRealWs, double cashFlowWsCash, double cashFlowWsElec, String commentWs, boolean error, boolean activeWs) {
-//        this.id = id;
-//        this.cashierWs = cashierWs;
-//        this.openWs = openWs;
-//        this.closeWs = closeWs;
-//        this.stateWs = stateWs;
-//        this.totalMountCashWs = utili.round2Dec(totalMountCashWs);
-//        this.totalMountElectronicWs = utili.round2Dec(totalMountElectronicWs);
-//        this.errorMountWs = utili.round2Dec(errorWs);
-//        this.errorMountRealWs = utili.round2Dec(errorRealWs);
-//        this.totalMountWs = utili.round2Dec(totalWs);
-//        this.totalMountRealWs = utili.round2Dec(totalRealWs);
-//        this.cashFlowWsCash = utili.round2Dec(cashFlowWsCash);
-//        this.cashFlowWsElec = utili.round2Dec(cashFlowWsElec);
-//        this.commentWs = commentWs;
-//        this.error = error;
-//        this.activeWs = activeWs;
-//    }
 
     public int getId() {
         return id;
@@ -127,6 +107,14 @@ public class Workshift {
         this.totalMountElectronicWs = utili.round2Dec(totalMountElectronicWs);
     }
 
+    public double getTotalMountTabs() {
+        return totalMountTabs;
+    }
+
+    public void setTotalMountTabs(double totalMountTabs) {
+        this.totalMountTabs = utili.round2Dec(totalMountTabs);
+    }
+
     public double getTotalMountWs() {
         return totalMountWs;
     }
@@ -135,44 +123,36 @@ public class Workshift {
         this.totalMountWs = utili.round2Dec(totalMountWs);
     }
 
-    public double getTotalMountRealWs() {
-        return totalMountRealWs;
+    public double getErrorMountTabs() {
+        return utili.round2Dec(errorMountTabs);
     }
 
-    public void setTotalMountRealWs(double totalMountRealWs) {
-        this.totalMountRealWs = utili.round2Dec(totalMountRealWs);
+    public void setErrorMountTabs(double errorMountTabs) {
+        this.errorMountTabs = errorMountTabs;
     }
 
     public double getErrorMountWs() {
-        return utili.round2Dec(errorMountWs);
+        return errorMountWs;
     }
 
     public void setErrorMountWs(double errorMountWs) {
-        this.errorMountWs = errorMountWs;
+        this.errorMountWs = utili.round2Dec(errorMountWs);
     }
 
-    public double getErrorMountRealWs() {
-        return errorMountRealWs;
+    public double getMoneyFlowWsCash() {
+        return moneyFlowWsCash;
     }
 
-    public void setErrorMountRealWs(double errorMountRealWs) {
-        this.errorMountRealWs = utili.round2Dec(errorMountRealWs);
-    }
-
-    public double getCashFlowWsCash() {
-        return cashFlowWsCash;
-    }
-
-    public void setCashFlowWsCash(double cashFlowWsCash) {
-        this.cashFlowWsCash = utili.round2Dec(cashFlowWsCash);
+    public void setMoneyFlowWsCash(double moneyFlowWsCash) {
+        this.moneyFlowWsCash = utili.round2Dec(moneyFlowWsCash);
     }
     
-    public double getCashFlowWsElec() {
-        return cashFlowWsElec;
+    public double getMoneyFlowWsElec() {
+        return moneyFlowWsElec;
     }
 
-    public void setCashFlowWsElec(double cashFlowWsElec) {
-        this.cashFlowWsElec = utili.round2Dec(cashFlowWsElec);
+    public void setMoneyFlowWsElec(double moneyFlowWsElec) {
+        this.moneyFlowWsElec = utili.round2Dec(moneyFlowWsElec);
     }
 
     public String getCommentWs() {

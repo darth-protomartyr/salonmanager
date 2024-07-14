@@ -45,7 +45,6 @@ import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class Salon extends FrameFull {
-
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -69,6 +68,7 @@ public class Salon extends FrameFull {
     int fontSizeTable = 0;
     int wUnit = 0;
     int hUnit = 0;
+    double tipPc = 0;
     boolean tabsBut = true;
 
     Font font1 = null;
@@ -97,8 +97,8 @@ public class Salon extends FrameFull {
     User waiterAux = null; // mozo actual
     Table tableAux = null; // mesa actual
     Workshift workshiftNow = null;
-    double cashFlowCash = 0;
-    double cashFlowElec = 0;
+    double moneyFlowCash = 0;
+    double moneyFlowElec = 0;
     Delivery deliOrderAux = null;
 
     int discount = 0; //porcentaje de descuento
@@ -190,7 +190,8 @@ public class Salon extends FrameFull {
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();
         tablePanCh = cfgGen.getTablePanCh();
-
+        tipPc = cfgGen.getTipPc();
+        
         cfgAct = cfgA;
 
 //HEADER---------------------------------------------------------------------------------------------------------------
@@ -362,8 +363,8 @@ public class Salon extends FrameFull {
                 workshiftNow.setCashierWs(cashier);
             }
 
-            cashFlowCash = workshiftNow.getCashFlowWsCash();
-            cashFlowElec = workshiftNow.getCashFlowWsElec();
+            moneyFlowCash = workshiftNow.getMoneyFlowWsCash();
+            moneyFlowElec = workshiftNow.getMoneyFlowWsElec();
             ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
             if (tabs.size() > 0) {
                 prevTabs = tabs;
@@ -1094,20 +1095,20 @@ public class Salon extends FrameFull {
         this.labelWorkshift = labelWorkshift;
     }
 
-    public double getCashFlowCash() {
-        return cashFlowCash;
+    public double getMoneyFlowCash() {
+        return moneyFlowCash;
     }
 
-    public void setCashFlowCash(double cashFlowCash) {
-        this.cashFlowCash = cashFlowCash;
+    public void setMoneyFlowCash(double moneyFlowCash) {
+        this.moneyFlowCash = moneyFlowCash;
     }
 
-    public double getCashFlowElec() {
-        return cashFlowElec;
+    public double getMoneyFlowElec() {
+        return moneyFlowElec;
     }
 
-    public void setCashFlowElec(double cashFlowElec) {
-        this.cashFlowElec = cashFlowElec;
+    public void setMoneyFlowElec(double moneyFlowElec) {
+        this.moneyFlowElec = moneyFlowElec;
     }
 
     public ArrayList<Table> getPrevTabs() {
@@ -1117,4 +1118,14 @@ public class Salon extends FrameFull {
     public void setPrevTabs(ArrayList<Table> prevTabs) {
         this.prevTabs = prevTabs;
     }
+
+    public double getTipPc() {
+        return tipPc;
+    }
+
+    public void setTipPc(double tipPc) {
+        this.tipPc = tipPc;
+    }
+    
+    
 }

@@ -110,7 +110,7 @@ public class TabsToEnd extends FrameWindow {
                     if (openTabs.size() == 0) {
                         boolean confirm4 = utiliMsg.cargaConfirmAddTables();
                         if (confirm4) {
-                            new TableAdder(ws, manager, null);
+                            new TableAdder(ws, manager, null, null);
                         } else {
                             ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
                         }
@@ -152,7 +152,7 @@ public class TabsToEnd extends FrameWindow {
                 }
             }
         }
-        new TableAdder(ws,manager,tab);
+        new TableAdder(ws,manager,tab, null);
         setEnabled(false);
     }
 

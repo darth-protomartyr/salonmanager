@@ -8,7 +8,6 @@ import salonmanager.Salon;
 import salonmanager.TableAdder;
 import salonmanager.TabsToEnd;
 import salonmanager.WorkshiftEndPanel;
-import salonmanager.entidades.bussiness.CashFlow;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonTable;
@@ -18,7 +17,7 @@ import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
-import salonmanager.persistencia.DAOCashFlow;
+import salonmanager.persistencia.DAOMoneyFlow;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
@@ -36,7 +35,7 @@ public class ServicioSalon {
     DAOWorkshift daoW = new DAOWorkshift();
     DAODelivery daoD = new DAODelivery();
     DAOConfig daoC = new DAOConfig();
-    DAOCashFlow daoCF = new DAOCashFlow();
+    DAOMoneyFlow daoCF = new DAOMoneyFlow();
     ServicioItemMonitor sim = new ServicioItemMonitor();
     ServicioItemSale sis = new ServicioItemSale();
     ServicioTable st = new ServicioTable();
@@ -445,19 +444,13 @@ public class ServicioSalon {
                     boolean confirm5 = utiliMsg.cargaConfirmarOpenTabsOldWs();
                     if (confirm5) {
                         new TabsToEnd(manager, ws, errorWs);
-//                        boolean confirm4 = utiliMsg.cargaConfirmAddTables();
-//                        if (confirm4) {
-//                            new TableAdder(ws, manager);
-//                        } else {
-//                            closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 2);
-//                        }
                     }
                 } else {
                     boolean confirm6 = utiliMsg.cargaConfirmarCierreTurnoError();
                     if (confirm6 == true) {
                         boolean confirm4 = utiliMsg.cargaConfirmAddTables();
                         if (confirm4) {
-                            new TableAdder(ws, manager, null);
+                            new TableAdder(ws, manager, null, null);
                         } else {
                             closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 2);
                         }
@@ -505,10 +498,10 @@ public class ServicioSalon {
         newWs.setStateWs(true);
         newWs.setTotalMountCashWs(0);
         newWs.setTotalMountElectronicWs(0);
+        newWs.setTotalMountTabs(0);
         newWs.setTotalMountWs(0);
-        newWs.setTotalMountRealWs(0);
+        newWs.setErrorMountTabs(0);
         newWs.setErrorMountWs(0);
-        newWs.setErrorMountRealWs(0);
         newWs.setCommentWs(newWs.getCommentWs() + "Turno creado a partir de mesas no cerradas del turno anterior.<br>");
         for (int i = 0; i < actualTabs.size(); i++) {
             Table tab = actualTabs.get(i);
@@ -572,47 +565,6 @@ public class ServicioSalon {
         return newWs;
     }
 
-    public void cashFlowAdd(int flowKind, boolean moneyKind, double cashFlow, String comment, Salon salon) throws Exception {
-        boolean kind = true;
-        if (flowKind == 2) {
-            kind = false;
-        }
-        int wsId = salon.getWorkshiftNow().getId();
-        CashFlow cf = new CashFlow(kind, moneyKind, cashFlow, comment, wsId);
-        if (kind == false) { //substr
-            if (moneyKind == false) {
-                if (salon.getCashFlowElec() - cashFlow < 0) {
-                    utiliMsg.errorLackOfFunds();
-                } else {
-                    salon.setCashFlowElec(salon.getCashFlowElec() - cashFlow);
-                    salon.getWorkshiftNow().setCashFlowWsElec(salon.getCashFlowElec());
-                    daoW.updateWorkshiftCashFlowElec(salon.getWorkshiftNow());
-                    daoCF.saveCashFlow(cf);
-                }
-            } else {
-                if (salon.getCashFlowCash() - cashFlow < 0) {
-                    utiliMsg.errorLackOfFunds();
-                } else {
-                    salon.setCashFlowCash(salon.getCashFlowCash() - cashFlow);
-                    salon.getWorkshiftNow().setCashFlowWsCash(salon.getCashFlowCash());
-                    daoW.updateWorkshiftCashFlowCash(salon.getWorkshiftNow());
-                    daoCF.saveCashFlow(cf);
-                }
-            }
-        } else {
-            if (moneyKind == false) {
-                salon.setCashFlowElec(salon.getCashFlowElec() + cashFlow);
-                salon.getWorkshiftNow().setCashFlowWsElec(salon.getCashFlowElec());
-                daoW.updateWorkshiftCashFlowElec(salon.getWorkshiftNow());
-                daoCF.saveCashFlow(cf);
-            } else {
-                salon.setCashFlowCash(salon.getCashFlowCash() + cashFlow);
-                salon.getWorkshiftNow().setCashFlowWsCash(salon.getCashFlowCash());
-                daoW.updateWorkshiftCashFlowCash(salon.getWorkshiftNow());
-                daoCF.saveCashFlow(cf);
-            }
-        }
-    }
 
     private void workshiftConclusive(Salon salon, Manager manager, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
         Workshift actualWs = actWs;
@@ -666,11 +618,11 @@ public class ServicioSalon {
                     mountElectronic += tab.getAmountElectronic();
                 }
             }
-            actualWs.setTotalMountWs(mount);
-            actualWs.setErrorMountWs(mountError);
+            actualWs.setTotalMountTabs(mount);
+            actualWs.setErrorMountTabs(mountError);
             actualWs.setTotalMountCashWs(mountCash);
             actualWs.setTotalMountElectronicWs(mountElectronic);
-            new WorkshiftEndPanel(salon, manager, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs);
+            new WorkshiftEndPanel(salon, null, manager, actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs, 1);
             if (salon != null) {
                 salon.setEnabled(false);
             }

@@ -1,17 +1,13 @@
 package salonmanager.persistencia;
 
 import salonmanager.utilidades.Utilidades;
-import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import salonmanager.entidades.bussiness.Delivery;
-import salonmanager.entidades.bussiness.Table;
 
 public class DAODelivery extends DAO {
-
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
-
     public void saveDelivery(Delivery deli) throws Exception {
         try {
             String cmrPhone = deli.getConsumer().getPhone();
@@ -67,7 +63,6 @@ public class DAODelivery extends DAO {
     }
 
     public void updateDownAct(Delivery deli) throws Exception {
-
         try {
             String sql1 = "UPDATE deliverys SET delivery_active = " + false + " WHERE delivery_id = '" + deli.getId() + "';";
             System.out.println(sql1);
@@ -95,7 +90,6 @@ public class DAODelivery extends DAO {
             String deliId = "";
             boolean open = false;
             boolean active = false;
-
             while (resultado.next()) {
                 id = resultado.getString(1);
                 phone = resultado.getString(2);

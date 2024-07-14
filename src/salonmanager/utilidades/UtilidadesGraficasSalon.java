@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import salonmanager.BillDiscounter;
-import salonmanager.CashFlowManager;
+import salonmanager.MoneyFlowManager;
 import salonmanager.CorrectorItem;
 import salonmanager.DeliveryTemplate;
 import salonmanager.ErrorTableCount;
@@ -145,7 +145,7 @@ public class UtilidadesGraficasSalon {
                             salon.getCfgAct().setOpenIdWs(salon.getWorkshiftNow().getId());
                             daoC.updateCfgActOpenWs(true);
                             daoC.updateCfgActOpenIdWs(salon.getWorkshiftNow().getId());
-                            new CashFlowManager(salon, 0);
+                            new MoneyFlowManager(salon, 0);
                         }
                     } else {
                         if (salon.getPrevTabs().size() > 0) {
@@ -159,7 +159,7 @@ public class UtilidadesGraficasSalon {
                                     daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                                     salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
                                     salon.getButInitWorkshift().setText("CERRAR TURNO");
-                                    new CashFlowManager(salon, 0);
+                                    new MoneyFlowManager(salon, 0);
                                 }
                             }
                         } else {
@@ -173,15 +173,15 @@ public class UtilidadesGraficasSalon {
         });
         panelActual.add(salon.getButInitWorkshift());
 
-        PanelBorder panelCashFlow = new PanelBorder();
-        panelCashFlow.setLayout(null);
-        panelCashFlow.setBounds(anchoUnit * 15, altoUnit * 1, anchoUnit * 9, altoUnit * 15);
-        panelCashFlow.setBackground(bluLg);
-        panelActual.add(panelCashFlow);
+        PanelBorder panelMoneyFlow = new PanelBorder();
+        panelMoneyFlow.setLayout(null);
+        panelMoneyFlow.setBounds(anchoUnit * 15, altoUnit * 1, anchoUnit * 9, altoUnit * 15);
+        panelMoneyFlow.setBackground(bluLg);
+        panelActual.add(panelMoneyFlow);
 
-        JLabel labelCashFlow = utiliGraf.labelTitleBacker3("Flujo de caja");
-        labelCashFlow.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 7, altoUnit * 4);
-        panelCashFlow.add(labelCashFlow);
+        JLabel labelMoneyFlow = utiliGraf.labelTitleBacker3("Flujo de caja");
+        labelMoneyFlow.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 7, altoUnit * 4);
+        panelMoneyFlow.add(labelMoneyFlow);
 
         JButtonMetalBlu butInnFlow = utiliGraf.button2("Ingresar", anchoUnit * 1, altoUnit * 5, anchoUnit * 7);
         butInnFlow.addActionListener(new ActionListener() {
@@ -189,7 +189,7 @@ public class UtilidadesGraficasSalon {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (salon.getWorkshiftNow() != null) {
-                        new CashFlowManager(salon, 1);
+                        new MoneyFlowManager(salon, 1);
                     } else {
                         utiliMsg.errorWorkshift();
                     }
@@ -198,7 +198,7 @@ public class UtilidadesGraficasSalon {
                 }
             }
         });
-        panelCashFlow.add(butInnFlow);
+        panelMoneyFlow.add(butInnFlow);
 
         JButtonMetalBlu butOutFlow = utiliGraf.button2("Extraer", anchoUnit * 1, altoUnit * 10, anchoUnit * 7);
         butOutFlow.addActionListener(new ActionListener() {
@@ -206,7 +206,7 @@ public class UtilidadesGraficasSalon {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (salon.getWorkshiftNow() != null) {
-                        new CashFlowManager(salon, 2);
+                        new MoneyFlowManager(salon, 2);
                     } else {
                         utiliMsg.errorWorkshift();
                     }
@@ -215,7 +215,7 @@ public class UtilidadesGraficasSalon {
                 }
             }
         });
-        panelCashFlow.add(butOutFlow);
+        panelMoneyFlow.add(butOutFlow);
         return panelActual;
     }
 
@@ -1417,11 +1417,11 @@ public class UtilidadesGraficasSalon {
         salon.getTableAux().setBill(true);
         daoT.updateTableBill(salon.getTableAux());
         jButExtSetter(salon);
-        salon.getLabelTotalParcial().setText("Total $:");
+        salon.getLabelTotalParcial().setText("Total: $");
         salon.getLabelCuenta().setText("" + salon.getTotal());
-        salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * 0.1));
-        double tot = salon.getTotal() + Math.round(salon.getTotal() * 0.1);
-        salon.getLabelTotal().setText("Total: " + tot);
+        salon.getLabelTip().setText("Prop. : $" + Math.round(salon.getTotal() * salon.getTipPc() / 100));
+        double tot = salon.getTotal() + Math.round(salon.getTotal() * salon.getTipPc() / 100);
+        salon.getLabelTotal().setText("Total: $" + tot);
 
         if (salon.getJbtAux() != null) {
             salon.getJbtAux().setBackground(red);
@@ -1586,8 +1586,8 @@ public class UtilidadesGraficasSalon {
 
     public void resetWsValues(Salon salon) {
         salon.setWorkshiftNow(null);
-        salon.setCashFlowCash(0);
-        salon.setCashFlowElec(0);
+        salon.setMoneyFlowCash(0);
+        salon.setMoneyFlowElec(0);
         salon.getLabelWorkshift().setText("Turno no iniciado.");
         salon.getButInitWorkshift().setText("ABRIR TURNO");
         salon.setBarrButtons(new ArrayList<>());
@@ -1644,8 +1644,8 @@ public class UtilidadesGraficasSalon {
 
         if (salon.getTableAux().isBill() == true) {
             salon.getLabelTotalParcial().setText("Total $:");
-            salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * 0.1));
-            double tot = Math.round(salon.getTotal() * 0.1) + salon.getTotal();
+            salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * salon.getTipPc() / 100));
+            double tot = Math.round(salon.getTotal() * salon.getTipPc() / 100) + salon.getTotal();
             salon.getLabelTotal().setText("Total: " + tot);
         } else {
             salon.getLabelTotalParcial().setText("Parcial $:");

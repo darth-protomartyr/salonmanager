@@ -90,7 +90,7 @@ public class UtilidadesGraficasStatics {
 
         for (Workshift ws : wsS) {
             turnos.add(ws.getOpenWs());
-            sales.add(ws.getTotalMountWs());
+            sales.add(ws.getTotalMountTabs());
         }
 
         // Crear el gráfico de líneas

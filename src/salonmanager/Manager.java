@@ -26,15 +26,12 @@ import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class Manager extends FrameFull {
-
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioSalon ss = new ServicioSalon();
-    Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
     User user = null;
     String pass;

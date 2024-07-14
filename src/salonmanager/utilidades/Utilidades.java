@@ -15,10 +15,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -29,9 +27,6 @@ import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
-import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOTable;
-import salonmanager.persistencia.DAOWorkshift;
 
 public class Utilidades {
 
@@ -721,11 +716,6 @@ public class Utilidades {
         return hour;
     }
 
-//    public ArrayList<Itemcard> unRepeatItems(ArrayList<Itemcard> items) {
-//        HashSet<Itemcard> hs = new HashSet<>(items);
-//        items = new ArrayList<>(hs);
-//        return items;
-//    }
 
     public ArrayList<Itemcard> unRepeatItems2(ArrayList<Itemcard> items) {
         Collections.sort(items, new Comparator<Itemcard>() {
@@ -866,7 +856,7 @@ public class Utilidades {
         chars.add("s");
         chars.add("v");
 
-        ConfigGeneral cfgGen = new ConfigGeneral(59, tabsQ, spaces, categories, chars, true);
+        ConfigGeneral cfgGen = new ConfigGeneral(59, tabsQ, spaces, categories, chars, 10, true);
         return cfgGen;
     }
 
@@ -887,6 +877,20 @@ public class Utilidades {
         }
         return defer;
     }
+    
+    
+    public ArrayList<String> wsEasyReader(ArrayList<Workshift> arrayDeferWs) {
+        ArrayList<String> defer = new ArrayList<>();
+        for (int i = 0; i < arrayDeferWs.size(); i++) {
+            String ws = "";
+            ws = arrayDeferWs.get(i).getId() + " ";
+            Timestamp ts = arrayDeferWs.get(i).getOpenWs();
+            ws += friendlyDate2(ts);
+            defer.add(ws);
+        }
+        return defer;
+    }
+    
 
     public Timestamp stringToTs(String date) {
         long l = 0;

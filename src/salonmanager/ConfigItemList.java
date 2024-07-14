@@ -34,8 +34,10 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
+import salonmanager.servicios.ServiceConfigItemList;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasConfigItemList;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ConfigItemList extends FrameFull {
@@ -50,8 +52,10 @@ public class ConfigItemList extends FrameFull {
     DAOTable daoT = new DAOTable();
     SalonManager sm = new SalonManager();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasConfigItemList utiliGrafCIL = new UtilidadesGraficasConfigItemList();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    ServiceConfigItemList sCIL = new ServiceConfigItemList();
     JPanel panelPanel = new JPanel();
     ArrayList<String> categories = new ArrayList<>();
     String cat = "";
@@ -65,11 +69,14 @@ public class ConfigItemList extends FrameFull {
     JSpinner spinnerPC = new JSpinner();
     Manager manager = null;
     boolean vis = true;
+    Font newFont = new Font("Arial", Font.PLAIN, 16);
+    Font font = new Font("Arial", Font.BOLD, 18);
+    ConfigItemList cil = this;
+    
 
     public ConfigItemList(Manager man) throws Exception {
         manager = man;
         sm.addFrame(this);
-        Font newFont = new Font("Arial", Font.PLAIN, 16);
 
         setTitle("Modificar Items de la carta en Lista");
         items = daoI.listarItemsCard();
@@ -90,243 +97,30 @@ public class ConfigItemList extends FrameFull {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Lista de Items");
         panelLabel.add(labelTit);
 
-        JPanel panelList = new JPanel(null);
-        panelList.setBounds(anchoUnit, altoUnit * 5, anchoUnit * 103, altoUnit * 89);
-        panelList.setBackground(bluLg);
+        JPanel panelList = utiliGrafCIL.panelListBacker(this);
         panelPpal.add(panelList);
-
-        JLabel labelCombo = utiliGraf.labelTitleBacker1("Seleccione Items por categoría");
-        labelCombo.setBounds(anchoUnit, altoUnit, anchoUnit * 24, altoUnit * 4);
-        panelList.add(labelCombo);
-
-        comboCat = new JComboBox();
-        comboCat.setBounds(anchoUnit * 25, altoUnit, anchoUnit * 10, altoUnit * 4);
-        comboCat.setFont(newFont);
-        ArrayList<String> catPlus2 = new ArrayList<String>(categories);
-        catPlus2.add("TODOS");
-        comboCat.setModel(utili.categoryComboModelReturn(catPlus2));
-        comboCat.setSelectedItem("TODOS");
-        panelList.add(comboCat);
-
-        JButtonMetalBlu butSel = utiliGraf.button2("Seleccionar", anchoUnit * 36, altoUnit, anchoUnit * 12);
-        butSel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    cat = (String) comboCat.getSelectedItem();
-                    select(cat, false);
-                } catch (Exception ex) {
-                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelList.add(butSel);
-
-        panelPanel.setLayout(null);
-        panelPanel.setBackground(bluLg);
-        int h = 1 + 6 * items.size();
-        if (h <= 68) {
-            panelPanel.setPreferredSize(new Dimension(anchoUnit * 78, altoUnit * 68));
-        } else {
-            panelPanel.setPreferredSize(new Dimension(anchoUnit * 78, altoUnit * h));
-        }
-
-        JScrollPane scrollPane = new JScrollPane(panelPanel);
-        scrollPane.setBounds(anchoUnit, altoUnit * 6, anchoUnit * 80, altoUnit * 74);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        panelList.add(scrollPane);
-
-        JPanel panelLat = new JPanel(null);
-        panelLat.setBounds(anchoUnit * 82, altoUnit * 6, anchoUnit * 20, altoUnit * 74);
-        panelLat.setBackground(bluSt);
+          
+        JPanel panelLat = utiliGrafCIL.panelLatBacker(this);
         panelList.add(panelLat);
 
-        JLabel labelLat = utiliGraf.labelTitleBacker1W("Modificaciones Globales");
-        labelLat.setBounds(anchoUnit, altoUnit, anchoUnit * 20, altoUnit * 5);
-        panelLat.add(labelLat);
-
-        butEnab = utiliGraf.button1("HABILITAR", anchoUnit * 2, altoUnit * 8, anchoUnit * 16);
-        butEnab.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    String st = butEnab.getText();
-                    enablePanels(st);
-                } catch (Exception ex) {
-                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelLat.add(butEnab);
-
-        checkBox = new JCheckBox("Seleccionar toda la lista");
-        checkBox.setBackground(bluSt);
-        checkBox.setBorder(null);
-        checkBox.setForeground(white);
-        checkBox.setBounds(anchoUnit * 2, altoUnit * 16, anchoUnit * 15, altoUnit * 3);
-        checkBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (checkBox.isSelected()) {
-                    enableSelBT(true);
-                } else {
-                    enableSelBT(false);
-                }
-            }
-        });
-        checkBox.setVisible(false);
-        panelLat.add(checkBox);
-
-        JPanel panelSelCat = new JPanel(null);
-        panelSelCat.setBounds(anchoUnit, altoUnit * 20, anchoUnit * 18, altoUnit * 23);
-        panelSelCat.setBackground(bluLg);
+        JPanel panelSelCat = utiliGrafCIL.panelSelCatBacker(this);
         panelLat.add(panelSelCat);
 
-        JLabel labelModCat = utiliGraf.labelTitleBacker2("<html>Modificar Categoría de los<br>elementos seleccionados </html>");
-        labelModCat.setBounds(anchoUnit, altoUnit, anchoUnit * 18, altoUnit * 5);
-        panelSelCat.add(labelModCat);
-
-        comboCat2 = new JComboBox();
-        comboCat2.setBounds(anchoUnit * 3, altoUnit * 9, anchoUnit * 12, altoUnit * 5);
-        comboCat2.setFont(newFont);
-        comboCat2.setModel(utili.categoryComboModelReturnWNull(categories));
-        comboCat2.setSelectedItem("");
-        panelSelCat.add(comboCat2);
-
-        butSelCat2 = utiliGraf.button2("MODIFICAR CATEGORÍA", anchoUnit * 2, altoUnit * 17, anchoUnit * 14);
-        butSelCat2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (butEnab.getText().equals("DESHABILITAR")) {
-                        boolean confirm = utiliMsg.cargaConfirmarCambioCat();
-                        if (confirm == true) {
-                            boolean pMod = modifyPnls();
-                            if (pMod) {
-                                String cat1 = (String) comboCat2.getSelectedItem();
-                                if (!cat1.equals("")) {
-                                    updateCat(cat1);
-                                } else {
-                                    utiliMsg.errorCatSelection();
-                                }
-                            } else {
-                                utiliMsg.errorPnlsMod();
-                            }
-                        }
-                    } else {
-                        utiliMsg.errorModDisabled();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelSelCat.add(butSelCat2);
-
-        JPanel panelModPri = new JPanel(null);
-        panelModPri.setBounds(anchoUnit, altoUnit * 45, anchoUnit * 18, altoUnit * 27);
-        panelModPri.setBackground(bluLg);
+        JPanel panelModPri = utiliGrafCIL.panelPanelModPri(this);
         panelLat.add(panelModPri);
 
-        JLabel labelModPri = utiliGraf.labelTitleBacker2("<html>Modificar porcentualmente el precio de los items seleccionados </html>");
-        labelModPri.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 8);
-        panelModPri.add(labelModPri);
+        sCIL.select(cat, false, this);
 
-        JLabel labelPC = utiliGraf.labelTitleBacker3("<html>Elija porcentaje (%)</html>");
-        labelPC.setBounds(anchoUnit, altoUnit * 10, anchoUnit * 12, altoUnit * 4);
-        panelModPri.add(labelPC);
-
-        Font font = new Font("Arial", Font.BOLD, 18);
-
-        spinnerPC = new JSpinner();
-        SpinnerModel model = new SpinnerNumberModel(1, -100, 100, 1);
-        spinnerPC.setModel(model);
-        spinnerPC.setFont(font);
-        spinnerPC.setBounds(anchoUnit * 12, altoUnit * 10, anchoUnit * 5, altoUnit * 4);
-        spinnerPC.setValue(0);
-        panelModPri.add(spinnerPC);
-
-        JLabel labelRound = utiliGraf.labelTitleBacker3("<html>Elija redondeo  ($)</html>");
-        labelRound.setBounds(anchoUnit, altoUnit * 15, anchoUnit * 12, altoUnit * 4);
-        panelModPri.add(labelRound);
-
-        comboRound.setBounds(anchoUnit * 12, altoUnit * 15, anchoUnit * 5, altoUnit * 4);
-        comboRound.setFont(font);
-        ArrayList<String> rounds = new ArrayList<String>();
-        rounds.add("0.01");
-        rounds.add("0.05");
-        rounds.add("0.1");
-        rounds.add("0.5");
-        rounds.add("1");
-        rounds.add("5");
-        rounds.add("10");
-        rounds.add("50");
-        rounds.add("100");
-        rounds.add("500");
-        rounds.add("1000");
-        DefaultComboBoxModel<String> modeloCombo1 = new DefaultComboBoxModel<String>();
-        for (String i : rounds) {
-            modeloCombo1.addElement(i);
-        }
-        comboRound.setModel(modeloCombo1);
-        comboRound.setSelectedItem("1");
-        panelModPri.add(comboRound);
-
-        butSelPri = utiliGraf.button2("MODIFICAR PRECIOS", anchoUnit * 2, altoUnit * 21, anchoUnit * 14);
-        butSelPri.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (butEnab.getText().equals("DESHABILITAR")) {
-                        boolean confirm = utiliMsg.cargaConfirmarCambioPrice();
-                        if (confirm == true) {
-                            boolean pMod = modifyPnls();
-                            if (pMod) {
-                                int p = (int) spinnerPC.getValue();
-                                String r = (String) comboRound.getSelectedItem();
-                                updatePrice(p, r);
-                            } else {
-                                utiliMsg.errorPnlsMod();
-                            }
-                        }
-                    } else {
-                        utiliMsg.errorModDisabled();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelModPri.add(butSelPri);
-
-        select(cat, false);
-
-        JButtonMetalBlu butConfirm = utiliGraf.button1("CONFIRMAR CAMBIOS", anchoUnit * 40, altoUnit * 81, anchoUnit * 18);
-        butConfirm.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    boolean pMod = modifyPnls();
-                    if (pMod) {
-                        changeSaver();
-                    } else {
-                        utiliMsg.errorPnlsMod();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelList.add(butConfirm);
+        JButtonMetalBlu butChangeSaver = utiliGrafCIL.butChangeSaver(this);
+        panelList.add(butChangeSaver);
 
         JButtonMetalBlu butReset = utiliGraf.button2("RESETEAR", anchoUnit * 94, altoUnit * 84, anchoUnit * 8);
         butReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-
                     cat = "TODOS";
-                    select(cat, false);
+                    sCIL.select(cat, false, cil);
                     comboCat.setSelectedItem(cat);
                 } catch (Exception ex) {
                     Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
@@ -358,7 +152,7 @@ public class ConfigItemList extends FrameFull {
         });
     }
 
-    private void select(String sel, boolean type) {
+    private void selec(String sel, boolean type) {
         ArrayList<Itemcard> itemsSel = new ArrayList<>();
         if (sel.equals("TODOS")) {
             itemsSel = items;
@@ -408,282 +202,393 @@ public class ConfigItemList extends FrameFull {
         }
     }
 
-    private void enablePanels(String st) {
-        if (st.equals("HABILITAR")) {
-            checkBox.setVisible(true);
-            butEnab.setText("DESHABILITAR");
-        } else {
-            checkBox.setVisible(false);
-            butEnab.setText("HABILITAR");
-        }
-        select(cat, true);
+//    private void updateCat(String cat) throws Exception {
+//        ArrayList<Integer> ids = new ArrayList<>();
+//        for (int i = 0; i < panelsN.size(); i++) {
+//            String mod = panelsN.get(i).getButSel().getText();
+//            if (mod.equals("QUITAR")) {
+//                String cat1 = panelsN.get(0).getIc().getCategory();
+//                if (!cat.equals(cat1)) {
+//                    int id = panelsN.get(i).getIc().getId();
+//                    daoI.updateItemCategory(id, cat);
+//                    ids.add(id);
+//                } else {
+//                    utiliMsg.errorCatEqual();
+//                }
+//            }
+//        }
+//        if (manager.getSalon() != null) {
+//            manager.getSalon().dispose();
+//            manager.setSalon(null);
+//        }
+//        reset();
+//    }
+
+//    private void updatePrice(int p, String r) throws Exception {
+//        int pc = 100 + p;
+//        double round = 0;
+//        boolean error = false;
+//        boolean confirm1 = true;
+//        boolean confirm2 = true;
+//
+//        int counter1 = 0;
+//        int counter2 = 0;
+//        int counter3 = 0;
+//
+//        try {
+//            round = utili.toNumberD(r);
+//        } catch (NumberFormatException e) {
+//            utiliMsg.errorNumerico();
+//            error = true;
+//        } catch (Exception ex) {
+//            Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        if (error == false) {
+//            for (int i = 0; i < panelsN.size(); i++) {
+//                String mod = panelsN.get(i).getButSel().getText();
+//                int idIc = panelsN.get(i).getIc().getId();
+//                if (mod.equals("QUITAR")) {
+//                    double oldPrice = panelsN.get(i).getIc().getPrice().get(0);
+//                    double newPrice = oldPrice * pc / 100;
+//                    double rou = newPrice % round;
+//                    rou = round - rou;
+//                    newPrice = newPrice + rou;
+//                    DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+//                    DecimalFormat df = new DecimalFormat("#.00", symbols);
+//                    String st = df.format(newPrice);
+//                    newPrice = Double.parseDouble(st);
+//                    ArrayList<Double> prices = new ArrayList<>();
+//                    prices.add(newPrice);
+//                    prices.add(oldPrice);
+//                    
+//                    if (newPrice <= panelsN.get(i).getIc().getCost()) {
+//                        confirm1 = utiliMsg.errorPriceCost();
+//                    }
+//                    
+//                    
+//                    
+//                    ArrayList<String> tabIds = new ArrayList<>();
+//                    ArrayList<String> tabIdsIc = new ArrayList<>();
+//                    tabIds = daoT.getActiveIds();
+//                    for (int x = 0; x < tabIds.size(); x++) {
+//                        ArrayList<Integer> arrayTabIdsIc = daoT.activeTabIcMod(idIc, tabIds.get(x));
+//                        if (arrayTabIdsIc.size() > 0) {
+//                            tabIdsIc.add(tabIds.get(x));
+//                        }
+//                    }
+//
+//                    if (tabIdsIc.size() > 0) {
+//                        if (counter1 < 1) {
+//                            confirm1 = utiliMsg.cargaConfirmarCambioPrAct();
+//                            counter1 += 1;
+//                        }
+//                    }
+//
+//                    if (confirm1) {
+//                        if (manager.getSalon() != null) {
+//                            if (counter2 < 1) {
+//                                confirm2 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+//                                counter2 += 1;
+//                            }
+//                            if (confirm2) {
+//                                ArrayList<String> modTabsNew = new ArrayList<>();
+//                                for (int y = 0; y < tabIdsIc.size(); y++) {
+//                                    modTabsNew.add(tabIdsIc.get(y));
+//                                    modTabsNew.add(idIc + "");
+//                                }
+//                                ConfigActual cfgAct = daoC.askConfigActual();
+//                                ArrayList<String> modTabIds = cfgAct.getArrayUnModTabs();
+//                                for (int y = 0; y < modTabsNew.size(); y++) {
+//                                    modTabIds.add(modTabsNew.get(y));
+//                                }
+//                                daoC.updateCfgActModTabs(modTabIds);
+//
+//                                daoI.updateItemPrice(idIc, prices);
+//
+//                                manager.getSalon().dispose();
+//                                manager.setSalon(null);
+//                                if (counter3 < 1) {
+//                                    utiliMsg.cargaUpdatePriceItemActive();
+//                                    counter3 += 1;
+//
+//                                }
+//                            }
+//                        } else {
+//                            daoI.updateItemPrice(idIc, prices);
+//                        }
+//
+//                    }
+//                }
+//            }
+//        }
+//        reset();
+//    }
+
+//    private void changeSaver() throws Exception {
+//        for (int i = 0; i < panelsN.size(); i++) {
+//            boolean error = false;
+//            String mod = panelsN.get(i).getButSel().getText();
+//            String cat = (String) panelsN.get(i).getTextF2().getSelectedItem();
+//            int stock = 0;
+//            double cost = 0;
+//            double price = 0;
+//            if (mod.equals("QUITAR")) {
+//                try {
+//                    stock = (Integer) panelsN.get(i).getTextF3().getValue();
+//                    String co = panelsN.get(i).getTextF4().getText();
+//                    if (co.length() > 12) {
+//                        error = true;
+//                        utiliMsg.errorCantCharNum();
+//                    }
+//
+//                    if (co.equals("")) {
+//                        cost = 0;
+//                    } else {
+//                        cost = utili.toNumberD(co);
+//                    }
+//
+//                    String pri = panelsN.get(i).getTextF5().getText();
+//                    if (pri.length() > 12) {
+//                        error = true;
+//                        utiliMsg.errorCantCharNum();
+//                    }
+//
+//                    if (pri.equals("")) {
+//                        boolean confirm = utiliMsg.cargaConfirmErrorPriceNull();
+//                        if (confirm) {
+//                            pri = "0";
+//                            price = utili.toNumberD(pri);
+//                        } else {
+//                            error = true;
+//                        }
+//                    } else {
+//                        price = utili.toNumberD(pri);
+//                    }
+//
+//                } catch (NumberFormatException e) {
+//                    utiliMsg.errorNumerico();
+//                    error = true;
+//
+//                } catch (Exception ex) {
+//                    Logger.getLogger(ItemcardInn.class
+//                            .getName()).log(Level.SEVERE, null, ex);
+//                }
+//
+//                if (error == false) {
+//                    int id = panelsN.get(i).getIc().getId();
+//                    Itemcard ic = panelsN.get(i).getIc();
+//                    daoI.updateItemCategory(id, cat);
+//                    daoI.updateItemStock(id, stock);
+//                    daoI.updateItemCost(id, cost);
+//
+//                    ArrayList<Double> prices = new ArrayList<>();
+//                    prices.add(price);
+//                    prices.add(ic.getPrice().get(0));
+//
+//                    boolean confirm1 = true;
+//                    if (price <= cost) {
+//                        confirm1 = utiliMsg.cargaConfirmLowerPrice();
+//                    }
+//
+//                    if (confirm1) {
+//                        ArrayList<String> tabIds = new ArrayList<>();
+//                        ArrayList<String> tabIdsIc = new ArrayList<>();
+//                        tabIds = daoT.getActiveIds();
+//                        for (int x = 0; x < tabIds.size(); x++) {
+//                            ArrayList<Integer> arrayTabIdsIc = daoT.activeTabIcMod(ic.getId(), tabIds.get(x));
+//                            if (arrayTabIdsIc.size() > 0) {
+//                                tabIdsIc.add(tabIds.get(x));
+//                            }
+//                        }
+//
+//                        boolean confirm2 = true;
+//                        if (tabIdsIc.size() > 0) {
+//                            confirm2 = utiliMsg.cargaConfirmarCambioPrAct();
+//                        }
+//
+//                        if (confirm2) {
+//                            if (manager.getSalon() != null) {
+//                                boolean confirm3 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+//                                if (confirm3) {
+//                                    ArrayList<String> modTabsNew = new ArrayList<>();
+//                                    for (int y = 0; y < tabIdsIc.size(); y++) {
+//                                        modTabsNew.add(tabIdsIc.get(y));
+//                                        modTabsNew.add(ic.getId() + "");
+//                                    }
+//                                    ConfigActual cfgAct = daoC.askConfigActual();
+//                                    ArrayList<String> modTabIds = cfgAct.getArrayUnModTabs();
+//                                    for (int y = 0; y < modTabsNew.size(); y++) {
+//                                        modTabIds.add(modTabsNew.get(y));
+//                                    }
+//
+//                                    daoC.updateCfgActModTabs(modTabIds);
+//                                    daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
+//                                    manager.getSalon().dispose();
+//                                    manager.setSalon(null);
+//                                    utiliMsg.cargaUpdatePriceItemActive();
+//                                }
+//                            } else {
+//                                daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        reset();
+//    }
+
+
+//    private boolean modifyPnls() {
+//        boolean mod = false;
+//        for (int i = 0; i < panelsN.size(); i++) {
+//            String but = panelsN.get(i).getButSel().getText();
+//            if (but.equals("QUITAR")) {
+//                mod = true;
+//                break;
+//            }
+//        }
+//        return mod;
+//    }
+
+    public ArrayList<Itemcard> getItems() {
+        return items;
     }
 
-    private void enableSelBT(boolean tf) {
-        for (int i = 0; i < panelsN.size(); i++) {
-            panelsN.get(i).selectPNB(tf);
-        }
+    public void setItems(ArrayList<Itemcard> items) {
+        this.items = items;
     }
 
-    private void updateCat(String cat) throws Exception {
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (int i = 0; i < panelsN.size(); i++) {
-            String mod = panelsN.get(i).getButSel().getText();
-            if (mod.equals("QUITAR")) {
-                String cat1 = panelsN.get(0).getIc().getCategory();
-                if (!cat.equals(cat1)) {
-                    int id = panelsN.get(i).getIc().getId();
-                    daoI.updateItemCategory(id, cat);
-                    ids.add(id);
-                } else {
-                    utiliMsg.errorCatEqual();
-                }
-            }
-        }
-        if (manager.getSalon() != null) {
-            manager.getSalon().dispose();
-            manager.setSalon(null);
-        }
-        reset();
+    public ArrayList<PanelNestedItem> getPanelsN() {
+        return panelsN;
     }
 
-    private void updatePrice(int p, String r) throws Exception {
-        int pc = 100 + p;
-        double round = 0;
-        boolean error = false;
-        boolean confirm1 = true;
-        boolean confirm2 = true;
-
-        int counter1 = 0;
-        int counter2 = 0;
-        int counter3 = 0;
-
-        try {
-            round = utili.toNumberD(r);
-        } catch (NumberFormatException e) {
-            utiliMsg.errorNumerico();
-            error = true;
-        } catch (Exception ex) {
-            Logger.getLogger(ItemcardInn.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (error == false) {
-            for (int i = 0; i < panelsN.size(); i++) {
-                String mod = panelsN.get(i).getButSel().getText();
-                int idIc = panelsN.get(i).getIc().getId();
-                if (mod.equals("QUITAR")) {
-                    double oldPrice = panelsN.get(i).getIc().getPrice().get(0);
-                    double newPrice = oldPrice * pc / 100;
-                    double rou = newPrice % round;
-                    rou = round - rou;
-                    newPrice = newPrice + rou;
-                    DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-                    DecimalFormat df = new DecimalFormat("#.00", symbols);
-                    String st = df.format(newPrice);
-                    newPrice = Double.parseDouble(st);
-                    ArrayList<Double> prices = new ArrayList<>();
-                    prices.add(newPrice);
-                    prices.add(oldPrice);
-                    
-                    if (newPrice <= panelsN.get(i).getIc().getCost()) {
-                        confirm1 = utiliMsg.errorPriceCost();
-                    }
-                    
-                    
-                    
-                    ArrayList<String> tabIds = new ArrayList<>();
-                    ArrayList<String> tabIdsIc = new ArrayList<>();
-                    tabIds = daoT.getActiveIds();
-                    for (int x = 0; x < tabIds.size(); x++) {
-                        ArrayList<Integer> arrayTabIdsIc = daoT.activeTabIcMod(idIc, tabIds.get(x));
-                        if (arrayTabIdsIc.size() > 0) {
-                            tabIdsIc.add(tabIds.get(x));
-                        }
-                    }
-
-                    if (tabIdsIc.size() > 0) {
-                        if (counter1 < 1) {
-                            confirm1 = utiliMsg.cargaConfirmarCambioPrAct();
-                            counter1 += 1;
-                        }
-                    }
-
-                    if (confirm1) {
-                        if (manager.getSalon() != null) {
-                            if (counter2 < 1) {
-                                confirm2 = utiliMsg.cargaConfirmarUpdateActiveTabs();
-                                counter2 += 1;
-                            }
-                            if (confirm2) {
-                                ArrayList<String> modTabsNew = new ArrayList<>();
-                                for (int y = 0; y < tabIdsIc.size(); y++) {
-                                    modTabsNew.add(tabIdsIc.get(y));
-                                    modTabsNew.add(idIc + "");
-                                }
-                                ConfigActual cfgAct = daoC.askConfigActual();
-                                ArrayList<String> modTabIds = cfgAct.getArrayUnModTabs();
-                                for (int y = 0; y < modTabsNew.size(); y++) {
-                                    modTabIds.add(modTabsNew.get(y));
-                                }
-                                daoC.updateCfgActModTabs(modTabIds);
-
-                                daoI.updateItemPrice(idIc, prices);
-
-                                manager.getSalon().dispose();
-                                manager.setSalon(null);
-                                if (counter3 < 1) {
-                                    utiliMsg.cargaUpdatePriceItemActive();
-                                    counter3 += 1;
-
-                                }
-                            }
-                        } else {
-                            daoI.updateItemPrice(idIc, prices);
-                        }
-
-                    }
-                }
-            }
-        }
-        reset();
+    public void setPanelsN(ArrayList<PanelNestedItem> panelsN) {
+        this.panelsN = panelsN;
     }
 
-    private void changeSaver() throws Exception {
-        for (int i = 0; i < panelsN.size(); i++) {
-            boolean error = false;
-            String mod = panelsN.get(i).getButSel().getText();
-            String cat = (String) panelsN.get(i).getTextF2().getSelectedItem();
-            int stock = 0;
-            double cost = 0;
-            double price = 0;
-            if (mod.equals("QUITAR")) {
-                try {
-                    stock = (Integer) panelsN.get(i).getTextF3().getValue();
-                    String co = panelsN.get(i).getTextF4().getText();
-                    if (co.length() > 12) {
-                        error = true;
-                        utiliMsg.errorCantCharNum();
-                    }
-
-                    if (co.equals("")) {
-                        cost = 0;
-                    } else {
-                        cost = utili.toNumberD(co);
-                    }
-
-                    String pri = panelsN.get(i).getTextF5().getText();
-                    if (pri.length() > 12) {
-                        error = true;
-                        utiliMsg.errorCantCharNum();
-                    }
-
-                    if (pri.equals("")) {
-                        boolean confirm = utiliMsg.cargaConfirmErrorPriceNull();
-                        if (confirm) {
-                            pri = "0";
-                            price = utili.toNumberD(pri);
-                        } else {
-                            error = true;
-                        }
-                    } else {
-                        price = utili.toNumberD(pri);
-                    }
-
-                } catch (NumberFormatException e) {
-                    utiliMsg.errorNumerico();
-                    error = true;
-
-                } catch (Exception ex) {
-                    Logger.getLogger(ItemcardInn.class
-                            .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                if (error == false) {
-                    int id = panelsN.get(i).getIc().getId();
-                    Itemcard ic = panelsN.get(i).getIc();
-                    daoI.updateItemCategory(id, cat);
-                    daoI.updateItemStock(id, stock);
-                    daoI.updateItemCost(id, cost);
-
-                    ArrayList<Double> prices = new ArrayList<>();
-                    prices.add(price);
-                    prices.add(ic.getPrice().get(0));
-
-                    boolean confirm1 = true;
-                    if (price <= cost) {
-                        confirm1 = utiliMsg.cargaConfirmLowerPrice();
-                    }
-
-                    if (confirm1) {
-                        ArrayList<String> tabIds = new ArrayList<>();
-                        ArrayList<String> tabIdsIc = new ArrayList<>();
-                        tabIds = daoT.getActiveIds();
-                        for (int x = 0; x < tabIds.size(); x++) {
-                            ArrayList<Integer> arrayTabIdsIc = daoT.activeTabIcMod(ic.getId(), tabIds.get(x));
-                            if (arrayTabIdsIc.size() > 0) {
-                                tabIdsIc.add(tabIds.get(x));
-                            }
-                        }
-
-                        boolean confirm2 = true;
-                        if (tabIdsIc.size() > 0) {
-                            confirm2 = utiliMsg.cargaConfirmarCambioPrAct();
-                        }
-
-                        if (confirm2) {
-                            if (manager.getSalon() != null) {
-                                boolean confirm3 = utiliMsg.cargaConfirmarUpdateActiveTabs();
-                                if (confirm3) {
-                                    ArrayList<String> modTabsNew = new ArrayList<>();
-                                    for (int y = 0; y < tabIdsIc.size(); y++) {
-                                        modTabsNew.add(tabIdsIc.get(y));
-                                        modTabsNew.add(ic.getId() + "");
-                                    }
-                                    ConfigActual cfgAct = daoC.askConfigActual();
-                                    ArrayList<String> modTabIds = cfgAct.getArrayUnModTabs();
-                                    for (int y = 0; y < modTabsNew.size(); y++) {
-                                        modTabIds.add(modTabsNew.get(y));
-                                    }
-
-                                    daoC.updateCfgActModTabs(modTabIds);
-                                    daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
-                                    manager.getSalon().dispose();
-                                    manager.setSalon(null);
-                                    utiliMsg.cargaUpdatePriceItemActive();
-                                }
-                            } else {
-                                daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        reset();
+    public JPanel getPanelPanel() {
+        return panelPanel;
     }
 
-    private void reset() throws Exception {
-        items = daoI.listarItemsCard();
-        utiliMsg.cargaSuccesMod();
-        checkBox.setVisible(false);
-        checkBox.setSelected(false);
-        butEnab.setText("HABILITAR");
-        comboCat.setSelectedItem("TODOS");
-        comboCat2.setSelectedItem("");
-        comboRound.setSelectedItem("1");
-        spinnerPC.setValue(0);
-        select("TODOS", false);
+    public void setPanelPanel(JPanel panelPanel) {
+        this.panelPanel = panelPanel;
     }
 
-    private boolean modifyPnls() {
-        boolean mod = false;
-        for (int i = 0; i < panelsN.size(); i++) {
-            String but = panelsN.get(i).getButSel().getText();
-            if (but.equals("QUITAR")) {
-                mod = true;
-                break;
-            }
-        }
-        return mod;
+    public ArrayList<String> getCategories() {
+        return categories;
     }
+
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }
+
+    public String getCat() {
+        return cat;
+    }
+
+    public void setCat(String cat) {
+        this.cat = cat;
+    }
+
+    public JCheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public void setCheckBox(JCheckBox checkBox) {
+        this.checkBox = checkBox;
+    }
+
+    public JButtonMetalBlu getButEnab() {
+        return butEnab;
+    }
+
+    public void setButEnab(JButtonMetalBlu butEnab) {
+        this.butEnab = butEnab;
+    }
+
+    public JButtonMetalBlu getButSelCat2() {
+        return butSelCat2;
+    }
+
+    public void setButSelCat2(JButtonMetalBlu butSelCat2) {
+        this.butSelCat2 = butSelCat2;
+    }
+
+    public JButtonMetalBlu getButSelPri() {
+        return butSelPri;
+    }
+
+    public void setButSelPri(JButtonMetalBlu butSelPri) {
+        this.butSelPri = butSelPri;
+    }
+
+    public JComboBox getComboCat() {
+        return comboCat;
+    }
+
+    public void setComboCat(JComboBox comboCat) {
+        this.comboCat = comboCat;
+    }
+
+    public JComboBox getComboCat2() {
+        return comboCat2;
+    }
+
+    public void setComboCat2(JComboBox comboCat2) {
+        this.comboCat2 = comboCat2;
+    }
+
+    public JComboBox getComboRound() {
+        return comboRound;
+    }
+
+    public void setComboRound(JComboBox comboRound) {
+        this.comboRound = comboRound;
+    }
+
+    public JSpinner getSpinnerPC() {
+        return spinnerPC;
+    }
+
+    public void setSpinnerPC(JSpinner spinnerPC) {
+        this.spinnerPC = spinnerPC;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
+    public boolean isVis() {
+        return vis;
+    }
+
+    public void setVis(boolean vis) {
+        this.vis = vis;
+    }
+
+    public Font getNewFont() {
+        return newFont;
+    }
+
+    public void setNewFont(Font newFont) {
+        this.newFont = newFont;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
+    
+    
+    
+    
 }

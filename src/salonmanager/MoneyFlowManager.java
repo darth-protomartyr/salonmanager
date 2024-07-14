@@ -22,11 +22,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.servicios.ServiceMoneyFlow;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
-public class CashFlowManager extends FrameWindow {
+public class MoneyFlowManager extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
@@ -34,21 +35,23 @@ public class CashFlowManager extends FrameWindow {
     Utilidades utili = new Utilidades();
     ServicioTable st = new ServicioTable();
     ServicioSalon ss = new ServicioSalon();
+    ServiceMoneyFlow smf = new ServiceMoneyFlow();
     SalonManager sm = new SalonManager();
+    
 
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
 
-    JTextField fieldCashFlow = new JTextField();
+    JTextField fieldMoneyFLow = new JTextField();
     JTextArea textArea = new JTextArea();
-    JButtonMetalBlu butCashFlow = new JButtonMetalBlu();
+    JButtonMetalBlu butMoneyFlow = new JButtonMetalBlu();
     Salon salon = null;
     JRadioButton optionCash = new JRadioButton("Efectivo");
     JRadioButton optionElec = new JRadioButton("Transferencia");
     int flowKind;
-    boolean cashKind = true;
+    boolean moneyKind = true;
 
-    public CashFlowManager(Salon sal, int kind) {
+    public MoneyFlowManager(Salon sal, int kind) {
         salon = sal;
         sm.addFrame(this);
         flowKind = kind;
@@ -67,8 +70,8 @@ public class CashFlowManager extends FrameWindow {
         label$.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 2, altoUnit * 5);
         panelPpal.add(label$);
 
-        fieldCashFlow.setBounds(anchoUnit * 5, altoUnit * 10, anchoUnit * 12, altoUnit * 6);
-        fieldCashFlow.setFont(salon.getFont2());
+        fieldMoneyFLow.setBounds(anchoUnit * 5, altoUnit * 10, anchoUnit * 12, altoUnit * 6);
+        fieldMoneyFLow.setFont(salon.getFont2());
 
         optionCash.setBounds(anchoUnit * 19, altoUnit * 10, anchoUnit * 17, altoUnit * 3);
         optionElec.setBounds(anchoUnit * 19, altoUnit * 13, anchoUnit * 17, altoUnit * 3);
@@ -90,10 +93,10 @@ public class CashFlowManager extends FrameWindow {
                 JRadioButton selectedButton = (JRadioButton) e.getSource();
                 if (selectedButton.getText().equals("Efectivo")) {
                     optionElec.setSelected(false);
-                    cashKind = true;
+                    moneyKind = true;
                 } else {
                     optionCash.setSelected(false);
-                    cashKind = false;
+                    moneyKind = false;
                 }
             }
         };
@@ -118,37 +121,37 @@ public class CashFlowManager extends FrameWindow {
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setBounds(anchoUnit * 4, altoUnit * 20, anchoUnit * 21, altoUnit * 8);
         panelPpal.add(scrollPane);
-        panelPpal.add(fieldCashFlow);
+        panelPpal.add(fieldMoneyFLow);
 
-        butCashFlow = utiliGraf.button1("", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
-        butCashFlow.addActionListener(new ActionListener() {
+        butMoneyFlow = utiliGraf.button1("", anchoUnit * 8, altoUnit * 29, anchoUnit * 12);
+        butMoneyFlow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    butCashFlowAction();
+                    butMoneyFlowAction();
                 } catch (Exception ex) {
-                    Logger.getLogger(CashFlowManager.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MoneyFlowManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        panelPpal.add(butCashFlow);
+        panelPpal.add(butMoneyFlow);
 
         if (flowKind == 0) {
             setTitle("Caja Inicial");
             labelTit.setText(utili.stringMsgFrd("Introduzca la caja inicial", 20, 1));
             labelComment.setText("Introduzca un comentario de ser necesario:");
-            fieldCashFlow.setText("0");
-            butCashFlow.setText("INGRESAR");
+            fieldMoneyFLow.setText("0");
+            butMoneyFlow.setText("INGRESAR");
         } else if (flowKind == 1) {
             setTitle("Ingresos a Caja");
             labelTit.setText(utili.stringMsgFrd("Introduzca el monto a ingresar", 20, 1));
             labelComment.setText("Introduzca el motivo del ingreso:");
-            butCashFlow.setText("INGERSAR");
+            butMoneyFlow.setText("INGRESAR");
         } else {
             setTitle("Salidas de Caja");
             labelTit.setText(utili.stringMsgFrd("Introduzca el monto a extraer", 20, 1));
             labelComment.setText("Introduzca el motivo de la extracción:");
-            butCashFlow.setText("EXTRAER");
+            butMoneyFlow.setText("EXTRAER");
         }
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalirRedux(frame);
@@ -168,10 +171,10 @@ public class CashFlowManager extends FrameWindow {
         });
     }
 
-    private void butCashFlowAction() throws Exception {
-//        boolean kind = cashKind;
-        String cashFlowSt = fieldCashFlow.getText();
-        double cashFlow = 0;
+    private void butMoneyFlowAction() throws Exception {
+//        boolean kind = moneyKind;
+        String moneyFlowSt = fieldMoneyFLow.getText();
+        double moneyFlow = 0;
         String comment = textArea.getText();
         boolean error = false;
 
@@ -179,11 +182,11 @@ public class CashFlowManager extends FrameWindow {
             comment = "Dinero ingresado en caja inicial.<br>" + comment;
         }
 
-        if (cashFlowSt.equals("") || cashFlowSt.equals("0")) {
+        if (moneyFlowSt.equals("") || moneyFlowSt.equals("0")) {
             dispose();
         } else {
             try {
-                cashFlow = parseDouble(cashFlowSt);
+                moneyFlow = parseDouble(moneyFlowSt);
             } catch (NumberFormatException e) {
                 utiliMsg.errorNumerico();
                 error = true;
@@ -197,7 +200,7 @@ public class CashFlowManager extends FrameWindow {
             }
 
             if (error == false) {
-                ss.cashFlowAdd(flowKind, cashKind, cashFlow, comment, salon);
+                smf.moneyFlowAdd(flowKind, moneyKind, moneyFlow, comment, salon);
                 dispose();
             } else {
                 resetValues();
@@ -206,7 +209,7 @@ public class CashFlowManager extends FrameWindow {
     }
 
     private void resetValues() {
-        fieldCashFlow.setText("");
+        fieldMoneyFLow.setText("");
         textArea.setText("");
     }
 }

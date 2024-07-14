@@ -8,16 +8,18 @@ public class ConfigGeneral {
     ArrayList<String> tableItemCategories;
     ArrayList<String> tablePanCh; // inicial del nombre de cada uno de los sectores  
     boolean activeConfig;
+    int tipPc;
 
     public ConfigGeneral() {
     }
 
-    public ConfigGeneral(int totalTable, ArrayList<Integer> tableNum, ArrayList<String> tablePan, ArrayList<String> tableItemCategories, ArrayList<String> tablePanCh, boolean activeConfig) {
+    public ConfigGeneral(int totalTable, ArrayList<Integer> tableNum, ArrayList<String> tablePan, ArrayList<String> tableItemCategories, ArrayList<String> tablePanCh, int tipPc, boolean activeConfig) {
         this.totalTable = totalTable;
         this.tableNum = tableNum;
         this.tablePan = tablePan;
         this.tableItemCategories = tableItemCategories;
         this.tablePanCh = tablePanCh;
+        this.tipPc = tipPc;
         this.activeConfig = true;
     }
 
@@ -68,4 +70,15 @@ public class ConfigGeneral {
     public void setActiveConfig(boolean activeConfig) {
         this.activeConfig = activeConfig;
     }
+
+    public int getTipPc() {
+        return tipPc;
+    }
+
+    public void setTipPc(int tipPc) {
+        this.tipPc = tipPc;
+    }
+    
+    
+    
 }

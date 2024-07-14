@@ -24,11 +24,13 @@ import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.utilidades.UtilidadesGraficasAdmin;
 
 public class TemplateUser extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    UtilidadesGraficasAdmin utiliGrafAdm = new UtilidadesGraficasAdmin();
     Utilidades utili = new Utilidades();
     ServicioUser su = new ServicioUser();
     DAOUser daoU = new DAOUser();
@@ -262,7 +264,7 @@ public class TemplateUser extends FrameHalf {
                 resetRegister();
                 utiliMsg.cargaUsuario();
                 if (admin != null) {
-                    admin.enabledTrue(2);
+                    utiliGrafAdm.enabledTrue(2, admin);
                 }
                 dispose();
             } else {
@@ -275,7 +277,7 @@ public class TemplateUser extends FrameHalf {
                 daoU.updatePassUser(id, pass1);
                 utiliMsg.cargaUpdateUsuario();
                 if (admin != null) {
-                    admin.enabledTrue(2);
+                    utiliGrafAdm.enabledTrue(2, admin);
                 }
                 dispose();
             }

@@ -49,9 +49,6 @@ public class BillDiscounter extends FrameWindow {
     JSpinner spinnerDiscount = null;
     Salon salon = null;
     TableAdder tAdd = null;
-    int year = 0;
-    int month = 0;
-    int day = 0;
 
     public BillDiscounter(Salon sal, TableAdder ta) {
         if (sal != null) {
@@ -62,12 +59,9 @@ public class BillDiscounter extends FrameWindow {
         setTitle("Descuento");
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
-
+        
         Timestamp now = new Timestamp(new Date().getTime());
         LocalDateTime today = now.toLocalDateTime();
-        year = today.getYear();
-        month = today.getMonthValue();
-        day = today.getDayOfMonth();
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);

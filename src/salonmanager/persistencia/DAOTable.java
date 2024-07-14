@@ -13,6 +13,10 @@ public class DAOTable extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
     public void saveTable(Table tab, Timestamp ts) throws Exception {
+        if (tab.getComments().equals("<br>")) {
+            tab.setComments("");
+        }
+        
         boolean error = false;
         if (ts != null) {
             ArrayList<String> idTabs = listarIdByWorkshift(ts);
@@ -214,6 +218,9 @@ public class DAOTable extends DAO {
     }
 
     public void updateComments(Table tab) throws Exception {
+        if (tab.getComments().equals("<br>")) {
+            tab.setComments("");
+        }
         if (!tab.getComments().equals("Ingrese un comentario(opcional): ") || !tab.getComments().equals("Causa del Error (obligatorio): ")) {
             try {
                 String sql1 = "UPDATE tabs SET table_comments = '" + tab.getComments() + "' WHERE table_id = '" + tab.getId() + "';";

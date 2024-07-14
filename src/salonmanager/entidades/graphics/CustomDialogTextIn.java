@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import static javax.swing.SwingConstants.CENTER;
 import javax.swing.border.Border;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -39,9 +41,11 @@ public class CustomDialogTextIn extends JDialog {
 
     String text = "";
     JTextArea textArea = new JTextArea();
-    JPasswordField textField = new JPasswordField();
+    JPasswordField textFieldPass = new JPasswordField();
+    JTextField textField = new JTextField();
 
-    public CustomDialogTextIn(String tit, String message, int size) {
+
+    public CustomDialogTextIn(String tit, String message, int kind) {
         setIconImage(icono.getImage());
         setModal(true);
         setTitle(tit);
@@ -63,29 +67,35 @@ public class CustomDialogTextIn extends JDialog {
 
 //        String mess = "Ingrese indicaciónes del cliente";
         JLabel labelIText = utiliGraf.labelTitleBacker1W(message);
-        labelIText.setBounds(anchoUnit * 2, altoUnit * 2, anchoUnit * 27, altoUnit * 5);
+        labelIText.setBounds(anchoUnit * 0, altoUnit * 2, anchoUnit * 30, altoUnit * 5);
+        labelIText.setHorizontalAlignment(CENTER);
         panelText.add(labelIText);
 
         JScrollPane scrollPane = null;
-        Font newFont = new Font("Arial", Font.PLAIN, 16);
-
-        if (size == 1) {
+        Font newFont1 = new Font("Arial", Font.PLAIN, 16);
+        Font newFont2 = new Font("Arial", Font.BOLD, 30);
+        if (kind == 1) {
             textArea.setRows(3);
             textArea.setColumns(5);
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
-            textArea.setFont(newFont);
+            textArea.setFont(newFont1);
             textArea.setBackground(narUlg);
             scrollPane = new JScrollPane(textArea);
             scrollPane.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 21, altoUnit * 15);
             scrollPane.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 21, altoUnit * 15);
             panelText.add(scrollPane);
             panelText.add(scrollPane);
-        } else {
-            textField.setFont(newFont);
-            textField.setBounds(anchoUnit * 6, altoUnit * 10, anchoUnit * 15, altoUnit * 4);
+        } else if (kind == 2){
+            textFieldPass.setFont(newFont2);
+            textFieldPass.setBounds(anchoUnit * 6, altoUnit * 13, anchoUnit * 15, altoUnit * 6);
+            textFieldPass.setBackground(narUlg);
+            panelText.add(textFieldPass);
+        } else if (kind == 3) {
+            textField.setFont(newFont2);
+            textField.setBounds(anchoUnit * 6, altoUnit * 13, anchoUnit * 15, altoUnit * 6);
             textField.setBackground(narUlg);
-            panelText.add(textField);
+            panelText.add(textField);            
         }
 
         JButtonMetalBlu butInText = utiliGraf.button2("Ingresar", anchoUnit * 10, altoUnit * 30, anchoUnit * 10);
@@ -93,9 +103,11 @@ public class CustomDialogTextIn extends JDialog {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (size == 1) {
+                    if (kind == 1) {
                         text = textArea.getText();
-                    } else {
+                    } else if (kind == 2){
+                        text = textFieldPass.getText();
+                    } else if (kind == 3) {
                         text = textField.getText();
                     }
                     dispose();
@@ -117,5 +129,9 @@ public class CustomDialogTextIn extends JDialog {
 
     public String getText() {
         return text;
+    }
+    
+    public void setText(String st) {
+        this.text = st;
     }
 }

@@ -9,13 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
@@ -26,6 +24,7 @@ import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasAdmin;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class Admin extends FrameHalf {
@@ -35,6 +34,7 @@ public class Admin extends FrameHalf {
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioTable st = new ServicioTable();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasAdmin utiliGrafAdm = new UtilidadesGraficasAdmin();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     DAOConfig daoC = new DAOConfig();
@@ -44,8 +44,8 @@ public class Admin extends FrameHalf {
     ArrayList<User> users = new ArrayList<>();
     ArrayList<String> defer1 = new ArrayList<>();
     ArrayList<String> defer2 = new ArrayList<>();
-    ArrayList<Integer> defer1Ws = new ArrayList<>();
-    ArrayList<Integer> defer2Ws = new ArrayList<>();
+    ArrayList<Workshift> defer1Ws = new ArrayList<>();
+    ArrayList<String> defer2Ws = new ArrayList<>();
     Table tabAux = null;
     User userMod = null;
     JComboBox comboUsers = new JComboBox();
@@ -56,6 +56,8 @@ public class Admin extends FrameHalf {
     JLabel labelUserMod = null;
     Admin adm = null;
     Manager manager = null;
+    Font newFont = new Font("Arial", Font.BOLD, 17);
+
 
     public Admin(Manager man) throws Exception {
         manager = man;
@@ -66,7 +68,6 @@ public class Admin extends FrameHalf {
         add(panelPpal);
         cfgAct = daoC.askConfigActual();
         users = daoU.listarUsersCompleto();
-        Font newFont = new Font("Arial", Font.BOLD, 17);
 
         JLabel labelTit = utiliGraf.labelTitleBackerA3W("Administrar");
         labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
@@ -74,233 +75,32 @@ public class Admin extends FrameHalf {
 
 //----------------Panel Users-------------------------------------------------
 //----------------Panel Users-------------------------------------------------
-        JPanel panelUsers = new JPanel();
-        panelUsers.setLayout(null);
-        panelUsers.setBackground(bluLg);
-        panelUsers.setBounds(anchoUnit * 2, altoUnit * 10, anchoUnit * 23, altoUnit * 47);
+        JPanel panelUsers = utiliGrafAdm.panelUserBacker(adm);
         panelPpal.add(panelUsers);
 
-        JLabel labelUsers = utiliGraf.labelTitleBacker1("Administrar Usuarios");
-        labelUsers.setHorizontalAlignment(SwingConstants.CENTER);
-        labelUsers.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
-        panelUsers.add(labelUsers);
-
-        comboUsers.setBounds(anchoUnit * 4, altoUnit * 7, anchoUnit * 15, altoUnit * 4);
-        comboUsers.setModel(utili.userComboModelReturnWNull(users));
-        comboUsers.setSelectedItem("");
-        comboUsers.setFont(newFont);
-        panelUsers.add(comboUsers);
-
-        JButtonMetalBlu butSelUsers = utiliGraf.button2("Elegir Usuario", anchoUnit * 5, altoUnit * 13, anchoUnit * 13);
-        butSelUsers.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    selectUser();
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelUsers.add(butSelUsers);
-
-        labelUserMod = utiliGraf.labelTitleBacker2("");
-        labelUserMod.setHorizontalAlignment(SwingConstants.CENTER);
-        labelUserMod.setBounds(anchoUnit * 0, altoUnit * 17, anchoUnit * 23, altoUnit * 5);
-        panelUsers.add(labelUserMod);
-
-        JLabel labelAct = utiliGraf.labelTitleBacker2("ESTADO:");
-        labelAct.setHorizontalAlignment(SwingConstants.CENTER);
-        labelAct.setBounds(anchoUnit * 5, altoUnit * 22, anchoUnit * 6, altoUnit * 4);
-        panelUsers.add(labelAct);
-
-        ArrayList<String> state = new ArrayList<>();
-        state.add("");
-        state.add("alta");
-        state.add("baja");
-
-        comboAct.setBounds(anchoUnit * 13, altoUnit * 22, anchoUnit * 5, altoUnit * 4);
-        comboAct.setModel(utili.categoryComboModelReturn(state));
-        comboAct.setSelectedItem("");
-        comboAct.setFont(newFont);
-        panelUsers.add(comboAct);
-
-        JLabel labelRol = utiliGraf.labelTitleBacker2("ROL:");
-        labelRol.setHorizontalAlignment(SwingConstants.CENTER);
-        labelRol.setBounds(anchoUnit * 5, altoUnit * 28, anchoUnit * 4, altoUnit * 4);
-        panelUsers.add(labelRol);
-
-        ArrayList<String> rols = new ArrayList<>();
-        rols.add("MANAGER");
-        rols.add("CAJERO");
-        rols.add("MOZO");
-        rols.add("DELIVERY");
-        rols.add("");
-
-        comboRol.setBounds(anchoUnit * 9, altoUnit * 28, anchoUnit * 9, altoUnit * 4);
-        comboRol.setModel(utili.categoryComboModelReturn(rols));
-        comboRol.setFont(newFont);
-        comboRol.setSelectedItem("");
-        panelUsers.add(comboRol);
-
-        JButtonMetalBlu butModifyUser = utiliGraf.button1("Confirmar", anchoUnit * 5, altoUnit * 34, anchoUnit * 13);
-        butModifyUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (userMod != null) {
-                        updateUser();
-                    } else {
-                        utiliMsg.errorUserSelected();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelUsers.add(butModifyUser);
-
-        JButtonMetalBlu butCreateUser = utiliGraf.button3("Crear Usuario", anchoUnit, altoUnit * 43, anchoUnit * 8);
-        butCreateUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    new TemplateUser(null, adm);
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelUsers.add(butCreateUser);
-
-        JButtonMetalBlu butUpdateUser = utiliGraf.button3("Actualizar Usuario", anchoUnit * 11, altoUnit * 43, anchoUnit * 11);
-        butUpdateUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    if (userMod != null) {
-                        new TemplateUser(userMod, adm);
-                    } else {
-                        utiliMsg.errorUserSelected();
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelUsers.add(butUpdateUser);
-
 //----------------Panel Tables------------------------------------------------
 //----------------Panel Tables------------------------------------------------
-        JPanel panelTables = new JPanel();
-        panelTables.setLayout(null);
-        panelTables.setBackground(bluLg);
-        panelTables.setBounds(anchoUnit * 26, altoUnit * 10, anchoUnit * 23, altoUnit * 23);
-        panelPpal.add(panelTables);
-
-        defer1 = cfgAct.getArrayDeferWs();
-        defer2 = utili.tabsEasyReader(defer1);
-
-        JLabel labelTables = utiliGraf.labelTitleBacker1("Administrar Mesas de Error");
-        labelTables.setHorizontalAlignment(SwingConstants.CENTER);
-        labelTables.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
-        panelTables.add(labelTables);
-
-        comboTabs.setBounds(anchoUnit * 5, altoUnit * 8, anchoUnit * 13, altoUnit * 4);
-        comboTabs.setModel(utili.categoryComboModelReturn(defer2));
-        comboTabs.setSelectedItem("");
-        comboTabs.setFont(newFont);
-        panelTables.add(comboTabs);
-
-        JButtonMetalBlu butSelTabs = utiliGraf.button2("Elegir Mesa", anchoUnit * 5, altoUnit * 15, anchoUnit * 13);
-        butSelTabs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    selectTab();
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelTables.add(butSelTabs);
+        JPanel panelTable = utiliGrafAdm.panelTableBacker(adm);
+        panelPpal.add(panelTable);
 
 //----------------Panel Workshifts -------------------------------------------
 //----------------Panel Workshifts -------------------------------------------
-        JPanel panelWs = new JPanel();
-        panelWs.setLayout(null);
-        panelWs.setBackground(bluLg);
-        panelWs.setBounds(anchoUnit * 26, altoUnit * 34, anchoUnit * 23, altoUnit * 23);
+        JPanel panelWs = utiliGrafAdm.panelWsBacker(adm);;
         panelPpal.add(panelWs);
 
-        defer1Ws = daoW.listarErrorId();
-//        defer2Ws = utili.tabsEasyReader(defer1);
-
-        JLabel labelWs = utiliGraf.labelTitleBacker1("Administrar Turnos erróneos");
-        labelWs.setHorizontalAlignment(SwingConstants.CENTER);
-        labelWs.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
-        panelWs.add(labelWs);
-
-        comboWs.setBounds(anchoUnit * 5, altoUnit * 8, anchoUnit * 13, altoUnit * 4);
-        comboWs.setModel(utili.categoryComboModelReturn(defer2));
-        comboWs.setSelectedItem("");
-        comboWs.setFont(newFont);
-        panelWs.add(comboWs);
-
-        JButtonMetalBlu butSelWs = utiliGraf.button2("Elegir Turno", anchoUnit * 5, altoUnit * 15, anchoUnit * 13);
-        butSelWs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    selectTab();
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelWs.add(butSelWs);
 //----------------Panel Items-------------------------------------------------
 //----------------Panel Items-------------------------------------------------
-        JPanel panelItems = panelCreator("Administrar Items", 59, 15);
+        JPanel panelItems = utiliGrafAdm.panelItemsBacker(adm);
         panelPpal.add(panelItems);
 
-        JButtonMetalBlu butCfgItems = utiliGraf.button1("Modificar Lista", anchoUnit * 15, altoUnit * 6, anchoUnit * 17);
-        butCfgItems.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    new ConfigItemList(manager);
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelItems.add(butCfgItems);
+//----------------Panel Config------------------------------------------------
+//----------------Panel Config------------------------------------------------
 
-//----------------Panel Config------------------------------------------------
-//----------------Panel Config------------------------------------------------
-        JPanel panelConfig = panelCreator("Administrar Configuración", 76, 15);
+        JPanel panelConfig = utiliGrafAdm.panelConfigBacker(adm);
         panelPpal.add(panelConfig);
 
-        JButtonMetalBlu butCfgSalon = utiliGraf.button1("Configurar salón", anchoUnit * 15, altoUnit * 6, anchoUnit * 17);
-        butCfgSalon.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarConfigSalon();
-                if (confirmation) {
-                    try {
-                        if (!cfgAct.isOpenWs()) {
-                            configSalonOpener();
-                        } else {
-                            utiliMsg.errorWsPendient();
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        });
-        panelConfig.add(butCfgSalon);
+//----------------Extras------------------------------------------------------
+//----------------Extras------------------------------------------------------       
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(this);
         butSalir.addActionListener(new ActionListener() {
@@ -319,100 +119,147 @@ public class Admin extends FrameHalf {
         });
     }
 
-    private JPanel panelCreator(String tit, int i, int y) {
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        panel.setBackground(bluLg);
-        panel.setBounds(anchoUnit * 2, altoUnit * i, anchoUnit * 47, altoUnit * y);
-        JLabel labelStatics = utiliGraf.labelTitleBacker1(tit);
-        labelStatics.setHorizontalAlignment(SwingConstants.CENTER);
-        labelStatics.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 47, altoUnit * 5);
-        panel.add(labelStatics);
-
-        return panel;
+    public ServicioTable getSt() {
+        return st;
     }
 
-    private void configSalonOpener() throws Exception {
-        if (user.getRol().equals("ADMIN")) {
-            new ConfigSalonFrame(user);
-        }
+    public void setSt(ServicioTable st) {
+        this.st = st;
     }
 
-    private void selectUser() {
-        String selection = (String) comboUsers.getSelectedItem();
-        if (!selection.equals("")) {
-            userMod = utili.userSelReturn(selection, users);
-            comboRol.setSelectedItem(userMod.getRol());
-            String state = "";
-            if (userMod.isActiveUser()) {
-                state = "alta";
-            } else {
-                state = "baja";
-            }
-            comboAct.setSelectedItem(state);
-            labelUserMod.setText("Usuario: " + userMod.getName() + " " + userMod.getLastName());
-        }
+    public User getUser() {
+        return user;
     }
 
-    private void updateUser() throws Exception {
-        String userId = userMod.getId();
-        boolean act = false;
-        String rol = (String) comboRol.getSelectedItem();
-        String active = (String) comboAct.getSelectedItem();
-        if (!userId.equals("") && !active.equals("") && !rol.equals("")) {
-            if (active.equals("alta")) {
-                act = true;
-            } else {
-                act = false;
-            }
-            daoU.updateActUser(userId, act);
-            daoU.updateRolUser(userId, rol);
-            utiliMsg.cargaUserUpdate();
-            reset();
-        } else {
-            utiliMsg.errorDataNull();
-        }
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    private void reset() {
-        comboUsers.setSelectedItem("");
-        comboAct.setSelectedItem("");
-        comboRol.setSelectedItem("");
-        userMod = null;
-        labelUserMod.setText("");
-
-        comboTabs.setSelectedItem("");
-        tabAux = null;
+    public ArrayList<User> getUsers() {
+        return users;
     }
 
-    private void selectTab() throws Exception {
-        String id1 = (String) comboTabs.getSelectedItem();
-        String id2 = "";
-        for (int i = 0; i < defer2.size(); i++) {
-            if (id1.equals(defer2.get(i))) {
-                id2 = defer1.get(i);
-            }
-        }
-        tabAux = st.getCompleteTableById(id2);
-//        new TableResumePanel(null, tabAux, 1, this);
-        new TableResumePanel(tabAux);
-
-        setEnabled(false);
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
 
-    void enabledTrue(int mod) throws Exception {
-        if (mod == 1) {
-            cfgAct = daoC.askConfigActual();
-            defer1 = cfgAct.getArrayDeferWs();
-            defer2 = utili.tabsEasyReader(defer1);
-            comboTabs.setModel(utili.categoryComboModelReturn(defer2));
-            comboTabs.setSelectedItem("");
-        } else if (mod == 2) {
-            users = daoU.listarUsersCompleto();
-            comboUsers.setModel(utili.userComboModelReturnWNull(users));
-            comboUsers.setSelectedItem("");
-        }
-        reset();
-        setEnabled(true);
+    public ArrayList<String> getDefer1() {
+        return defer1;
     }
+
+    public void setDefer1(ArrayList<String> defer1) {
+        this.defer1 = defer1;
+    }
+
+    public ArrayList<String> getDefer2() {
+        return defer2;
+    }
+
+    public void setDefer2(ArrayList<String> defer2) {
+        this.defer2 = defer2;
+    }
+
+    public ArrayList<Workshift> getDefer1Ws() {
+        return defer1Ws;
+    }
+
+    public void setDefer1Ws(ArrayList<Workshift> defer1Ws) {
+        this.defer1Ws = defer1Ws;
+    }
+
+    public ArrayList<String> getDefer2Ws() {
+        return defer2Ws;
+    }
+
+    public void setDefer2Ws(ArrayList<String> defer2Ws) {
+        this.defer2Ws = defer2Ws;
+    }
+
+    public Table getTabAux() {
+        return tabAux;
+    }
+
+    public void setTabAux(Table tabAux) {
+        this.tabAux = tabAux;
+    }
+
+    public User getUserMod() {
+        return userMod;
+    }
+
+    public void setUserMod(User userMod) {
+        this.userMod = userMod;
+    }
+
+    public JComboBox getComboUsers() {
+        return comboUsers;
+    }
+
+    public void setComboUsers(JComboBox comboUsers) {
+        this.comboUsers = comboUsers;
+    }
+
+    public JComboBox getComboAct() {
+        return comboAct;
+    }
+
+    public void setComboAct(JComboBox comboAct) {
+        this.comboAct = comboAct;
+    }
+
+    public JComboBox getComboRol() {
+        return comboRol;
+    }
+
+    public void setComboRol(JComboBox comboRol) {
+        this.comboRol = comboRol;
+    }
+
+    public JComboBox getComboTabs() {
+        return comboTabs;
+    }
+
+    public void setComboTabs(JComboBox comboTabs) {
+        this.comboTabs = comboTabs;
+    }
+
+    public JComboBox getComboWs() {
+        return comboWs;
+    }
+
+    public void setComboWs(JComboBox comboWs) {
+        this.comboWs = comboWs;
+    }
+
+    public JLabel getLabelUserMod() {
+        return labelUserMod;
+    }
+
+    public void setLabelUserMod(JLabel labelUserMod) {
+        this.labelUserMod = labelUserMod;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
+    public Font getNewFont() {
+        return newFont;
+    }
+
+    public void setNewFont(Font newFont) {
+        this.newFont = newFont;
+    }   
+
+    public ConfigActual getCfgAct() {
+        return cfgAct;
+    }
+
+    public void setCfgAct(ConfigActual cfgAct) {
+        this.cfgAct = cfgAct;
+    }    
 }

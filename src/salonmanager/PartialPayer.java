@@ -225,8 +225,8 @@ public class PartialPayer extends FrameWindow {
         ListModel modeloLista2 = utili.itemListModelReturnMono(itemsPartialToPay);
         listPartialToPay.setModel(modeloLista2);
         labelPrice.setText(subTotal + "");
-        labelRest.setText("Resto: " + (total - subTotal));
-        labelTip.setText("Prop.: " + Math.round(subTotal / 10));
+        labelRest.setText("Resto: $" + (total - subTotal));
+        labelTip.setText("Prop. : $" + Math.round(subTotal / 10));
         if ((total - subTotal) > 0) {
             butPartialIn.setText("Pago Parcial");
         }

@@ -17,26 +17,26 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import salonmanager.entidades.bussiness.CashFlow;
+import salonmanager.entidades.bussiness.MoneyFlow;
 import salonmanager.entidades.graphics.FrameHalfFlat;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.persistencia.DAOCashFlow;
+import salonmanager.persistencia.DAOMoneyFlow;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class CashFlowViewer extends FrameHalfFlat {
+public class MoneyFlowViewer extends FrameHalfFlat {
 
-    DAOCashFlow daoCF = new DAOCashFlow();
+    DAOMoneyFlow daoCF = new DAOMoneyFlow();
 
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(252, 203, 5);
 
-    ArrayList<CashFlow> cashFlowList = new ArrayList<>();
+    ArrayList<MoneyFlow> moneyFlowList = new ArrayList<>();
 
-    Salon salon = null;
+//    Salon salon = null;
     SalonManager sm = new SalonManager();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
@@ -55,10 +55,9 @@ public class CashFlowViewer extends FrameHalfFlat {
     String[] colNames = {col1, col2, col3, col4, col5};
     String[][] data = null;
 
-    public CashFlowViewer(WorkshiftEndPanel wep, Salon sal) throws Exception { 
-        salon = sal;
+    public MoneyFlowViewer(WorkshiftEndPanel wep) throws Exception {
         sm.addFrame(this);
-        cashFlowList = daoCF.askCfByWorkshift(salon.getWorkshiftNow().getId());
+        moneyFlowList = daoCF.askMFByWorkshift(wep.getActualWs().getId());
         setTitle("Pago Parcial");
         PanelPpal panelPpal = new PanelPpal(this);
         add(panelPpal);
@@ -71,22 +70,22 @@ public class CashFlowViewer extends FrameHalfFlat {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("PAGO PARCIAL");
         panelLabel.add(labelTit);
 
-        rows = cashFlowList.size();
+        rows = moneyFlowList.size();
         data = (new String[rows][cols]);
 
         for (int i = 0; i < rows; i++) {
-            CashFlow cf = cashFlowList.get(i);
+            MoneyFlow cf = moneyFlowList.get(i);
             String mov = "Entrada";
             String kindM = "Transferencia";
-            String date = "" + utili.friendlyDate1(cf.getCashFwTime());
-            String mount = "" + cf.getCashFwAmount();
-            String comment = cf.getCashFwComment();
+            String date = "" + utili.friendlyDate1(cf.getMoneyFwTime());
+            String mount = "" + cf.getMoneyFwAmount();
+            String comment = cf.getMoneyFwComment();
 
-            if (cf.isCashFwKind() == false) {
+            if (cf.isMoneyFwKind() == false) {
                 mov = "Salida";
             }
 
-            if (cf.isCashFwMoneyKind()) {
+            if (cf.isMoneyFwMoneyKind()) {
                 kindM = "Efectivo";
             }
 
@@ -124,6 +123,7 @@ public class CashFlowViewer extends FrameHalfFlat {
 
         TableCellRenderer tableCellRenderer = new TableCellRenderer() {
             DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component component = renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

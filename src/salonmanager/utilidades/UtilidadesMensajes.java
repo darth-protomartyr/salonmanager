@@ -1,5 +1,6 @@
 package salonmanager.utilidades;
 
+import static java.lang.Double.parseDouble;
 import javax.swing.JFrame;
 import salonmanager.entidades.graphics.CustomDialog;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
@@ -14,7 +15,7 @@ public class UtilidadesMensajes extends JFrame {
 
 //Mensajes de confirmación    
 //Mensajes de confirmación    
-    public void cargaCashFlowSuccess() {
+    public void cargaMoneyFlowSuccess() {
         CustomDialog cm = new CustomDialog("La operación fue confirmada", 1);
         cm.setVisible(true);
     }
@@ -477,7 +478,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public boolean cargaConfirmRealWsMount() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar la ventana sin confirmar el monto final del turno, presione ACEPTAR. EL Turno NO se cerrará");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar la ventana sin confirmar el monto final del turno, presione ACEPTAR. El turno NO se cerrará");
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -528,17 +529,32 @@ public class UtilidadesMensajes extends JFrame {
     public boolean cargaConfirmarFacturacion(double realMount, double error) {
         String mess = "";
         if (error == 0) {
-            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount;
-        } else if (error > 0) {
-            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + " y hay un faltante de " + error * (-1);
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + ".";
+        } else if (error < 0) {
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + " y hay un faltante de $" + error * (-1);
         } else {
-            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + " y hay un excedente de " + error;
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + " y hay un excedente de $" + error;
         }
         CustomDialogConfirm cdc = new CustomDialogConfirm(mess);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
+    
+    public boolean cargaConfirmarCorrection(double sum, double error) {
+        String mess = "";
+        if (sum == error) {
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + sum + ".";
+        } else {
+            double missing = error - sum; 
+            mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + sum + " y hay un excedente de $" + missing;
+        }
+        CustomDialogConfirm cdc = new CustomDialogConfirm(mess);
+        cdc.setVisible(true);
+        boolean confirm = cdc.getConfirm();
+        return confirm;
+    }
+    
 
     public boolean cargaConfirmarMontoError(double in, double out) {
         CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para cónfirmar que el monto ingresado es de $" + in + " y el faltante  es de $" + out);
@@ -654,7 +670,6 @@ public class UtilidadesMensajes extends JFrame {
             tit = "Nuevo Categoría";
             question = "Ingrese el nombre de una nueva categoría de hasta 10 caracteres";
         }
-
         CustomDialogTextInAlt cdti = new CustomDialogTextInAlt(tit, question, large);
         cdti.setVisible(true);
         st = cdti.getText();
@@ -721,5 +736,58 @@ public class UtilidadesMensajes extends JFrame {
     public void errorTabsToResolve() {
         CustomDialog cm = new CustomDialog("Error: Para continuar debe resolver las mesas del turno", 2);
         cm.setVisible(true); 
+    }
+
+    public double cargaErrorCash() {
+        double cash = 0;
+        String indications = "";
+        CustomDialogTextIn cdti = new CustomDialogTextIn("Ingresar efectivo", "Ingrese el monto en efectivo:", 3);
+        cdti.setVisible(true);
+        indications = cdti.getText();
+        try {
+            cash = parseDouble(indications);
+        }  catch (NumberFormatException e) {
+            errorNumerico();
+            cdti.setText("");
+        }
+        return cash;
+    }
+
+    public double cargaErrorElec() {
+        double cash = 0;
+        String indications = "";
+        CustomDialogTextIn cdti = new CustomDialogTextIn("Ingresar transferencias", "Ingrese el monto de las transferencias electrónicas:", 3);
+        cdti.setVisible(true);
+        indications = cdti.getText();
+        try {
+            cash = parseDouble(indications);
+        }  catch (NumberFormatException e) {
+            errorNumerico();
+            cdti.setText("");
+        }
+        return cash;
+    }
+
+    public void errorSumError() {
+        CustomDialog cm = new CustomDialog("Error: Las sumas de dinero en efectivo y trasferencias no coincide con el total ingresado", 2);
+        cm.setVisible(true); 
+    }
+
+    public void errorSumOverMount() {
+        CustomDialog cm = new CustomDialog("Error: el monto registrado supera el total consumido", 2);
+        cm.setVisible(true); 
+    }
+
+    public String requestCause() {
+        String indications = "";
+        CustomDialogTextIn cdti = new CustomDialogTextIn("Causa Error", "Ingrese la causa del Error:", 1);
+        cdti.setVisible(true);
+        indications = cdti.getText();
+        return indications;
+    }
+
+    public void errorSumCorrection() {
+        CustomDialog cm = new CustomDialog("Error: el monto ingresado es superior al faltante", 2);
+        cm.setVisible(true);
     }
 }

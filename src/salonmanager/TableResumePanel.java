@@ -4,26 +4,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import static java.lang.Double.parseDouble;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import static javax.swing.SwingConstants.CENTER;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import salonmanager.entidades.graphics.FrameThird;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
@@ -50,7 +41,6 @@ public class TableResumePanel extends FrameThird {
     Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
     SalonManager sm = new SalonManager();
-
     double amountCash = 0;
     double amountElec = 0;
     double sum = 0;
@@ -85,6 +75,7 @@ public class TableResumePanel extends FrameThird {
             tabAux.setCloseTime(new Timestamp(new Date().getTime()));
             dateClose = utili.friendlyDate1(tabAux.getCloseTime());
         }
+
         JPanel panelEnd = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 17, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Fin de mesa: ", dateClose);
         panelPpal.add(panelEnd);
 
@@ -179,14 +170,14 @@ public class TableResumePanel extends FrameThird {
 
                 ws.setTotalMountCashWs(ws.getTotalMountCashWs() + amountCash);
                 ws.setTotalMountElectronicWs(ws.getTotalMountElectronicWs() + amountElec);
+                ws.setTotalMountTabs(ws.getTotalMountTabs() + sum);
                 ws.setTotalMountWs(ws.getTotalMountWs() + sum);
-                ws.setTotalMountRealWs(ws.getTotalMountRealWs() + sum);
-                ws.setErrorMountRealWs(ws.getErrorMountWs() - sum);
+                ws.setErrorMountWs(ws.getErrorMountTabs() - sum);
 
                 daoW.updateWorkshiftCash(ws);
                 daoW.updateWorkshiftElectronic(ws);
-                daoW.updateWorkshiftTotal(ws);
-                daoW.updateWorkshiftMountReal(ws);
+                daoW.updateWorkshiftTabs(ws);
+                daoW.updateWorkshiftMountWs(ws);
                 daoW.updateWorkshiftError(ws);
 
                 ConfigActual cfgAct = daoC.askConfigActual();

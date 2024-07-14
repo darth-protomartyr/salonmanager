@@ -35,7 +35,7 @@ public class DAOItemSale extends DAO {
         ArrayList<ItemSale> itemSales = new ArrayList<>();
         ArrayList<Integer> itemIds = new ArrayList<>();
         try {
-            String sql = "SELECT item_sale_statics_id FROM item_sales_statics WHERE item_sale_workshift = id";
+            String sql = "SELECT item_sale_static_id FROM item_sales_statics WHERE item_sale_workshift = id";
             System.out.println(sql);
             consultarBase(sql);
             while(resultado.next()) {
@@ -60,7 +60,7 @@ public class DAOItemSale extends DAO {
     public ItemSale askItemSaleById(int id) throws Exception {
         ItemSale iS = new ItemSale();
         try {
-            String sql = "SELECT * FROM item_sales_statics WHERE item_sale_statics_id = " + id + ";";
+            String sql = "SELECT * FROM item_sales_statics WHERE item_sale_static_id = " + id + ";";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -86,7 +86,7 @@ public class DAOItemSale extends DAO {
     public ArrayList<ItemSale> listarItemSalesByDate(Timestamp open, Timestamp close) throws Exception {
         ArrayList<ItemSale> listISale = new ArrayList<>();
         try {
-            String sql = "SELECT item_sale_statics_id FROM item_sales_statics WHERE item_sale_date >= '" + open + "' AND item_sale_date <= '" + close + "';";
+            String sql = "SELECT item_sale_static_id FROM item_sales_statics WHERE item_sale_date >= '" + open + "' AND item_sale_date <= '" + close + "';";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<Integer> ids = new ArrayList<>();

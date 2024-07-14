@@ -34,7 +34,6 @@ import salonmanager.entidades.graphics.FrameThird;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
-import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
@@ -45,7 +44,6 @@ import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
-import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class TableAdder extends FrameThird {
@@ -61,6 +59,7 @@ public class TableAdder extends FrameThird {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Manager manager = null;
+    Admin admin = null;
     Color bluLg = new Color(194, 242, 206);
     Color narUlg = new Color(255, 255, 176);
     SalonManager sm = new SalonManager();
@@ -80,6 +79,7 @@ public class TableAdder extends FrameThird {
     double sum = 0;
     double wrong = 0;
     double totalMount = 0;
+    double totalMountInit = 0;
 
     int discount = 0;
 
@@ -99,8 +99,6 @@ public class TableAdder extends FrameThird {
     JScrollPane scrollPaneItems = new JScrollPane();
 
     JTable jTableItems = new JTable();
-//    int rowsItems = 0; //nro filas de la tabla
-//    int colItems = 3; //nro columnas de las tablas
     String col1 = "Uni.";
     String col2 = "Items";
     String col3 = "Subtotal $";
@@ -111,21 +109,28 @@ public class TableAdder extends FrameThird {
     Timestamp dateCloseTab = null;
     Timestamp dateCloseWs = null;
     Workshift ws = null;
-
     int num = 0;
 
-    public TableAdder(Workshift w, Manager man, Table tab) throws Exception {
+    public TableAdder(Workshift w, Manager man, Table tab, Admin adm) throws Exception {
         sm.addFrame(this);
         manager = man;
+        admin = adm;
         ws = w;
         itemsDB = daoI.listarItemsCard();
-        if (tabAux != null) {
+        if (tab != null) {
             tabAux = tab;
+            totalMountInit = tabAux.getTotal() - tabAux.getError();
             setTabElements();
         } else {
             num = daoT.maxBarrTab(ws) + 1;
         }
-        if (ws.getCloseWs() != null) {
+
+        Timestamp ts = null;
+        if (ws != null) {
+            ts = ws.getCloseWs();
+        }
+
+        if (ts != null) {
             dateOpenTab = ws.getCloseWs();
             dateOpenTab = utili.updateTmestamp(dateOpenTab, -(10 * num));
             dateCloseTab = utili.updateTmestamp(dateOpenTab, 5);
@@ -218,12 +223,17 @@ public class TableAdder extends FrameThird {
         panelTotal.setBounds(anchoUnit * 2, altoUnit * 65, anchoUnit * 30, altoUnit * 7);
         panelPpal.add(panelTotal);
 
-        JLabel labelTot1 = utiliGraf.labelTitleBackerA4("Total $:");
-        labelTot1.setBounds(anchoUnit * 2, altoUnit * 1, anchoUnit * 8, altoUnit * 4);
+        String st = "Monto Total $:";
+        if (tabAux != null) {
+            st = "Monto Abonado $:";
+        } 
+        
+        JLabel labelTot1 = utiliGraf.labelTitleBacker1(st);
+        labelTot1.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 14, altoUnit * 4);
         panelTotal.add(labelTot1);
 
         labelTot2 = utiliGraf.labelTitleBackerA3("");
-        labelTot2.setBounds(anchoUnit * 10, altoUnit * 1, anchoUnit * 16, altoUnit * 5);
+        labelTot2.setBounds(anchoUnit * 15, altoUnit * 1, anchoUnit * 15, altoUnit * 5);
         labelTot2.setHorizontalAlignment(CENTER);
         panelTotal.add(labelTot2);
 
@@ -232,11 +242,11 @@ public class TableAdder extends FrameThird {
         panelPpal.add(labelInn);
 
         JLabel labelEf = utiliGraf.labelTitleBacker3W("Efectivo $:");
-        labelEf.setBounds(anchoUnit * 3, altoUnit * 76, anchoUnit * 8, altoUnit * 3);
+        labelEf.setBounds(anchoUnit * 5, altoUnit * 76, anchoUnit * 8, altoUnit * 3);
         panelPpal.add(labelEf);
 
-        fieldAmountCash.setBounds(anchoUnit * 3, altoUnit * 79, anchoUnit * 12, altoUnit * 4);
-        fieldAmountCash.setFont(new Font("Arial", Font.PLAIN, 20));
+        fieldAmountCash.setBounds(anchoUnit * 5, altoUnit * 79, anchoUnit * 10, altoUnit * 5);
+        fieldAmountCash.setFont(new Font("Arial", Font.BOLD, 24));
         fieldAmountCash.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -261,12 +271,12 @@ public class TableAdder extends FrameThird {
         fieldAmountCash.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent de) {
-                updateMount();
+                updateMount(1);
             }
 
             @Override
             public void removeUpdate(DocumentEvent de) {
-                updateMount();
+                updateMount(1);
             }
 
             @Override
@@ -280,8 +290,8 @@ public class TableAdder extends FrameThird {
         labelEl.setBounds(anchoUnit * 19, altoUnit * 76, anchoUnit * 10, altoUnit * 3);
         panelPpal.add(labelEl);
 
-        fieldAmountElectronic.setBounds(anchoUnit * 19, altoUnit * 79, anchoUnit * 12, altoUnit * 4);
-        fieldAmountElectronic.setFont(new Font("Arial", Font.PLAIN, 20));
+        fieldAmountElectronic.setBounds(anchoUnit * 19, altoUnit * 79, anchoUnit * 10, altoUnit * 5);
+        fieldAmountElectronic.setFont(new Font("Arial", Font.BOLD, 24));
         fieldAmountElectronic.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -306,12 +316,12 @@ public class TableAdder extends FrameThird {
         fieldAmountElectronic.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent de) {
-                updateMount();
+                updateMount(1);
             }
 
             @Override
             public void removeUpdate(DocumentEvent de) {
-                updateMount();
+                updateMount(1);
             }
 
             @Override
@@ -323,7 +333,7 @@ public class TableAdder extends FrameThird {
 
         labelLoss = utiliGraf.labelTitleBacker2W("Ingrese Información requerida");
         labelLoss.setHorizontalAlignment(CENTER);
-        labelLoss.setBounds(anchoUnit * 1, altoUnit * 84, anchoUnit * 32, altoUnit * 3);
+        labelLoss.setBounds(anchoUnit * 1, altoUnit * 85, anchoUnit * 32, altoUnit * 3);
         panelPpal.add(labelLoss);
 
         JButtonMetalBlu butConfirmMount = utiliGraf.button1("Confirmar pago", anchoUnit * 9, altoUnit * 89, anchoUnit * 14);
@@ -358,6 +368,9 @@ public class TableAdder extends FrameThird {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 dispose();
+                if (admin != null) {
+                    admin.setEnabled(true);
+                }
             }
         });
         panelPpal.add(butSalir);
@@ -366,6 +379,9 @@ public class TableAdder extends FrameThird {
             @Override
             public void windowClosing(WindowEvent e) {
                 dispose();
+                if (admin != null) {
+                    admin.setEnabled(true);
+                }
             }
         });
     }
@@ -422,54 +438,58 @@ public class TableAdder extends FrameThird {
                 daoU.saveWaiterTable(tab);
                 boolean confirm1 = utiliMsg.cargaConfirmNewTab();
                 if (confirm1) {
-                    new TableAdder(ws, manager, null);
+                    new TableAdder(ws, manager, null, null);
                     dispose();
                 } else {
                     ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
                     dispose();
                 }
             } else {
-                tabAux.setDiscount(discount);
-                daoT.updateTableDiscount(tabAux);
-                tabAux.setCloseTime(dateCloseTab);
-                daoT.updateCloseTime(tabAux);
-                tabAux.setOpen(false);
-                daoT.updateTableOpen(tabAux);
-                tabAux.setBill(true);
-                daoT.updateTableBill(tabAux);
-                double error = totalMount - sum;
-                if (error > 0) {
-                    tabAux.setError(error);
-                    daoT.updateError(tabAux);
-                }
-                tabAux.setAmountCash(amountCash);
-                daoT.updateTableMountCash(tabAux);
-                tabAux.setAmountElectronic(amountElec);
-                daoT.updateTableMountElectronic(tabAux);
-                tabAux.setTotal(totalMount - error);
-                daoT.updateTableTotal(tabAux);
-                tabAux.setComments(tabAux.getComments() + "<br>" + "La mesa fue cerrada con posteridad por " + manager.getUser().getName() + " " + manager.getUser().getLastName() + ".");
-                daoT.updateComments(tabAux);
-                tabAux.setOrder(items);
-                daoI.downActiveItemOrderTableAll(tabAux);
-                for (int i = 0; i < tabAux.getOrder().size(); i++) {
-                    daoI.saveItemOrderTable(tabAux.getOrder().get(i), tabAux);
-                }
-                
-                tabAux.setGifts(itemsGift);
-                for (int i = 0; i < tabAux.getGifts().size(); i++) {
-                    daoI.saveItemGiftTable(tabAux.getGifts().get(i), tabAux);
-                }
-                
-                daoI.downActiveItemPayedTableAll(tabAux);
-                daoI.downActiveItemPayedNDTableAll(tabAux);
-                boolean confirm1 = utiliMsg.cargaConfirmNewTab();
-                if (confirm1) {
-                    new TableAdder(ws, manager, null);
-                    dispose();
+                if (sum <= totalMount) {
+                    tabAux.setDiscount(discount);
+                    daoT.updateTableDiscount(tabAux);
+                    tabAux.setCloseTime(dateCloseTab);
+                    daoT.updateCloseTime(tabAux);
+                    tabAux.setOpen(false);
+                    daoT.updateTableOpen(tabAux);
+                    tabAux.setBill(true);
+                    daoT.updateTableBill(tabAux);
+                    double error = totalMount - sum;
+                    if (error > 0) {
+                        tabAux.setError(error);
+                        daoT.updateError(tabAux);
+                    }
+                    tabAux.setAmountCash(amountCash);
+                    daoT.updateTableMountCash(tabAux);
+                    tabAux.setAmountElectronic(amountElec);
+                    daoT.updateTableMountElectronic(tabAux);
+                    tabAux.setTotal(totalMount - error);
+                    daoT.updateTableTotal(tabAux);
+                    tabAux.setComments(tabAux.getComments() + "<br>" + "La mesa fue cerrada con posteridad por " + manager.getUser().getName() + " " + manager.getUser().getLastName() + ".");
+                    daoT.updateComments(tabAux);
+                    tabAux.setOrder(items);
+                    daoI.downActiveItemOrderTableAll(tabAux);
+                    for (int i = 0; i < tabAux.getOrder().size(); i++) {
+                        daoI.saveItemOrderTable(tabAux.getOrder().get(i), tabAux);
+                    }
+
+                    tabAux.setGifts(itemsGift);
+                    for (int i = 0; i < tabAux.getGifts().size(); i++) {
+                        daoI.saveItemGiftTable(tabAux.getGifts().get(i), tabAux);
+                    }
+
+                    daoI.downActiveItemPayedTableAll(tabAux);
+                    daoI.downActiveItemPayedNDTableAll(tabAux);
+                    boolean confirm1 = utiliMsg.cargaConfirmNewTab();
+                    if (confirm1) {
+                        new TableAdder(ws, manager, null, null);
+                        dispose();
+                    } else {
+                        ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
+                        dispose();
+                    }
                 } else {
-                    ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
-                    dispose();
+                    utiliMsg.errorSumOverMount();
                 }
             }
         }
@@ -575,42 +595,43 @@ public class TableAdder extends FrameThird {
             }
         }
 
-        labelTot2.setText(totalMount + "");
-        updateMount();
+        labelTot2.setText(totalMount - tabAux.getError() + "");
+        updateMount(0);
     }
 
-    private void updateMount() {
-        String erC = fieldAmountCash.getText();
-        String erE = fieldAmountElectronic.getText();
-
+    private void updateMount(int prev) {
         boolean error = false;
+        if (prev == 1) {
+            String erC = fieldAmountCash.getText();
+            String erE = fieldAmountElectronic.getText();
 
-        if (erC.equals("")) {
-            erC = "0";
-        }
-
-        if (erE.equals("")) {
-            erE = "0";
-        }
-
-        try {
-
-            if (!erC.equals("")) {
-                amountCash = parseDouble(erC);
+            if (erC.equals("")) {
+                erC = "0";
             }
 
-            if (!erE.equals("")) {
-                amountElec = parseDouble(erE);
+            if (erE.equals("")) {
+                erE = "0";
             }
 
-        } catch (NumberFormatException e) {
-            utiliMsg.errorNumerico();
-            error = true;
-        } catch (Exception ex) {
-            Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+
+                if (!erC.equals("")) {
+                    amountCash = parseDouble(erC);
+                }
+
+                if (!erE.equals("")) {
+                    amountElec = parseDouble(erE);
+                }
+
+            } catch (NumberFormatException e) {
+                utiliMsg.errorNumerico();
+                error = true;
+            } catch (Exception ex) {
+                Logger.getLogger(ErrorTableCount.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
-        sum = amountCash + amountElec;
+        sum = amountCash + amountElec + totalMountInit;
 
         if (sum <= totalMount) {
             wrong = totalMount - sum;
@@ -677,6 +698,8 @@ public class TableAdder extends FrameThird {
     }
 
     private void setTabElements() {
+        amountCash = tabAux.getAmountCash();
+        amountElec = tabAux.getAmountElectronic();
         items = tabAux.getOrder();
         itemsGift = tabAux.getGifts();
         itemsPartialPayed = tabAux.getPartialPayed();
