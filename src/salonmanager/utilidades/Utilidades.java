@@ -26,7 +26,7 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
-import salonmanager.entidades.config.ConfigGeneral;
+import salonmanager.persistencia.DAOConfig;
 
 public class Utilidades {
 
@@ -211,19 +211,6 @@ public class Utilidades {
         return modeloLista;
     }
 
-    public ArrayList<String> categoryList() {
-        ArrayList<String> st = new ArrayList<>();
-        String a = "BEBIDAS";
-        String b = "PLATOS";
-        String c = "CAFETERIA";
-        String d = "OTROS";
-        st.add(a);
-        st.add(b);
-        st.add(c);
-        st.add(d);
-        return st;
-    }
-
     public ComboBoxModel categoryComboModelReturn(ArrayList<String> categoriesDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (String i : categoriesDB) {
@@ -310,24 +297,6 @@ public class Utilidades {
         return modeloCombo;
     }
 
-    public String selectorCategory(int comboC) {
-        String category = "";
-        switch (comboC) {
-            case 0:
-                category = "BEBIDAS";
-                break;
-            case 1:
-                category = "PLATOS";
-                break;
-            case 2:
-                category = "CAFETERIA";
-                break;
-            case 3:
-                category = "OTROS";
-                break;
-        }
-        return category;
-    }
 
     public boolean itemcardRepeat(String ic, ArrayList<Itemcard> items) {
         boolean bool = false;
@@ -654,13 +623,13 @@ public class Utilidades {
         } else {
             st += "<br>No se registraron items obsequiados.<br>";
         }
-        
+
         st += "<br>LISTA DE ITEMS PAGADOS SIN DESCUENTO";
         if (ta.getGifts().size() > 0) {
             st += listarItemsQuant(ta.getGifts());
         } else {
             st += "<br>No se registraron items obsequiados.<br>";
-        }       
+        }
 
         if (ta.getComments().equals("")) {
             st += "<br>COMENTARIOS:<br>" + "No se registraron.";
@@ -716,7 +685,6 @@ public class Utilidades {
         return hour;
     }
 
-
     public ArrayList<Itemcard> unRepeatItems2(ArrayList<Itemcard> items) {
         Collections.sort(items, new Comparator<Itemcard>() {
             @Override
@@ -724,12 +692,12 @@ public class Utilidades {
                 return ic1.getName().compareTo(ic2.getName());
             }
         });
-        
+
         ArrayList<Itemcard> unRepeatItems = new ArrayList<>();
         for (Itemcard item1 : items) {
             boolean repeat = false;
-            for (Itemcard item2 : unRepeatItems ) {
-                if(item1.getId() == item2.getId()) {
+            for (Itemcard item2 : unRepeatItems) {
+                if (item1.getId() == item2.getId()) {
                     repeat = true;
                 }
             }
@@ -838,7 +806,9 @@ public class Utilidades {
         return time;
     }
 
-    public ConfigGeneral cfgBacker() {
+    public void cfgBacker() throws Exception {
+        DAOConfig daoC = new DAOConfig();
+        
         ArrayList<Integer> tabsQ = new ArrayList<>();
         tabsQ.add(35);
         tabsQ.add(24);
@@ -855,9 +825,68 @@ public class Utilidades {
         ArrayList<String> chars = new ArrayList<>();
         chars.add("s");
         chars.add("v");
+        daoC.saveConfigGeneral(59, tabsQ, categories, spaces, chars, 10, true);
+        ArrayList<String> defer = new ArrayList<String>();
+        ArrayList<String> mods = new ArrayList<String>();
 
-        ConfigGeneral cfgGen = new ConfigGeneral(59, tabsQ, spaces, categories, chars, 10, true);
-        return cfgGen;
+        daoC.saveConfigActual(false, 0, defer, mods);
+//        daoC.updateCfgActOpenWs(false);
+//        daoC.updateCfgActOpenIdWs(0);
+//        daoC.updateCfgActDeferWs(new ArrayList<String>());
+//        daoC.updateCfgActModTabs(new ArrayList<String>());
+        
+        ArrayList<String> categ = daoC.askCategories();
+
+        ArrayList<String> cats = new ArrayList<>();
+        cats.add("PLATOS");
+        cats.add("BEBIDAS");
+        cats.add("TRAGOS");
+        cats.add("ENTRADAS");
+        cats.add("POSTRES");
+        cats.add("OTROS");
+        cats.add("PIZZAS");
+        cats.add("PASTAS");
+        cats.add("CAFETERÍA");
+        cats.add("PANADERÍA");
+        cats.add("ENSALADAS");
+        cats.add("SANDWICHS");
+        cats.add("VINOS");
+        cats.add("CERVEZAS");
+
+        for (int i = 0; i < cats.size(); i++) {
+            daoC.saveCategory(cats.get(i));
+        }
+
+        ArrayList<String> sect = new ArrayList<>();
+        sect.add("salón");
+        sect.add("patio");
+        sect.add("vereda");
+        sect.add("frente");
+        sect.add("fondo");
+        sect.add("sala arriba");
+        sect.add("sala adelante");
+        sect.add("sector norte");
+        sect.add("sector sur");
+        sect.add("sector este");
+        sect.add("sector oeste");
+
+        ArrayList<String> chas = new ArrayList<>();
+        chas.add("s");
+        chas.add("p");
+        chas.add("v");
+        chas.add("f");
+        chas.add("F");
+        chas.add("a");
+        chas.add("A");
+        chas.add("N");
+        chas.add("S");
+        chas.add("E");
+        chas.add("O");
+
+        for (int i = 0; i < chas.size(); i++) {
+            daoC.saveSpace(sect.get(i));
+            daoC.saveChar(chas.get(i));
+        }
     }
 
     public ArrayList<String> tabsEasyReader(ArrayList<String> arrayDeferWs) {
@@ -877,8 +906,7 @@ public class Utilidades {
         }
         return defer;
     }
-    
-    
+
     public ArrayList<String> wsEasyReader(ArrayList<Workshift> arrayDeferWs) {
         ArrayList<String> defer = new ArrayList<>();
         for (int i = 0; i < arrayDeferWs.size(); i++) {
@@ -890,7 +918,6 @@ public class Utilidades {
         }
         return defer;
     }
-    
 
     public Timestamp stringToTs(String date) {
         long l = 0;

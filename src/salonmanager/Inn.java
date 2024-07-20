@@ -4,7 +4,6 @@ import salonmanager.entidades.graphics.FrameWindow;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOUser;
-import salonmanager.servicios.ServicioUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -22,18 +21,16 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.PanelPpal;
+import salonmanager.persistencia.DAOConfig;
 
-public class Ingresar extends FrameWindow {
+public class Inn extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     DAOUser daoU = new DAOUser();
-    ServicioUser si = new ServicioUser();
+    DAOConfig daoC = new DAOConfig();
     SalonManager sm = new SalonManager();
-    Color narSt = new Color(217, 103, 4);
-    Color bluSt = new Color(1, 64, 64);
-    Color narMed = new Color(255, 172, 13);
     Color bluLg = new Color(3, 166, 136);
 
     String mail = "";
@@ -45,7 +42,7 @@ public class Ingresar extends FrameWindow {
     JPasswordField fieldPass = new JPasswordField();
     JFrame landing = null;
 
-    public Ingresar(JFrame landing1) throws Exception {
+    public Inn(JFrame landing1) throws Exception {
         landing = landing1;
         setTitle("Registrar");
         int f = (int) Math.round(anchoUnit * 1.3);
@@ -85,7 +82,7 @@ public class Ingresar extends FrameWindow {
                 try {
                     butInUserActionPerformed();
                 } catch (Exception ex) {
-                    Logger.getLogger(Ingresar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Inn.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -132,10 +129,14 @@ public class Ingresar extends FrameWindow {
                     sm.setPassIn(pass);
                     landing.dispose();
                     dispose();
+                    boolean askCfg = daoC.askCfgNull();
+                    if (!askCfg) {
+                        utili.cfgBacker();
+                    }
                     new Manager(userAux, pass);
 
                 } catch (Exception ex) {
-                    Logger.getLogger(Ingresar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Inn.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 utiliMsg.errorAccessDenied();

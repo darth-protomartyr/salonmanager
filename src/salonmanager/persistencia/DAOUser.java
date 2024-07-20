@@ -1,35 +1,36 @@
 package salonmanager.persistencia;
 
 import salonmanager.entidades.bussiness.User;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 
 public class DAOUser extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    Utilidades utili = new Utilidades();
 
     public void saveUser(User user) throws Exception {
         try {
-            String name = user.getName();
-            String apellido = user.getLastName();
-            String mail = user.getMail();
-            String id = user.getId();
-            String rol = "";
-            String routeImage = user.getRouteImage();
-            String nameImage = user.getNameImage();
-            String pass = user.getPassword();
-            String phone = user.getPhone();
-            boolean activeUser = true;
+            String name = SalonManager.encrypt(user.getName());
+            String apellido = SalonManager.encrypt(user.getLastName());
+            String mail = SalonManager.encrypt(user.getMail());
+            String id = SalonManager.encrypt(user.getId());
+            String rol = SalonManager.encrypt("NULL");
+            String routeImage = SalonManager.encrypt(user.getRouteImage());
+            String nameImage = SalonManager.encrypt(user.getNameImage());
+            String pass = SalonManager.encrypt(user.getPassword());
+            String phone = SalonManager.encrypt(user.getPhone());
+            String activeUser = SalonManager.encryptBoolean(true);
 
             String sql1 = "INSERT INTO users(user_id, user_name, user_last_name, user_mail, user_role, user_image_route, user_image_name, user_password, user_phone, user_active)"
-                    + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', " + activeUser + ");";
+                    + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            utiliMsg.cargaUsuario();
+
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -43,19 +44,19 @@ public class DAOUser extends DAO {
 
     public void saveUserExpress(User user) throws Exception {
         try {
-            String name = user.getName();
-            String apellido = user.getLastName();
-            String mail = user.getMail();
-            String id = user.getId();
-            String rol = user.getRol();
-            String routeImage = user.getRouteImage();
-            String nameImage = user.getNameImage();
-            String pass = user.getPassword();
-            String phone = user.getPhone();
-            boolean activeUser = user.isActiveUser();
+            String name = SalonManager.encrypt(user.getName());
+            String apellido = SalonManager.encrypt(user.getLastName());
+            String mail = SalonManager.encrypt(user.getMail());
+            String id = SalonManager.encrypt(user.getId());
+            String rol = SalonManager.encrypt(user.getRol());
+            String routeImage = SalonManager.encrypt(user.getRouteImage());
+            String nameImage = SalonManager.encrypt(user.getNameImage());
+            String pass = SalonManager.encrypt(user.getPassword());
+            String phone = SalonManager.encrypt(user.getPhone());
+            String activeUser = SalonManager.encryptBoolean(user.isActiveUser());
 
             String sql1 = "INSERT INTO users(user_id, user_name, user_last_name, user_mail, user_role, user_image_route, user_image_name, user_password, user_phone, user_active)"
-                    + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', " + activeUser + ");";
+                    + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -70,14 +71,16 @@ public class DAOUser extends DAO {
     }
 
     public ArrayList<String> listarUserMails() throws Exception {
-        String sql = "SELECT user_mail FROM users WHERE user_active = true";
+        boolean act = true;
+        String active = SalonManager.encryptBoolean(act);
+        String sql = "SELECT user_mail FROM users WHERE user_active = '" + active + "';";
         System.out.println(sql);
         consultarBase(sql);
         String mail = "";
         ArrayList<String> mails = new ArrayList<>();
         while (resultado.next()) {
             mail = "";
-            mail = resultado.getString(1);
+            mail = SalonManager.decrypt(resultado.getString(1));
             mails.add(mail);
         }
         desconectarBase();
@@ -85,13 +88,14 @@ public class DAOUser extends DAO {
     }
 
     public ArrayList<String> listarUserByRol(String rol) throws Exception {
-        String sql = "SELECT user_id FROM users WHERE user_role = '" + rol + "' AND user_active = true";
+        boolean act = true;
+        String active = SalonManager.encryptBoolean(act);
+        String sql = "SELECT user_id FROM users WHERE user_role = '" + rol + "' AND user_active = '" + active + "';";
         System.out.println(sql);
         consultarBase(sql);
-//        String id = "";
         ArrayList<String> ids = new ArrayList<>();
         while (resultado.next()) {
-            String id = resultado.getString(1);
+            String id = SalonManager.decrypt(resultado.getString(1));
             ids.add(id);
         }
         desconectarBase();
@@ -100,21 +104,23 @@ public class DAOUser extends DAO {
 
     public User consultaUser(String mail) throws Exception {
         try {
-            String sql = "SELECT * FROM users WHERE user_mail = '" + mail + "' AND user_active = true;";
+            boolean act = true;
+            String active = SalonManager.encryptBoolean(act);
+            String sql = "SELECT * FROM users WHERE user_mail = '" + SalonManager.encrypt(mail) + "' AND user_active = '" + active + "';";
             System.out.println(sql);
             consultarBase(sql);
             User user = new User();
             while (resultado.next()) {
-                user.setId(resultado.getString(1));
-                user.setName(resultado.getString(2));
-                user.setLastName(resultado.getString(3));
-                user.setMail(resultado.getString(4));
-                user.setRol(resultado.getString(5));
-                user.setRouteImage(resultado.getString(6));
-                user.setNameImage(resultado.getString(7));
-                user.setPassword(resultado.getString(8));
-                user.setPhone(resultado.getString(9));
-                user.setActiveUser(resultado.getBoolean(10));
+                user.setId(SalonManager.decrypt(resultado.getString(1)));
+                user.setName(SalonManager.decrypt(resultado.getString(2)));
+                user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+                user.setMail(SalonManager.decrypt(resultado.getString(4)));
+                user.setRol(SalonManager.decrypt(resultado.getString(5)));
+                user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+                user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+                user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+                user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+                user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
             }
             return user;
         } catch (Exception e) {
@@ -125,23 +131,25 @@ public class DAOUser extends DAO {
     }
 
     public ArrayList<User> listarUsers() throws Exception {
-        String sql = "SELECT * FROM users WHERE user_active = true;";
+        boolean act = true;
+        String active = SalonManager.encryptBoolean(act);
+        String sql = "SELECT * FROM users WHERE user_active = '" + active + "';";
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
         ArrayList<User> users = new ArrayList<>();
         while (resultado.next()) {
             user = new User();
-            user.setId(resultado.getString(1));
-            user.setName(resultado.getString(2));
-            user.setLastName(resultado.getString(3));
-            user.setMail(resultado.getString(4));
-            user.setRol(resultado.getString(5));
-            user.setRouteImage(resultado.getString(6));
-            user.setNameImage(resultado.getString(7));
-            user.setPassword(resultado.getString(8));
-            user.setPhone(resultado.getString(9));
-            user.setActiveUser(resultado.getBoolean(10));
+            user.setId(SalonManager.decrypt(resultado.getString(1)));
+            user.setName(SalonManager.decrypt(resultado.getString(2)));
+            user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+            user.setMail(SalonManager.decrypt(resultado.getString(4)));
+            user.setRol(SalonManager.decrypt(resultado.getString(5)));
+            user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+            user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+            user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+            user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+            user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
             users.add(user);
         }
         desconectarBase();
@@ -149,23 +157,23 @@ public class DAOUser extends DAO {
     }
 
     public ArrayList<User> listarUsersCompleto() throws Exception {
-        String sql = "SELECT * FROM users WHERE user_role = 'MANAGER' OR user_role = 'MOZO' OR user_role = 'CAJERO' OR user_role = 'DELIVERY' OR user_role = '';";
+        String sql = "SELECT * FROM users WHERE user_role =  '" + SalonManager.encrypt("MANAGER") + "' OR user_role = '" + SalonManager.encrypt("MOZO") + "' OR user_role = '" + SalonManager.encrypt("CAJERO") + "' OR user_role = '" + SalonManager.encrypt("DELIVERY") + "' OR user_role = '" + SalonManager.encrypt("NULL") +"';";
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
         ArrayList<User> users = new ArrayList<>();
         while (resultado.next()) {
             user = new User();
-            user.setId(resultado.getString(1));
-            user.setName(resultado.getString(2));
-            user.setLastName(resultado.getString(3));
-            user.setMail(resultado.getString(4));
-            user.setRol(resultado.getString(5));
-            user.setRouteImage(resultado.getString(6));
-            user.setNameImage(resultado.getString(7));
-            user.setPassword(resultado.getString(8));
-            user.setPhone(resultado.getString(9));
-            user.setActiveUser(resultado.getBoolean(10));
+            user.setId(SalonManager.decrypt(resultado.getString(1)));
+            user.setName(SalonManager.decrypt(resultado.getString(2)));
+            user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+            user.setMail(SalonManager.decrypt(resultado.getString(4)));
+            user.setRol(SalonManager.decrypt(resultado.getString(5)));
+            user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+            user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+            user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+            user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+            user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
 
             users.add(user);
         }
@@ -175,40 +183,40 @@ public class DAOUser extends DAO {
 
     public void userModActiveUser(String id, boolean activeUser) throws Exception {
         String sql = "UPDATE users "
-                + "SET user_active = " + activeUser
-                + " WHERE user_id = '" + id + "';";
+                + "SET user_active = '" + SalonManager.encryptBoolean(activeUser)
+                + "' WHERE user_id = '" + id + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
     }
 
     public void userModRol(String id, String newRol) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_rol = " + newRol
-                + " WHERE user_id = '" + id + "';";
+        String sql = "UPDATE users SET user_rol = " + SalonManager.encrypt(newRol) + " WHERE user_id = '" + id + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
     }
 
     public ArrayList<User> listUserByRol(String rol) throws Exception {
-        String sql = "SELECT * FROM users WHERE user_role = '" + rol + "' AND user_active = true;";
+        boolean act = true;
+        String active = SalonManager.encryptBoolean(act);
+        String sql = "SELECT * FROM users WHERE user_role = '" + SalonManager.encrypt(rol) + "' AND user_active = '" + active + "';";
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
         ArrayList<User> users = new ArrayList<>();
         while (resultado.next()) {
             user = new User();
-            user.setId(resultado.getString(1));
-            user.setName(resultado.getString(2));
-            user.setLastName(resultado.getString(3));
-            user.setMail(resultado.getString(4));
-            user.setRol(resultado.getString(5));
-            user.setRouteImage(resultado.getString(6));
-            user.setNameImage(resultado.getString(7));
-            user.setPassword(resultado.getString(8));
-            user.setPhone(resultado.getString(9));
-            user.setActiveUser(resultado.getBoolean(10));
+            user.setId(SalonManager.decrypt(resultado.getString(1)));
+            user.setName(SalonManager.decrypt(resultado.getString(2)));
+            user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+            user.setMail(SalonManager.decrypt(resultado.getString(4)));
+            user.setRol(SalonManager.decrypt(resultado.getString(5)));
+            user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+            user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+            user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+            user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+            user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
             users.add(user);
         }
         desconectarBase();
@@ -218,7 +226,7 @@ public class DAOUser extends DAO {
     public void saveWaiterTable(Table tab) throws Exception {
         try {
             String sql = "INSERT INTO waiter_tabs(waiter_id_fkey, table_id_fkey) ";
-            String parcialA = "VALUES('" + tab.getWaiter().getId() + "', '" + tab.getId() + "');";
+            String parcialA = "VALUES('" + SalonManager.encrypt(tab.getWaiter().getId()) + "', '" + SalonManager.encrypt(tab.getId()) + "');";
             sql += parcialA;
             System.out.println(sql);
             insertarModificarEliminar(sql.trim());
@@ -236,11 +244,11 @@ public class DAOUser extends DAO {
     public User getWaiterByTable(String tabId) throws Exception {
         User waiter = null;
         String waiterId = "";
-        String sql = "SELECT waiter_id_fkey FROM waiter_tabs WHERE table_id_fkey = '" + tabId + "';";
+        String sql = "SELECT waiter_id_fkey FROM waiter_tabs WHERE table_id_fkey = '" + SalonManager.encrypt(tabId) + "';";
         System.out.println(sql);
         consultarBase(sql);
         while (resultado.next()) {
-            waiterId = resultado.getString(1);
+            waiterId = SalonManager.decrypt(resultado.getString(1));
         }
 
         ArrayList<User> waiters = listUserByRol("MOZO");
@@ -254,21 +262,23 @@ public class DAOUser extends DAO {
 
     public User getUserById(String deliId) throws Exception {
         try {
-            String sql = "SELECT * FROM users WHERE user_id = '" + deliId + "' AND user_active = true;";
+            boolean act = true;
+            String active = SalonManager.encryptBoolean(act);
+            String sql = "SELECT * FROM users WHERE user_id = '" + SalonManager.encrypt(deliId) + "' AND user_active = '" + active + "';";
             System.out.println(sql);
             consultarBase(sql);
             User user = new User();
             while (resultado.next()) {
-                user.setId(resultado.getString(1));
-                user.setName(resultado.getString(2));
-                user.setLastName(resultado.getString(3));
-                user.setMail(resultado.getString(4));
-                user.setRol(resultado.getString(5));
-                user.setRouteImage(resultado.getString(6));
-                user.setNameImage(resultado.getString(7));
-                user.setPassword(resultado.getString(8));
-                user.setPhone(resultado.getString(9));
-                user.setActiveUser(resultado.getBoolean(10));
+                user.setId(SalonManager.decrypt(resultado.getString(1)));
+                user.setName(SalonManager.decrypt(resultado.getString(2)));
+                user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+                user.setMail(SalonManager.decrypt(resultado.getString(4)));
+                user.setRol(SalonManager.decrypt(resultado.getString(5)));
+                user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+                user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+                user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+                user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+                user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
             }
             return user;
         } catch (Exception e) {
@@ -280,13 +290,15 @@ public class DAOUser extends DAO {
 
     public String getUserNameById(String deliId) throws Exception {
         try {
-            String sql = "SELECT user_name, user_last_name FROM users WHERE user_id = '" + deliId + "' AND user_active = true;";
+            boolean act = true;
+            String active = SalonManager.encryptBoolean(act);
+            String sql = "SELECT user_name, user_last_name FROM users WHERE user_id = '" + SalonManager.encrypt(deliId) + "' AND user_active = '" + active + "';";
             System.out.println(sql);
             consultarBase(sql);
             String nameC = "";
             while (resultado.next()) {
-                String name = resultado.getString(1);
-                String lastName = resultado.getString(2);
+                String name = SalonManager.decrypt(resultado.getString(1));
+                String lastName = SalonManager.decrypt(resultado.getString(2));
                 nameC = name + " " + lastName;
             }
             return nameC;
@@ -299,20 +311,20 @@ public class DAOUser extends DAO {
 
     public void updateUser(User userAux, String id) throws Exception {
 
-        String name = userAux.getName();
-        String lastName = userAux.getLastName();
-        String mail = userAux.getMail();
-        String rol = userAux.getRol();
-        String routeImage = userAux.getRouteImage();
-        String nameImage = userAux.getNameImage();
-        String password = userAux.getPassword();
-        String phone = userAux.getPhone();
-        boolean activeUser = userAux.isActiveUser();
+        String name = SalonManager.encrypt(userAux.getName());
+        String lastName = SalonManager.encrypt(userAux.getLastName());
+        String mail = SalonManager.encrypt(userAux.getMail());
+        String rol = SalonManager.encrypt(userAux.getRol());
+        String routeImage = SalonManager.encrypt(userAux.getRouteImage());
+        String nameImage = SalonManager.encrypt(userAux.getNameImage());
+        String password = SalonManager.encrypt(userAux.getPassword());
+        String phone = SalonManager.encrypt(userAux.getPhone());
+        String activeUser = SalonManager.encryptBoolean(userAux.isActiveUser());
         try {
             String sql1 = "UPDATE users SET user_name = '" + name + "', user_last_name ='" + lastName + "', user_mail = '" + mail
                     + "', user_role = '" + rol + "', user_image_route = '" + routeImage + "', user_image_name = '" + nameImage
-                    + "', user_password = '" + password + "', user_phone = '" + phone + "', user_active = " + activeUser
-                    + " WHERE user_id = '" + id + "';";
+                    + "', user_password = '" + password + "', user_phone = '" + phone + "', user_active = '" + activeUser
+                    + "' WHERE user_id = '" + id + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -330,11 +342,11 @@ public class DAOUser extends DAO {
         User cashier = null;
         String cashierId = "";
         try {
-            String sql = "SELECT cashier_id_fkey FROM cashier_workshifts WHERE workshift_id_fkey = '" + wsId + "';";
+            String sql = "SELECT cashier_id_fkey FROM cashier_workshifts WHERE workshift_id_fkey = '" + SalonManager.encryptInteger(wsId) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                cashierId = resultado.getString(1);
+                cashierId = SalonManager.encrypt(resultado.getString(1));
             }
             cashier = getUserById(cashierId);
         } catch (SQLException e) {
@@ -349,8 +361,10 @@ public class DAOUser extends DAO {
 
     public void saveCashierWorkshift(Workshift ws) throws Exception {
         try {
+            boolean act = true;
+            String active = SalonManager.encryptBoolean(act);
             String sql = "INSERT INTO cashier_workshifts(cashier_workshift_active, cashier_id_fkey, workshift_id_fkey) ";
-            String parcialA = "VALUES( " + true + ", '" + ws.getCashierWs().getId() + "', " + ws.getId() + ");";
+            String parcialA = "VALUES( '" + active + "', '" + SalonManager.encrypt(ws.getCashierWs().getId()) + "', '" + SalonManager.encryptInteger(ws.getId()) + "');";
             sql += parcialA;
             System.out.println(sql);
             insertarModificarEliminar(sql.trim());
@@ -366,48 +380,45 @@ public class DAOUser extends DAO {
     }
 
     public void updateActUser(String userId, boolean act) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_active = " + act + " WHERE user_id = '" + userId + "';";
+        String bool = SalonManager.encryptBoolean(act);
+        String sql = "UPDATE users SET user_active = '" + bool + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
     }
 
     public void updateRolUser(String userId, String rol) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_role = '" + rol + "' WHERE user_id = '" + userId + "';";
+        String sql = "UPDATE users SET user_role = '" + SalonManager.encrypt(rol) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
     }
 
     public void updateNameUser(String userId, String name) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_name = '" + name + "' WHERE user_id = '" + userId + "';";
+        String sql = "UPDATE users SET user_name = '" + SalonManager.encrypt(name) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
     }
-    
+
     public void updateLastNameUser(String userId, String lastName) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_last_name = '" + lastName + "' WHERE user_id = '" + userId + "';";
+        String sql = "UPDATE users SET user_last_name = '" + SalonManager.encrypt(lastName) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
     }
-    
+
     public void updateMailUser(String userId, String mail) throws Exception {
         String sql = "UPDATE users "
-                + "SET user_mail = '" + mail + "' WHERE user_id = '" + userId + "';";
+                + "SET user_mail = '" + SalonManager.encrypt(mail) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
-    }    
+    }
 
     public void updateRouteImageUser(String userId, String route) throws Exception {
         String sql = "UPDATE users "
-                + "SET user_image_route = '" + route + "' WHERE user_id = '" + userId + "';";
+                + "SET user_image_route = '" + SalonManager.encrypt(route) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
@@ -415,15 +426,15 @@ public class DAOUser extends DAO {
 
     public void updateNameImageUser(String userId, String name) throws Exception {
         String sql = "UPDATE users "
-                + "SET user_image_name = '" + name + "' WHERE user_id = '" + userId + "';";
+                + "SET user_image_name = '" + SalonManager.encrypt(name) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
     }
-    
+
     public void updatePhoneUser(String userId, String phone) throws Exception {
         String sql = "UPDATE users "
-                + "SET user_phone = '" + phone + "' WHERE user_id = '" + userId + "';";
+                + "SET user_phone = '" + SalonManager.encrypt(phone) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
@@ -431,9 +442,9 @@ public class DAOUser extends DAO {
 
     public void updatePassUser(String userId, String pass) throws Exception {
         String sql = "UPDATE users "
-                + "SET user_password = '" + pass + "' WHERE user_id = '" + userId + "';";
+                + "SET user_password = '" + SalonManager.encrypt(pass) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
-    }    
+    }
 }

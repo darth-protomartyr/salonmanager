@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -16,7 +17,7 @@ public class DAOTable extends DAO {
         if (tab.getComments().equals("<br>")) {
             tab.setComments("");
         }
-        
+
         boolean error = false;
         if (ts != null) {
             ArrayList<String> idTabs = listarIdByWorkshift(ts);
@@ -52,10 +53,10 @@ public class DAOTable extends DAO {
             try {
                 if (tab.getCloseTime() == null) {
                     sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
-                            + "VALUES( " + tab.getNum() + ",'" + tab.getPos() + "','" + tab.getOpenTime() + "'," + tab.getCloseTime() + ",'" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", " + tab.isToPay() + ", " + tab.getDiscount() + ", " + tab.getError() + "," + tab.getPriceCorrection() + ", " + tab.getAmountCash() + ", " + tab.getAmountElectronic() + ", " + tab.getTotal() + ",'" + tab.getComments() + "', " + tab.isActiveTable() + ");";
+                            + "VALUES( '" + SalonManager.encryptInteger(tab.getNum()) + "','" + SalonManager.encrypt(tab.getPos()) + "','" + SalonManager.encryptTs(tab.getOpenTime()) + "', '" + SalonManager.encryptTs(tab.getCloseTime()) + "', '" + SalonManager.encrypt(tab.getId()) + "', '" + SalonManager.encryptBoolean(tab.isOpen()) + "', '" + SalonManager.encryptBoolean(tab.isBill()) + "', '" + SalonManager.encryptBoolean(tab.isToPay()) + "', '" + SalonManager.encryptDouble(tab.getDiscount()) + "', '" + SalonManager.encryptDouble(tab.getError()) + "', '" + SalonManager.encryptDouble(tab.getPriceCorrection()) + "', '" + SalonManager.encryptDouble(tab.getAmountCash()) + "', '" + SalonManager.encryptDouble(tab.getAmountElectronic()) + "', '" + SalonManager.encryptDouble(tab.getTotal()) + "', '" + SalonManager.encrypt(tab.getComments()) + "', '" + SalonManager.encryptBoolean(tab.isActiveTable()) + "');";
                 } else {
                     sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
-                            + "VALUES( " + tab.getNum() + ",'" + tab.getPos() + "','" + tab.getOpenTime() + "','" + tab.getCloseTime() + "','" + tab.getId() + "'," + tab.isOpen() + ", " + tab.isBill() + ", " + tab.isToPay() + ", " + tab.getDiscount() + ", " + tab.getError() + "," + tab.getPriceCorrection() + ", " + tab.getAmountCash() + ", " + tab.getAmountElectronic() + ", " + tab.getTotal() + ",'" + tab.getComments() + "', " + tab.isActiveTable() + ");";
+                            + "VALUES( '" + SalonManager.encryptInteger(tab.getNum()) + "', '" + SalonManager.encrypt(tab.getPos()) + "','" + SalonManager.encryptTs(tab.getOpenTime()) + "','" + SalonManager.encryptTs(tab.getCloseTime()) + "', '" + SalonManager.encrypt(tab.getId()) + "', '" + SalonManager.encryptBoolean(tab.isOpen()) + "', '" + SalonManager.encryptBoolean(tab.isBill()) + "', '" + SalonManager.encryptBoolean(tab.isToPay()) + "', '" + SalonManager.encryptInteger(tab.getDiscount()) + "', '" + SalonManager.encryptDouble(tab.getError()) + "', '" + SalonManager.encryptDouble(tab.getPriceCorrection()) + "', '" + SalonManager.encryptDouble(tab.getAmountCash()) + "', '" + SalonManager.encryptDouble(tab.getAmountElectronic()) + "', '" + SalonManager.encryptDouble(tab.getTotal()) + "', '" + SalonManager.encrypt(tab.getComments()) + "', '" + SalonManager.encryptBoolean(tab.isActiveTable()) + "');";
                 }
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
@@ -73,7 +74,7 @@ public class DAOTable extends DAO {
 
     public void updateTableTotal(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_total = " + tab.getTotal() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_total = '" + SalonManager.encryptDouble(tab.getTotal()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -89,7 +90,7 @@ public class DAOTable extends DAO {
 
     public void updateTableBill(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_bill = " + tab.isBill() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_bill = '" + SalonManager.encryptBoolean(tab.isBill()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -105,7 +106,7 @@ public class DAOTable extends DAO {
 
     public void updateTableOpen(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_open = " + tab.isOpen() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_open = '" + SalonManager.encryptBoolean(tab.isOpen()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -121,7 +122,7 @@ public class DAOTable extends DAO {
 
     public void updateTableDiscount(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_discount = " + tab.getDiscount() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_discount = '" + SalonManager.encryptInteger(tab.getDiscount()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -137,7 +138,7 @@ public class DAOTable extends DAO {
 
     public void updateTableMountCash(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_amount_cash = " + tab.getAmountCash() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_amount_cash = '" + SalonManager.encryptDouble(tab.getAmountCash()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -154,7 +155,7 @@ public class DAOTable extends DAO {
 
     public void updateTableMountElectronic(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_amount_electronic = " + tab.getAmountElectronic() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_amount_electronic = '" + SalonManager.encryptDouble(tab.getAmountElectronic()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -171,7 +172,7 @@ public class DAOTable extends DAO {
 
     public void updateToPay(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_to_pay = " + tab.isToPay() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_to_pay = '" + SalonManager.encryptBoolean(tab.isToPay()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -187,7 +188,7 @@ public class DAOTable extends DAO {
 
     public void updateError(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_error = " + tab.getError() + " WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_error = '" + SalonManager.encryptDouble(tab.getError()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -203,7 +204,7 @@ public class DAOTable extends DAO {
 
     public void updateCloseTime(Table tab) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_close_time = '" + tab.getCloseTime() + "' WHERE table_id = '" + tab.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_close_time = '" + SalonManager.encryptTs(tab.getCloseTime()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -223,7 +224,7 @@ public class DAOTable extends DAO {
         }
         if (!tab.getComments().equals("Ingrese un comentario(opcional): ") || !tab.getComments().equals("Causa del Error (obligatorio): ")) {
             try {
-                String sql1 = "UPDATE tabs SET table_comments = '" + tab.getComments() + "' WHERE table_id = '" + tab.getId() + "';";
+                String sql1 = "UPDATE tabs SET table_comments = '" + SalonManager.encrypt(tab.getComments()) + "' WHERE table_id = '" + SalonManager.encrypt(tab.getId()) + "';";
                 System.out.println(sql1);
                 insertarModificarEliminar(sql1.trim());
             } catch (SQLException e) {
@@ -247,27 +248,35 @@ public class DAOTable extends DAO {
         }
 
         try {
-            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
+            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + SalonManager.encryptTs(open) + "' AND table_open_time <= '" + SalonManager.encryptTs(close) + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
                 Table tab = new Table();
-                tab.setNum(resultado.getInt(1));
-                tab.setPos(resultado.getString(2));
-                tab.setOpenTime(resultado.getTimestamp(3));
-                tab.setCloseTime(resultado.getTimestamp(4));
-                tab.setId(resultado.getString(5));
-                tab.setOpen(resultado.getBoolean(6));
-                tab.setBill(resultado.getBoolean(7));
-                tab.setToPay(resultado.getBoolean(8));
-                tab.setDiscount(resultado.getInt(9));
-                tab.setError(resultado.getDouble(10));
-                tab.setPriceCorrection(resultado.getDouble(11));
-                tab.setAmountCash(resultado.getDouble(12));
-                tab.setAmountElectronic(resultado.getDouble(13));
-                tab.setTotal(resultado.getDouble(14));
-                tab.setComments(resultado.getString(15));
-                tab.setActiveTable(resultado.getBoolean(16));
+                tab.setNum(SalonManager.decryptInteger(resultado.getString(1)));
+                tab.setPos(SalonManager.decrypt(resultado.getString(2)));
+                String create1 = resultado.getString(3);
+                if (create1 == null) {
+                    create1 = "";
+                }
+                tab.setOpenTime(SalonManager.decryptTs(create1));
+                String create2 = resultado.getString(4);
+                if (create2 == null) {
+                    create2 = "";
+                }
+                tab.setCloseTime(SalonManager.decryptTs(create2));
+                tab.setId(SalonManager.decrypt(resultado.getString(5)));
+                tab.setOpen(SalonManager.decryptBoolean(resultado.getString(6)));
+                tab.setBill(SalonManager.decryptBoolean(resultado.getString(7)));
+                tab.setToPay(SalonManager.decryptBoolean(resultado.getString(8)));
+                tab.setDiscount(SalonManager.decryptInteger(resultado.getString(9)));
+                tab.setError(SalonManager.decryptDouble(resultado.getString(10)));
+                tab.setPriceCorrection(SalonManager.decryptDouble(resultado.getString(11)));
+                tab.setAmountCash(SalonManager.decryptDouble(resultado.getString(12)));
+                tab.setAmountElectronic(SalonManager.decryptDouble(resultado.getString(13)));
+                tab.setTotal(SalonManager.decryptDouble(resultado.getString(14)));
+                tab.setComments(SalonManager.decrypt(resultado.getString(15)));
+                tab.setActiveTable(SalonManager.decryptBoolean(resultado.getString(16)));
                 tables.add(tab);
             }
             return tables;
@@ -287,27 +296,39 @@ public class DAOTable extends DAO {
         }
 
         try {
-            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_open = true AND table_active = true;";
+            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + SalonManager.encryptTs(open) + "' AND table_open_time <= '" + SalonManager.encryptTs(close) + "' AND table_open = '" + SalonManager.encryptBoolean(true) + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
                 Table tab = new Table();
-                tab.setNum(resultado.getInt(1));
-                tab.setPos(resultado.getString(2));
-                tab.setOpenTime(resultado.getTimestamp(3));
-                tab.setCloseTime(resultado.getTimestamp(4));
-                tab.setId(resultado.getString(5));
-                tab.setOpen(resultado.getBoolean(6));
-                tab.setBill(resultado.getBoolean(7));
-                tab.setToPay(resultado.getBoolean(8));
-                tab.setDiscount(resultado.getInt(9));
-                tab.setError(resultado.getDouble(10));
-                tab.setPriceCorrection(resultado.getDouble(11));
-                tab.setAmountCash(resultado.getDouble(12));
-                tab.setAmountElectronic(resultado.getDouble(13));
-                tab.setTotal(resultado.getDouble(14));
-                tab.setComments(resultado.getString(15));
-                tab.setActiveTable(resultado.getBoolean(16));
+                tab.setNum(SalonManager.decryptInteger(resultado.getString(1)));
+                tab.setPos(SalonManager.decrypt(resultado.getString(2)));
+                String create1 = resultado.getString(3);
+                if (create1 == null) {
+                    create1 = "";
+                }
+                tab.setOpenTime(SalonManager.decryptTs(create1));
+                String create2 = resultado.getString(4);
+                if (create2 == null) {
+                    create2 = "";
+                }
+                tab.setCloseTime(SalonManager.decryptTs(create2));
+                String create3 = resultado.getString(5);
+                if (create3 == null) {
+                    create3 = "";
+                }
+                tab.setId(SalonManager.decrypt(create3));
+                tab.setOpen(SalonManager.decryptBoolean(resultado.getString(6)));
+                tab.setBill(SalonManager.decryptBoolean(resultado.getString(7)));
+                tab.setToPay(SalonManager.decryptBoolean(resultado.getString(8)));
+                tab.setDiscount(SalonManager.decryptInteger(resultado.getString(9)));
+                tab.setError(SalonManager.decryptDouble(resultado.getString(10)));
+                tab.setPriceCorrection(SalonManager.decryptDouble(resultado.getString(11)));
+                tab.setAmountCash(SalonManager.decryptDouble(resultado.getString(12)));
+                tab.setAmountElectronic(SalonManager.decryptDouble(resultado.getString(13)));
+                tab.setTotal(SalonManager.decryptDouble(resultado.getString(14)));
+                tab.setComments(SalonManager.decrypt(resultado.getString(15)));
+                tab.setActiveTable(SalonManager.decryptBoolean(resultado.getString(16)));
                 tables.add(tab);
             }
             return tables;
@@ -321,26 +342,34 @@ public class DAOTable extends DAO {
     public Table getTableById(String st) throws Exception {
         Table tab = new Table();
         try {
-            String sql = "SELECT * FROM tabs WHERE table_id = '" + st + "';";
+            String sql = "SELECT * FROM tabs WHERE table_id = '" + SalonManager.encrypt(st) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                tab.setNum(resultado.getInt(1));
-                tab.setPos(resultado.getString(2));
-                tab.setOpenTime(resultado.getTimestamp(3));
-                tab.setCloseTime(resultado.getTimestamp(4));
-                tab.setId(resultado.getString(5));
-                tab.setOpen(resultado.getBoolean(6));
-                tab.setBill(resultado.getBoolean(7));
-                tab.setToPay(resultado.getBoolean(8));
-                tab.setDiscount(resultado.getInt(9));
-                tab.setError(resultado.getDouble(10));
-                tab.setPriceCorrection(resultado.getDouble(11));
-                tab.setAmountCash(resultado.getDouble(12));
-                tab.setAmountElectronic(resultado.getDouble(13));
-                tab.setTotal(resultado.getDouble(14));
-                tab.setComments(resultado.getString(15));
-                tab.setActiveTable(resultado.getBoolean(16));
+                tab.setNum(SalonManager.decryptInteger(resultado.getString(1)));
+                tab.setPos(SalonManager.decrypt(resultado.getString(2)));
+                String create1 = resultado.getString(3);
+                if (create1 == null) {
+                    create1 = "";
+                }
+                tab.setOpenTime(SalonManager.decryptTs(create1));
+                String create2 = resultado.getString(4);
+                if (create2 == null) {
+                    create2 = "";
+                }
+                tab.setCloseTime(SalonManager.decryptTs(create2));
+                tab.setId(SalonManager.decrypt(resultado.getString(5)));
+                tab.setOpen(SalonManager.decryptBoolean(resultado.getString(6)));
+                tab.setBill(SalonManager.decryptBoolean(resultado.getString(7)));
+                tab.setToPay(SalonManager.decryptBoolean(resultado.getString(8)));
+                tab.setDiscount(SalonManager.decryptInteger(resultado.getString(9)));
+                tab.setError(SalonManager.decryptDouble(resultado.getString(10)));
+                tab.setPriceCorrection(SalonManager.decryptDouble(resultado.getString(11)));
+                tab.setAmountCash(SalonManager.decryptDouble(resultado.getString(12)));
+                tab.setAmountElectronic(SalonManager.decryptDouble(resultado.getString(13)));
+                tab.setTotal(SalonManager.decryptDouble(resultado.getString(14)));
+                tab.setComments(SalonManager.decrypt(resultado.getString(15)));
+                tab.setActiveTable(SalonManager.decryptBoolean(resultado.getString(16)));
             }
             return tab;
         } catch (Exception e) {
@@ -353,7 +382,7 @@ public class DAOTable extends DAO {
     public int getMaxTab(String st, Timestamp ds) throws Exception {
         int i = 0;
         try {
-            String sql = "SELECT COUNT(*) AS cantidad FROM tabs WHERE table_pos = '" + st + "' AND table_open_time > '" + ds + "';";
+            String sql = "SELECT COUNT(*) AS cantidad FROM tabs WHERE table_pos = '" + SalonManager.encrypt(st) + "' AND table_open_time > '" + SalonManager.encryptTs(ds) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -369,7 +398,7 @@ public class DAOTable extends DAO {
 
     public void downActiveTable(Table t) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_active = false WHERE table_id = '" + t.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id = '" + SalonManager.encrypt(t.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -385,7 +414,7 @@ public class DAOTable extends DAO {
 
     public void upActiveTable(Table t) throws Exception {
         try {
-            String sql1 = "UPDATE tabs SET table_active = true WHERE table_id = '" + t.getId() + "';";
+            String sql1 = "UPDATE tabs SET table_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id = '" + SalonManager.encrypt(t.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -402,27 +431,35 @@ public class DAOTable extends DAO {
     public ArrayList<Table> listarTablesByDate(Timestamp open, Timestamp close) throws Exception {
         ArrayList<Table> tables = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
+            String sql = "SELECT * FROM tabs WHERE table_open_time >= '" + SalonManager.encryptTs(open) + "' AND table_open_time <= '" + SalonManager.encryptTs(close) + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
                 Table tab = new Table();
-                tab.setNum(resultado.getInt(1));
-                tab.setPos(resultado.getString(2));
-                tab.setOpenTime(resultado.getTimestamp(3));
-                tab.setCloseTime(resultado.getTimestamp(4));
-                tab.setId(resultado.getString(5));
-                tab.setOpen(resultado.getBoolean(6));
-                tab.setBill(resultado.getBoolean(7));
-                tab.setToPay(resultado.getBoolean(8));
-                tab.setDiscount(resultado.getInt(9));
-                tab.setError(resultado.getDouble(10));
-                tab.setPriceCorrection(resultado.getDouble(11));
-                tab.setAmountCash(resultado.getDouble(12));
-                tab.setAmountElectronic(resultado.getDouble(13));
-                tab.setTotal(resultado.getDouble(14));
-                tab.setComments(resultado.getString(15));
-                tab.setActiveTable(resultado.getBoolean(16));
+                tab.setNum(SalonManager.decryptInteger(resultado.getString(1)));
+                tab.setPos(SalonManager.decrypt(resultado.getString(2)));
+                String create1 = resultado.getString(3);
+                if (create1 == null) {
+                    create1 = "";
+                }
+                tab.setOpenTime(SalonManager.decryptTs(create1));
+                String create2 = resultado.getString(4);
+                if (create2 == null) {
+                    create2 = "";
+                }
+                tab.setCloseTime(SalonManager.decryptTs(create2));
+                tab.setId(SalonManager.decrypt(resultado.getString(5)));
+                tab.setOpen(SalonManager.decryptBoolean(resultado.getString(6)));
+                tab.setBill(SalonManager.decryptBoolean(resultado.getString(7)));
+                tab.setToPay(SalonManager.decryptBoolean(resultado.getString(8)));
+                tab.setDiscount(SalonManager.decryptInteger(resultado.getString(9)));
+                tab.setError(SalonManager.decryptDouble(resultado.getString(10)));
+                tab.setPriceCorrection(SalonManager.decryptDouble(resultado.getString(11)));
+                tab.setAmountCash(SalonManager.decryptDouble(resultado.getString(12)));
+                tab.setAmountElectronic(SalonManager.decryptDouble(resultado.getString(13)));
+                tab.setTotal(SalonManager.decryptDouble(resultado.getString(14)));
+                tab.setComments(SalonManager.decrypt(resultado.getString(15)));
+                tab.setActiveTable(SalonManager.decryptBoolean(resultado.getString(16)));
                 tables.add(tab);
             }
             return tables;
@@ -438,12 +475,12 @@ public class DAOTable extends DAO {
         Timestamp open = ts;
         Timestamp close = new Timestamp(new Date().getTime());
         try {
-            String sql = "SELECT table_id FROM tabs WHERE table_open_time >= '" + open + "' AND table_open_time <= '" + close + "' AND table_active = true;";
+            String sql = "SELECT table_id FROM tabs WHERE table_open_time >= '" + SalonManager.encryptTs(open) + "' AND table_open_time <= '" + SalonManager.encryptTs(close) + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
                 String st = "";
-                st = resultado.getString(1);
+                st = SalonManager.decrypt(resultado.getString(1));
                 ids.add(st);
             }
             return ids;
@@ -457,11 +494,11 @@ public class DAOTable extends DAO {
     public ArrayList<String> getActiveIds() throws Exception {
         ArrayList<String> tables = new ArrayList<>();
         try {
-            String sql = "SELECT table_id FROM tabs WHERE table_open = true;";
+            String sql = "SELECT table_id FROM tabs WHERE table_open = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                String tab = resultado.getString(1);
+                String tab = SalonManager.encrypt(resultado.getString(1));
                 tables.add(tab);
             }
             return tables;
@@ -475,11 +512,11 @@ public class DAOTable extends DAO {
     public ArrayList<Integer> activeTabIcMod(int idItem, String idTab) throws Exception {
         ArrayList<Integer> idsTabsIc = new ArrayList<>();
         try {
-            String sql = "SELECT itemcard_order_id_fkey FROM itemcard_order_tabs WHERE itemcard_order_id_fkey = " + idItem + " AND table_id_fkey = '"+ idTab+"' ;";
+            String sql = "SELECT itemcard_order_id_fkey FROM itemcard_order_tabs WHERE itemcard_order_id_fkey = '" + SalonManager.encryptInteger(idItem) + "' AND table_id_fkey = '" + SalonManager.encrypt(idTab) + "' ;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                int ic = resultado.getInt(1);
+                int ic = SalonManager.decryptInteger(resultado.getString(1));
                 idsTabsIc.add(ic);
             }
             return idsTabsIc;
@@ -493,11 +530,11 @@ public class DAOTable extends DAO {
     public String askComment(Table tabAux) throws Exception {
         String comment = "";
         try {
-            String sql = "SELECT table_comment FROM tabs WHERE table_id = '" + tabAux.getId() +"';";
+            String sql = "SELECT table_comment FROM tabs WHERE table_id = '" + SalonManager.encrypt(tabAux.getId()) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                comment = resultado.getString(1);
+                comment = SalonManager.decrypt(resultado.getString(1));
             }
             return comment;
         } catch (Exception e) {
@@ -514,14 +551,14 @@ public class DAOTable extends DAO {
             ts2 = new Timestamp(new Date().getTime());
         }
         try {
-            String sql = "SELECT MAX(table_num) FROM tabs WHERE table_pos = 'barra' AND table_open_time >= '"+ ws.getOpenWs() +"' AND table_open_time<= '" + ts2 +"' AND table_active = true;";
+            String sql = "SELECT MAX(table_num) FROM tabs WHERE table_pos = '" + SalonManager.encrypt("barra") + "'  AND table_open_time >= '" + ws.getOpenWs() + "' AND table_open_time<= '" + ts2 + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
                 id = resultado.getInt(1);
                 if (id == null) {
                     id = 0;
-                } 
+                }
             }
             return id;
         } catch (Exception e) {

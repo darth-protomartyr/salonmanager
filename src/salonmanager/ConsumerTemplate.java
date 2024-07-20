@@ -242,6 +242,7 @@ public class ConsumerTemplate extends FrameHalf {
         area = fieldArea.getText();
         details = areaDetails.getText();
         socialNetwork = fieldSN.getText();
+        int id = daoC.getConsumerId();
 
         if (name.length() > 60 || name.length() < 2) {
             error = true;
@@ -268,7 +269,7 @@ public class ConsumerTemplate extends FrameHalf {
         }
 
         if (error == false) {
-            cmrAux = new DeliveryConsumer(street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
+            cmrAux = new DeliveryConsumer(id, street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
             if (i == 1) {
                 daoC.saveConsumer(cmrAux);
             } else {

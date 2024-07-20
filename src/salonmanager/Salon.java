@@ -183,9 +183,6 @@ public class Salon extends FrameFull {
         add(panelPpal);
 
         cfgGen = daoC.askConfigGeneral();
-        if (cfgGen.isActiveConfig() == false) {
-            cfgGen = utili.cfgBacker();
-        }
         totalTable = cfgGen.getTotalTable();
         tableNum = cfgGen.getTableNum();
         tablePan = cfgGen.getTablePan();

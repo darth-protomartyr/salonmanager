@@ -28,7 +28,6 @@ public class ItemMonitor {
     String indications;
             
     public ItemMonitor() {
-
     }
 
     public ItemMonitor(Table tableIMon, Itemcard itemIMon, String indications) {

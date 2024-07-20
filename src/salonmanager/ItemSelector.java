@@ -114,7 +114,6 @@ public class ItemSelector extends FrameWindow {
                 } else {
                     new ItemcardConsulta(itemAux);
                 }
-
             }
         }
     }

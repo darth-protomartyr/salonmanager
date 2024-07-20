@@ -26,7 +26,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void cargaItem() {
-        CustomDialog cm = new CustomDialog("El item de la Card fue cargado con éxito a la base de datos", 1);
+        CustomDialog cm = new CustomDialog("El item de la Carta fue cargado con éxito a la base de datos", 1);
         cm.setVisible(true);
     }
 

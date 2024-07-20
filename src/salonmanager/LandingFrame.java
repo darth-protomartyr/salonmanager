@@ -62,7 +62,7 @@ public class LandingFrame extends FrameGeneral {
         butLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    new Ingresar(getJFrame());
+                    new Inn(getJFrame());
                 } catch (Exception ex) {
                     Logger.getLogger(LandingFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }

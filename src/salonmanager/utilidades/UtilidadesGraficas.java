@@ -86,9 +86,6 @@ public class UtilidadesGraficas extends JFrame {
     public CustomJMenuBar navegador(User user, String pass, Manager man) throws Exception {
         manager = man;
         cfgGen = daoC.askConfigGeneral();
-        if (cfgGen.isActiveConfig() == false) {
-            cfgGen = utili.cfgBacker();
-        }
         cfgAct = daoC.askConfigActual();
 
         Font menuFont = new Font("Arial", Font.BOLD, 16);
@@ -674,27 +671,27 @@ public class UtilidadesGraficas extends JFrame {
         panelA.add(panelData2);
 
         JPanel panelData3 = dataPanelBacker("Descripción:", 14);
-        panelData3.setBounds(anchoUnit * 5, altoUnit * 25, anchoUnit * 30, altoUnit * 14);
+        panelData3.setBounds(anchoUnit * 5, altoUnit * 25, anchoUnit * 30, altoUnit * 24);
         areaDescription.setRows(4);
         areaDescription.setColumns(5);
         areaDescription.setLineWrap(true);
         areaDescription.setWrapStyleWord(true);
         areaDescription.setFont(font2);
         JScrollPane scrollPaneDesc = new JScrollPane(areaDescription);
-        scrollPaneDesc.setBounds(anchoUnit * 3, altoUnit * 5, anchoUnit * 24, altoUnit * 8);
+        scrollPaneDesc.setBounds(anchoUnit * 3, altoUnit * 6, anchoUnit * 24, altoUnit * 17);
         panelData3.add(scrollPaneDesc);
         panelA.add(panelData3);
 
         JPanel panelData4 = dataPanelBacker("Costo:", 14);
-        panelData4.setBounds(anchoUnit * 5, altoUnit * 42, anchoUnit * 30, altoUnit * 7);
-        fieldCost.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
+        panelData4.setBounds(anchoUnit * 5, altoUnit * 52, anchoUnit * 14, altoUnit * 7);
+        fieldCost.setBounds(anchoUnit * 5, altoUnit * 1, anchoUnit * 8, altoUnit * 5);
         fieldCost.setFont(font3);
         panelData4.add(fieldCost);
         panelA.add(panelData4);
 
         JPanel panelData5 = dataPanelBacker("Precio:", 14);
-        panelData5.setBounds(anchoUnit * 5, altoUnit * 52, anchoUnit * 30, altoUnit * 7);
-        fieldPrice.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 21, altoUnit * 5);
+        panelData5.setBounds(anchoUnit * 20, altoUnit * 52, anchoUnit * 15, altoUnit * 7);
+        fieldPrice.setBounds(anchoUnit * 6, altoUnit * 1, anchoUnit * 8, altoUnit * 5);
         fieldPrice.setFont(font3);
         panelData5.add(fieldPrice);
         panelA.add(panelData5);
@@ -709,18 +706,10 @@ public class UtilidadesGraficas extends JFrame {
         JPanel panelData7 = dataPanelBacker("Propina deducible:", 14);
         panelData7.setBounds(anchoUnit * 20, altoUnit * 62, anchoUnit * 15, altoUnit * 7);
         checkTip.setBounds(anchoUnit * 12, altoUnit * 2, altoUnit * 3, altoUnit * 3);
+        checkTip.setBackground(bluLg);
         panelData7.add(checkTip);
         panelA.add(panelData7);
 
-        if (item != null) {
-            fieldName.setText(item.getName());
-            comboCategory.setSelectedItem(item.getCategory());
-            areaDescription.setText(item.getDescription());
-            fieldCost.setText(item.getCost() + "");
-            fieldPrice.setText(item.getPrice().get(0) + "");
-            fieldStock.setText(item.getStock() + "");
-            checkTip.setSelected(item.isActiveTip());
-        }
         return panelA;
     }
 

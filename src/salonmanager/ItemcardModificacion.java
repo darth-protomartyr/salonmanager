@@ -46,7 +46,7 @@ public class ItemcardModificacion extends FrameHalf {
     int stock = 0;
     boolean tipAlta = false;
     Itemcard itemAux = new Itemcard();
-    ArrayList<String> categoriesDB = utili.categoryList();
+    ArrayList<String> categoriesDB = null;
 
     JTextField fieldName = new JTextField();
     JComboBox comboCategory = new JComboBox();
@@ -64,6 +64,7 @@ public class ItemcardModificacion extends FrameHalf {
         sm.addFrame(this);
         setTitle("Modificación Item de la Carta");
         itemsCardDB = daoIC.listarItemsCard();
+        categoriesDB = daoC.askCategoriesConfig();
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
@@ -73,6 +74,8 @@ public class ItemcardModificacion extends FrameHalf {
 
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, itemAux);
         panelPpal.add(panelForm);
+
+        itemSetter();
 
         butModificarItem = utiliGraf.button1("Modificar Item", anchoUnit * 16, altoUnit * 86, anchoUnit * 19);
         butModificarItem.addActionListener(new ActionListener() {
@@ -106,7 +109,7 @@ public class ItemcardModificacion extends FrameHalf {
     private void butModificarItemActionPerformed() throws Exception {
         boolean error = false;
         name = fieldName.getText();
-        category = utili.selectorCategory(comboCategory.getSelectedIndex());
+        category = (String) comboCategory.getSelectedItem();
         description = areaDescription.getText();
 
         if (name.length() > 30 || name.length() < 2) {
@@ -179,7 +182,7 @@ public class ItemcardModificacion extends FrameHalf {
             boolean confirm = utiliMsg.errorPriceCost();
             if (!confirm) {
                 error = true;
-            }            
+            }
         }
 
         tipAlta = checkTip.isSelected();
@@ -237,6 +240,7 @@ public class ItemcardModificacion extends FrameHalf {
         }
     }
 
+    
     private void resetItemcard() throws Exception {
         itemsCardDB = daoIC.listarItemsCard();
         name = "";
@@ -254,5 +258,22 @@ public class ItemcardModificacion extends FrameHalf {
         fieldPrice.setText("");
         fieldStock.setText("");
         checkTip.setSelected(false);
+    }
+
+    
+    private void itemSetter() {
+        fieldName.setText(itemAux.getName());
+        int index = 0;
+        for (int i = 0; i < categoriesDB.size(); i++) {
+            if (categoriesDB.get(i).equals(itemAux.getCategory())) {
+                index = i;
+            }
+        }
+        comboCategory.setSelectedIndex(index);
+        areaDescription.setText(itemAux.getDescription());
+        fieldCost.setText(itemAux.getCost() + "");
+        fieldPrice.setText(itemAux.getPrice().get(0) + "");
+        fieldStock.setText(itemAux.getStock() + "");
+        checkTip.setSelected(itemAux.isActiveTip());
     }
 }

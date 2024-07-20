@@ -101,7 +101,7 @@ public class Itemcard {
     }
 
     public void setCost(double cost) {
-        this.cost = utili.round2Dec(cost);;
+        this.cost = utili.round2Dec(cost);
     }
 
     public ArrayList<Double> getPrice() {

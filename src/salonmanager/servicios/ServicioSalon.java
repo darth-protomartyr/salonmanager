@@ -558,8 +558,8 @@ public class ServicioSalon {
 
     private Workshift setWsEnd(Workshift ws) throws Exception {
         Workshift newWs = ws;
-        int id = daoW.findId(newWs.getOpenWs());
-        newWs.setId(id);
+//        int id = daoW.findId(newWs.getOpenWs());
+//        newWs.setId(id);
         newWs.setCloseWs(new Timestamp(new Date().getTime()));
         newWs.setStateWs(false);
         return newWs;

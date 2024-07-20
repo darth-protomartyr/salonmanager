@@ -2,7 +2,8 @@ package salonmanager.persistencia;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import salonmanager.SalonManager;
+import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.utilidades.Utilidades;
@@ -13,16 +14,18 @@ public class DAOConfig extends DAO {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCat, ArrayList<String> chartPan, boolean cfgActive, int tip) throws Exception {
+    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCat, ArrayList<String> chartPan, int tip, boolean cfgActive) throws Exception {
         try {
             deleteConfigGeneral();
-            String nums = utili.arrayIntToStr(numTab);
-            String pans = utili.arrayStrToStr(strPan);
-            String cats = utili.arrayStrToStr(strCat);
-            String charts = utili.arrayStrToStr(chartPan);
-            
+            String nums = SalonManager.encrypt(utili.arrayIntToStr(numTab));
+            String pans = SalonManager.encrypt(utili.arrayStrToStr(strPan));
+            String cats = SalonManager.encrypt(utili.arrayStrToStr(strCat));
+            String charts = SalonManager.encrypt(utili.arrayStrToStr(chartPan));
+            String act = SalonManager.encryptBoolean(cfgActive);
+
             String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_name_categories, config_table_chart_panes, config_table_tip , config_active)"
-                    + "VALUES('" + totalTab + "', '" + nums + "', '" + pans + "', '" + cats + "', '" + charts + "', " + tip + ", " + cfgActive + ");";
+                    + "VALUES('" + SalonManager.encryptInteger(totalTab) + "', '" + nums + "', '" + pans + "', '" + cats + "', '" + charts + "', '" + SalonManager.encryptInteger(tip) + "', '" + act + "');";
+
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -57,13 +60,13 @@ public class DAOConfig extends DAO {
         consultarBase(sql);
         ConfigGeneral cfnGen = new ConfigGeneral();
         while (resultado.next()) {
-            cfnGen.setTotalTable(resultado.getInt(1));
-            cfnGen.setTableNum(utili.strToArrayInt(resultado.getString(2)));
-            cfnGen.setTablePan(utili.strToArrayStr(resultado.getString(3)));
-            cfnGen.setTableItemCategories(utili.strToArrayStr(resultado.getString(4)));
-            cfnGen.setTablePanCh(utili.strToArrayStr(resultado.getString(5)));
-            cfnGen.setTipPc(resultado.getInt(6));
-            cfnGen.setActiveConfig(resultado.getBoolean(7));
+            cfnGen.setTotalTable(SalonManager.decryptInteger(resultado.getString(1)));
+            cfnGen.setTableNum(utili.strToArrayInt(SalonManager.decrypt(resultado.getString(2))));
+            cfnGen.setTablePan(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(3))));
+            cfnGen.setTableItemCategories(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(4))));
+            cfnGen.setTablePanCh(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(5))));
+            cfnGen.setTipPc(SalonManager.decryptInteger(resultado.getString(6)));
+            cfnGen.setActiveConfig(SalonManager.decryptBoolean(resultado.getString(7)));
         }
         desconectarBase();
         return cfnGen;
@@ -74,18 +77,29 @@ public class DAOConfig extends DAO {
         consultarBase(sql);
         ConfigActual cfnAct = new ConfigActual();
         while (resultado.next()) {
-            cfnAct.setOpenWs(resultado.getBoolean(1));
-            cfnAct.setOpenIdWs(resultado.getInt(2));
-            cfnAct.setArrayDeferWs(utili.strToArrayStrAlt(resultado.getString(3)));
-            cfnAct.setArrayUnModTabs(utili.strToArrayStrAlt(resultado.getString(4)));
+            cfnAct.setOpenWs(SalonManager.decryptBoolean(resultado.getString(1)));
+            cfnAct.setOpenIdWs(SalonManager.decryptInteger(resultado.getString(2)));
+            String defers = resultado.getString(3);
+            ArrayList<String> deferTabs = new ArrayList<>();
+            if (defers != null) {
+                deferTabs = utili.strToArrayStrAlt(SalonManager.decrypt(defers));
+            }
+            cfnAct.setArrayDeferWs(deferTabs);
+            String mods = resultado.getString(4);
+            ArrayList<String> modTabs = new ArrayList<>();
+            if (mods != null) {
+                modTabs = utili.strToArrayStrAlt(SalonManager.decrypt(mods));
+            }
+            cfnAct.setArrayUnModTabs(modTabs);
         }
         desconectarBase();
         return cfnAct;
     }
 
-    public void updateCfgActOpenWs(boolean bool) throws Exception {
+    public void updateCfgActOpenWs(boolean boo) throws Exception {
         try {
-            String sql1 = "UPDATE config_actual SET config_open_ws = " + bool + ";";
+            String bool = SalonManager.encryptBoolean(boo);
+            String sql1 = "UPDATE config_actual SET config_open_ws = '" + bool + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -101,7 +115,7 @@ public class DAOConfig extends DAO {
 
     public void updateCfgActOpenIdWs(int idWs) throws Exception {
         try {
-            String sql1 = "UPDATE config_actual SET config_open_ws_id = '" + idWs + "';";
+            String sql1 = "UPDATE config_actual SET config_open_ws_id = '" + SalonManager.encryptInteger(idWs) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -118,7 +132,7 @@ public class DAOConfig extends DAO {
     public void updateCfgActDeferWs(ArrayList<String> arrayDeferWs) throws Exception {
         String stArray = utili.arrayStrToStrAlt(arrayDeferWs);
         try {
-            String sql1 = "UPDATE config_actual SET congif_defer_close_ws = '" + stArray + "';";
+            String sql1 = "UPDATE config_actual SET congif_defer_close_ws = '" + SalonManager.encrypt(stArray) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -137,7 +151,7 @@ public class DAOConfig extends DAO {
         String sql = "SELECT * FROM spaces;";
         consultarBase(sql);
         while (resultado.next()) {
-            String space = resultado.getString(1);
+            String space = SalonManager.decrypt(resultado.getString(1));
             spaces.add(space);
         }
         desconectarBase();
@@ -149,7 +163,7 @@ public class DAOConfig extends DAO {
         String sql = "SELECT * FROM chars;";
         consultarBase(sql);
         while (resultado.next()) {
-            String cha = resultado.getString(1);
+            String cha = SalonManager.decrypt(resultado.getString(1));
             chars.add(cha);
         }
         desconectarBase();
@@ -161,17 +175,24 @@ public class DAOConfig extends DAO {
         String sql = "SELECT * FROM categories;";
         consultarBase(sql);
         while (resultado.next()) {
-            String category = resultado.getString(1);
+            String category = SalonManager.decrypt(resultado.getString(1));
             categories.add(category);
         }
         desconectarBase();
         return categories;
     }
 
+    public ArrayList<String> askCategoriesConfig() throws Exception {
+        ArrayList<String> categories = new ArrayList<>();
+        ConfigGeneral cfgGen = askConfigGeneral();
+        categories = cfgGen.getTableItemCategories();
+        return categories;
+    }
+
     public void saveSpace(String space) throws Exception {
         try {
             String sql1 = "INSERT INTO spaces(space_name)"
-                    + "VALUES('" + space + "');";
+                    + "VALUES('" + SalonManager.encrypt(space) + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -188,7 +209,7 @@ public class DAOConfig extends DAO {
     public void saveCategory(String category) throws Exception {
         try {
             String sql1 = "INSERT INTO categories(category_name)"
-                    + "VALUES('" + category + "');";
+                    + "VALUES('" + SalonManager.encrypt(category) + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -205,7 +226,7 @@ public class DAOConfig extends DAO {
     public void saveChar(String cha) throws Exception {
         try {
             String sql1 = "INSERT INTO chars(char_name)"
-                    + "VALUES('" + cha + "');";
+                    + "VALUES('" + SalonManager.encrypt(cha) + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -226,7 +247,42 @@ public class DAOConfig extends DAO {
         }
 
         try {
-            String sql1 = "UPDATE config_actual SET congif_unmod_tabs = '" + stArray + "';";
+            String sql1 = "UPDATE config_actual SET congif_unmod_tabs = '" + SalonManager.encrypt(stArray) + "';";
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public boolean askCfgNull() throws Exception {
+        boolean ask = false;
+        String sql = "SELECT config_active FROM config_general;";
+        consultarBase(sql);
+        while (resultado.next()) {
+            ask = SalonManager.decryptBoolean(resultado.getString(1));
+        }
+        desconectarBase();
+        return ask;
+    }
+
+    public void saveConfigActual(boolean wsOpen, int wsId, ArrayList<String> defers, ArrayList<String> mods) throws Exception {
+        try {
+            
+            String def = SalonManager.encrypt(utili.arrayStrToStr(defers));
+            String mod = SalonManager.encrypt(utili.arrayStrToStr(mods));
+            String act = SalonManager.encryptBoolean(wsOpen);
+            String id = SalonManager.encryptInteger(wsId);
+
+            String sql1 = "INSERT INTO config_actual(config_open_ws, config_open_ws_id, congif_defer_close_ws, congif_unmod_tabs)"
+                    + "VALUES('" + act + "', '" + id + "', '" + def + "', '" + mod + "');";
+
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

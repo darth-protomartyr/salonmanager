@@ -21,7 +21,8 @@ public class DeliveryConsumer {
     public DeliveryConsumer() {
     }
 
-    public DeliveryConsumer(String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork) {
+    public DeliveryConsumer(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork) {
+        this.id = id;
         this.street = street;
         this.numSt = numSt;
         this.deptFloor = deptFloor;

@@ -13,7 +13,7 @@ public class ConfigGeneral {
     public ConfigGeneral() {
     }
 
-    public ConfigGeneral(int totalTable, ArrayList<Integer> tableNum, ArrayList<String> tablePan, ArrayList<String> tableItemCategories, ArrayList<String> tablePanCh, int tipPc, boolean activeConfig) {
+    public ConfigGeneral(int totalTable, ArrayList<Integer> tableNum, ArrayList<String> tableItemCategories, ArrayList<String> tablePan, ArrayList<String> tablePanCh, int tipPc, boolean activeConfig) {
         this.totalTable = totalTable;
         this.tableNum = tableNum;
         this.tablePan = tablePan;

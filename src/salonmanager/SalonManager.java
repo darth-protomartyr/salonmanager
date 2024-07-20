@@ -1,23 +1,35 @@
 package salonmanager;
 
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import salonmanager.entidades.bussiness.User;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.spec.KeySpec;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Base64;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JFrame;
 import salonmanager.persistencia.DAOConfig;
 
 public class SalonManager {
+
     private static ArrayList<JFrame> framesOpen = new ArrayList<>();
     private static User userIn = new User();
     private static String passIn = "";
-    private static final String SECRET_KEY = "HappyWhenItRains";
+    private static final String SECRET_KEY = "MySecurePasswordForKeyDerivation"; // Debe ser una contraseña segura
+    private static final String SALT = "SomeSaltValue"; // Debe ser un valor seguro y único
+    private static final SecretKeySpec keySpec = generateSecretKey(SECRET_KEY, SALT);
     private static DAOConfig daoC = new DAOConfig();
-    
+    private static final String ALGORITHM = "AES";
+    private static String empty = "";
+
+
     public static void main(String[] args) {
         try {
             new LandingFrame();
@@ -25,19 +37,39 @@ public class SalonManager {
             Logger.getLogger(SalonManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void setUserIn(User userIn) {
         this.userIn = userIn;
     }
-
 
     public void setPassIn(String passIn) {
         this.passIn = passIn;
     }
 
-    //Encriptamineto
+    private static SecretKeySpec generateSecretKey(String password, String salt) {
+        try {
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
+            SecretKey secretKey = factory.generateSecret(spec);
+            return new SecretKeySpec(secretKey.getEncoded(), "AES");
+        } catch (Exception e) {
+            throw new RuntimeException("Error al generar la clave AES", e);
+        }
+    }
+
+    //Encriptamiento
+    // Convertir clave a base64 para almacenamiento
+    public static String keyToString(SecretKey secretKey) {
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
+    }
+
+    // Convertir base64 a clave
+    public static SecretKey stringToKey(String keyStr) {
+        byte[] decodedKey = Base64.getDecoder().decode(keyStr);
+        return new SecretKeySpec(decodedKey, 0, decodedKey.length, ALGORITHM);
+    }
+
     public static String encrypt(String data) throws Exception {
-        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), "AES");
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, keySpec);
         byte[] encryptedBytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
@@ -45,7 +77,6 @@ public class SalonManager {
     }
 
     public static String decrypt(String encryptedData) throws Exception {
-        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), "AES");
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, keySpec);
         byte[] encryptedBytes = Base64.getDecoder().decode(encryptedData);
@@ -93,10 +124,62 @@ public class SalonManager {
         return Integer.parseInt(decryptedStr);
     }
 
+    // Encriptar un booleano
+    public static String encryptBoolean(boolean value) throws Exception {
+        String bool = "";
+        String encrypt = encrypt(SECRET_KEY);
+        String encrypf = encrypt.substring(0, 15) + "f" + encrypt.substring(16);
+        if (value) {
+            bool = encrypt;
+        } else {
+            bool = encrypf;
+        }
+        return bool;
+    }
+
+    // Desencriptar un booleano
+    public static boolean decryptBoolean(String encryptedValue) throws Exception {
+        Boolean bool = null;
+        String encrypt = encrypt(SECRET_KEY);
+        String encrypf = encrypt.substring(0, 15) + "f" + encrypt.substring(16);
+        if (encryptedValue.equals(encrypt)) {
+            bool = true;
+        }
+        if (encryptedValue.equals(encrypf)) {
+            bool = false;
+        }
+        return bool;
+    }
+
+    public static String encryptTs(Timestamp timestamp) throws Exception {
+        String ts = null;
+        if (timestamp != null) {
+            String data = timestamp.toString();
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+            byte[] encryptedBytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            ts = Base64.getEncoder().encodeToString(encryptedBytes);
+        }
+        return ts;
+    }
+
+    public static Timestamp decryptTs(String encryptedData) throws Exception {
+        Timestamp ts = null;
+        if (!encryptedData.equals("")) {
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+            byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+            byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+            String decryptedData = new String(decryptedBytes, StandardCharsets.UTF_8);
+            ts = Timestamp.valueOf(decryptedData);
+        }
+        return ts;
+    }
+
     public void salir() throws Exception {
         setPassIn("");
         setUserIn(null);
-        windowCloser();       
+        windowCloser();
     }
 
     private static void windowCloser() {
@@ -106,7 +189,6 @@ public class SalonManager {
         }
     }
 
-    
     public boolean rolPermission(int auth) throws Exception {
         boolean rol = false;
         String r = userIn.getRol();
@@ -130,26 +212,23 @@ public class SalonManager {
                 cash = true;
                 break;
         }
-        
         if (r.equals("ADMIN")) {
             rol = adm;
         } else if (r.equals("MANAGER")) {
             rol = man;
-        } else if (r.equals("CASHIER")){
+        } else if (r.equals("CASHIER")) {
             rol = cash;
         }
-        
         return rol;
     }
-
 
     public void addFrame(JFrame of) {
         framesOpen.add(of);
     }
-    
+
     public void frameCloser() {
         for (JFrame of : framesOpen) {
             of.dispose();
         }
-    }   
+    }
 }

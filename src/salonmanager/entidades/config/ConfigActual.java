@@ -7,6 +7,8 @@ public class ConfigActual {
     ArrayList<String> arrayDeferWs;
     ArrayList<String> arrayUnModTabs;
 
+    
+    
     public ConfigActual() {
     }
     

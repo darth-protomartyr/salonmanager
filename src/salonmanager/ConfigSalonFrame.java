@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import static java.awt.font.TextAttribute.FONT;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -585,7 +584,7 @@ public class ConfigSalonFrame extends FrameThird {
         for (int i = 0; i < quants.size(); i++) {
             totalTab += quants.get(i);
         }
-        daoC.saveConfigGeneral(totalTab, quants, spacesSel, categoriesSel, charsSel, rootPaneCheckingEnabled, tipPc);
+        daoC.saveConfigGeneral(totalTab, quants, categoriesSel, spacesSel, charsSel, tipPc, true);
         sm.frameCloser();
         System.exit(0);
     }

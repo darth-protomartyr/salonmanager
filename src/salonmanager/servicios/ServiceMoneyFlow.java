@@ -19,6 +19,8 @@ public class ServiceMoneyFlow {
         Timestamp ts = utili.updateTmestamp(ws.getOpenWs(), -5);
         int wsId = ws.getId();
         MoneyFlow mf = new MoneyFlow(true, moneyKind, amount, comment, ts, wsId);
+        int id = daoCF.getMoneyFlowId();
+        mf.setId(id);
         daoCF.saveMoneyFlow(mf);
     }
     
@@ -29,7 +31,9 @@ public class ServiceMoneyFlow {
             kind = false;
         }
         int wsId = salon.getWorkshiftNow().getId();
-        MoneyFlow cf = new MoneyFlow(kind, moneyKind, moneyFlow, comment, wsId);
+        MoneyFlow mf = new MoneyFlow(kind, moneyKind, moneyFlow, comment, wsId);
+        int id = daoCF.getMoneyFlowId();
+        mf.setId(id);
         if (kind == false) { //substr
             if (moneyKind == false) {
                 if (salon.getMoneyFlowElec() - moneyFlow < 0) {
@@ -38,7 +42,7 @@ public class ServiceMoneyFlow {
                     salon.setMoneyFlowElec(salon.getMoneyFlowElec() - moneyFlow);
                     salon.getWorkshiftNow().setMoneyFlowWsElec(salon.getMoneyFlowElec());
                     daoW.updateWorkshiftMoneyFlowElec(salon.getWorkshiftNow());
-                    daoCF.saveMoneyFlow(cf);
+                    daoCF.saveMoneyFlow(mf);
                 }
             } else {
                 if (salon.getMoneyFlowCash() - moneyFlow < 0) {
@@ -47,7 +51,7 @@ public class ServiceMoneyFlow {
                     salon.setMoneyFlowCash(salon.getMoneyFlowCash() - moneyFlow);
                     salon.getWorkshiftNow().setMoneyFlowWsCash(salon.getMoneyFlowCash());
                     daoW.updateWorkshiftMoneyFlowCash(salon.getWorkshiftNow());
-                    daoCF.saveMoneyFlow(cf);
+                    daoCF.saveMoneyFlow(mf);
                 }
             }
         } else {
@@ -55,12 +59,12 @@ public class ServiceMoneyFlow {
                 salon.setMoneyFlowElec(salon.getMoneyFlowElec() + moneyFlow);
                 salon.getWorkshiftNow().setMoneyFlowWsElec(salon.getMoneyFlowElec());
                 daoW.updateWorkshiftMoneyFlowElec(salon.getWorkshiftNow());
-                daoCF.saveMoneyFlow(cf);
+                daoCF.saveMoneyFlow(mf);
             } else {
                 salon.setMoneyFlowCash(salon.getMoneyFlowCash() + moneyFlow);
                 salon.getWorkshiftNow().setMoneyFlowWsCash(salon.getMoneyFlowCash());
                 daoW.updateWorkshiftMoneyFlowCash(salon.getWorkshiftNow());
-                daoCF.saveMoneyFlow(cf);
+                daoCF.saveMoneyFlow(mf);
             }
         }
     }

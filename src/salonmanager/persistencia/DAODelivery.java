@@ -3,6 +3,7 @@ package salonmanager.persistencia;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
+import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Delivery;
 
 public class DAODelivery extends DAO {
@@ -18,8 +19,12 @@ public class DAODelivery extends DAO {
             String deliId = deli.getDeli().getId();
             boolean open = deli.isOpen();
             boolean active = deli.isActive();
+            
+            String activeUser = SalonManager.encryptBoolean(active);
+            String activeOpen = SalonManager.encryptBoolean(open);
+
             String sql1 = "INSERT INTO deliverys(delivery_id, delivery_consumer_phone, delivery_tab_id, delivery_user_id, delivery_open, delivery_active)"
-                    + "VALUES('" + deli.getId() + "'," + cmrPhone + ", '" + tabId + "', '" + deliId + "', " + open + ", " + active + ");";
+                    + "VALUES('" + SalonManager.encrypt(deli.getId()) + "','" + SalonManager.encrypt(cmrPhone) + "', '" + SalonManager.encrypt(tabId) + "', '" + SalonManager.encrypt(deliId) + "', '" + activeOpen + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -44,10 +49,14 @@ public class DAODelivery extends DAO {
             String deliId = deli.getDeli().getId();
             boolean open = deli.isOpen();
             boolean active = deli.isActive();
-            String sql1 = "UPDATE deliverys SET delivery_consumer_phone = " + cmrPhone
-                    + ", delivery_tab_id = '" + tabId + "', delivery_user_id = '" + deliId
-                    + "', delivery_open = " + open + ", delivery_active = " + active 
-                    + " WHERE delivery_id = '" + orderId + "';";
+            
+            String activeUser = SalonManager.encryptBoolean(active);
+            String activeOpen = SalonManager.encryptBoolean(open);
+            
+            String sql1 = "UPDATE deliverys SET delivery_consumer_phone = " + SalonManager.encrypt(cmrPhone)
+                    + ", delivery_tab_id = '" + SalonManager.encrypt(tabId) + "', delivery_user_id = '" + SalonManager.encrypt(deliId)
+                    + "', delivery_open = '" + activeOpen + "', delivery_active = '" + activeUser 
+                    + "' WHERE delivery_id = '" + SalonManager.encrypt(orderId) + "';";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -64,7 +73,9 @@ public class DAODelivery extends DAO {
 
     public void updateDownAct(Delivery deli) throws Exception {
         try {
-            String sql1 = "UPDATE deliverys SET delivery_active = " + false + " WHERE delivery_id = '" + deli.getId() + "';";
+            String activeDelivery = SalonManager.encryptBoolean(false);            
+            
+            String sql1 = "UPDATE deliverys SET delivery_active = '" + activeDelivery + "' WHERE delivery_id = '" + SalonManager.encrypt(deli.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -81,7 +92,7 @@ public class DAODelivery extends DAO {
     public Delivery findDeliveryByTableId(String idTab) throws Exception {
         Delivery deli = null;
         try {
-            String sql = "SELECT * FROM deliverys WHERE delivery_tab_id = '" + idTab + "';";
+            String sql = "SELECT * FROM deliverys WHERE delivery_tab_id = '" + SalonManager.encrypt(idTab) + "';";
             System.out.println(sql);
             consultarBase(sql);
             String id = "";
@@ -91,12 +102,12 @@ public class DAODelivery extends DAO {
             boolean open = false;
             boolean active = false;
             while (resultado.next()) {
-                id = resultado.getString(1);
-                phone = resultado.getString(2);
-                tab = resultado.getString(3);
-                deliId = resultado.getString(4);
-                open = resultado.getBoolean(5);
-                active = resultado.getBoolean(6);
+                id = SalonManager.decrypt(resultado.getString(1));
+                phone = SalonManager.decrypt(resultado.getString(2));
+                tab = SalonManager.decrypt(resultado.getString(3));
+                deliId = SalonManager.decrypt(resultado.getString(4));
+                open = SalonManager.decryptBoolean(resultado.getString(5));
+                active = SalonManager.decryptBoolean(resultado.getString(6));
             }
             deli = new Delivery(id, phone, tab, deliId, open, active);
             return deli;
@@ -109,7 +120,7 @@ public class DAODelivery extends DAO {
 
     public void updateDeliveryTable(String tabId, String deli) throws Exception {
         try {
-            String sql1 = "UPDATE deliverys SET delivery_tab_id = " + tabId + " WHERE delivery_id = '" + deli + "';";
+            String sql1 = "UPDATE deliverys SET delivery_tab_id = " + SalonManager.encrypt(tabId) + " WHERE delivery_id = '" + SalonManager.encrypt(deli) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

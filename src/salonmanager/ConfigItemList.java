@@ -81,9 +81,6 @@ public class ConfigItemList extends FrameFull {
         setTitle("Modificar Items de la carta en Lista");
         items = daoI.listarItemsCard();
         ConfigGeneral cfgGen = daoC.askConfigGeneral();
-        if (cfgGen.isActiveConfig() == false) {
-            cfgGen = utili.cfgBacker();
-        }
         categories = cfgGen.getTableItemCategories();
         cat = "TODOS";
         PanelPpal panelPpal = new PanelPpal(this);

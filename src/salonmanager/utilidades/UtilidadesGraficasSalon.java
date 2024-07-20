@@ -136,7 +136,7 @@ public class UtilidadesGraficasSalon {
                         if (confirm1 == true) {
                             salon.setWorkshiftNow(new Workshift(salon.getUser()));
                             daoW.saveWorkshift(salon.getWorkshiftNow());
-                            salon.getWorkshiftNow().setId(daoW.findLastWsID());
+//                            salon.getWorkshiftNow().setId(daoW.findLastWsID());
                             salon.getWorkshiftNow().setCashierWs(salon.getUser());
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                             salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
@@ -154,7 +154,7 @@ public class UtilidadesGraficasSalon {
                                 if (confirm1 == true) {
                                     salon.setWorkshiftNow(new Workshift(salon.getUser()));
                                     daoW.saveWorkshift(salon.getWorkshiftNow());
-                                    salon.getWorkshiftNow().setId(daoW.findLastWsID());
+//                                    salon.getWorkshiftNow().setId(daoW.findLastWsID());
                                     salon.getWorkshiftNow().setCashierWs(salon.getUser());
                                     daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                                     salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));

@@ -118,6 +118,12 @@ public class Admin extends FrameHalf {
             }
         });
     }
+    
+    public void comboUsersUpdater() throws Exception {
+        users = daoU.listarUsersCompleto();
+        comboUsers.setModel(utili.userComboModelReturnWNull(users));
+        comboUsers.setSelectedItem("");
+    }
 
     public ServicioTable getSt() {
         return st;

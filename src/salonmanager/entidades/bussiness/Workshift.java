@@ -33,6 +33,7 @@ public class Workshift {
 
     //Crear Turno
     public Workshift(User cashier) {
+        this.id = 0;
         this.cashierWs = cashier;
         this.openWs = new Timestamp(new Date().getTime());
         this.closeWs = null;

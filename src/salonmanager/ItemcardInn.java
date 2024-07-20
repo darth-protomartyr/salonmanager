@@ -19,6 +19,7 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
@@ -32,6 +33,7 @@ public class ItemcardInn extends FrameHalf {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServicioItemcard sic = new ServicioItemcard();
     DAOItemcard daoIC = new DAOItemcard();
+    DAOConfig daoC = new DAOConfig();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
@@ -48,7 +50,7 @@ public class ItemcardInn extends FrameHalf {
     int stock = 0;
     boolean tipAlta = false;
     Itemcard itemAux = new Itemcard();
-    ArrayList<String> categoriesDB = utili.categoryList();
+    ArrayList<String> categoriesDB = null;
 
     JTextField fieldName = new JTextField();
     JComboBox comboCategory = new JComboBox();
@@ -63,6 +65,8 @@ public class ItemcardInn extends FrameHalf {
         sm.addFrame(this);
         setTitle("Ingreso Item de Carta");
         itemsCardDB = daoIC.listarItemsCard();
+        categoriesDB = daoC.askCategoriesConfig();
+        
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
@@ -106,7 +110,7 @@ public class ItemcardInn extends FrameHalf {
     private void butCreateItemActionPerformed() throws Exception {
         boolean error = false;
         name = fieldName.getText();
-        category = utili.selectorCategory(comboCategory.getSelectedIndex());
+        category = (String) comboCategory.getSelectedItem();
         description = areaDescription.getText();
 
         if (name.length() > 20 || name.length() < 2) {
@@ -189,6 +193,8 @@ public class ItemcardInn extends FrameHalf {
             prices.add(price);
             prices.add(0.0);
             itemAux = new Itemcard(name, category, description, cost, prices, stock, tipAlta);
+            int id = daoIC.getItemId();
+            itemAux.setId(id);
             daoIC.saveItemcard(itemAux);
             resetItemcard();
         }

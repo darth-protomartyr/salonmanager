@@ -140,7 +140,14 @@ public class TemplateUser extends FrameHalf {
 
         labelImage.setBounds(anchoUnit * 2, altoUnit * 61, anchoUnit * 9, altoUnit * 4);
         panelLabelImage.add(labelImage);
+//--------------------------------------TEST++++++++++++++++++++++++++++++++++++--
 
+            fieldName.setText("Mateo");
+            fieldLastName.setText("Lopez");
+            fieldMail.setText("mate@gmail.com");
+            fieldPhone.setText("2615613868");
+            fieldPass1.setText("27949874");
+            fieldPass2.setText("27949874");
         
         butCreateUser = utiliGraf.button1("Crear Usuario", anchoUnit * 16, altoUnit * 83, anchoUnit * 21);
         butCreateUser.addActionListener(new ActionListener() {
@@ -259,11 +266,13 @@ public class TemplateUser extends FrameHalf {
 
         if (error == false) {
             if (userMod == null) {
-                User user = new User(name, lastName, mail, routeImage, nameImage, phone, pass1);
+                User user = new User(name, lastName, mail, routeImage, nameImage, pass1, phone);
+                user.setActiveUser(true);
+                user.setRol("ADMIN");
                 daoU.saveUser(user);
                 resetRegister();
-                utiliMsg.cargaUsuario();
                 if (admin != null) {
+                    admin.comboUsersUpdater();
                     utiliGrafAdm.enabledTrue(2, admin);
                 }
                 dispose();

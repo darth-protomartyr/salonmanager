@@ -3,20 +3,20 @@ package salonmanager.persistencia;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-/**
- *
- * @author Gonzalo
- */
+
 public class DAOItemSale extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
     public void saveItemSale(ItemSale itemSale) throws Exception {
+        int id = getItemSaleId();
+        itemSale.setSaleId(id);
         try {
-            String sql = "INSERT INTO item_sales_statics( item_sale_id, item_sale_waiter_id, item_sale_category, item_sale_tab_pos, item_sale_workshift_id, item_sale_price, item_sale_date, item_sale_active)"
-                    + "VALUES(" + itemSale.getItemSaleId() + ", '" + itemSale.getItemSaleWaiterId() + "', '" + itemSale.getItemSaleCategory() + "', '"  + itemSale.getItemSaleTabPos() +  "', "   + itemSale.getItemSaleWorkshiftId() + ", " + itemSale.getItemSalePrice() + ", '" + itemSale.getItemSaleDate() + "', " + true + ");";
+            String sql = "INSERT INTO item_sales_statics( item_sale_static_id, item_sale_id, item_sale_waiter_id, item_sale_category, item_sale_tab_pos, item_sale_workshift_id, item_sale_price, item_sale_date, item_sale_active)"
+                    + "VALUES('" + SalonManager.encryptInteger(id) + "', '" + SalonManager.encryptInteger(itemSale.getItemSaleId()) + "', '" + SalonManager.encrypt(itemSale.getItemSaleWaiterId()) + "', '" + SalonManager.encrypt(itemSale.getItemSaleCategory()) + "', '"  + SalonManager.encrypt(itemSale.getItemSaleTabPos()) +  "', '"   + SalonManager.encryptInteger(itemSale.getItemSaleWorkshiftId()) + "', '" + SalonManager.encryptDouble(itemSale.getItemSalePrice()) + "', '" + SalonManager.encryptTs(itemSale.getItemSaleDate()) + "', '" + SalonManager.encryptBoolean(true) + "');";
             System.out.println(sql);
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
@@ -34,12 +34,13 @@ public class DAOItemSale extends DAO {
     public ArrayList<ItemSale> askItemSaleByWorkshift(int id) throws Exception {
         ArrayList<ItemSale> itemSales = new ArrayList<>();
         ArrayList<Integer> itemIds = new ArrayList<>();
+        
         try {
-            String sql = "SELECT item_sale_static_id FROM item_sales_statics WHERE item_sale_workshift = id";
+            String sql = "SELECT item_sale_static_id FROM item_sales_statics WHERE item_sale_workshift = '" + SalonManager.encryptInteger(id) +"';";
             System.out.println(sql);
             consultarBase(sql);
             while(resultado.next()) {
-                int i = resultado.getInt(1);
+                int i = SalonManager.decryptInteger(resultado.getString(1));
                 itemIds.add(i);
             }
 
@@ -60,19 +61,23 @@ public class DAOItemSale extends DAO {
     public ItemSale askItemSaleById(int id) throws Exception {
         ItemSale iS = new ItemSale();
         try {
-            String sql = "SELECT * FROM item_sales_statics WHERE item_sale_static_id = " + id + ";";
+            String sql = "SELECT * FROM item_sales_statics WHERE item_sale_static_id = '" + SalonManager.encryptInteger(id) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                iS.setSaleId(resultado.getInt(1));
-                iS.setItemSaleId(resultado.getInt(2));
-                iS.setItemSaleCategory(resultado.getString(3));
-                iS.setItemSaleTabPos(resultado.getString(4));
-                iS.setItemSaleWaiterId(resultado.getString(5));
-                iS.setItemSaleWorkshiftId(resultado.getInt(6));
-                iS.setItemSalePrice(resultado.getDouble(7));
-                iS.setItemSaleDate(resultado.getTimestamp(8));
-                iS.setItemSaleActive(resultado.getBoolean(9));
+                iS.setSaleId(SalonManager.decryptInteger(resultado.getString(1)));
+                iS.setItemSaleId(SalonManager.decryptInteger(resultado.getString(2)));
+                iS.setItemSaleCategory(SalonManager.decrypt(resultado.getString(3)));
+                iS.setItemSaleTabPos(SalonManager.decrypt(resultado.getString(4)));
+                iS.setItemSaleWaiterId(SalonManager.decrypt(resultado.getString(5)));
+                iS.setItemSaleWorkshiftId(SalonManager.decryptInteger(resultado.getString(6)));
+                iS.setItemSalePrice(SalonManager.decryptDouble(resultado.getString(7)));
+                String create1 = resultado.getString(8);
+                if (create1 == null) {
+                    create1 = "";
+                }
+                iS.setItemSaleDate(SalonManager.decryptTs(create1));
+                iS.setItemSaleActive(SalonManager.decryptBoolean(resultado.getString(9)));
             }
             return iS;
         } catch (Exception e) {
@@ -86,13 +91,13 @@ public class DAOItemSale extends DAO {
     public ArrayList<ItemSale> listarItemSalesByDate(Timestamp open, Timestamp close) throws Exception {
         ArrayList<ItemSale> listISale = new ArrayList<>();
         try {
-            String sql = "SELECT item_sale_static_id FROM item_sales_statics WHERE item_sale_date >= '" + open + "' AND item_sale_date <= '" + close + "';";
+            String sql = "SELECT item_sale_static_id FROM item_sales_statics WHERE item_sale_date >= '" + SalonManager.encryptTs(open) + "' AND item_sale_date <= '" + SalonManager.encryptTs(close) + "';";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<Integer> ids = new ArrayList<>();
             while (resultado.next()) {
                 int id = 0; 
-                id = resultado.getInt(1);
+                id = SalonManager.decryptInteger(resultado.getString(1));
                 ids.add(id);
             }
             
@@ -107,6 +112,23 @@ public class DAOItemSale extends DAO {
         } finally {
             desconectarBase();
         }        
-
+    }
+    
+    public int getItemSaleId() throws Exception {
+        try {       
+            int id = 0;
+            String sql = "SELECT COUNT(*) AS cantidad_filas FROM item_sales_statics;";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<String> cmrs = new ArrayList<>();
+            while (resultado.next()) {
+                id = resultado.getInt(1) + 1;
+            }
+            return id;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
     }
 }

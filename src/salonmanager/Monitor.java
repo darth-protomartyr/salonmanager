@@ -96,7 +96,7 @@ public class Monitor extends FrameHalf {
                 try {
                     butMonitOrders(1);
                 } catch (Exception ex) {
-                    Logger.getLogger(Ingresar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Inn.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -109,7 +109,7 @@ public class Monitor extends FrameHalf {
                 try {
                     butMonitOrders(2);
                 } catch (Exception ex) {
-                    Logger.getLogger(Ingresar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Inn.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -122,7 +122,7 @@ public class Monitor extends FrameHalf {
                 try {
                     butMonitOrders(3);
                 } catch (Exception ex) {
-                    Logger.getLogger(Ingresar.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Inn.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
