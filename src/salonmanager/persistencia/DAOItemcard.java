@@ -46,25 +46,6 @@ public class DAOItemCard extends DAO {
         }
     }
 
-//    public ArrayList<Integer> listarItemsCardIds() throws Exception {
-//        ArrayList<Integer> items = new ArrayList<>();
-//        try {
-//            String sql = "SELECT * FROM item_cards WHERE item_card_active = '" + SalonManager.encryptBoolean(true) + "';";
-//            System.out.println(sql);
-//            consultarBase(sql);
-//            ItemCard ic = new ItemCard();
-//            while (resultado.next()) {
-//                int id = SalonManager.decryptInt(resultado.getString(1));
-//                items.add(id);
-//            }
-//            return items;
-//        } catch (Exception e) {
-//            throw e;
-//        } finally {
-//            desconectarBase();
-//        }
-//    }
-
     public ArrayList<Integer> listarItemsCardId() throws Exception {
         ArrayList<Integer> itemsId = new ArrayList<>();
         try {
