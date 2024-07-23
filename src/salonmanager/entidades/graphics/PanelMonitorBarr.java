@@ -19,7 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import salonmanager.Salon;
 import salonmanager.IndicationsShower;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
@@ -51,7 +51,7 @@ public class PanelMonitorBarr extends JPanel {
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
     DAOTable daoT = new DAOTable();
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     int type = 0;

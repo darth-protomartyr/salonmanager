@@ -9,7 +9,7 @@ import salonmanager.TableAdder;
 import salonmanager.TabsToEnd;
 import salonmanager.WorkshiftEndPanel;
 import salonmanager.entidades.bussiness.Delivery;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
@@ -20,7 +20,7 @@ import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.persistencia.DAOMoneyFlow;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -31,7 +31,7 @@ public class ServicioSalon {
 
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
-    DAOItemcard daoIC = new DAOItemcard();
+    DAOItemCard daoIC = new DAOItemCard();
     DAOWorkshift daoW = new DAOWorkshift();
     DAODelivery daoD = new DAODelivery();
     DAOConfig daoC = new DAOConfig();
@@ -99,7 +99,7 @@ public class ServicioSalon {
         return configValues;
     }
 
-    public int itemRepeat(Itemcard ic, ArrayList<Itemcard> itemsTableAux) {
+    public int itemRepeat(ItemCard ic, ArrayList<ItemCard> itemsTableAux) {
         int rep = -1;
         for (int i = 0; i < itemsTableAux.size(); i++) {
             if (ic.equals(itemsTableAux.get(i))) {
@@ -109,8 +109,8 @@ public class ServicioSalon {
         return rep;
     }
 
-    public ArrayList<Itemcard> itemTableLesser(ArrayList<Itemcard> items, Itemcard ic) {
-        ArrayList<Itemcard> itemsLesser = new ArrayList<>(items);
+    public ArrayList<ItemCard> itemTableLesser(ArrayList<ItemCard> items, ItemCard ic) {
+        ArrayList<ItemCard> itemsLesser = new ArrayList<>(items);
         int index = -1;
 
         for (int i = 0; i < items.size(); i++) {
@@ -126,8 +126,8 @@ public class ServicioSalon {
     public double countBill(Table tableAux, Salon sal, boolean total) {
         double bill = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<Itemcard> itemsTable = tableAux.getOrder();
-        ArrayList<Itemcard> itemsTableND = tableAux.getPartialPayedND();
+        ArrayList<ItemCard> itemsTable = tableAux.getOrder();
+        ArrayList<ItemCard> itemsTableND = tableAux.getPartialPayedND();
         for (int i = 0; i < itemsTable.size(); i++) {
             if (itemsTable.get(i).isActiveItem()) {
                 bill = bill + utili.priceMod(itemsTable.get(i), sal);
@@ -150,13 +150,13 @@ public class ServicioSalon {
     public double partialBillPayed(Table tableAux, Salon sal) {
         double partial = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<Itemcard> itemsPartial = new ArrayList<>(tableAux.getPartialPayed());
+        ArrayList<ItemCard> itemsPartial = new ArrayList<>(tableAux.getPartialPayed());
         for (int i = 0; i < itemsPartial.size(); i++) {
             partial += utili.priceMod(itemsPartial.get(i), sal);
         }
         double disc = (double) discount;
         partial = partial * (1 - disc / 100);
-        ArrayList<Itemcard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
+        ArrayList<ItemCard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
             partialND += utili.priceMod(itemsPartialAux.get(i), sal);
@@ -167,9 +167,9 @@ public class ServicioSalon {
     }
 
 //Resumen de cuenta aplicada a ventana de pago parcial
-    public double billPartial(ArrayList<Itemcard> items, int discount, Salon sal) {
+    public double billPartial(ArrayList<ItemCard> items, int discount, Salon sal) {
         double bill = 0;
-        for (Itemcard ic : items) {
+        for (ItemCard ic : items) {
             bill += utili.priceMod(ic, sal);
         }
         double disc = discount;
@@ -178,12 +178,12 @@ public class ServicioSalon {
     }
 
     public void createTable(Salon sal, Table tableAux) throws Exception {
-        daoT.saveTable(tableAux, sal.getWorkshiftNow().getOpenWs());
+        daoT.saveTable(tableAux, sal.getWorkshiftNow().getOpenDateWs());
         daoU.saveWaiterTable(tableAux);
     }
 
-    public ArrayList<Itemcard> itemDeployer(Itemcard ic, int num) {
-        ArrayList<Itemcard> al = new ArrayList<>();
+    public ArrayList<ItemCard> itemDeployer(ItemCard ic, int num) {
+        ArrayList<ItemCard> al = new ArrayList<>();
         int count = 0;
         while (count < num) {
             al.add(ic);
@@ -192,7 +192,7 @@ public class ServicioSalon {
         return al;
     }
 
-    public void addItemOrder(Salon sal, Table tableAux, ArrayList<Itemcard> arrayAux, boolean indiBool) throws Exception {
+    public void addItemOrder(Salon sal, Table tableAux, ArrayList<ItemCard> arrayAux, boolean indiBool) throws Exception {
         for (int i = 0; i < arrayAux.size(); i++) {
             daoIC.saveItemOrderTable(arrayAux.get(i), tableAux);
             sim.createItemMonitor(sal, tableAux, arrayAux.get(i), indiBool);
@@ -226,7 +226,7 @@ public class ServicioSalon {
     //GIFT---------------------------------------------------------------------------------------------
     //GIFT---------------------------------------------------------------------------------------------
     //GIFT---------------------------------------------------------------------------------------------
-    public void giftBacker(Itemcard ic, Salon salon) throws Exception {
+    public void giftBacker(ItemCard ic, Salon salon) throws Exception {
         salon.getItemsGift().add(ic);
         salon.getTableAux().setGifts(salon.getItemsGift());
         salon.setItemsTableAux(itemTableLesser(salon.getTableAux().getOrder(), ic));
@@ -319,7 +319,7 @@ public class ServicioSalon {
     //CORRECTOR----------------------------------------------------------------------------------------
     //CORRECTOR----------------------------------------------------------------------------------------
     //CORRECTOR----------------------------------------------------------------------------------------    
-    public void correctItems(Itemcard ic, int num, Salon salon) throws Exception {
+    public void correctItems(ItemCard ic, int num, Salon salon) throws Exception {
         switch (num) {
             case 1:
                 salon.setItemsTableAux(itemTableLesser(salon.getItemsTableAux(), ic));
@@ -350,7 +350,7 @@ public class ServicioSalon {
     //PARTIAL PAY--------------------------------------------------------------------------------------
     //PARTIAL PAY--------------------------------------------------------------------------------------
     //PARTIAL PAY--------------------------------------------------------------------------------------
-    public void partialPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
+    public void partialPayTaker(ArrayList<ItemCard> itemsPayed, Salon salon) throws Exception {
         for (int i = 0; i < itemsPayed.size(); i++) {
             salon.setItemsTableAux(itemTableLesser(salon.getItemsTableAux(), itemsPayed.get(i)));
         }
@@ -362,7 +362,7 @@ public class ServicioSalon {
         daoT.updateTableTotal(salon.getTableAux());
         salon.getTableAux().setToPay(true);
         daoT.updateToPay(salon.getTableAux());
-        for (Itemcard ic : itemsPayed) {
+        for (ItemCard ic : itemsPayed) {
             daoIC.saveItemPayedTable(ic, salon.getTableAux());
             daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
         }
@@ -372,7 +372,7 @@ public class ServicioSalon {
         salon.setEnabled(true);
     }
 
-    public void totalPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
+    public void totalPayTaker(ArrayList<ItemCard> itemsPayed, Salon salon) throws Exception {
         salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
         salon.getTableAux().setOrder(salon.getItemsTableAux());
         salon.setItemsPartialPaid(new ArrayList<>());
@@ -463,7 +463,7 @@ public class ServicioSalon {
     public void closeWorkshift(Salon salon, Manager manager, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs, int error) throws Exception {
         if (errorWs) {
             if (error == 1) {
-                actWs.setCloseWs(new Timestamp(new Date().getTime()));
+                actWs.setCloseDateWs(new Timestamp(new Date().getTime()));
                 daoW.updateWorkshiftClose(actWs, false);
                 actWs.setStateWs(false);
                 daoW.updateWorkshiftState(actWs);
@@ -493,8 +493,8 @@ public class ServicioSalon {
         actualTabs = st.workshiftTableslistComplete(actualWs, 1);
         Thread.sleep(100);
         newWs.setCashierWs(null);
-        newWs.setOpenWs(new Timestamp(new Date().getTime()));
-        newWs.setCloseWs(null);
+        newWs.setOpenDateWs(new Timestamp(new Date().getTime()));
+        newWs.setCloseDateWs(null);
         newWs.setStateWs(true);
         newWs.setTotalMountCashWs(0);
         newWs.setTotalMountElectronicWs(0);
@@ -511,7 +511,7 @@ public class ServicioSalon {
                 User waiter = tab.getWaiter();
                 int discount = tab.getDiscount();
                 double total = 0;
-                ArrayList<Itemcard> orderNew = new ArrayList<>();
+                ArrayList<ItemCard> orderNew = new ArrayList<>();
                 String comments = tab.getComments();
                 if (tab.isToPay()) {
                     Thread.sleep(10);
@@ -551,8 +551,8 @@ public class ServicioSalon {
         }
         Thread.sleep(100);
         Timestamp close = new Timestamp(new Date().getTime());
-        newWs.setCloseWs(close);
-        newWs.setCloseWs(null);
+        newWs.setCloseDateWs(close);
+        newWs.setCloseDateWs(null);
         closeWorkshift(sal, sal.getManager(), actualWs, newWs, actualTabs, upTabs, downTabs, toUpdTabs, errorWs, 0);
     }
 
@@ -560,7 +560,7 @@ public class ServicioSalon {
         Workshift newWs = ws;
 //        int id = daoW.findId(newWs.getOpenWs());
 //        newWs.setId(id);
-        newWs.setCloseWs(new Timestamp(new Date().getTime()));
+        newWs.setCloseDateWs(new Timestamp(new Date().getTime()));
         newWs.setStateWs(false);
         return newWs;
     }

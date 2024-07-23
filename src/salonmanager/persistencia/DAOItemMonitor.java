@@ -16,7 +16,7 @@ public class DAOItemMonitor extends DAO {
         if (indiLenght < 450) {
             try {
                 sql = "INSERT INTO item_monits(item_monit_id, item_monit_table_id, item_monit_item_id, item_monit_tipe, item_monit_init_bool, item_monit_init_date, item_monit_cook_bool, item_monit_cook_date, item_monit_ready_bool, item_monit_ready_date, item_monit_otw_bool, item_monit_otw_date, item_monit_open, item_monit_active, item_monit_indications) "
-                        + "VALUES( '" + SalonManager.encrypt(im.getIdIMon()) + "', '" + SalonManager.encrypt(im.getTableIMon().getId()) + "', '" + SalonManager.encryptInteger(im.getItemIMon().getId()) + "', '" + SalonManager.encrypt(im.getPosIMon()) + "', '" + SalonManager.encryptBoolean(im.isInitIMon()) + "', '" + SalonManager.encryptTs(im.getDateInitIMon()) + "', '" + SalonManager.encryptBoolean(im.isCookIMon()) + "', '" + SalonManager.encryptTs(im.getDateCookIMon()) + "', '" + SalonManager.encryptBoolean(im.isReadyIMon()) + "', '" + SalonManager.encryptTs(im.getDateReadyIMon()) + "', '" + SalonManager.encryptBoolean(im.isOtwIMon()) + "', '" + SalonManager.encryptTs(im.getDateOtwIMon()) + "', '" + SalonManager.encryptBoolean(im.isOpenItemMonitor()) + "', '" + SalonManager.encryptBoolean(im.isActiveItemMonitor()) + "', '" + SalonManager.encrypt(im.getIndications()) + "');";
+                        + "VALUES( '" + SalonManager.encrypt(im.getIdIMon()) + "', '" + SalonManager.encrypt(im.getTableIMon().getId()) + "', '" + SalonManager.encryptInt(im.getItemIMon().getId()) + "', '" + SalonManager.encrypt(im.getPosIMon()) + "', '" + SalonManager.encryptBoolean(im.isInitIMon()) + "', '" + im.getDateInitIMon() + "', '" + SalonManager.encryptBoolean(im.isCookIMon()) + "', " + im.getDateCookIMon() + ", '" + SalonManager.encryptBoolean(im.isReadyIMon()) + "', " + im.getDateReadyIMon() + ", '" + SalonManager.encryptBoolean(im.isOtwIMon()) + "', " + im.getDateOtwIMon() + ", '" + SalonManager.encryptBoolean(im.isOpenItemMonitor()) + "', '" + SalonManager.encryptBoolean(im.isActiveItemMonitor()) + "', '" + SalonManager.encrypt(im.getIndications()) + "');";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
             } catch (SQLException e) {
@@ -56,32 +56,16 @@ public class DAOItemMonitor extends DAO {
                 ItemMonitor im = new ItemMonitor();
                 String idImon = SalonManager.decrypt(resultado.getString(1));
                 String tableIdIMon = SalonManager.decrypt(resultado.getString(2));
-                int itemIdIMon = SalonManager.decryptInteger(resultado.getString(3));
+                int itemIdIMon = SalonManager.decryptInt(resultado.getString(3));
                 String posImon = SalonManager.decrypt(resultado.getString(4));
                 boolean initIMon = SalonManager.decryptBoolean(resultado.getString(5));
-                String create1 = resultado.getString(6);
-                if (create1 == null) {
-                    create1 = "";
-                }
-                Timestamp dateInitIMon = SalonManager.decryptTs(create1);
+                Timestamp dateInitIMon = resultado.getTimestamp(6);
                 boolean cookIMon = SalonManager.decryptBoolean(resultado.getString(7));
-                String create2 = resultado.getString(8);
-                if (create2 == null) {
-                    create2 = "";
-                }
-                Timestamp dateCookIMon = SalonManager.decryptTs(create2);
+                Timestamp dateCookIMon = resultado.getTimestamp(8);
                 boolean readyIMon = SalonManager.decryptBoolean(resultado.getString(9));
-                String create3 = resultado.getString(10);
-                if (create3 == null) {
-                    create3 = "";
-                }
-                Timestamp dateReadyIMon = SalonManager.decryptTs(create3);
+                Timestamp dateReadyIMon = resultado.getTimestamp(10);
                 boolean otwIMon = SalonManager.decryptBoolean(resultado.getString(11));
-                String create4 = resultado.getString(12);
-                if (create4 == null) {
-                    create4 = "";
-                }
-                Timestamp dateOtwIMon = SalonManager.decryptTs(create4);
+                Timestamp dateOtwIMon = resultado.getTimestamp(12);
                 boolean openItemMonitor = SalonManager.decryptBoolean(resultado.getString(13));
                 boolean activeOpenMonitor = SalonManager.decryptBoolean(resultado.getString(14));
                 String indications = SalonManager.decrypt(resultado.getString(15));
@@ -107,32 +91,16 @@ public class DAOItemMonitor extends DAO {
             while (resultado.next()) {
                 String idImon = SalonManager.decrypt(resultado.getString(1));
                 String tableIdIMon = SalonManager.decrypt(resultado.getString(2));
-                int itemIdIMon = SalonManager.decryptInteger(resultado.getString(3));
+                int itemIdIMon = SalonManager.decryptInt(resultado.getString(3));
                 String posImon = SalonManager.decrypt(resultado.getString(4));
                 boolean initIMon = SalonManager.decryptBoolean(resultado.getString(5));
-                String create1 = resultado.getString(6);
-                if (create1 == null) {
-                    create1 = "";
-                }
-                Timestamp dateInitIMon = SalonManager.decryptTs(create1);
+                Timestamp dateInitIMon = resultado.getTimestamp(6);
                 boolean cookIMon = SalonManager.decryptBoolean(resultado.getString(7));
-                String create2 = resultado.getString(8);
-                if (create2 == null) {
-                    create2 = "";
-                }
-                Timestamp dateCookIMon = SalonManager.decryptTs(create2);
+                Timestamp dateCookIMon = resultado.getTimestamp(8);
                 boolean readyIMon = SalonManager.decryptBoolean(resultado.getString(9));
-                String create3 = resultado.getString(10);
-                if (create3 == null) {
-                    create3 = "";
-                }
-                Timestamp dateReadyIMon = SalonManager.decryptTs(create3);
+                Timestamp dateReadyIMon = resultado.getTimestamp(10);
                 boolean otwIMon = SalonManager.decryptBoolean(resultado.getString(11));
-                String create4 = resultado.getString(12);
-                if (create4 == null) {
-                    create4 = "";
-                }
-                Timestamp dateOtwIMon = SalonManager.decryptTs(create4);
+                Timestamp dateOtwIMon = resultado.getTimestamp(12);
                 boolean openItemMonitor = SalonManager.decryptBoolean(resultado.getString(13));
                 boolean activeOpenMonitor = SalonManager.decryptBoolean(resultado.getString(14));
                 String indications = SalonManager.decrypt(resultado.getString(15));
@@ -145,5 +113,4 @@ public class DAOItemMonitor extends DAO {
             desconectarBase();
         }
     }
-
 }

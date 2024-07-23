@@ -2,7 +2,7 @@ package salonmanager;
 
 import salonmanager.entidades.graphics.JButtonDeliverySee;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -24,7 +24,7 @@ import javax.swing.JTable;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.bussiness.ItemMonitor;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.JButtonBarr;
 import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.entidades.graphics.JButtonTable;
@@ -51,7 +51,7 @@ public class Salon extends FrameFull {
     Utilidades utili = new Utilidades();
     SalonManager sm = new SalonManager();
     DAOUser daoU = new DAOUser();
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOConfig daoC = new DAOConfig();
     ServicioTable st = new ServicioTable();
@@ -86,12 +86,12 @@ public class Salon extends FrameFull {
     ArrayList<String> tablePanCh = new ArrayList<>(); // Primer Char del Nombre del sector
 
     ArrayList<User> waiters = new ArrayList<>(); // mozos
-    ArrayList<Itemcard> itemsDB = new ArrayList<>(); // Items Completos
-    ArrayList<Itemcard> itemsTableAux = new ArrayList<>();//items a cobrar de la mesa
-    ArrayList<Itemcard> itemsGift = new ArrayList<>(); //items obsequiados
-    ArrayList<Itemcard> itemsPartialPaid = new ArrayList<>(); // items cobrados por pago parcial
-    ArrayList<Itemcard> itemsPartialPaidNoDiscount = new ArrayList<>(); // items cobrados anted de aplicar descuento
-    ArrayList<Itemcard> itemsError = new ArrayList<>();
+    ArrayList<ItemCard> itemsDB = new ArrayList<>(); // Items Completos
+    ArrayList<ItemCard> itemsTableAux = new ArrayList<>();//items a cobrar de la mesa
+    ArrayList<ItemCard> itemsGift = new ArrayList<>(); //items obsequiados
+    ArrayList<ItemCard> itemsPartialPaid = new ArrayList<>(); // items cobrados por pago parcial
+    ArrayList<ItemCard> itemsPartialPaidNoDiscount = new ArrayList<>(); // items cobrados anted de aplicar descuento
+    ArrayList<ItemCard> itemsError = new ArrayList<>();
     ArrayList<ItemMonitor> itemsMntr = new ArrayList<>();
     User user = null;
     User waiterAux = null; // mozo actual
@@ -436,11 +436,11 @@ public class Salon extends FrameFull {
         this.total = total;
     }
 
-    public ArrayList<Itemcard> getItemsTableAux() {
+    public ArrayList<ItemCard> getItemsTableAux() {
         return itemsTableAux;
     }
 
-    public void setItemsTableAux(ArrayList<Itemcard> itemsTableAux) {
+    public void setItemsTableAux(ArrayList<ItemCard> itemsTableAux) {
         this.itemsTableAux = itemsTableAux;
     }
 
@@ -620,43 +620,43 @@ public class Salon extends FrameFull {
         this.waiters = waiters;
     }
 
-    public ArrayList<Itemcard> getItemsDB() {
+    public ArrayList<ItemCard> getItemsDB() {
         return itemsDB;
     }
 
-    public void setItemsDB(ArrayList<Itemcard> itemsDB) {
+    public void setItemsDB(ArrayList<ItemCard> itemsDB) {
         this.itemsDB = itemsDB;
     }
 
-    public ArrayList<Itemcard> getItemsGift() {
+    public ArrayList<ItemCard> getItemsGift() {
         return itemsGift;
     }
 
-    public void setItemsGift(ArrayList<Itemcard> itemsGift) {
+    public void setItemsGift(ArrayList<ItemCard> itemsGift) {
         this.itemsGift = itemsGift;
     }
 
-    public ArrayList<Itemcard> getItemsPartialPaid() {
+    public ArrayList<ItemCard> getItemsPartialPaid() {
         return itemsPartialPaid;
     }
 
-    public void setItemsPartialPaid(ArrayList<Itemcard> itemsPartialPaid) {
+    public void setItemsPartialPaid(ArrayList<ItemCard> itemsPartialPaid) {
         this.itemsPartialPaid = itemsPartialPaid;
     }
 
-    public ArrayList<Itemcard> getItemsPartialPaidNoDiscount() {
+    public ArrayList<ItemCard> getItemsPartialPaidNoDiscount() {
         return itemsPartialPaidNoDiscount;
     }
 
-    public void setItemsPartialPaidNoDiscount(ArrayList<Itemcard> itemsPartialPaidNoDiscount) {
+    public void setItemsPartialPaidNoDiscount(ArrayList<ItemCard> itemsPartialPaidNoDiscount) {
         this.itemsPartialPaidNoDiscount = itemsPartialPaidNoDiscount;
     }
 
-    public ArrayList<Itemcard> getItemsError() {
+    public ArrayList<ItemCard> getItemsError() {
         return itemsError;
     }
 
-    public void setItemsError(ArrayList<Itemcard> itemsError) {
+    public void setItemsError(ArrayList<ItemCard> itemsError) {
         this.itemsError = itemsError;
     }
 

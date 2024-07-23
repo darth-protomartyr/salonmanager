@@ -22,7 +22,7 @@ import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.utilidades.Utilidades;
@@ -34,7 +34,7 @@ public class TableResumePanel extends FrameThird {
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOConfig daoC = new DAOConfig();
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -130,7 +130,7 @@ public class TableResumePanel extends FrameThird {
         boolean error = false;
         Workshift ws = daoW.askWorshiftByTabDate(tabAux.getOpenTime());
 
-        if (ws.getCloseWs() == null) {
+        if (ws.getCloseDateWs() == null) {
             utiliMsg.errorWsOpen();
             error = true;
         }

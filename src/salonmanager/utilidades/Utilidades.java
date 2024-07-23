@@ -22,7 +22,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import salonmanager.Salon;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
@@ -253,18 +253,18 @@ public class Utilidades {
         return modeloCombo;
     }
 
-    public ComboBoxModel itemsComboModelReturnWNull(ArrayList<Itemcard> itemsDB) {
+    public ComboBoxModel itemsComboModelReturnWNull(ArrayList<ItemCard> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
-        for (Itemcard ic : itemsDB) {
+        for (ItemCard ic : itemsDB) {
             modeloCombo.addElement(ic.getName());
         }
         modeloCombo.addElement("");
         return modeloCombo;
     }
 
-    public ComboBoxModel itemsComboModelReturn(ArrayList<Itemcard> itemsDB) {
+    public ComboBoxModel itemsComboModelReturn(ArrayList<ItemCard> itemsDB) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
-        for (Itemcard ic : itemsDB) {
+        for (ItemCard ic : itemsDB) {
             modeloCombo.addElement(ic.getName());
         }
         modeloCombo.addElement("");
@@ -298,10 +298,10 @@ public class Utilidades {
     }
 
 
-    public boolean itemcardRepeat(String ic, ArrayList<Itemcard> items) {
+    public boolean itemcardRepeat(String ic, ArrayList<ItemCard> items) {
         boolean bool = false;
         ic = stringPlain(ic);
-        for (Itemcard i : items) {
+        for (ItemCard i : items) {
             if (i == null) {
                 if (ic.equals(stringPlain(i.getName()))) {
                     bool = true;
@@ -324,14 +324,14 @@ public class Utilidades {
         return bool;
     }
 
-    ListModel itemsListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
+    ListModel itemsListModelReturn(ArrayList<ItemCard> listMayor, ArrayList<ItemCard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-        ArrayList<Itemcard> lma = listMayor;
-        ArrayList<Itemcard> lme = listMenor;
+        ArrayList<ItemCard> lma = listMayor;
+        ArrayList<ItemCard> lme = listMenor;
         if (lme != null) {
-            Iterator<Itemcard> iterator = lma.iterator();
+            Iterator<ItemCard> iterator = lma.iterator();
             while (iterator.hasNext()) {
-                Itemcard ic = iterator.next();
+                ItemCard ic = iterator.next();
                 for (int i = 0; i < lme.size(); i++) {
                     if (ic.getId() == lme.get(i).getId()) {
                         iterator.remove();
@@ -340,15 +340,15 @@ public class Utilidades {
             }
         }
 
-        for (Itemcard i : lma) {
+        for (ItemCard i : lma) {
             modeloLista.addElement(i.getName());
         }
         return modeloLista;
     }
 
-    public Itemcard itemSelReturn(String item, ArrayList<Itemcard> itemsDB) {
-        Itemcard ic = null;
-        for (Itemcard i : itemsDB) {
+    public ItemCard itemSelReturn(String item, ArrayList<ItemCard> itemsDB) {
+        ItemCard ic = null;
+        for (ItemCard i : itemsDB) {
             if (item.equals(i.getName())) {
                 ic = i;
             }
@@ -475,9 +475,9 @@ public class Utilidades {
         return arrayStr;
     }
 
-    public Itemcard ItemcardBacker(String Card, ArrayList<Itemcard> itemsDB) {
-        Itemcard ic = null;
-        for (Itemcard i : itemsDB) {
+    public ItemCard ItemcardBacker(String Card, ArrayList<ItemCard> itemsDB) {
+        ItemCard ic = null;
+        for (ItemCard i : itemsDB) {
             if (i.getName().equals(Card)) {
                 ic = i;
             }
@@ -485,14 +485,14 @@ public class Utilidades {
         return ic;
     }
 
-    public ListModel itemListModelReturn(ArrayList<Itemcard> listMayor, ArrayList<Itemcard> listMenor) {
+    public ListModel itemListModelReturn(ArrayList<ItemCard> listMayor, ArrayList<ItemCard> listMenor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-        ArrayList<Itemcard> lma = listMayor;
-        ArrayList<Itemcard> lme = listMenor;
+        ArrayList<ItemCard> lma = listMayor;
+        ArrayList<ItemCard> lme = listMenor;
         if (lme != null) {
-            Iterator<Itemcard> iterator = lma.iterator();
+            Iterator<ItemCard> iterator = lma.iterator();
             while (iterator.hasNext()) {
-                Itemcard ingre = iterator.next();
+                ItemCard ingre = iterator.next();
                 for (int i = 0; i < lme.size(); i++) {
                     if (ingre.getId() == lme.get(i).getId()) {
                         iterator.remove();
@@ -501,16 +501,16 @@ public class Utilidades {
             }
         }
 
-        for (Itemcard ic : lma) {
+        for (ItemCard ic : lma) {
             modeloLista.addElement(ic.getName());
         }
         return modeloLista;
     }
 
-    public ListModel itemListModelReturnMono(ArrayList<Itemcard> listMayor) {
+    public ListModel itemListModelReturnMono(ArrayList<ItemCard> listMayor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-        ArrayList<Itemcard> lma = listMayor;
-        for (Itemcard ic : lma) {
+        ArrayList<ItemCard> lma = listMayor;
+        for (ItemCard ic : lma) {
             modeloLista.addElement(ic.getName());
         }
         return modeloLista;
@@ -612,7 +612,7 @@ public class Utilidades {
     public String listarItems(Table ta) {
         String st = "";
         st += "LISTA TOTAL DE ITEMS PEDIDOS";
-        ArrayList<Itemcard> listOr = ta.getOrder();
+        ArrayList<ItemCard> listOr = ta.getOrder();
         if (listOr.size() > 0) {
             st += listarItemsQuant(listOr);
         }
@@ -641,12 +641,12 @@ public class Utilidades {
         return st;
     }
 
-    public String listarItemsQuant(ArrayList<Itemcard> ali) {
+    public String listarItemsQuant(ArrayList<ItemCard> ali) {
         String st = "<br>";
         int counter = 0;
         String ref = "";
         ArrayList<String> iSt = new ArrayList<>();
-        for (Itemcard ic : ali) {
+        for (ItemCard ic : ali) {
             iSt.add(ic.getName());
         }
 
@@ -685,18 +685,18 @@ public class Utilidades {
         return hour;
     }
 
-    public ArrayList<Itemcard> unRepeatItems2(ArrayList<Itemcard> items) {
-        Collections.sort(items, new Comparator<Itemcard>() {
+    public ArrayList<ItemCard> unRepeatItems2(ArrayList<ItemCard> items) {
+        Collections.sort(items, new Comparator<ItemCard>() {
             @Override
-            public int compare(Itemcard ic1, Itemcard ic2) {
+            public int compare(ItemCard ic1, ItemCard ic2) {
                 return ic1.getName().compareTo(ic2.getName());
             }
         });
 
-        ArrayList<Itemcard> unRepeatItems = new ArrayList<>();
-        for (Itemcard item1 : items) {
+        ArrayList<ItemCard> unRepeatItems = new ArrayList<>();
+        for (ItemCard item1 : items) {
             boolean repeat = false;
-            for (Itemcard item2 : unRepeatItems) {
+            for (ItemCard item2 : unRepeatItems) {
                 if (item1.getId() == item2.getId()) {
                     repeat = true;
                 }
@@ -912,7 +912,7 @@ public class Utilidades {
         for (int i = 0; i < arrayDeferWs.size(); i++) {
             String ws = "";
             ws = arrayDeferWs.get(i).getId() + " ";
-            Timestamp ts = arrayDeferWs.get(i).getOpenWs();
+            Timestamp ts = arrayDeferWs.get(i).getOpenDateWs();
             ws += friendlyDate2(ts);
             defer.add(ws);
         }
@@ -946,7 +946,7 @@ public class Utilidades {
         return pr;
     }
 
-    public double priceMod(Itemcard ic, Salon sal) {
+    public double priceMod(ItemCard ic, Salon sal) {
         ConfigActual cfgAct = sal.getCfgAct();
         ArrayList<String> tabsMod = cfgAct.getArrayUnModTabs();
         double price = ic.getPrice().get(0);

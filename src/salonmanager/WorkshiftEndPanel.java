@@ -170,11 +170,11 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         }
 
-        JLabel labelOpen = utiliGraf.labelTitleBacker2W("Inicio: " + utili.friendlyDate2(actualWs.getOpenWs()));
+        JLabel labelOpen = utiliGraf.labelTitleBacker2W("Inicio: " + utili.friendlyDate2(actualWs.getOpenDateWs()));
         labelOpen.setBounds(anchoUnit * 35, altoUnit * 7, anchoUnit * 18, altoUnit * 3);
         panelPpal.add(labelOpen);
 
-        JLabel labelClose = utiliGraf.labelTitleBacker2W("Cierre: " + utili.friendlyDate2(actualWs.getCloseWs()));
+        JLabel labelClose = utiliGraf.labelTitleBacker2W("Cierre: " + utili.friendlyDate2(actualWs.getCloseDateWs()));
         labelClose.setBounds(anchoUnit * 35, altoUnit * 10, anchoUnit * 18, altoUnit * 3);
         panelPpal.add(labelClose);
 

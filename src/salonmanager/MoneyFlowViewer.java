@@ -36,7 +36,6 @@ public class MoneyFlowViewer extends FrameHalfFlat {
 
     ArrayList<MoneyFlow> moneyFlowList = new ArrayList<>();
 
-//    Salon salon = null;
     SalonManager sm = new SalonManager();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
@@ -77,7 +76,7 @@ public class MoneyFlowViewer extends FrameHalfFlat {
             MoneyFlow cf = moneyFlowList.get(i);
             String mov = "Entrada";
             String kindM = "Transferencia";
-            String date = "" + utili.friendlyDate1(cf.getMoneyFwTime());
+            String date = "" + utili.friendlyDate1(cf.getMoneyFwDate());
             String mount = "" + cf.getMoneyFwAmount();
             String comment = cf.getMoneyFwComment();
 

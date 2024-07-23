@@ -17,10 +17,10 @@ import javax.swing.JScrollPane;
 import salonmanager.ConsumerTemplate;
 import salonmanager.DeliveryTemplate;
 import salonmanager.UserExpressTemplate;
-import salonmanager.entidades.bussiness.DeliveryConsumer;
+import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
-import salonmanager.persistencia.DAODeliveryConsumer;
+import salonmanager.persistencia.DAODeliveryClient;
 
 /**
  *
@@ -36,7 +36,7 @@ public class UtilidadesGraficasDeliTemplate {
     int altoUnit = alturaFrame / 100;
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
-    DAODeliveryConsumer daoC = new DAODeliveryConsumer();
+    DAODeliveryClient daoC = new DAODeliveryClient();
     Color black = new Color(50, 50, 50);
     Color red = new Color(240, 82, 7);
     Color redLg = new Color(243, 103, 91);
@@ -201,12 +201,12 @@ public class UtilidadesGraficasDeliTemplate {
 
     private void consumerPhoneBacker(DeliveryTemplate dt) throws Exception {
         String st = (String) dt.getComboConsumers().getSelectedItem();
-        DeliveryConsumer dc = daoC.getConsumerByPhone(st);
+        DeliveryClient dc = daoC.getConsumerByPhone(st);
         dt.setCmrAux(dc);
         setConsumerFields(dt.getCmrAux(), dt);
     }
 
-    public void setConsumerFields(DeliveryConsumer cmr, DeliveryTemplate dt) {
+    public void setConsumerFields(DeliveryClient cmr, DeliveryTemplate dt) {
         dt.getLabelName().setText("Nombre: " + cmr.getName());
         dt.getLabelPhone().setText("Teléfono: " + cmr.getPhone());
         dt.getLabelSn().setText("Red Social: " + cmr.getSocialNetwork());
@@ -239,7 +239,7 @@ public class UtilidadesGraficasDeliTemplate {
         dt.setEnabled(false);
     }
 
-    public void getConsumer(DeliveryConsumer cmr, DeliveryTemplate dt) {
+    public void getConsumer(DeliveryClient cmr, DeliveryTemplate dt) {
         dt.setCmrAux(cmr);
         setConsumerFields(dt.getCmrAux(), dt);
         dt.getConsumers().add(dt.getCmrAux().getPhone());

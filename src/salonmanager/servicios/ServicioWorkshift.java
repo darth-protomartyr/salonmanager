@@ -7,11 +7,11 @@ package salonmanager.servicios;
 
 import java.util.ArrayList;
 import salonmanager.Salon;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -22,7 +22,7 @@ import salonmanager.persistencia.DAOWorkshift;
  */
 public class ServicioWorkshift {
     DAOConfig daoC = new DAOConfig();
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
@@ -82,13 +82,13 @@ public class ServicioWorkshift {
                     daoT.updateComments(t);
                     daoT.updateTableTotal(t);
                     if (t.getOrder().size() > 0) {
-                        for (Itemcard ic : t.getOrder()) {
+                        for (ItemCard ic : t.getOrder()) {
                             daoI.upActiveItemOrderTable(ic, t);
                         }
                     }
 
                     if (t.getGifts().size() > 0) {
-                        for (Itemcard ic : t.getGifts()) {
+                        for (ItemCard ic : t.getGifts()) {
                             daoI.upActiveItemGiftTable(t, ic);
                         }
                     }

@@ -22,12 +22,12 @@ import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import salonmanager.entidades.bussiness.ItemSale;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.servicios.ServiceStatics;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -36,7 +36,7 @@ import salonmanager.utilidades.UtilidadesMensajes;
 
 public class StatsItemViewer extends FrameFull {
 
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     Color bluSt = new Color(3, 166, 136);
 
     SalonManager sm = new SalonManager();
@@ -57,7 +57,7 @@ public class StatsItemViewer extends FrameFull {
     HashMap<Integer, Integer> countItems = new HashMap<Integer, Integer>();
     HashMap<Integer, Integer> newCountItems = new HashMap<Integer, Integer>();
     ArrayList<ItemSale> iSales = null;
-    ArrayList<Itemcard> itemsDB = null;
+    ArrayList<ItemCard> itemsDB = null;
     ArrayList<ItemSale> iSalesByItem = null;
     JComboBox comboItems = null;
     JLabel labelItem = null;
@@ -205,10 +205,10 @@ public class StatsItemViewer extends FrameFull {
 
     private void selectItem() {
         String st = (String) comboItems.getSelectedItem();
-        Itemcard ic = null;
+        ItemCard ic = null;
         labelItem.setText(st);
 
-        for (Itemcard i : itemsDB) {
+        for (ItemCard i : itemsDB) {
             if (i.getName().equals(st)) {
                 ic = i;
             }

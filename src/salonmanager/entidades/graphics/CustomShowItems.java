@@ -1,6 +1,6 @@
 package salonmanager.entidades.graphics;
 
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -47,7 +47,7 @@ public class CustomShowItems extends JDialog {
     TextArea textAreaList = new TextArea();
     
 
-    public CustomShowItems(ArrayList<Itemcard> items, int type) {
+    public CustomShowItems(ArrayList<ItemCard> items, int type) {
         setIconImage(icono.getImage());
         setModal(true);
         setTitle("Consulta items de la mesa");

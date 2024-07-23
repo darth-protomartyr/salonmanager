@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.Table;
@@ -48,7 +48,7 @@ public class MoneyType extends FrameWindow {
     double cash = 0;
     double electronic = 0;
     ArrayList<Double> amounts = new ArrayList<>();
-    ArrayList<Itemcard> itemsPayed = null;
+    ArrayList<ItemCard> itemsPayed = null;
     int cashMix = 0;
 
     JLabel labelMixed = new JLabel();
@@ -61,7 +61,7 @@ public class MoneyType extends FrameWindow {
     JButtonMetalBlu butMixedIn = new JButtonMetalBlu();
     JButtonMetalBlu butBack = new JButtonMetalBlu();
 
-    public MoneyType(Salon sal, boolean end, ArrayList<Itemcard> itemsPayed1, double amountToPay) {
+    public MoneyType(Salon sal, boolean end, ArrayList<ItemCard> itemsPayed1, double amountToPay) {
         salon = sal;
         sm.addFrame(this);
         itemsPayed = itemsPayed1;

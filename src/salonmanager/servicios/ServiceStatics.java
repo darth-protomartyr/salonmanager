@@ -159,8 +159,8 @@ public class ServiceStatics {
 
         ArrayList<Timestamp> tsList = new ArrayList<>();
         for (Workshift ws : wsS) {
-            Timestamp tsOpen = ws.getOpenWs();
-            Timestamp tsClose = ws.getCloseWs();
+            Timestamp tsOpen = ws.getOpenDateWs();
+            Timestamp tsClose = ws.getCloseDateWs();
             if (tsClose == null) {
                 tsClose = new Timestamp(new Date().getTime());
             }
@@ -189,7 +189,7 @@ public class ServiceStatics {
                 statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
                 statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
             } else {
-                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenWs()) + "</html>");
+                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
                 statsM.setPeriod("TURNO " + wsS.get(0).getId());
             }
             statsM.setItemsSale(is);

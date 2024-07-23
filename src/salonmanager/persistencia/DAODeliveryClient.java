@@ -6,17 +6,15 @@ import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import salonmanager.SalonManager;
-import salonmanager.entidades.bussiness.DeliveryConsumer;
+import salonmanager.entidades.bussiness.DeliveryClient;
 
-public class DAODeliveryConsumer extends DAO {
+public class DAODeliveryClient extends DAO {
 
-    UtilidadesGraficas utiliF = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    Utilidades utili = new Utilidades();
 
-    public void saveConsumer(DeliveryConsumer cmr) throws Exception {
+    public void saveConsumer(DeliveryClient cmr) throws Exception {
         try {
-            String id = SalonManager.encryptInteger(cmr.getId());
+            int id = cmr.getId();
             String street = SalonManager.encrypt(cmr.getStreet());
             String numSt = SalonManager.encrypt(cmr.getNumSt());
             String deptFloor = SalonManager.encrypt(cmr.getDeptFloor());
@@ -29,8 +27,8 @@ public class DAODeliveryConsumer extends DAO {
             String socialNetwork = SalonManager.encrypt(cmr.getSocialNetwork());
             String active = SalonManager.encryptBoolean(cmr.isConsumerActive());
 
-            String sql1 = "INSERT INTO consumers(consumer_id, consumer_street, consumer_street_num, consumer_dept_floor, consumer_dept_num, consumer_district, consumer_area, consumer_details, consumer_name, consumer_phone, consume_social_network, consumer_active)"
-                    + "VALUES('" +  SalonManager.encrypt(id) + "', '" + SalonManager.encrypt(street) + "', '" +  SalonManager.encrypt(numSt) + "', '" +  SalonManager.encrypt(deptFloor) + "', '" +  SalonManager.encrypt(deptNum) + "', '" +  SalonManager.encrypt(district) + "', '" +  SalonManager.encrypt(area) + "', '" +  SalonManager.encrypt(details) + "', '" +  SalonManager.encrypt(name) + "', '" +  SalonManager.encrypt(phone) + "', '" +  SalonManager.encrypt(socialNetwork) + "', '" +  SalonManager.encrypt(active) + "');";
+            String sql1 = "INSERT INTO delivery_clients(delivery_client_id, delivery_client_street, delivery_client_street_num, delivery_client_dept_floor, delivery_client_dept_num, delivery_client_district, delivery_client_area, delivery_client_details, delivery_client_name, delivery_client_phone, consume_social_network, delivery_client_active)"
+                    + "VALUES('" +  SalonManager.encryptInt(id) + "', '" + SalonManager.encrypt(street) + "', '" +  SalonManager.encrypt(numSt) + "', '" +  SalonManager.encrypt(deptFloor) + "', '" +  SalonManager.encrypt(deptNum) + "', '" +  SalonManager.encrypt(district) + "', '" +  SalonManager.encrypt(area) + "', '" +  SalonManager.encrypt(details) + "', '" +  SalonManager.encrypt(name) + "', '" +  SalonManager.encrypt(phone) + "', '" +  SalonManager.encrypt(socialNetwork) + "', '" +  SalonManager.encrypt(active) + "');";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -46,14 +44,14 @@ public class DAODeliveryConsumer extends DAO {
     }
 
     
-    public DeliveryConsumer getConsumerByPhone(String phone) throws Exception {
+    public DeliveryClient getConsumerByPhone(String phone) throws Exception {
         try {
-            String sql = "SELECT * FROM consumers WHERE consumer_phone = '" + SalonManager.encrypt(phone) + "' AND consumer_active = '" + SalonManager.encryptBoolean(true) + "';";
+            String sql = "SELECT * FROM delivery_clients WHERE delivery_client_phone = '" + SalonManager.encrypt(phone) + "' AND delivery_client_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
-            DeliveryConsumer cmr = new DeliveryConsumer();
+            DeliveryClient cmr = new DeliveryClient();
             while (resultado.next()) {
-                cmr.setId(SalonManager.decryptInteger(resultado.getString(1)));
+                cmr.setId(SalonManager.decryptInt(resultado.getString(1)));
                 cmr.setStreet(SalonManager.decrypt(resultado.getString(2)));
                 cmr.setNumSt(SalonManager.decrypt(resultado.getString(3)));
                 cmr.setDeptFloor(SalonManager.decrypt(resultado.getString(4)));
@@ -77,7 +75,7 @@ public class DAODeliveryConsumer extends DAO {
     
     public ArrayList<String> getConsumersPhone() throws Exception {
         try {
-            String sql = "SELECT consumer_phone FROM consumers WHERE consumer_active = '" + SalonManager.encryptBoolean(true) + "';";
+            String sql = "SELECT delivery_client_phone FROM delivery_clients WHERE delivery_client_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<String> cmrs = new ArrayList<>();
@@ -96,7 +94,7 @@ public class DAODeliveryConsumer extends DAO {
     
     public ArrayList<String> listarPhones() throws Exception {
         try {
-            String sql = "SELECT consumers_phone FROM consumers WHERE consumer_active = '" + SalonManager.encryptBoolean(true) + "';";
+            String sql = "SELECT delivery_clients_phone FROM delivery_clients WHERE delivery_client_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<String> phones = new ArrayList<>();
@@ -113,7 +111,7 @@ public class DAODeliveryConsumer extends DAO {
     }
 
     
-    public void updateConsumer(DeliveryConsumer cmr, int id) throws Exception {
+    public void updateConsumer(DeliveryClient cmr, int id) throws Exception {
         try {
             String street = SalonManager.encrypt(cmr.getStreet());
             String numSt = SalonManager.encrypt(cmr.getNumSt());
@@ -127,11 +125,11 @@ public class DAODeliveryConsumer extends DAO {
             String socialNetwork = SalonManager.encrypt(cmr.getSocialNetwork());
             String active = SalonManager.encryptBoolean(cmr.isConsumerActive());
 
-            String sql1 = "UPDATE consumers SET consumer_street = '" + street + "', consumer_street_num = '" + numSt
-                    + "', consumer_dept_floor = '" + deptFloor +"', consumer_dept_num = '" + deptNum + "', consumer_district = '" + district
-                    + "', consumer_area = '" + area +"', consumer_details = '" + details +"', consumer_name = '" + name + "', consumer_phone = '" + phone
-                    + "', consume_social_network = '" + socialNetwork + "', consumer_active = '" + active
-                    + "' WHERE consumer_id = '" + SalonManager.encryptInteger(id) + "';";
+            String sql1 = "UPDATE delivery_clients SET delivery_client_street = '" + street + "', delivery_client_street_num = '" + numSt
+                    + "', delivery_client_dept_floor = '" + deptFloor +"', delivery_client_dept_num = '" + deptNum + "', delivery_client_district = '" + district
+                    + "', delivery_client_area = '" + area +"', delivery_client_details = '" + details +"', delivery_client_name = '" + name + "', delivery_client_phone = '" + phone
+                    + "', consume_social_network = '" + socialNetwork + "', delivery_client_active = '" + active
+                    + "' WHERE delivery_client_id = '" + SalonManager.encryptInt(id) + "';";
             
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -149,7 +147,7 @@ public class DAODeliveryConsumer extends DAO {
     public int getConsumerId() throws Exception {
         try {       
             int id = 0;
-            String sql = "SELECT COUNT(*) AS cantidad_filas FROM consumers;";
+            String sql = "SELECT COUNT(*) AS cantidad_filas FROM delivery_clients;";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<String> cmrs = new ArrayList<>();

@@ -42,7 +42,7 @@ import salonmanager.Salon;
 import salonmanager.SalonManager;
 import salonmanager.WaiterSelector;
 import salonmanager.entidades.bussiness.Delivery;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
@@ -54,7 +54,7 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelBorder;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -73,7 +73,7 @@ public class UtilidadesGraficasSalon {
     SalonManager sm = new SalonManager();
     DAOConfig daoC = new DAOConfig();
     DAOUser daoU = new DAOUser();
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     DAODelivery daoD = new DAODelivery();
@@ -115,7 +115,7 @@ public class UtilidadesGraficasSalon {
 
         salon.setLabelWorkshift(utiliGraf.labelTitleBacker3(""));
         if (salon.getWorkshiftNow() != null) {
-            Timestamp timeInitWork = salon.getWorkshiftNow().getOpenWs();
+            Timestamp timeInitWork = salon.getWorkshiftNow().getOpenDateWs();
             salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(timeInitWork));
         } else {
             salon.getLabelWorkshift().setText("Turno no iniciado.");
@@ -139,7 +139,7 @@ public class UtilidadesGraficasSalon {
 //                            salon.getWorkshiftNow().setId(daoW.findLastWsID());
                             salon.getWorkshiftNow().setCashierWs(salon.getUser());
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
-                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
+                            salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenDateWs()));
                             salon.getButInitWorkshift().setText("CERRAR TURNO");
                             salon.getCfgAct().setOpenWs(true);
                             salon.getCfgAct().setOpenIdWs(salon.getWorkshiftNow().getId());
@@ -157,7 +157,7 @@ public class UtilidadesGraficasSalon {
 //                                    salon.getWorkshiftNow().setId(daoW.findLastWsID());
                                     salon.getWorkshiftNow().setCashierWs(salon.getUser());
                                     daoU.saveCashierWorkshift(salon.getWorkshiftNow());
-                                    salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenWs()));
+                                    salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenDateWs()));
                                     salon.getButInitWorkshift().setText("CERRAR TURNO");
                                     new MoneyFlowManager(salon, 0);
                                 }
@@ -487,7 +487,7 @@ public class UtilidadesGraficasSalon {
         }
 
         if (emptyButton == false) {
-            int num = daoT.getMaxTab("barra", salon.getWorkshiftNow().getOpenWs()) + 1;
+            int num = daoT.getMaxTab("barra", salon.getWorkshiftNow().getOpenDateWs()) + 1;
             JButtonBarr newJBB = new JButtonBarr(num);
             Table newTable = new Table(newJBB.getNum(), newJBB.getPos(), salon.getUser());
             newJBB.setTable(newTable);
@@ -904,7 +904,7 @@ public class UtilidadesGraficasSalon {
     public void getDeliOrder(Delivery dOrder, Salon salon) throws Exception {
         salon.setDeliOrderAux(dOrder);
         daoD.saveDelivery(salon.getDeliOrderAux());
-        int num = daoT.getMaxTab("delivery", salon.getWorkshiftNow().getOpenWs()) + 1;
+        int num = daoT.getMaxTab("delivery", salon.getWorkshiftNow().getOpenDateWs()) + 1;
         JButtonDelivery newJBD = new JButtonDelivery(num, dOrder);
         Table newTable = new Table(newJBD.getNum(), newJBD.getPos(), salon.getUser());
         newJBD.setTable(newTable);
@@ -1100,9 +1100,9 @@ public class UtilidadesGraficasSalon {
 
     // Select a kind o items
     private void itemCategoryBack(String cat, Salon salon) {
-        ArrayList<Itemcard> aic = new ArrayList<>();
+        ArrayList<ItemCard> aic = new ArrayList<>();
         if (!cat.equals("--")) {
-            for (Itemcard ic : salon.getItemsDB()) {
+            for (ItemCard ic : salon.getItemsDB()) {
                 if (ic.getCategory().toLowerCase().equals(cat.toLowerCase())) {
                     aic.add(ic);
                 }
@@ -1138,7 +1138,7 @@ public class UtilidadesGraficasSalon {
                 }
             }
 
-            Itemcard ic = null;
+            ItemCard ic = null;
 
             ic = utili.ItemcardBacker(item, salon.getItemsDB());
             salon.getButCloseTable().setText("CERRAR CUENTA");
@@ -1152,7 +1152,7 @@ public class UtilidadesGraficasSalon {
             salon.setTotal(ss.countBill(salon.getTableAux(), salon, false));
             salon.getTableAux().setTotal(salon.getTotal());
             daoT.updateTableTotal(salon.getTableAux());
-            ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
+            ArrayList<ItemCard> arrayAux = ss.itemDeployer(ic, u);
             ss.addItemOrder(salon, salon.getTableAux(), arrayAux, salon.isIndiBool());
             jButExtSetter(salon);
             salon.getLabelCuenta().setText("" + salon.getTotal());
@@ -1174,11 +1174,11 @@ public class UtilidadesGraficasSalon {
     }
 
     public void setTableItems(Salon salon) {
-        ArrayList<Itemcard> itemsAux = utili.unRepeatItems2(salon.getItemsTableAux());
-        ArrayList<Itemcard> partials = utili.unRepeatItems2(salon.getItemsPartialPaid());
-        ArrayList<Itemcard> partialsND = utili.unRepeatItems2(salon.getItemsPartialPaidNoDiscount());
-        ArrayList<Itemcard> gifts = utili.unRepeatItems2(salon.getItemsGift());
-        ArrayList<Itemcard> totalItems = utili.unRepeatItems2(itemsAux);
+        ArrayList<ItemCard> itemsAux = utili.unRepeatItems2(salon.getItemsTableAux());
+        ArrayList<ItemCard> partials = utili.unRepeatItems2(salon.getItemsPartialPaid());
+        ArrayList<ItemCard> partialsND = utili.unRepeatItems2(salon.getItemsPartialPaidNoDiscount());
+        ArrayList<ItemCard> gifts = utili.unRepeatItems2(salon.getItemsGift());
+        ArrayList<ItemCard> totalItems = utili.unRepeatItems2(itemsAux);
 
         totalItems.addAll(partials);
         totalItems.addAll(partialsND);
@@ -1206,7 +1206,7 @@ public class UtilidadesGraficasSalon {
         double disc = (double) salon.getDiscount() / 100;
 
         for (int i = 0; i < salon.getRowsItems(); i++) {
-            Itemcard ic = totalItems.get(i);
+            ItemCard ic = totalItems.get(i);
 
             if (i < intAux) {
                 int u = st.itemUnitsBacker(salon.getItemsTableAux(), ic);
@@ -1440,7 +1440,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(true);
     }
 
-    public void moneyKind(Salon salon, boolean end, ArrayList<Itemcard> itemsPayed, boolean toPay, double amountToPay) {
+    public void moneyKind(Salon salon, boolean end, ArrayList<ItemCard> itemsPayed, boolean toPay, double amountToPay) {
         salon.getTableAux().setToPay(toPay);
         MoneyType mt = new MoneyType(salon, end, itemsPayed, amountToPay);
         mt.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
@@ -1448,7 +1448,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
+    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<ItemCard> itemsPayed, String comments, Salon salon) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
         salon.getTableAux().setAmountCash(salon.getTableAux().getAmountCash() + amountC);
@@ -1488,7 +1488,7 @@ public class UtilidadesGraficasSalon {
             salon.setItemsMntr(sim.downOpenIMon(salon.getItemsMntr(), salon.getTableAux()));
             if (salon.getTableAux().getPartialPayed().size() > 0) {
                 for (int i = 0; i < salon.getTableAux().getPartialPayed().size(); i++) {
-                    Itemcard ic = salon.getTableAux().getPartialPayed().get(i);
+                    ItemCard ic = salon.getTableAux().getPartialPayed().get(i);
                     daoI.downActiveItemPayedTable(ic, salon.getTableAux());
                     daoI.upActiveItemOrderTable(ic, salon.getTableAux());
                     salon.setTotal(ss.countBill(salon.getTableAux(), salon, true));

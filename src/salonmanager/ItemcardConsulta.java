@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import salonmanager.entidades.graphics.FrameThird;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
@@ -31,9 +31,9 @@ public class ItemcardConsulta extends FrameThird {
     Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
     User userIn = null;
-    Itemcard itemAux = null;
+    ItemCard itemAux = null;
 
-    public ItemcardConsulta(Itemcard ic) {
+    public ItemcardConsulta(ItemCard ic) {
         sm.addFrame(this);
         itemAux = ic;
         setTitle("Consulta Item Carta");

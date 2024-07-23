@@ -15,12 +15,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import salonmanager.entidades.bussiness.DeliveryConsumer;
+import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
-import salonmanager.persistencia.DAODeliveryConsumer;
+import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasDeliTemplate;
@@ -32,7 +32,7 @@ public class ConsumerTemplate extends FrameHalf {
     UtilidadesGraficasDeliTemplate utiliGrafDT = new UtilidadesGraficasDeliTemplate();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAODeliveryConsumer daoC = new DAODeliveryConsumer();
+    DAODeliveryClient daoC = new DAODeliveryClient();
 
     DeliveryTemplate fnd = null;
 
@@ -59,7 +59,7 @@ public class ConsumerTemplate extends FrameHalf {
     String phone = "";
     String socialNetwork = "";
 
-    DeliveryConsumer cmrAux = new DeliveryConsumer();
+    DeliveryClient cmrAux = new DeliveryClient();
     ArrayList<String> phonesCmrs = null;
 
     JTextField fieldStreet = new JTextField();
@@ -74,9 +74,9 @@ public class ConsumerTemplate extends FrameHalf {
     JTextField fieldSN = new JTextField();
 
     JButtonMetalBlu butCreateConsumer = null;
-    DeliveryConsumer cmrFull = null;
+    DeliveryClient cmrFull = null;
 
-    public ConsumerTemplate(DeliveryTemplate f, DeliveryConsumer cmr) throws Exception {
+    public ConsumerTemplate(DeliveryTemplate f, DeliveryClient cmr) throws Exception {
         String tit = "";
         if (cmr != null) {
             cmrFull = cmr;
@@ -269,7 +269,7 @@ public class ConsumerTemplate extends FrameHalf {
         }
 
         if (error == false) {
-            cmrAux = new DeliveryConsumer(id, street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
+            cmrAux = new DeliveryClient(id, street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
             if (i == 1) {
                 daoC.saveConsumer(cmrAux);
             } else {

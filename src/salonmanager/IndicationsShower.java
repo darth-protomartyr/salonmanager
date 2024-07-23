@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import salonmanager.entidades.graphics.FrameWindow;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.servicios.ServicioUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -34,7 +34,7 @@ public class IndicationsShower extends FrameWindow{
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAOItemcard daoIC = new DAOItemcard();
+    DAOItemCard daoIC = new DAOItemCard();
     ServicioUser si = new ServicioUser();
     SalonManager sm = new SalonManager();
     Color narSt = new Color(217, 103, 4);

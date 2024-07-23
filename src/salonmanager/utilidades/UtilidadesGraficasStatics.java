@@ -29,7 +29,7 @@ import org.knowm.xchart.style.Styler;
 import salonmanager.StaticsManager;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServiceStatics;
@@ -45,7 +45,7 @@ public class UtilidadesGraficasStatics {
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
 
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
     Utilidades utili = new Utilidades();
@@ -83,7 +83,7 @@ public class UtilidadesGraficasStatics {
         ArrayList<Workshift> wsS = statsM.getWorkshift();
 
         for (Workshift ws : wsS) {
-            turnos.add(ws.getOpenWs());
+            turnos.add(ws.getOpenDateWs());
             sales.add(ws.getTotalMountTabs());
         }
 

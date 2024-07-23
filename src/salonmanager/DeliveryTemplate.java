@@ -14,14 +14,14 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import salonmanager.entidades.bussiness.DeliveryConsumer;
+import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
-import salonmanager.persistencia.DAODeliveryConsumer;
+import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -31,7 +31,7 @@ import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DeliveryTemplate extends FrameHalf {
 
-    DAODeliveryConsumer daoC = new DAODeliveryConsumer();
+    DAODeliveryClient daoC = new DAODeliveryClient();
     DAOUser daoU = new DAOUser();
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
@@ -86,7 +86,7 @@ public class DeliveryTemplate extends FrameHalf {
 
     JButtonMetalBlu butOpDelivery = null;
 
-    DeliveryConsumer cmrAux = null;
+    DeliveryClient cmrAux = null;
     User deliAux = null;
     Salon salon = null;
     Delivery deliFull = null;
@@ -233,11 +233,11 @@ public class DeliveryTemplate extends FrameHalf {
         setEnabled(true);
     }
 
-    public DAODeliveryConsumer getDaoC() {
+    public DAODeliveryClient getDaoC() {
         return daoC;
     }
 
-    public void setDaoC(DAODeliveryConsumer daoC) {
+    public void setDaoC(DAODeliveryClient daoC) {
         this.daoC = daoC;
     }
 
@@ -473,11 +473,11 @@ public class DeliveryTemplate extends FrameHalf {
         this.butOpDelivery = butOpDelivery;
     }
 
-    public DeliveryConsumer getCmrAux() {
+    public DeliveryClient getCmrAux() {
         return cmrAux;
     }
 
-    public void setCmrAux(DeliveryConsumer cmrAux) {
+    public void setCmrAux(DeliveryClient cmrAux) {
         this.cmrAux = cmrAux;
     }
 

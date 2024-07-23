@@ -1,19 +1,19 @@
 package salonmanager.servicios;
 
 import java.util.ArrayList;
-import salonmanager.entidades.bussiness.Itemcard;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 
 public class ServicioItemcard {
-    DAOItemcard daoIC = new DAOItemcard();
+    DAOItemCard daoIC = new DAOItemCard();
     DAOTable daoT = new DAOTable();
     public String codeCreator(String category) throws Exception {
         String code = "";
-        ArrayList<Itemcard> items = daoIC.listItemsByCategory(category);
+        ArrayList<ItemCard> items = daoIC.listItemsByCategory(category);
         int num1 = 0;
         if (items.size() > 0) {
-            for (Itemcard ic : items) {
+            for (ItemCard ic : items) {
                 String s = ic.getCode();
                 s = s.substring(1);
                 int num2 = Integer.parseInt(s);

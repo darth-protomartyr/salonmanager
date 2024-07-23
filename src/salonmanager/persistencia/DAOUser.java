@@ -342,7 +342,7 @@ public class DAOUser extends DAO {
         User cashier = null;
         String cashierId = "";
         try {
-            String sql = "SELECT cashier_id_fkey FROM cashier_workshifts WHERE workshift_id_fkey = '" + SalonManager.encryptInteger(wsId) + "';";
+            String sql = "SELECT cashier_id_fkey FROM cashier_workshifts WHERE workshift_id_fkey = " + wsId + ";";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -364,7 +364,7 @@ public class DAOUser extends DAO {
             boolean act = true;
             String active = SalonManager.encryptBoolean(act);
             String sql = "INSERT INTO cashier_workshifts(cashier_workshift_active, cashier_id_fkey, workshift_id_fkey) ";
-            String parcialA = "VALUES( '" + active + "', '" + SalonManager.encrypt(ws.getCashierWs().getId()) + "', '" + SalonManager.encryptInteger(ws.getId()) + "');";
+            String parcialA = "VALUES( '" + active + "', '" + SalonManager.encrypt(ws.getCashierWs().getId()) + "', '" + SalonManager.encryptInt(ws.getId()) + "');";
             sql += parcialA;
             System.out.println(sql);
             insertarModificarEliminar(sql.trim());

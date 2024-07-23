@@ -3,7 +3,7 @@ package salonmanager.entidades.bussiness;
 import salonmanager.entidades.bussiness.Table;
 import java.util.ArrayList;
 
-public class DeliveryConsumer {
+public class DeliveryClient {
     int id;
     String street;
     String numSt;
@@ -18,10 +18,10 @@ public class DeliveryConsumer {
     ArrayList<Table> consumerTabs;
     boolean consumerActive;
 
-    public DeliveryConsumer() {
+    public DeliveryClient() {
     }
 
-    public DeliveryConsumer(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork) {
+    public DeliveryClient(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork) {
         this.id = id;
         this.street = street;
         this.numSt = numSt;
@@ -36,7 +36,7 @@ public class DeliveryConsumer {
         this.consumerActive = true;
     }
 
-    public DeliveryConsumer(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork, ArrayList<Table> consumerTabs, boolean consumerActive) {
+    public DeliveryClient(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork, ArrayList<Table> consumerTabs, boolean consumerActive) {
         this.id = id;
         this.street = street;
         this.numSt = numSt;

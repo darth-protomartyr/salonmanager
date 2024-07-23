@@ -13,8 +13,8 @@ public class Workshift {
     Utilidades utili = new Utilidades();
     int id;
     User cashierWs;
-    Timestamp openWs;
-    Timestamp closeWs;
+    Timestamp openDateWs;
+    Timestamp closeDateWs;
     boolean stateWs;
     double totalMountCashWs;
     double totalMountElectronicWs;
@@ -35,8 +35,8 @@ public class Workshift {
     public Workshift(User cashier) {
         this.id = 0;
         this.cashierWs = cashier;
-        this.openWs = new Timestamp(new Date().getTime());
-        this.closeWs = null;
+        this.openDateWs = new Timestamp(new Date().getTime());
+        this.closeDateWs = null;
         this.stateWs = true;
         this.totalMountCashWs = 0;
         this.totalMountElectronicWs = 0;
@@ -68,20 +68,20 @@ public class Workshift {
         this.cashierWs = cashierWs;
     }
 
-    public Timestamp getOpenWs() {
-        return openWs;
+    public Timestamp getOpenDateWs() {
+        return openDateWs;
     }
 
-    public void setOpenWs(Timestamp openWs) {
-        this.openWs = openWs;
+    public void setOpenDateWs(Timestamp openDateWs) {
+        this.openDateWs = openDateWs;
     }
 
-    public Timestamp getCloseWs() {
-        return closeWs;
+    public Timestamp getCloseDateWs() {
+        return closeDateWs;
     }
 
-    public void setCloseWs(Timestamp closeWs) {
-        this.closeWs = closeWs;
+    public void setCloseDateWs(Timestamp closeDateWs) {
+        this.closeDateWs = closeDateWs;
     }
 
     public boolean isStateWs() {

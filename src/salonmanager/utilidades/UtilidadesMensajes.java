@@ -178,7 +178,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorCantCharName() {
-        CustomDialog cm = new CustomDialog("Error: El nombre no debe superar los 20 caracteres", 2);
+        CustomDialog cm = new CustomDialog("Error: El nombre no debe superar los 30 caracteres", 2);
         cm.setVisible(true);
     }
 

@@ -16,9 +16,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ItemSelector extends FrameWindow {
@@ -26,7 +26,7 @@ public class ItemSelector extends FrameWindow {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAOItemcard daoIC = new DAOItemcard();
+    DAOItemCard daoIC = new DAOItemCard();
     ServicioUser si = new ServicioUser();
     SalonManager sm = new SalonManager();
     Color narSt = new Color(217, 103, 4);
@@ -34,8 +34,8 @@ public class ItemSelector extends FrameWindow {
     Color narMed = new Color(255, 172, 13);
     Color bluLg = new Color(3, 166, 136);
 
-    ArrayList<Itemcard> itemsDB = new ArrayList<>();
-    Itemcard itemAux = null;
+    ArrayList<ItemCard> itemsDB = new ArrayList<>();
+    ItemCard itemAux = null;
     JLabel labelIngreso = null;
     int f4 = (int) Math.round(anchoUnit * 1.2);
     Font font4 = new Font("Arial", Font.BOLD, f4);

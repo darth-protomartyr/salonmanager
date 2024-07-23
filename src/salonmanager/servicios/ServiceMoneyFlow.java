@@ -16,7 +16,7 @@ public class ServiceMoneyFlow {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     
     public void moneyFlowMod(boolean moneyKind,double amount, String comment, Workshift ws) throws Exception {
-        Timestamp ts = utili.updateTmestamp(ws.getOpenWs(), -5);
+        Timestamp ts = utili.updateTmestamp(ws.getOpenDateWs(), -5);
         int wsId = ws.getId();
         MoneyFlow mf = new MoneyFlow(true, moneyKind, amount, comment, ts, wsId);
         int id = daoCF.getMoneyFlowId();

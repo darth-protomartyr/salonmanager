@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.graphics.FrameFull;
@@ -32,7 +32,7 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelNestedItem;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.servicios.ServiceConfigItemList;
 import salonmanager.utilidades.Utilidades;
@@ -45,9 +45,9 @@ public class ConfigItemList extends FrameFull {
     Color bluSt = new Color(3, 166, 136);
     Color bluLg = new Color(194, 242, 206);
     Color white = new Color(255, 255, 255);
-    ArrayList<Itemcard> items = new ArrayList<>();
+    ArrayList<ItemCard> items = new ArrayList<>();
     ArrayList<PanelNestedItem> panelsN = new ArrayList<>();
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     DAOConfig daoC = new DAOConfig();
     DAOTable daoT = new DAOTable();
     SalonManager sm = new SalonManager();
@@ -150,7 +150,7 @@ public class ConfigItemList extends FrameFull {
     }
 
     private void selec(String sel, boolean type) {
-        ArrayList<Itemcard> itemsSel = new ArrayList<>();
+        ArrayList<ItemCard> itemsSel = new ArrayList<>();
         if (sel.equals("TODOS")) {
             itemsSel = items;
         } else {
@@ -449,11 +449,11 @@ public class ConfigItemList extends FrameFull {
 //        return mod;
 //    }
 
-    public ArrayList<Itemcard> getItems() {
+    public ArrayList<ItemCard> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<Itemcard> items) {
+    public void setItems(ArrayList<ItemCard> items) {
         this.items = items;
     }
 

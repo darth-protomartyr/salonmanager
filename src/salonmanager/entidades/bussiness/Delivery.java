@@ -2,19 +2,19 @@ package salonmanager.entidades.bussiness;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import salonmanager.persistencia.DAODeliveryConsumer;
+import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
 
 
 public class Delivery {
-    DAODeliveryConsumer daoC = new DAODeliveryConsumer();
+    DAODeliveryClient daoC = new DAODeliveryClient();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
     Utilidades utili = new Utilidades();
     String id;
-    DeliveryConsumer consumer;
+    DeliveryClient consumer;
     Table tab;
     User deli;
     boolean open;
@@ -41,8 +41,8 @@ public class Delivery {
         this.active = active;
     }
     
-    private DeliveryConsumer consumerBack(String phone) throws Exception {
-        DeliveryConsumer cmr = daoC.getConsumerByPhone(phone);
+    private DeliveryClient consumerBack(String phone) throws Exception {
+        DeliveryClient cmr = daoC.getConsumerByPhone(phone);
         return cmr;
     }
 
@@ -64,11 +64,11 @@ public class Delivery {
         this.id = id;
     }
 
-    public DeliveryConsumer getConsumer() {
+    public DeliveryClient getConsumer() {
         return consumer;
     }
 
-    public void setConsumer(DeliveryConsumer consumer) {
+    public void setConsumer(DeliveryClient consumer) {
         this.consumer = consumer;
     }
 

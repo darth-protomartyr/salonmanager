@@ -1,14 +1,13 @@
 package salonmanager;
 
-import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import salonmanager.entidades.bussiness.User;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.spec.KeySpec;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Base64;
 import javax.crypto.SecretKey;
@@ -22,13 +21,12 @@ public class SalonManager {
     private static ArrayList<JFrame> framesOpen = new ArrayList<>();
     private static User userIn = new User();
     private static String passIn = "";
-    private static final String SECRET_KEY = "MySecurePasswordForKeyDerivation"; // Debe ser una contraseña segura
-    private static final String SALT = "SomeSaltValue"; // Debe ser un valor seguro y único
-    private static final SecretKeySpec keySpec = generateSecretKey(SECRET_KEY, SALT);
+    private static final String keySecret = "MySecurePasswordForKeyDerivation"; // Debe ser una contraseña segura
+    private static final String salt = "SomeSaltValue"; // Debe ser un valor seguro y único
+    private static final SecretKeySpec keySpec = generateSecretKey(keySecret, salt);
     private static DAOConfig daoC = new DAOConfig();
     private static final String ALGORITHM = "AES";
     private static String empty = "";
-
 
     public static void main(String[] args) {
         try {
@@ -57,13 +55,10 @@ public class SalonManager {
         }
     }
 
-    //Encriptamiento
-    // Convertir clave a base64 para almacenamiento
     public static String keyToString(SecretKey secretKey) {
         return Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }
 
-    // Convertir base64 a clave
     public static SecretKey stringToKey(String keyStr) {
         byte[] decodedKey = Base64.getDecoder().decode(keyStr);
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, ALGORITHM);
@@ -103,31 +98,41 @@ public class SalonManager {
         String decryptedStr = decrypted.toString();
         return Double.parseDouble(decryptedStr);
     }
-
-    public static String encryptInteger(int number) {
+    
+    
+    public static String encryptInt(int number) {
         String numberStr = Integer.toString(number);
         StringBuilder encrypted = new StringBuilder();
         for (char c : numberStr.toCharArray()) {
-            int encryptedValue = (int) c + 1; // Shift each character's ASCII value by 1
+            int encryptedValue = (int) c + 1;
             encrypted.append((char) encryptedValue);
         }
         return encrypted.toString();
     }
 
-    public static int decryptInteger(String encryptedString) {
+    
+    public static int decryptInt(String encryptedString) {
         StringBuilder decrypted = new StringBuilder();
         for (char c : encryptedString.toCharArray()) {
-            int decryptedValue = (int) c - 1; // Reverse the shift from encryption
+            int decryptedValue = (int) c - 1;
             decrypted.append((char) decryptedValue);
         }
         String decryptedStr = decrypted.toString();
         return Integer.parseInt(decryptedStr);
     }
+    
 
-    // Encriptar un booleano
+    public static SecretKeySpec getKeyFromPassword(String password) throws Exception {
+        MessageDigest sha = MessageDigest.getInstance("SHA-256");
+        byte[] key = password.getBytes("UTF-8");
+        key = sha.digest(key);
+        key = java.util.Arrays.copyOf(key, 16);
+        return new SecretKeySpec(key, "AES");
+    }
+
     public static String encryptBoolean(boolean value) throws Exception {
-        String bool = "";
-        String encrypt = encrypt(SECRET_KEY);
+        String bool;
+        String encrypt = encrypt(keySecret);
         String encrypf = encrypt.substring(0, 15) + "f" + encrypt.substring(16);
         if (value) {
             bool = encrypt;
@@ -137,10 +142,9 @@ public class SalonManager {
         return bool;
     }
 
-    // Desencriptar un booleano
     public static boolean decryptBoolean(String encryptedValue) throws Exception {
         Boolean bool = null;
-        String encrypt = encrypt(SECRET_KEY);
+        String encrypt = encrypt(keySecret);
         String encrypf = encrypt.substring(0, 15) + "f" + encrypt.substring(16);
         if (encryptedValue.equals(encrypt)) {
             bool = true;
@@ -151,31 +155,30 @@ public class SalonManager {
         return bool;
     }
 
-    public static String encryptTs(Timestamp timestamp) throws Exception {
-        String ts = null;
-        if (timestamp != null) {
-            String data = timestamp.toString();
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-            byte[] encryptedBytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
-            ts = Base64.getEncoder().encodeToString(encryptedBytes);
-        }
-        return ts;
-    }
-
-    public static Timestamp decryptTs(String encryptedData) throws Exception {
-        Timestamp ts = null;
-        if (!encryptedData.equals("")) {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, keySpec);
-            byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
-            byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-            String decryptedData = new String(decryptedBytes, StandardCharsets.UTF_8);
-            ts = Timestamp.valueOf(decryptedData);
-        }
-        return ts;
-    }
-
+//    public static String encryptTs(Timestamp timestamp) throws Exception {
+//        String ts = null;
+//        if (timestamp != null) {
+//            String data = timestamp.toString();
+//            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+//            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+//            byte[] encryptedBytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
+//            ts = Base64.getEncoder().encodeToString(encryptedBytes);
+//        }
+//        return ts;
+//    }
+//
+//    public static Timestamp decryptTs(String encryptedData) throws Exception {
+//        Timestamp ts = null;
+//        if (!encryptedData.equals("")) {
+//            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+//            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+//            byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+//            byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+//            String decryptedData = new String(decryptedBytes, StandardCharsets.UTF_8);
+//            ts = Timestamp.valueOf(decryptedData);
+//        }
+//        return ts;
+//    }
     public void salir() throws Exception {
         setPassIn("");
         setUserIn(null);

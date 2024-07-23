@@ -15,12 +15,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import salonmanager.entidades.bussiness.ItemSale;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -37,7 +37,7 @@ public class ItemSaleViewer extends FrameFull {
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
 
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     DAOUser daoU = new DAOUser();
     Salon salon = null;
     SalonManager sm = new SalonManager();
@@ -62,7 +62,7 @@ public class ItemSaleViewer extends FrameFull {
 
     ArrayList<ItemSale> iSales = null;
     ArrayList<User> waiters = null;
-    ArrayList<Itemcard> items = null;
+    ArrayList<ItemCard> items = null;
 
     public ItemSaleViewer(StaticsManager stM) throws Exception {
         Manager man = stM.getManager();

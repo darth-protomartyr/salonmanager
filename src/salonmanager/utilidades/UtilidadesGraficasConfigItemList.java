@@ -24,7 +24,7 @@ import javax.swing.SpinnerNumberModel;
 import salonmanager.ConfigItemList;
 import salonmanager.ItemcardInn;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.servicios.ServiceConfigItemList;
 
 public class UtilidadesGraficasConfigItemList {
@@ -38,7 +38,7 @@ public class UtilidadesGraficasConfigItemList {
     int alturaFrame = tamanioPantalla.height - taskBarHeight;
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
-    DAOItemcard daoI = new DAOItemcard();
+    DAOItemCard daoI = new DAOItemCard();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();

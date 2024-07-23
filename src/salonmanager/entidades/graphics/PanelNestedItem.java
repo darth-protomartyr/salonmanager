@@ -19,7 +19,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import salonmanager.ItemcardInn;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
 import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.utilidades.Utilidades;
@@ -27,7 +27,7 @@ import salonmanager.utilidades.UtilidadesGraficas;
 
 public class PanelNestedItem extends JPanel {
 
-    Itemcard ic = null;
+    ItemCard ic = null;
     int y = 0;
     Color bluSt = new Color(3, 166, 136);
     Color bluStt = new Color(2, 76, 46);
@@ -39,7 +39,7 @@ public class PanelNestedItem extends JPanel {
     JTextField textF5 = new JTextField();
     JButtonMetalBlu butSel = null;
 
-    public PanelNestedItem(Itemcard iCard, int i, ArrayList<String> cat) {
+    public PanelNestedItem(ItemCard iCard, int i, ArrayList<String> cat) {
         ic = iCard;
         y = 1 + i * 6;
 
@@ -169,11 +169,11 @@ public class PanelNestedItem extends JPanel {
         butSel.setText("ELEGIR");
     }
 
-    public Itemcard getIc() {
+    public ItemCard getIc() {
         return ic;
     }
 
-    public void setIc(Itemcard ic) {
+    public void setIc(ItemCard ic) {
         this.ic = ic;
     }
 

@@ -8,7 +8,7 @@ import salonmanager.entidades.bussiness.Delivery;
 
 public class DAODelivery extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    Utilidades utili = new Utilidades();
+//    Utilidades utili = new Utilidades();
     public void saveDelivery(Delivery deli) throws Exception {
         try {
             String cmrPhone = deli.getConsumer().getPhone();

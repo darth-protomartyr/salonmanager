@@ -11,7 +11,7 @@ public class MoneyFlow {
     boolean moneyFwMoneyKind; // 1(efectivo), 2(electronico)
     double moneyFwAmount;
     String moneyFwComment;
-    Timestamp moneyFwTime;
+    Timestamp moneyFwDate;
     int moneyFwWsId;
     boolean moneyFwActive;
 
@@ -23,7 +23,7 @@ public class MoneyFlow {
         this.moneyFwMoneyKind = moneyFwMoneyKind;
         this.moneyFwAmount = utili.round2Dec(moneyFwAmount);
         this.moneyFwComment = moneyFwComment;
-        this.moneyFwTime = new Timestamp(new Date().getTime());
+        this.moneyFwDate = new Timestamp(new Date().getTime());
         this.moneyFwWsId = moneyFwWsId;
         this.moneyFwActive = true;
     }
@@ -33,19 +33,19 @@ public class MoneyFlow {
         this.moneyFwMoneyKind = moneyFwMoneyKind;
         this.moneyFwAmount = utili.round2Dec(moneyFwAmount);
         this.moneyFwComment = moneyFwComment;
-        this.moneyFwTime = ts;
+        this.moneyFwDate = ts;
         this.moneyFwWsId = moneyFwWsId;
         this.moneyFwActive = true;
     }
     
 
-    public MoneyFlow(int id, boolean moneyFwKind, boolean moneyFwMoneyKind, double moneyFwAmount, String moneyFwComment, Timestamp moneyFwTime, int moneyFwWsId, boolean moneyFwActive) {
+    public MoneyFlow(int id, boolean moneyFwKind, boolean moneyFwMoneyKind, double moneyFwAmount, String moneyFwComment, Timestamp moneyFwDate, int moneyFwWsId, boolean moneyFwActive) {
         this.id = id;
         this.moneyFwKind = moneyFwKind;
         this.moneyFwMoneyKind = moneyFwMoneyKind;
         this.moneyFwAmount = utili.round2Dec(moneyFwAmount);
         this.moneyFwComment = moneyFwComment;
-        this.moneyFwTime = moneyFwTime;
+        this.moneyFwDate = moneyFwDate;
         this.moneyFwWsId = moneyFwWsId;
         this.moneyFwActive = moneyFwActive;
     }
@@ -90,12 +90,12 @@ public class MoneyFlow {
         this.moneyFwComment = moneyFwComment;
     }
 
-    public Timestamp getMoneyFwTime() {
-        return moneyFwTime;
+    public Timestamp getMoneyFwDate() {
+        return moneyFwDate;
     }
 
-    public void setMoneyFwTime(Timestamp moneyFwTime) {
-        this.moneyFwTime = moneyFwTime;
+    public void setMoneyFwDate(Timestamp moneyFwDate) {
+        this.moneyFwDate = moneyFwDate;
     }
 
     public int getMoneyFwWsId() {

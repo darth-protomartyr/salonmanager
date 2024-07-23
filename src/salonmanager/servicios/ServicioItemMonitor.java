@@ -3,7 +3,7 @@ package salonmanager.servicios;
 import java.util.ArrayList;
 import salonmanager.Salon;
 import salonmanager.entidades.bussiness.ItemMonitor;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.persistencia.DAOItemMonitor;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -13,7 +13,7 @@ public class ServicioItemMonitor {
     DAOItemMonitor daoim = new DAOItemMonitor();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     
-    void createItemMonitor(Salon sal, Table tableAux, Itemcard ic, boolean indi) throws Exception {
+    void createItemMonitor(Salon sal, Table tableAux, ItemCard ic, boolean indi) throws Exception {
         String indication = "";
         if (indi == true) {
             indication = utiliMsg.requestIndication();

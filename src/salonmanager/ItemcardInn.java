@@ -15,12 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
-import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemcard;
+import salonmanager.persistencia.DAOItemCard;
 import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -32,7 +32,7 @@ public class ItemcardInn extends FrameHalf {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServicioItemcard sic = new ServicioItemcard();
-    DAOItemcard daoIC = new DAOItemcard();
+    DAOItemCard daoIC = new DAOItemCard();
     DAOConfig daoC = new DAOConfig();
     Color bluSt = new Color(3, 166, 136);
     Color narSt = new Color(217, 103, 4);
@@ -41,7 +41,7 @@ public class ItemcardInn extends FrameHalf {
     SalonManager sm = new SalonManager();
     User userIn = null;
 
-    ArrayList<Itemcard> itemsCardDB = null;
+    ArrayList<ItemCard> itemsCardDB = null;
     String name = "";
     String category = "";
     String description = "";
@@ -49,7 +49,7 @@ public class ItemcardInn extends FrameHalf {
     double price = 0;
     int stock = 0;
     boolean tipAlta = false;
-    Itemcard itemAux = new Itemcard();
+    ItemCard itemAux = new ItemCard();
     ArrayList<String> categoriesDB = null;
 
     JTextField fieldName = new JTextField();
@@ -113,7 +113,7 @@ public class ItemcardInn extends FrameHalf {
         category = (String) comboCategory.getSelectedItem();
         description = areaDescription.getText();
 
-        if (name.length() > 20 || name.length() < 2) {
+        if (name.length() > 30 || name.length() < 2) {
             error = true;
             utiliMsg.errorCantCharName();
         }
@@ -192,7 +192,7 @@ public class ItemcardInn extends FrameHalf {
             ArrayList<Double> prices = new ArrayList<>();
             prices.add(price);
             prices.add(0.0);
-            itemAux = new Itemcard(name, category, description, cost, prices, stock, tipAlta);
+            itemAux = new ItemCard(name, category, description, cost, prices, stock, tipAlta);
             int id = daoIC.getItemId();
             itemAux.setId(id);
             daoIC.saveItemcard(itemAux);
@@ -209,7 +209,7 @@ public class ItemcardInn extends FrameHalf {
         price = 0;
         stock = 0;
         tipAlta = false;
-        itemAux = new Itemcard();
+        itemAux = new ItemCard();
 
         fieldName.setText("");
         areaDescription.setText("");
