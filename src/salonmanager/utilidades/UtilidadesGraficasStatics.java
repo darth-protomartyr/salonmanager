@@ -143,12 +143,12 @@ public class UtilidadesGraficasStatics {
         ArrayList<String> categories = new ArrayList<>(hashMap.keySet());
         ArrayList<Double> amounts = new ArrayList<>(hashMap.values());
 
-        statsM.getLabelCategory0().setText(categories.get(0) + ": $" + amounts.get(0));
-        statsM.getLabelCategory1().setText(categories.get(1) + ": $" + amounts.get(1));
-        statsM.getLabelCategory2().setText(categories.get(2) + ": $" + amounts.get(2));
-        statsM.getLabelCategory3().setText(categories.get(3) + ": $" + amounts.get(3));
-        statsM.getLabelCategory4().setText(categories.get(4) + ": $" + amounts.get(4));
-        statsM.getLabelCategory5().setText(categories.get(5) + ": $" + amounts.get(5));
+        statsM.getLabelCategory0().setText(categories.get(0) + "$: " + amounts.get(0));
+        statsM.getLabelCategory1().setText(categories.get(1) + "$: " + amounts.get(1));
+        statsM.getLabelCategory2().setText(categories.get(2) + "$: " + amounts.get(2));
+        statsM.getLabelCategory3().setText(categories.get(3) + "$: " + amounts.get(3));
+        statsM.getLabelCategory4().setText(categories.get(4) + "$: " + amounts.get(4));
+        statsM.getLabelCategory5().setText(categories.get(5) + "$: " + amounts.get(5));
 
         for (int i = 0; i < hashMap.size(); i++) {
             chartCategory.addSeries(categories.get(i), amounts.get(i));

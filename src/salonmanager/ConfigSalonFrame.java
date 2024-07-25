@@ -33,9 +33,10 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelNestedSpace;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.servicios.ServicioTable;
+import salonmanager.servicios.ServiceConfigSal;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasCfgSal;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ConfigSalonFrame extends FrameThird {
@@ -43,18 +44,16 @@ public class ConfigSalonFrame extends FrameThird {
     DAOConfig daoC = new DAOConfig();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
+    UtilidadesGraficasCfgSal utiliGrafCfgS = new UtilidadesGraficasCfgSal();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    ServicioTable st = new ServicioTable();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
-    Font font1 = new Font("Arial", Font.BOLD, 20);
+    ServiceConfigSal scs = new ServiceConfigSal();
     SalonManager sm = new SalonManager();
 
-    JList listSpaces = new JList();
-    JList listSelected = new JList();
+    Font font1 = new Font("Arial", Font.BOLD, 20);
+    Font font2 = new Font("Arial", Font.PLAIN, 16);
 
+    JList listSpaces = new JList();
+    JList listSpacesSel = new JList();
     JList listCat = new JList();
     JList listCatSel = new JList();
 
@@ -76,16 +75,12 @@ public class ConfigSalonFrame extends FrameThird {
     JSpinner spinnerTip = new JSpinner();
     String data1 = "";
     String data2 = "";
-
     JLabel labelData1 = new JLabel();
     JLabel labelData2 = new JLabel();
-
     JPanel panelPanel = new JPanel();
     ArrayList<PanelNestedSpace> panels = new ArrayList<>();
-
     ConfigGeneral cfgGen = new ConfigGeneral();
     User user = null;
-
     boolean selSectors = false;
 
     public ConfigSalonFrame(User u) throws Exception {
@@ -106,249 +101,38 @@ public class ConfigSalonFrame extends FrameThird {
         labelTit.setBounds(anchoUnit * 9, altoUnit * 0, anchoUnit * 18, altoUnit * 5);
         panelPpal.add(labelTit);
 
-        JLabel labelIndications1 = utiliGraf.labelTitleBacker2W("Seleccione el nombre de los sectores del local");
-        labelIndications1.setBounds(anchoUnit * 3, altoUnit * 5, anchoUnit * 28, altoUnit * 3);
-        panelPpal.add(labelIndications1);
-
-        JLabel labelItemsTP = utiliGraf.labelTitleBacker3W("Sectores a Seleccionar");
-        labelItemsTP.setBounds(anchoUnit * 2, altoUnit * 8, anchoUnit * 12, altoUnit * 3);
-        panelPpal.add(labelItemsTP);
-
-        listSpaces.setModel(utili.spacesListModelReturnMono(spaces));
-        listSpaces.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    if (spacesSel.size() < 8) {
-                        String selectedValue = (String) listSpaces.getSelectedValue();
-                        selSpace(selectedValue, 1);
-                    } else {
-                        utiliMsg.errorSpacesExcess();
-                    }
-                }
-            }
-        });
-        JScrollPane jSSpaces = new JScrollPane(listSpaces);
-        jSSpaces.setBounds(anchoUnit * 2, altoUnit * 11, anchoUnit * 8, altoUnit * 8);
-        panelPpal.add(jSSpaces);
-
-        JLabel labelItemsSel = utiliGraf.labelTitleBacker3W("Sectores Seleccionados");
-        labelItemsSel.setBounds(anchoUnit * 15, altoUnit * 8, anchoUnit * 12, altoUnit * 3);
-        panelPpal.add(labelItemsSel);
-
-        listSelected.setModel(utili.spacesListModelReturnMono(spacesSel));
-        listSelected.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    unSelSpace();
-                }
-            }
-        });
-
-        JScrollPane jSSelected = new JScrollPane(listSelected);
-        jSSelected.setBounds(anchoUnit * 15, altoUnit * 11, anchoUnit * 8, altoUnit * 8);
-        panelPpal.add(jSSelected);
-
-        butAddSpace = utiliGraf.button3("Crear Espacio", anchoUnit * 24, altoUnit * 16, anchoUnit * 9);
-        butAddSpace.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    createSpace();
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelPpal.add(butAddSpace);
+        JPanel panelSpaces = utiliGrafCfgS.panelSpacesBacker(this);
+        panelPpal.add(panelSpaces);
         
         JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
         separator1.setBounds(anchoUnit * 1, altoUnit * 19 + 3, anchoUnit * 32, 2); // Posición y tamaño del separador
         panelPpal.add(separator1);
-
-        JLabel labelIndications2 = utiliGraf.labelTitleBacker2W("Seleccione la cantidad de mesas por sector:");
-        labelIndications2.setBounds(anchoUnit * 3, altoUnit * 20, anchoUnit * 28, altoUnit * 3);
-        panelPpal.add(labelIndications2);
-
-        panelPanel.setLayout(null);
-        panelPanel.setBackground(bluLg);
-        panelPanel.setPreferredSize(new Dimension(anchoUnit * 30, altoUnit * 20));
-
-        JScrollPane scrollPane = new JScrollPane(panelPanel);
-        scrollPane.setBounds(anchoUnit * 1, altoUnit * 23, anchoUnit * 32, altoUnit * 17);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        panelPpal.add(scrollPane);
-
-        butConfirm1 = utiliGraf.button2("Confirmar Sectores", anchoUnit * 9, altoUnit * 40 + 4, anchoUnit * 16);
-        butConfirm1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (panels.size() > 0) {
-                    try {
-                        confirmTables();
-                    } catch (Exception ex) {
-                        Logger.getLogger(ConfigSalonFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    utiliMsg.errorNullSector();
-                }
-            }
-        });
-        panelPpal.add(butConfirm1);
+        
+        JPanel panelSpacesPanel = utiliGrafCfgS.panelSpacesPanelBacker(this);
+        panelPpal.add(panelSpacesPanel);
         
         JSeparator separator2 = new JSeparator(SwingConstants.HORIZONTAL);
-        separator2.setBounds(anchoUnit * 1, altoUnit * 45, anchoUnit * 32, 4); // Posición y tamaño del separador
+        separator2.setBounds(anchoUnit * 1, altoUnit * 45 + 1, anchoUnit * 32, 4); // Posición y tamaño del separador
         panelPpal.add(separator2);
-
-        JLabel labelIndications3 = utiliGraf.labelTitleBacker2W("Seleccione hasta 6 categorías");
-        labelIndications3.setBounds(anchoUnit * 8, altoUnit * 46, anchoUnit * 18, altoUnit * 3);
-        panelPpal.add(labelIndications3);
-
-        JLabel labelCat = utiliGraf.labelTitleBacker3W("Categ. a Seleccionar");
-        labelCat.setBounds(anchoUnit * 2, altoUnit * 49, anchoUnit * 13, altoUnit * 3);
-        panelPpal.add(labelCat);
-
-        listCat.setModel(utili.spacesListModelReturnMono(categories));
-        listCat.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    if (categoriesSel.size() < 6) {
-                        String selectedValue = (String) listCat.getSelectedValue();
-                        selCategory(selectedValue, 1);
-                    } else {
-                        utiliMsg.errorCatExcess();
-                    }
-                }
-            }
-        });
-        JScrollPane jSCat = new JScrollPane(listCat);
-        jSCat.setBounds(anchoUnit * 2, altoUnit * 52, anchoUnit * 8, altoUnit * 8);
-        panelPpal.add(jSCat);
-
-        JLabel labelCatSel = utiliGraf.labelTitleBacker3W("Categ. Seleccionadas");
-        labelCatSel.setBounds(anchoUnit * 15, altoUnit * 49, anchoUnit * 13, altoUnit * 3);
-        panelPpal.add(labelCatSel);
-
-        listCatSel.setModel(utili.spacesListModelReturnMono(categoriesSel));
-        listCatSel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    String selectedValue = (String) listCatSel.getSelectedValue();
-                    unSelCategory(selectedValue);
-                }
-            }
-        });
-
-        JScrollPane jSCatSel = new JScrollPane(listCatSel);
-        jSCatSel.setBounds(anchoUnit * 15, altoUnit * 52, anchoUnit * 8, altoUnit * 8);
-        panelPpal.add(jSCatSel);
-
-        butAddCategory = utiliGraf.button3("Crear Categoría", anchoUnit * 24, altoUnit * 57, anchoUnit * 9);
-        butAddCategory.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    createCategory();
-                } catch (Exception ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        panelPpal.add(butAddCategory);
+        
+        JPanel panelCat = utiliGrafCfgS.panelCatBacker(this);
+        panelPpal.add(panelCat);        
         
         JSeparator separator3 = new JSeparator(SwingConstants.HORIZONTAL);
         separator3.setBounds(anchoUnit * 1, altoUnit * 60 + 3, anchoUnit * 32, 4); // Posición y tamaño del separador
         panelPpal.add(separator3);
 
-        JLabel labelIndications4 = utiliGraf.labelTitleBacker2W("Seleccione el porcentaje de las Propinas:");
-        labelIndications4.setBounds(anchoUnit * 4, altoUnit * 61, anchoUnit * 25, altoUnit * 3);
-        panelPpal.add(labelIndications4);
+        JPanel panelTip = utiliGrafCfgS.panelTipBacker(this);
+        panelPpal.add(panelTip);  
         
-        JLabel labelPorcentaje = utiliGraf.labelTitleBacker1W("Porcentaje %:");
-        labelPorcentaje.setBounds(anchoUnit * 8, altoUnit * 64, anchoUnit * 11, altoUnit * 4);
-        panelPpal.add(labelPorcentaje);        
-
-        SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
-        spinnerTip.setModel(model);
-        spinnerTip.setBounds(anchoUnit * 19, altoUnit * 64, anchoUnit * 4, altoUnit * 4);
-        spinnerTip.setFont(font1);
-        spinnerTip.setValue(10);
-        panelPpal.add(spinnerTip);
-        
-        JSeparator separator4 = new JSeparator(SwingConstants.HORIZONTAL);
-        separator4.setBounds(anchoUnit * 1, altoUnit * 69 + 3, anchoUnit * 32, 4); // Posición y tamaño del separador
-        panelPpal.add(separator4);
-
-        Font font = new Font("Arial", Font.PLAIN, 16);
-        data1 = "<html><b>SECTORES</b>:</html>";
-        labelData1 = utiliGraf.labelTitleBacker2W(data1);
-        labelData1.setText(data1);
-        labelData1.setBounds(anchoUnit * 1, altoUnit * 70, anchoUnit * 32, altoUnit * 8);
-        labelData1.setFont(font);
-        labelData1.setBackground(bluLg);
-        panelPpal.add(labelData1);
-
-        data2 = "<html><b>CATEGORÍAS</b>:</html>";
-        labelData2 = utiliGraf.labelTitleBacker2W(data2);
-        labelData2.setText(data2);
-        labelData2.setBounds(anchoUnit * 1, altoUnit * 78, anchoUnit * 32, altoUnit * 6);
-        labelData2.setFont(font);
-        labelData2.setBackground(bluLg);
-        panelPpal.add(labelData2);
-
-        butConfirm2 = utiliGraf.button1("Confirmar Configuración", anchoUnit, altoUnit * 85, anchoUnit * 21);
-        butConfirm2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (categoriesSel.size() > 0) {
-                    try {
-                        if (selSectors) {
-                            boolean confirm = utiliMsg.cargaConfirmRestart();
-                            if (confirm) {
-                                String pass = utiliMsg.requestPass();
-                                if (pass.equals(user.getPassword())) {
-                                    createConfig();
-                                } else {
-                                    utiliMsg.errorAccessDenied();
-                                }
-                            }
-                        }
-                        utiliMsg.errorUnconfirmTable();
-                    } catch (Exception ex) {
-                        Logger.getLogger(ConfigSalonFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else if (quants.size() == 0) {
-                    utiliMsg.errorNullSector();
-                } else {
-                    utiliMsg.errorCategoriesNull();
-                }
-            }
-        });
+        butConfirm2 = utiliGrafCfgS.butConf2Backer(this);
         panelPpal.add(butConfirm2);
 
-        butReset = utiliGraf.button1("Resetear", anchoUnit * 23, altoUnit * 85, anchoUnit * 10);
-        butReset.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (panels.size() > 0) {
-                    try {
-                        resetValues();
-                    } catch (Exception ex) {
-                        Logger.getLogger(ConfigSalonFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    utiliMsg.errorNullSector();
-                }
-            }
-        });
+        butReset = utiliGrafCfgS.butResetBacker(this);
         panelPpal.add(butReset);
 
-        if (cfgGen.getTableItemCategories() != null) {
-            updateValues();
-        }
+        scs.updateValues(this);
+        
         
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
         butSalir.addActionListener(new ActionListener() {
@@ -373,316 +157,254 @@ public class ConfigSalonFrame extends FrameThird {
         });
     }
 
-    private void selSpace(String selectedValue, int i) {
-        if (i == 1) {
-            spacesSel.add(selectedValue);
-        }
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(spacesSel);
-        listSelected.setModel(modeloLista1);
-        Iterator<String> iterador = spaces.iterator();
-        while (iterador.hasNext()) {
-            String st = iterador.next();
-            if (st.equals(selectedValue)) {
-                iterador.remove();
-            }
-        }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(spaces);
-        listSpaces.setModel(modeloLista2);
-
-        PanelNestedSpace pn = new PanelNestedSpace(selectedValue, panels.size());
-
-        panelManager(pn, selectedValue);
+    public Font getFont1() {
+        return font1;
     }
 
-    private void unSelSpace() {
-        String selectedValue = (String) listSelected.getSelectedValue();
-        spaces.add(selectedValue);
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(spaces);
-        listSpaces.setModel(modeloLista1);
-        Iterator<String> iterador = spacesSel.iterator();
-        while (iterador.hasNext()) {
-            String st = iterador.next();
-            if (st.equals(selectedValue)) {
-                iterador.remove();
-            }
-        }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(spacesSel);
-        listSelected.setModel(modeloLista2);
-
-        panelManager(null, selectedValue);
+    public void setFont1(Font font1) {
+        this.font1 = font1;
     }
 
-    private void confirmTables() throws Exception {
-        ArrayList<Integer> tabsQ = new ArrayList<>();
-        spacesDB = daoC.askSpaces();
-        boolean zero = false;
-        for (int i = 0; i < panels.size(); i++) {
-            PanelNestedSpace paN = panels.get(i);
-            ButtonGroup group = paN.getGroup();
-            int m = 0;
-            for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
-                AbstractButton button = buttons.nextElement();
-                if (button.isSelected()) {
-                    String selection = button.getText();
-                    if (selection.equals("12 Mesas")) {
-                        m = 12;
-                    } else if (selection.equals("24 Mesas")) {
-                        m = 24;
-                    } else if (selection.equals("35 Mesas")) {
-                        m = 35;
-                    } else if (selection.equals("48 Mesas")) {
-                        m = 48;
-                    }
-                    break;
-                }
-            }
-            if (m == 0) {
-                zero = true;
-            } else {
-                tabsQ.add(m);
-            }
-        }
-
-        if (zero == false) {
-            quants = tabsQ;
-            for (int i = 0; i < spacesSel.size(); i++) {
-                String st1 = spacesSel.get(i);
-                for (int j = 0; j < spacesDB.size(); j++) {
-                    String st2 = spacesDB.get(j);
-                    if (st1.equals(st2)) {
-                        charsSel.add(charsDB.get(j));
-                    }
-                }
-            }
-
-            for (int i = 0; i < panels.size(); i++) {
-                Enumeration<AbstractButton> buttons = panels.get(i).getGroup().getElements();
-                while (buttons.hasMoreElements()) {
-                    AbstractButton button = buttons.nextElement();
-                    button.setEnabled(false);
-                }
-            }
-
-            data1Updater();
-            selSectors = true;
-            butConfirm1.setEnabled(false);
-            listSelected.setEnabled(false);
-            listSpaces.setEnabled(false);
-            butAddSpace.setEnabled(false);
-        } else {
-            utiliMsg.errorNullTabsQ();
-            zero = true;
-        }
+    public Font getFont2() {
+        return font2;
     }
 
-    private void panelManager(PanelNestedSpace pn, String st) {
-        panelPanel.removeAll();
-        if (pn != null) {
-            panels.add(pn);
-        } else {
-            Iterator<PanelNestedSpace> iterador = panels.iterator();
-            while (iterador.hasNext()) {
-                PanelNestedSpace p = iterador.next();
-                if (p.getSt().equals(st)) {
-                    iterador.remove();
-                }
-            }
-
-            ArrayList<PanelNestedSpace> panels2 = new ArrayList<>();
-            int counter = 0;
-            for (int i = 0; i < panels.size(); i++) {
-                PanelNestedSpace pan = new PanelNestedSpace(panels.get(i).getSt(), counter);
-                panels2.add(pan);
-                counter += 1;
-            }
-            panels = panels2;
-
-        }
-
-        int h = 0;
-        h = 1 + 8 * panels.size();
-        if (h < 20) {
-            h = 20;
-        }
-
-        panelPanel.setPreferredSize(new Dimension(anchoUnit * 30, altoUnit * h));
-
-        for (int i = 0; i < panels.size(); i++) {
-            panelPanel.add(panels.get(i));
-        }
-
-        panelPanel.revalidate();
-        panelPanel.repaint();
-    }
-
-    private void selCategory(String selectedValue, int i) {
-        if (i == 1) {
-            categoriesSel.add(selectedValue);
-        }
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(categoriesSel);
-        listCatSel.setModel(modeloLista1);
-
-        Iterator<String> iterador = categories.iterator();
-        while (iterador.hasNext()) {
-            String st = iterador.next();
-            if (st.equals(selectedValue)) {
-                iterador.remove();
-            }
-        }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(categories);
-        listCat.setModel(modeloLista2);
-
-        data2Updater();
-    }
-
-    private void unSelCategory(String selectedValue) {
-        selectedValue = (String) listCatSel.getSelectedValue();
-        categories.add(selectedValue);
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(categories);
-        listCat.setModel(modeloLista1);
-        Iterator<String> iterador = categoriesSel.iterator();
-        while (iterador.hasNext()) {
-            String st = iterador.next();
-            if (st.equals(selectedValue)) {
-                iterador.remove();
-            }
-        }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(categoriesSel);
-        listCatSel.setModel(modeloLista2);
-        data2Updater();
+    public void setFont2(Font font2) {
+        this.font2 = font2;
     }
     
-    private void data1Updater() {
-        String st = "<html><b>SECTORES</b>: ";
-        for (int i = 0; i < spacesSel.size(); i++) {
-            if (i == spacesSel.size() - 1) {
-                st += spacesSel.get(i) + "(" + quants.get(i) + ")";
-            } else {
-                st += spacesSel.get(i) + "(" + quants.get(i) + ") - ";
-            }
-        }
-        st = st + "</html>";
-        labelData1.setText(st);
+    public SalonManager getSm() {
+        return sm;
     }
 
-    private void data2Updater() {
-        String st = "<html><b>CATEGORÍAS</b>: ";
-        for (int i = 0; i < categoriesSel.size(); i++) {
-            if (i == categoriesSel.size() - 1) {
-                st += categoriesSel.get(i);
-            } else {
-                st += categoriesSel.get(i) + " - ";
-            }
-        }
-        st = st + "</html>";
-        labelData2.setText(st);
+    public void setSm(SalonManager sm) {
+        this.sm = sm;
     }
 
-    private void createConfig() throws Exception {
-        int totalTab = 0;
-        int tipPc = (int) spinnerTip.getValue();
-        for (int i = 0; i < quants.size(); i++) {
-            totalTab += quants.get(i);
-        }
-        daoC.saveConfigGeneral(totalTab, quants, categoriesSel, spacesSel, charsSel, tipPc, true);
-        sm.frameCloser();
-        System.exit(0);
+    public JList getListSpaces() {
+        return listSpaces;
     }
 
-    private void resetValues() throws Exception {
-        categoriesDB = daoC.askCategories();
-        categories = categoriesDB;
-        spacesDB = daoC.askSpaces();
-        spaces = spacesDB;
-        categoriesSel = new ArrayList<>();
-        spacesSel = new ArrayList<>();
-        charsSel = new ArrayList<>();
-        quants = new ArrayList<>();
-        listSpaces.setModel(utili.spacesListModelReturnMono(spaces));
-        listSelected.setModel(utili.spacesListModelReturnMono(spacesSel));
-        listCat.setModel(utili.spacesListModelReturnMono(categories));
-        listCatSel.setModel(utili.spacesListModelReturnMono(categoriesSel));
-        spinnerTip.setValue(10);
-        data1Updater();
-        data2Updater();
-        panels = new ArrayList<>();
-        butConfirm1.setEnabled(true);
-        butAddSpace.setEnabled(true);
-        selSectors = false;
-        listSelected.setEnabled(true);
-        listSpaces.setEnabled(true);
-        panelPanel.removeAll();
-        panelPanel.revalidate();
-        panelPanel.repaint();
+    public void setListSpaces(JList listSpaces) {
+        this.listSpaces = listSpaces;
     }
 
-    private void createSpace() throws Exception {
-        String space = utiliMsg.cargaNewString(1, 15);
-        spaces.add(space);
-        daoC.saveSpace(space);
-        String cha = space.substring(0, 1);
-        charsDB.add(cha);
-        daoC.saveChar(cha);
-        spaces = daoC.askSpaces();
-        listSpaces.setModel(utili.spacesListModelReturnMono(spaces));
+    public JList getListSpacesSel() {
+        return listSpacesSel;
     }
 
-    private void createCategory() throws Exception {
-        String category = utiliMsg.cargaNewString(2, 10);
-        categories.add(category);
-        daoC.saveCategory(category);
-        categories = daoC.askCategories();
-        listCat.setModel(utili.spacesListModelReturnMono(categories));
+    public void setListSpacesSel(JList listSpacesSel) {
+        this.listSpacesSel = listSpacesSel;
     }
 
-    private void updateValues() throws Exception {
-        categoriesSel = cfgGen.getTableItemCategories();
-        spacesSel = cfgGen.getTablePan();
-        quants = cfgGen.getTableNum();
-
-        for (int i = 0; i < categoriesSel.size(); i++) {
-            selCategory(categoriesSel.get(i), 0);
-        }
-
-        for (int i = 0; i < spacesSel.size(); i++) {
-            selSpace(spacesSel.get(i), 0);
-        }
-
-        for (int i = 0; i < quants.size(); i++) {
-            PanelNestedSpace paN = panels.get(i);
-            ButtonGroup group = paN.getGroup();
-            int m = quants.get(i);
-            String tabs = "";
-            if (m == 12) {
-                tabs = "12 Mesas";
-            } else if (m == 24) {
-                tabs = "24 Mesas";
-            } else if (m == 35) {
-                tabs = "35 Mesas";
-            } else {
-                tabs = "48 Mesas";
-            }
-
-            for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
-                AbstractButton button = buttons.nextElement();
-                String selection = button.getText();
-                if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
-                } else if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
-                } else if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
-                } else if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
-                }
-            }
-        }
-
-        data1Updater();
-        data2Updater();
+    public JList getListCat() {
+        return listCat;
     }
+
+    public void setListCat(JList listCat) {
+        this.listCat = listCat;
+    }
+
+    public JList getListCatSel() {
+        return listCatSel;
+    }
+
+    public void setListCatSel(JList listCatSel) {
+        this.listCatSel = listCatSel;
+    }
+
+    public ArrayList<String> getSpacesDB() {
+        return spacesDB;
+    }
+
+    public void setSpacesDB(ArrayList<String> spacesDB) {
+        this.spacesDB = spacesDB;
+    }
+
+    public ArrayList<String> getSpaces() {
+        return spaces;
+    }
+
+    public void setSpaces(ArrayList<String> spaces) {
+        this.spaces = spaces;
+    }
+
+    public ArrayList<String> getSpacesSel() {
+        return spacesSel;
+    }
+
+    public void setSpacesSel(ArrayList<String> spacesSel) {
+        this.spacesSel = spacesSel;
+    }
+
+    public ArrayList<String> getCharsDB() {
+        return charsDB;
+    }
+
+    public void setCharsDB(ArrayList<String> charsDB) {
+        this.charsDB = charsDB;
+    }
+
+    public ArrayList<String> getCharsSel() {
+        return charsSel;
+    }
+
+    public void setCharsSel(ArrayList<String> charsSel) {
+        this.charsSel = charsSel;
+    }
+
+    public ArrayList<Integer> getQuants() {
+        return quants;
+    }
+
+    public void setQuants(ArrayList<Integer> quants) {
+        this.quants = quants;
+    }
+
+    public ArrayList<String> getCategoriesDB() {
+        return categoriesDB;
+    }
+
+    public void setCategoriesDB(ArrayList<String> categoriesDB) {
+        this.categoriesDB = categoriesDB;
+    }
+
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }
+
+    public ArrayList<String> getCategoriesSel() {
+        return categoriesSel;
+    }
+
+    public void setCategoriesSel(ArrayList<String> categoriesSel) {
+        this.categoriesSel = categoriesSel;
+    }
+
+    public JButtonMetalBlu getButConfirm1() {
+        return butConfirm1;
+    }
+
+    public void setButConfirm1(JButtonMetalBlu butConfirm1) {
+        this.butConfirm1 = butConfirm1;
+    }
+
+    public JButtonMetalBlu getButConfirm2() {
+        return butConfirm2;
+    }
+
+    public void setButConfirm2(JButtonMetalBlu butConfirm2) {
+        this.butConfirm2 = butConfirm2;
+    }
+
+    public JButtonMetalBlu getButReset() {
+        return butReset;
+    }
+
+    public void setButReset(JButtonMetalBlu butReset) {
+        this.butReset = butReset;
+    }
+
+    public JButtonMetalBlu getButAddSpace() {
+        return butAddSpace;
+    }
+
+    public void setButAddSpace(JButtonMetalBlu butAddSpace) {
+        this.butAddSpace = butAddSpace;
+    }
+
+    public JButtonMetalBlu getButAddCategory() {
+        return butAddCategory;
+    }
+
+    public void setButAddCategory(JButtonMetalBlu butAddCategory) {
+        this.butAddCategory = butAddCategory;
+    }
+
+    public JSpinner getSpinnerTip() {
+        return spinnerTip;
+    }
+
+    public void setSpinnerTip(JSpinner spinnerTip) {
+        this.spinnerTip = spinnerTip;
+    }
+
+    public String getData1() {
+        return data1;
+    }
+
+    public void setData1(String data1) {
+        this.data1 = data1;
+    }
+
+    public String getData2() {
+        return data2;
+    }
+
+    public void setData2(String data2) {
+        this.data2 = data2;
+    }
+
+    public JLabel getLabelData1() {
+        return labelData1;
+    }
+
+    public void setLabelData1(JLabel labelData1) {
+        this.labelData1 = labelData1;
+    }
+
+    public JLabel getLabelData2() {
+        return labelData2;
+    }
+
+    public void setLabelData2(JLabel labelData2) {
+        this.labelData2 = labelData2;
+    }
+
+    public JPanel getPanelPanel() {
+        return panelPanel;
+    }
+
+    public void setPanelPanel(JPanel panelPanel) {
+        this.panelPanel = panelPanel;
+    }
+
+    public ArrayList<PanelNestedSpace> getPanels() {
+        return panels;
+    }
+
+    public void setPanels(ArrayList<PanelNestedSpace> panels) {
+        this.panels = panels;
+    }
+
+    public ConfigGeneral getCfgGen() {
+        return cfgGen;
+    }
+
+    public void setCfgGen(ConfigGeneral cfgGen) {
+        this.cfgGen = cfgGen;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public boolean isSelSectors() {
+        return selSectors;
+    }
+
+    public void setSelSectors(boolean selSectors) {
+        this.selSectors = selSectors;
+    }  
+    
+    
+    
 }

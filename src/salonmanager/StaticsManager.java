@@ -370,11 +370,11 @@ public class StaticsManager extends FrameFull {
             }
         }
 
-        labelWaiter1.setText("1- " + waitersSell2.get(0) + ": $" + amounts2.get(0));
-        labelWaiter2.setText("2- " + waitersSell2.get(1) + ": $" + amounts2.get(1));
-        labelWaiter3.setText("3- " + waitersSell2.get(2) + ": $" + amounts2.get(2));
-        labelWaiter4.setText("4- " + waitersSell2.get(3) + ": $" + amounts2.get(3));
-        labelWaiter5.setText("5- " + waitersSell2.get(4) + ": $" + amounts2.get(4));
+        labelWaiter1.setText("1- " + waitersSell2.get(0) + " $: " + amounts2.get(0));
+        labelWaiter2.setText("2- " + waitersSell2.get(1) + " $: " + amounts2.get(1));
+        labelWaiter3.setText("3- " + waitersSell2.get(2) + " $: " + amounts2.get(2));
+        labelWaiter4.setText("4- " + waitersSell2.get(3) + " $: " + amounts2.get(3));
+        labelWaiter5.setText("5- " + waitersSell2.get(4) + " $: " + amounts2.get(4));
 
         labelWaiter6.setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turnos.");
         labelWaiter7.setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1) + " turnos.");

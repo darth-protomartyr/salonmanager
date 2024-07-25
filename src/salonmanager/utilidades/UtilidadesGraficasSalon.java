@@ -1211,28 +1211,28 @@ public class UtilidadesGraficasSalon {
             if (i < intAux) {
                 int u = st.itemUnitsBacker(salon.getItemsTableAux(), ic);
                 salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " " + ic.getName();
+                salon.getData()[i][1] = " " + utili.reduxName(ic.getName(), false);
                 salon.getData()[i][2] = " " + utili.priceMod(ic, salon) * u * (1 - disc);
             }
 
             if (partials.size() > 0 && i >= intAux && i < intPartial) {
                 int u = st.itemUnitsBacker(salon.getItemsPartialPaid(), ic);
                 salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " PAG." + ic.getName();
+                salon.getData()[i][1] = " PAG. " + utili.reduxName(ic.getName(), false);
                 salon.getData()[i][2] = "PAGADO";
             }
 
             if (partialsND.size() > 0 && i >= intPartial && i < intPartialND) {
                 int u = st.itemUnitsBacker(salon.getItemsPartialPaidNoDiscount(), ic);
                 salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " PAG.* " + ic.getName();
+                salon.getData()[i][1] = " PAG.* " + utili.reduxName(ic.getName(), false);
                 salon.getData()[i][2] = "PAGADO";
             }
 
             if (i >= intPartialND) {
                 int u = st.itemUnitsBacker(salon.getItemsGift(), ic);
                 salon.getData()[i][0] = " " + u;
-                salon.getData()[i][1] = " OBS." + ic.getName();
+                salon.getData()[i][1] = " OBS. " + utili.reduxName(ic.getName(), false);
                 salon.getData()[i][2] = " 0";
             }
         }
@@ -1395,7 +1395,7 @@ public class UtilidadesGraficasSalon {
         });
         panelPartial.add(salon.getButPartialPay());
 
-        salon.getLabelPartialPay().setText("Pagado: $0.0");
+        salon.getLabelPartialPay().setText("Pagado $: 0.0");
         salon.getLabelPartialPay().setBounds(anchoUnit * 12, altoUnit, anchoUnit * 10, altoUnit * 3);
         panelPartial.add(salon.getLabelPartialPay());
         return panelPartial;
@@ -1417,11 +1417,12 @@ public class UtilidadesGraficasSalon {
         salon.getTableAux().setBill(true);
         daoT.updateTableBill(salon.getTableAux());
         jButExtSetter(salon);
-        salon.getLabelTotalParcial().setText("Total: $");
+        salon.getLabelTotalParcial().setText("Total $: ");
         salon.getLabelCuenta().setText("" + salon.getTotal());
-        salon.getLabelTip().setText("Prop. : $" + Math.round(salon.getTotal() * salon.getTipPc() / 100));
-        double tot = salon.getTotal() + Math.round(salon.getTotal() * salon.getTipPc() / 100);
-        salon.getLabelTotal().setText("Total: $" + tot);
+        double tip = ss.countBillTip(salon.getTableAux(), salon, false);
+        salon.getLabelTip().setText("Prop. $: " + Math.round(tip));
+        double tot = salon.getTotal() + Math.round(tip);
+        salon.getLabelTotal().setText("Total $: " + tot);
 
         if (salon.getJbtAux() != null) {
             salon.getJbtAux().setBackground(red);
@@ -1534,11 +1535,11 @@ public class UtilidadesGraficasSalon {
         salon.getLabelCuenta().setBackground(viol);
         panelCount.add(salon.getLabelCuenta());
 
-        salon.setLabelTip(utiliGraf.labelTitleBacker3("Prop.: $ 00,0"));
+        salon.setLabelTip(utiliGraf.labelTitleBacker3("Prop. $:  00,0"));
         salon.getLabelTip().setBounds(anchoUnit, altoUnit * 7, anchoUnit * 13, altoUnit * 2);
         panelCount.add(salon.getLabelTip());
 
-        salon.setLabelTotal(utiliGraf.labelTitleBacker3("Total: $ 00,0"));
+        salon.setLabelTotal(utiliGraf.labelTitleBacker3("Total $:  00,0"));
         salon.getLabelTotal().setBounds(anchoUnit * 13, altoUnit * 7, anchoUnit * 13, altoUnit * 2);
         panelCount.add(salon.getLabelTotal());
         return panelCount;
@@ -1564,9 +1565,9 @@ public class UtilidadesGraficasSalon {
         salon.getSpinnerUnitsItem().setValue(1);
         salon.getLabelTotalParcial().setText("Parcial $:");
         salon.getLabelCuenta().setText("0.00");
-        salon.getLabelTip().setText("Prop: $0.00");
-        salon.getLabelTotal().setText("Total: $0.00");
-        salon.getLabelPartialPay().setText("Pagado: $0.00");
+        salon.getLabelTip().setText("Prop.$ : 0.00");
+        salon.getLabelTotal().setText("Total $: 0.00");
+        salon.getLabelPartialPay().setText("Pagado $: 0.00");
         salon.getLabelOrder().setText("MESA:--");
         salon.getLabelWaiter().setText("Mozo: --");
         salon.getButCloseTable().setText("CERRAR ORDEN");
@@ -1639,14 +1640,14 @@ public class UtilidadesGraficasSalon {
         setTableItems(salon);
         if (salon.getItemsPartialPaid().size() > 0) {
             double payed = ss.partialBillPayed(salon.getTableAux(), salon);
-            salon.getLabelPartialPay().setText("Pagado: $" + (payed));
+            salon.getLabelPartialPay().setText("Pagado $: " + (payed));
         }
 
         if (salon.getTableAux().isBill() == true) {
             salon.getLabelTotalParcial().setText("Total $:");
-            salon.getLabelTip().setText("Prop.: " + Math.round(salon.getTotal() * salon.getTipPc() / 100));
+            salon.getLabelTip().setText("Prop. $: " + Math.round(salon.getTotal() * salon.getTipPc() / 100));
             double tot = Math.round(salon.getTotal() * salon.getTipPc() / 100) + salon.getTotal();
-            salon.getLabelTotal().setText("Total: " + tot);
+            salon.getLabelTotal().setText("Total $: " + tot);
         } else {
             salon.getLabelTotalParcial().setText("Parcial $:");
         }

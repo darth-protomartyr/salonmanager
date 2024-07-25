@@ -54,6 +54,8 @@ import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
+import salonmanager.utilidades.Utilidades;
+import salonmanager.utilidades.UtilidadesMensajes;
 
 public class UtilidadesGraficas extends JFrame {
 

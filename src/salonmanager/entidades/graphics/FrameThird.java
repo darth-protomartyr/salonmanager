@@ -5,7 +5,7 @@ import java.awt.event.WindowEvent;
 
 public class FrameThird extends FrameGeneral {
 
-    public int anchoFrameThird = anchoFrame / 3;
+    public static int anchoFrameThird = anchoFrame / 3;
 
     public FrameThird() {
         setVisible(true);

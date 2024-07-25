@@ -85,16 +85,16 @@ public class TableResumePanel extends FrameThird {
         JPanel panelDiscount = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 27, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Descuento: ", tabAux.getDiscount() + "%");
         panelPpal.add(panelDiscount);
 
-        JPanel panelFact = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 32, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Facturación: ", "$" + tabAux.getTotal() + "");
+        JPanel panelFact = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 32, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Facturación  $: ", "" + tabAux.getTotal() + "");
         panelPpal.add(panelFact);
 
-        JPanel panelCash = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Efectivo: ", "$" + tabAux.getAmountCash() + "");
+        JPanel panelCash = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 37, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Efectivo $: ", "" + tabAux.getAmountCash() + "");
         panelPpal.add(panelCash);
 
-        JPanel panelElectronic = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 42, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Transferencia: ", "$" + tabAux.getAmountElectronic());
+        JPanel panelElectronic = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 42, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Transferencia $: ", "" + tabAux.getAmountElectronic());
         panelPpal.add(panelElectronic);
 
-        JPanel panelError = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 47, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Error: ", "$" + tabAux.getError());
+        JPanel panelError = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 47, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Error $: ", "" + tabAux.getError());
         panelPpal.add(panelError);
 
         String message = utili.listarItems(tabAux);

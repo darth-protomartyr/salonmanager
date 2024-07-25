@@ -297,7 +297,6 @@ public class Utilidades {
         return modeloCombo;
     }
 
-
     public boolean itemcardRepeat(String ic, ArrayList<ItemCard> items) {
         boolean bool = false;
         ic = stringPlain(ic);
@@ -808,7 +807,7 @@ public class Utilidades {
 
     public void cfgBacker() throws Exception {
         DAOConfig daoC = new DAOConfig();
-        
+
         ArrayList<Integer> tabsQ = new ArrayList<>();
         tabsQ.add(35);
         tabsQ.add(24);
@@ -834,7 +833,7 @@ public class Utilidades {
 //        daoC.updateCfgActOpenIdWs(0);
 //        daoC.updateCfgActDeferWs(new ArrayList<String>());
 //        daoC.updateCfgActModTabs(new ArrayList<String>());
-        
+
         ArrayList<String> categ = daoC.askCategories();
 
         ArrayList<String> cats = new ArrayList<>();
@@ -858,7 +857,7 @@ public class Utilidades {
         }
 
         ArrayList<String> sect = new ArrayList<>();
-        sect.add("salón");
+        sect.add("salon");
         sect.add("patio");
         sect.add("vereda");
         sect.add("frente");
@@ -969,5 +968,104 @@ public class Utilidades {
         cal.add(Calendar.MILLISECOND, i);
         mod = new Timestamp(cal.getTimeInMillis());
         return mod;
+    }
+
+    public String reduxName(String n, boolean newName) {
+        String redux = "";
+        String name = n;
+        String[] words = name.split(" ");
+
+        if (newName) {
+            for (int i = 0; i < words.length; i++) {
+                String word = words[i];
+
+                if (word.toLowerCase().equals("litros") || word.toLowerCase().equals("litro")) {
+                    word = "l";
+                }
+
+                if (word.toLowerCase().equals("mililitros") || word.toLowerCase().equals("mililitro")) {
+                    word = "ml";
+                }
+
+                if (word.toLowerCase().equals("unidades") || word.toLowerCase().equals("unidad")) {
+                    word = "u.";
+                }
+
+                if (word.toLowerCase().equals("kilogramo") || word.toLowerCase().equals("kilogramos")) {
+                    word = "kgr";
+                }
+
+                if (word.toLowerCase().equals("gramo") || word.toLowerCase().equals("gramos")) {
+                    word = "gr";
+                }
+
+                redux += word;
+
+                if (i < words.length - 1) {
+                    redux += " ";
+                }
+            }
+        } else {
+            if (n.length() > 20) {
+                for (int i = 0; i < words.length; i++) {
+                    String word = words[i];
+
+                    if (word.toLowerCase().equals("vino")) {
+                        word = "V.";
+                    }
+
+                    if (word.toLowerCase().equals("soda")) {
+                        word = "S.";
+                    }
+                    
+                    if (word.toLowerCase().equals("pizza")) {
+                        word = "P.";
+                    }                    
+
+                    if (word.toLowerCase().equals("malbec")) {
+                        word = "Mal.";
+                    }
+                    
+                    if (word.toLowerCase().equals("cabernet")) {
+                        word = "Cab.";
+                    }
+                    
+                    if (word.toLowerCase().equals("sauvignon")) {
+                        word = "Sauv.";
+                    }
+                    
+                    if (word.toLowerCase().equals("pinot")) {
+                        word = "Pi.";
+                    }
+                    
+                    if (word.toLowerCase().equals("tempranillo")) {
+                        word = "Temp.";
+                    }
+                    
+                    if (word.toLowerCase().equals("merlot")) {
+                        word = "Mer.";
+                    }
+                    
+                    if (word.toLowerCase().equals("syrah")) {
+                        word = "Syr.";
+                    }
+                    
+                    if (word.toLowerCase().equals("champaña") || word.toLowerCase().equals("champagne")) {
+                        word = "Champ.";
+                    }
+                    
+                    if (word.toLowerCase().equals("chardonnay") || word.toLowerCase().equals("chardonay") || word.toLowerCase().equals("chardoney")) {
+                        word = "Chard.";
+                    }
+                    
+
+                    redux += word;
+                    if (i < words.length - 1) {
+                        redux += " ";
+                    }
+                }
+            }
+        }
+        return redux;
     }
 }

@@ -145,8 +145,33 @@ public class ServicioSalon {
         }
         return bill;
     }
+    
+    
+    public double countBillTip(Table tableAux, Salon sal, boolean total) {
+        double bill = 0;
+        int discount = tableAux.getDiscount();
+        ArrayList<ItemCard> itemsTable = tableAux.getOrder();
+        ArrayList<ItemCard> itemsTableND = tableAux.getPartialPayedND();
+        for (int i = 0; i < itemsTable.size(); i++) {
+            if (itemsTable.get(i).isActiveItem() && itemsTable.get(i).isActiveTip()) {
+                bill = bill + utili.priceMod(itemsTable.get(i), sal);
+            }
+        }
+        if (discount > 0) {
+            bill = bill - Math.round(bill * discount / 100);
+        }
+        if (total) {
+            for (int i = 0; i < itemsTableND.size(); i++) {
+                if (itemsTableND.get(i).isActiveItem() && itemsTable.get(i).isActiveTip()) {
+                    bill = bill + utili.priceMod(itemsTableND.get(i), sal);
+                }
+            }
+        }
+        return bill * sal.getCfgGen().getTipPc() / 100;
+    }
 
-//resumen de cuenta abonada en pago parcial  
+    
+    //resumen de cuenta abonada en pago parcial  
     public double partialBillPayed(Table tableAux, Salon sal) {
         double partial = 0;
         int discount = tableAux.getDiscount();
@@ -368,7 +393,7 @@ public class ServicioSalon {
         }
         salon.getLabelCuenta().setText(salon.getTotal() + "");
         double payed = partialBillPayed(salon.getTableAux(), salon);
-        salon.getLabelPartialPay().setText("Pagado: $" + (payed));
+        salon.getLabelPartialPay().setText("Pagado $: " + (payed));
         salon.setEnabled(true);
     }
 
@@ -627,5 +652,17 @@ public class ServicioSalon {
                 salon.setEnabled(false);
             }
         }
+    }
+
+    public double countBillTip2(ArrayList<ItemCard> items, int discount, Salon salon) {
+        double bill = 0;
+        for (ItemCard ic : items) {
+            if (ic.isActiveTip()) {
+                bill += utili.priceMod(ic, salon);
+            }
+        }
+        double disc = discount;
+        bill = bill * (1 - disc / 100);
+        return bill * salon.getCfgGen().getTipPc()/100;
     }
 }

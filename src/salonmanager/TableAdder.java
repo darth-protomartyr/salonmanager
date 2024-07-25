@@ -646,7 +646,7 @@ public class TableAdder extends FrameThird {
             } else if (wrong == 0) {
                 labelLoss.setText("No hay monto faltante");
             } else {
-                labelLoss.setText("Monto Faltante: $" + wrong);
+                labelLoss.setText("Monto Faltante $: " + wrong);
             }
         }
     }

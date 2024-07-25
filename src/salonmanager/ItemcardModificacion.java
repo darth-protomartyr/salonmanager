@@ -108,7 +108,7 @@ public class ItemcardModificacion extends FrameHalf {
 
     private void butModificarItemActionPerformed() throws Exception {
         boolean error = false;
-        name = fieldName.getText();
+        name = utili.reduxName(fieldName.getText(), true);
         category = (String) comboCategory.getSelectedItem();
         description = areaDescription.getText();
 

@@ -81,7 +81,7 @@ public class MoneyType extends FrameWindow {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("SELECCIONAR MODO DE PAGO");
         panelLabel.add(labelTit);
 
-        JLabel labelMount = utiliGraf.labelTitleBacker2W("Monto a pagar: $" + total);
+        JLabel labelMount = utiliGraf.labelTitleBacker2W("Monto a pagar $: " + total);
         labelMount.setBounds(anchoUnit * 5, altoUnit * 5, anchoUnit * 29, altoUnit * 3);
         panelPpal.add(labelMount);
 
@@ -262,7 +262,7 @@ public class MoneyType extends FrameWindow {
                 labelMixed.setVisible(true);
                 fieldAmountCash.setVisible(true);
                 butInPartialCash.setVisible(true);
-                labelChange.setText("Vuelto: $0.00");
+                labelChange.setText("Vuelto $: 0.00");
                 labelChange.setVisible(true);
                 butBack.setVisible(true);
                 cashMix = 1;
@@ -276,7 +276,7 @@ public class MoneyType extends FrameWindow {
                 labelMixed.setVisible(true);
                 fieldAmountCash.setVisible(true);
                 butInPartialCash.setVisible(true);
-                labelChange.setText("Transferencia: $0.00");
+                labelChange.setText("Transferencia $: 0.00");
                 labelChange.setVisible(true);
                 butBack.setVisible(true);
                 cashMix = 2;
@@ -347,11 +347,11 @@ public class MoneyType extends FrameWindow {
                 if (paid < total) {
                     labelChange.setText("Pago insuficiente.");
                 } else {
-                    labelChange.setText("Vuelto = $" + change + "");
+                    labelChange.setText("Vuelto $= " + change + "");
                 }
             } else if (cashMix == 2) {
                 if (change > 0) {
-                    labelChange.setText("Transferencia = $" + change + "");
+                    labelChange.setText("Transferencia $= " + change + "");
                 } else {
                     labelChange.setText("Transferencia innecesaria");
                 }

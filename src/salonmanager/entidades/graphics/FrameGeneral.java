@@ -10,10 +10,10 @@ import javax.swing.JFrame;
 
 public class FrameGeneral extends JFrame {
 
-    static protected int anchoFrame;
-    static protected int alturaFrame;
-    static protected int anchoUnit;
-    static protected int altoUnit;
+    static public int anchoFrame;
+    static public int alturaFrame;
+    static public int anchoUnit;
+    static public int altoUnit;
     protected JFrame frame = null;
 
     public FrameGeneral() {

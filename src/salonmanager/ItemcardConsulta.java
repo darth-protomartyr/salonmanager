@@ -81,11 +81,11 @@ public class ItemcardConsulta extends FrameThird {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         panelB.add(scrollPane);
         
-        JLabel labelCostItem = utiliGraf.labelTitleBacker1("Costo: $" + itemAux.getCost());
+        JLabel labelCostItem = utiliGraf.labelTitleBacker1("Costo $: " + itemAux.getCost());
         labelCostItem.setBounds(anchoUnit * 2, altoUnit * 42, anchoUnit * 21, altoUnit * 5);
         panelB.add(labelCostItem);
 
-        JLabel labelPriceItem = utiliGraf.labelTitleBacker1("Precio: $" + itemAux.getPrice().get(0));
+        JLabel labelPriceItem = utiliGraf.labelTitleBacker1("Precio $: " + itemAux.getPrice().get(0));
         labelPriceItem.setBounds(anchoUnit * 2, altoUnit * 49, anchoUnit * 21, altoUnit * 5);
         panelB.add(labelPriceItem);
 

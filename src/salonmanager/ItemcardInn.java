@@ -109,7 +109,7 @@ public class ItemcardInn extends FrameHalf {
 
     private void butCreateItemActionPerformed() throws Exception {
         boolean error = false;
-        name = fieldName.getText();
+        name = utili.reduxName(fieldName.getText(), true);
         category = (String) comboCategory.getSelectedItem();
         description = areaDescription.getText();
 
