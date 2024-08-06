@@ -1,6 +1,5 @@
 package salonmanager.persistencia;
 
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import salonmanager.SalonManager;
@@ -8,23 +7,23 @@ import salonmanager.entidades.bussiness.Delivery;
 
 public class DAODelivery extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-//    Utilidades utili = new Utilidades();
     public void saveDelivery(Delivery deli) throws Exception {
         try {
-            String cmrPhone = deli.getConsumer().getPhone();
+            String deliId = deli.getId();
+            boolean open = deli.isOpen();
+            boolean active = deli.isActive();
             String tabId = "";
+
+            String cmrPhone = deli.getConsumer().getPhone();
             if (deli.getTab() != null) {
                 tabId = deli.getTab().getId();
             }
-            String deliId = deli.getDeli().getId();
-            boolean open = deli.isOpen();
-            boolean active = deli.isActive();
-            
+            String deliUserId = deli.getDeliUser().getId();
             String activeUser = SalonManager.encryptBoolean(active);
             String activeOpen = SalonManager.encryptBoolean(open);
 
             String sql1 = "INSERT INTO deliverys(delivery_id, delivery_consumer_phone, delivery_tab_id, delivery_user_id, delivery_open, delivery_active)"
-                    + "VALUES('" + SalonManager.encrypt(deli.getId()) + "','" + SalonManager.encrypt(cmrPhone) + "', '" + SalonManager.encrypt(tabId) + "', '" + SalonManager.encrypt(deliId) + "', '" + activeOpen + "', '" + activeUser + "');";
+                    + "VALUES('" + SalonManager.encrypt(deliId) + "','" + SalonManager.encrypt(cmrPhone) + "', '" + SalonManager.encrypt(tabId) + "', '" + SalonManager.encrypt(deliUserId) + "', '" + activeOpen + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -40,23 +39,23 @@ public class DAODelivery extends DAO {
 
     public void updateDelivery(Delivery deli) throws Exception {
         try {
-            String orderId = deli.getId();
-            String cmrPhone = deli.getConsumer().getPhone();
             String tabId = "";
+            boolean open = deli.isOpen();
+            boolean active = deli.isActive();
+                        
+            String deliId = deli.getId();
+            String cmrPhone = deli.getConsumer().getPhone();
             if (deli.getTab() != null) {
                 tabId = deli.getTab().getId();
             }
-            String deliId = deli.getDeli().getId();
-            boolean open = deli.isOpen();
-            boolean active = deli.isActive();
-            
+            String deliUserId = deli.getDeliUser().getId();
             String activeUser = SalonManager.encryptBoolean(active);
             String activeOpen = SalonManager.encryptBoolean(open);
             
-            String sql1 = "UPDATE deliverys SET delivery_consumer_phone = " + SalonManager.encrypt(cmrPhone)
-                    + ", delivery_tab_id = '" + SalonManager.encrypt(tabId) + "', delivery_user_id = '" + SalonManager.encrypt(deliId)
+            String sql1 = "UPDATE deliverys SET delivery_consumer_phone = '" + SalonManager.encrypt(cmrPhone)
+                    + "', delivery_tab_id = '" + SalonManager.encrypt(tabId) + "', delivery_user_id = '" + SalonManager.encrypt(deliUserId)
                     + "', delivery_open = '" + activeOpen + "', delivery_active = '" + activeUser 
-                    + "' WHERE delivery_id = '" + SalonManager.encrypt(orderId) + "';";
+                    + "' WHERE delivery_id = '" + SalonManager.encrypt(deliId) + "';";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -73,8 +72,7 @@ public class DAODelivery extends DAO {
 
     public void updateDownAct(Delivery deli) throws Exception {
         try {
-            String activeDelivery = SalonManager.encryptBoolean(false);            
-            
+            String activeDelivery = SalonManager.encryptBoolean(false);
             String sql1 = "UPDATE deliverys SET delivery_active = '" + activeDelivery + "' WHERE delivery_id = '" + SalonManager.encrypt(deli.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());

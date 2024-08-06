@@ -1,5 +1,6 @@
 package salonmanager;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import salonmanager.entidades.bussiness.User;
@@ -14,6 +15,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JFrame;
+import jdk.javadoc.internal.tool.Main;
 import salonmanager.persistencia.DAOConfig;
 
 public class SalonManager {
@@ -98,8 +100,7 @@ public class SalonManager {
         String decryptedStr = decrypted.toString();
         return Double.parseDouble(decryptedStr);
     }
-    
-    
+
     public static String encryptInt(int number) {
         String numberStr = Integer.toString(number);
         StringBuilder encrypted = new StringBuilder();
@@ -110,7 +111,6 @@ public class SalonManager {
         return encrypted.toString();
     }
 
-    
     public static int decryptInt(String encryptedString) {
         StringBuilder decrypted = new StringBuilder();
         for (char c : encryptedString.toCharArray()) {
@@ -120,7 +120,6 @@ public class SalonManager {
         String decryptedStr = decrypted.toString();
         return Integer.parseInt(decryptedStr);
     }
-    
 
     public static SecretKeySpec getKeyFromPassword(String password) throws Exception {
         MessageDigest sha = MessageDigest.getInstance("SHA-256");
@@ -229,9 +228,10 @@ public class SalonManager {
         framesOpen.add(of);
     }
 
-    public void frameCloser() {
+    public static void frameCloser() {
         for (JFrame of : framesOpen) {
             of.dispose();
         }
     }
+
 }

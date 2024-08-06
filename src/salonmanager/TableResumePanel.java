@@ -60,6 +60,9 @@ public class TableResumePanel extends FrameThird {
         JLabel labelTit = utiliGraf.labelTitleBackerA4W(tit.toUpperCase());
         labelTit.setBounds(anchoUnit * 4, altoUnit * 1, anchoUnit * 26, altoUnit * 5);
         panelPpal.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JPanel panelPn = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 7, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Mesa: ", tabAux.getPos() + tabAux.getNum());
         panelPpal.add(panelPn);

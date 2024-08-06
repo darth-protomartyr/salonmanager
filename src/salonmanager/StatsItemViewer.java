@@ -75,11 +75,14 @@ public class StatsItemViewer extends FrameFull {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, this.getWidth(), altoUnit * 6);
+        panelLabel.setBounds(0, 0, this.getWidth() - anchoUnit * 10, altoUnit * 6);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("");
         panelLabel.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         labelItem = utiliGraf.labelTitleBacker1W("");
         labelItem.setBounds(anchoUnit * 2, altoUnit * 10, anchoUnit * 50, altoUnit * 5);

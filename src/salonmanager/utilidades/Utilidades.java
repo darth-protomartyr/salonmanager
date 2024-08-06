@@ -829,10 +829,6 @@ public class Utilidades {
         ArrayList<String> mods = new ArrayList<String>();
 
         daoC.saveConfigActual(false, 0, defer, mods);
-//        daoC.updateCfgActOpenWs(false);
-//        daoC.updateCfgActOpenIdWs(0);
-//        daoC.updateCfgActDeferWs(new ArrayList<String>());
-//        daoC.updateCfgActModTabs(new ArrayList<String>());
 
         ArrayList<String> categ = daoC.askCategories();
 
@@ -1058,12 +1054,13 @@ public class Utilidades {
                         word = "Chard.";
                     }
                     
-
                     redux += word;
                     if (i < words.length - 1) {
                         redux += " ";
                     }
                 }
+            } else {
+                redux = name;
             }
         }
         return redux;

@@ -1,30 +1,16 @@
 package salonmanager;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
-import javax.swing.ListModel;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.config.ConfigGeneral;
@@ -43,7 +29,6 @@ public class ConfigSalonFrame extends FrameThird {
 
     DAOConfig daoC = new DAOConfig();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-    Utilidades utili = new Utilidades();
     UtilidadesGraficasCfgSal utiliGrafCfgS = new UtilidadesGraficasCfgSal();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServiceConfigSal scs = new ServiceConfigSal();
@@ -98,8 +83,11 @@ public class ConfigSalonFrame extends FrameThird {
         charsDB = daoC.askChars();
 
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("Configurar Salón");
-        labelTit.setBounds(anchoUnit * 9, altoUnit * 0, anchoUnit * 18, altoUnit * 5);
+        labelTit.setBounds(anchoUnit * 9, altoUnit * 0, this.getWidth() - anchoUnit * 10, altoUnit * 5);
         panelPpal.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JPanel panelSpaces = utiliGrafCfgS.panelSpacesBacker(this);
         panelPpal.add(panelSpaces);

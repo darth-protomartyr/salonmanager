@@ -105,6 +105,9 @@ public class StaticsManager extends FrameFull {
         JLabel labelStatics = utiliGraf.labelTitleBackerA3W("Estadísticas");
         labelStatics.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
         panelPpal.add(labelStatics);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
 //PANEL LATERAL IZQ-------------------------------------------------------------
 //PANEL LATERAL IZQ-------------------------------------------------------------        
@@ -309,7 +312,10 @@ public class StaticsManager extends FrameFull {
         String formattedPromTab = promTab + "";
         fieldPromTab.setText("$" + formattedPromTab);
 
-        long timeTab = totTime / tabInt;
+        long timeTab = 0;
+        if (totTime > 0) {
+            timeTab = totTime / tabInt;
+        }
         LocalTime time = utili.toLongHAndM(timeTab);
         fieldTimeTab.setText(time.getHour() + " horas, " + time.getMinute() + " min.");
 

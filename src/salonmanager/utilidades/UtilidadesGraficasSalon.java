@@ -31,7 +31,8 @@ import javax.swing.table.TableColumn;
 import salonmanager.BillDiscounter;
 import salonmanager.MoneyFlowManager;
 import salonmanager.CorrectorItem;
-import salonmanager.DeliveryTemplate;
+import salonmanager.DeliveryCreate;
+import salonmanager.DeliveryData;
 import salonmanager.ErrorTableCount;
 import salonmanager.GiftSelector;
 import salonmanager.ItemSelector;
@@ -39,7 +40,6 @@ import salonmanager.MoneyType;
 import salonmanager.Monitor;
 import salonmanager.PartialPayer;
 import salonmanager.Salon;
-import salonmanager.SalonManager;
 import salonmanager.WaiterSelector;
 import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.bussiness.ItemCard;
@@ -70,7 +70,6 @@ public class UtilidadesGraficasSalon {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServicioItemSale sis = new ServicioItemSale();
-    SalonManager sm = new SalonManager();
     DAOConfig daoC = new DAOConfig();
     DAOUser daoU = new DAOUser();
     DAOItemCard daoI = new DAOItemCard();
@@ -136,7 +135,6 @@ public class UtilidadesGraficasSalon {
                         if (confirm1 == true) {
                             salon.setWorkshiftNow(new Workshift(salon.getUser()));
                             daoW.saveWorkshift(salon.getWorkshiftNow());
-//                            salon.getWorkshiftNow().setId(daoW.findLastWsID());
                             salon.getWorkshiftNow().setCashierWs(salon.getUser());
                             daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                             salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenDateWs()));
@@ -663,7 +661,7 @@ public class UtilidadesGraficasSalon {
     }
 
     private void innDeliveryData(Salon salon) throws Exception {
-        new DeliveryTemplate(salon, null);
+        new DeliveryCreate(salon);
         salon.setEnabled(false);
     }
 
@@ -730,6 +728,7 @@ public class UtilidadesGraficasSalon {
                 }
             }
             );
+            salon.getDeliButtons().set(i, butSelDelivery);
 
             JButtonDeliverySee butSee = salon.getDeliButtonsSees().get(i);
             butSee.setBackground(narUlg);
@@ -772,7 +771,6 @@ public class UtilidadesGraficasSalon {
 
             if (salon.getDeliButtons().get(i).getTable().isBill() == true) {
                 salon.getDeliButtons().get(i).setBackground(red);
-                //Test
                 salon.getDeliButtonsSees().get(i).setBackground(red);
             }
 
@@ -784,6 +782,7 @@ public class UtilidadesGraficasSalon {
                 salon.getDeliButtonsSees().get(i).setEnabled(false);
             }
             salon.getPanelDeliBut().add(butSelDelivery);
+            salon.getDeliButtonsSees().set(i, butSee);
         }
         salon.revalidate();
         salon.repaint();
@@ -839,7 +838,6 @@ public class UtilidadesGraficasSalon {
             salon.setTableAux(salon.getJbdAux().getTable());
             tableFullerProp(salon);
         }
-
     }
 
     private void selectDeliSee(ActionEvent ae, Salon salon) throws Exception {
@@ -863,11 +861,12 @@ public class UtilidadesGraficasSalon {
         JButtonDeliverySee butClicked = (JButtonDeliverySee) ae.getSource();
         for (int i = 0; i < salon.getDeliButtonsSees().size(); i++) {
             if (salon.getDeliButtonsSees().get(i).getNumDeli() == butClicked.getNumDeli()) {
+                
                 salon.setJbdAux(salon.getDeliButtons().get(i));
                 salon.setJbdSAux(salon.getDeliButtonsSees().get(i));
-                Delivery deli = salon.getJbdSAux().getDelivery();
+                Delivery deli = salon.getJbdAux().getDelivery();
                 if (salon.getJbdSAux().getDelivery().getConsumer() != null) {
-                    new DeliveryTemplate(salon, deli);
+                    new DeliveryData(salon, deli);
                 } else {
                     utiliMsg.errorNullDeli();
                 }
@@ -1119,8 +1118,8 @@ public class UtilidadesGraficasSalon {
             utiliMsg.errorMultipleIndications();
             resetTableValues(salon);
         } else {
+            ss.createTable(salon, salon.getTableAux());
             if (salon.getItemsTableAux().size() < 1 && salon.getItemsGift().size() == 0) {
-                ss.createTable(salon, salon.getTableAux());
                 if (salon.getJbtAux() != null) {
                     salon.getJbtAux().setOpenJBT(true);
                     salon.getJbtAux().setBackground(green);
@@ -1358,12 +1357,6 @@ public class UtilidadesGraficasSalon {
     }
 
     private void discounter(Salon salon) {
-//        if (salon.getItemsPartialPaid().size() > 0) {
-//            salon.setItemsPartialPaidNoDiscount(salon.getItemsPartialPaid());
-//            salon.setItemsPartialPaid(new ArrayList<>());
-//            salon.getTableAux().setPartialPayedND(salon.getItemsPartialPaidNoDiscount());
-//            salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
-//        }
         BillDiscounter bd = new BillDiscounter(salon, null);
         bd.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         bd.setAlwaysOnTop(true);
@@ -1395,7 +1388,7 @@ public class UtilidadesGraficasSalon {
         });
         panelPartial.add(salon.getButPartialPay());
 
-        salon.getLabelPartialPay().setText("Pagado $: 0.0");
+        salon.setLabelPartialPay(utiliGraf.labelTitleBacker3("Pagado $: 0.0"));
         salon.getLabelPartialPay().setBounds(anchoUnit * 12, altoUnit, anchoUnit * 10, altoUnit * 3);
         panelPartial.add(salon.getLabelPartialPay());
         return panelPartial;
@@ -1645,8 +1638,9 @@ public class UtilidadesGraficasSalon {
 
         if (salon.getTableAux().isBill() == true) {
             salon.getLabelTotalParcial().setText("Total $:");
-            salon.getLabelTip().setText("Prop. $: " + Math.round(salon.getTotal() * salon.getTipPc() / 100));
-            double tot = Math.round(salon.getTotal() * salon.getTipPc() / 100) + salon.getTotal();
+            double tip = ss.countBillTip(salon.getTableAux(), salon, false);
+            salon.getLabelTip().setText("Prop. $: " + Math.round(tip));
+            double tot = Math.round(tip + salon.getTotal());
             salon.getLabelTotal().setText("Total $: " + tot);
         } else {
             salon.getLabelTotalParcial().setText("Parcial $:");

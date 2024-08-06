@@ -27,7 +27,8 @@ public class UserExpressTemplate extends FrameHalf {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     DAOUser daoU = new DAOUser();
 
-    DeliveryTemplate fnd = null;
+    DeliveryCreate dc = null;
+    DeliveryData dd = null;
 
     Color black = new Color(50, 50, 50);
     Color red = new Color(240, 82, 7);
@@ -59,7 +60,7 @@ public class UserExpressTemplate extends FrameHalf {
 
     JButtonMetalBlu butCreateUserExpress = null;
 
-    public UserExpressTemplate(DeliveryTemplate f, String r, User u) throws Exception {
+    public UserExpressTemplate(DeliveryCreate dCr, DeliveryData dDa, String r, User u) throws Exception {
         rol = r;
         String tit = "";
         if (u != null) {
@@ -70,7 +71,15 @@ public class UserExpressTemplate extends FrameHalf {
         }
 
         setTitle(tit);
-        fnd = f;
+
+        if (dCr != null) {
+            dc = dCr;
+        }
+
+        if (dDa != null) {
+            dd = dDa;
+        }
+
         mailUsers = daoU.listarUserMails();
 
         setBounds(0, 0, anchoFrame / 2, alturaFrame);
@@ -80,7 +89,10 @@ public class UserExpressTemplate extends FrameHalf {
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W(tit.toUpperCase());
         labelTit.setBounds(anchoUnit * 2, altoUnit * 0, anchoUnit * 25, altoUnit * 5);
-        
+
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
+
         panelPpal.add(labelTit);
 
         JPanel panelForm = new JPanel();
@@ -155,7 +167,11 @@ public class UserExpressTemplate extends FrameHalf {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                fnd.setFndEnabled();
+                if (dd != null) {
+                    dd.setFndEnabled();
+                } else {
+                    dc.setFndEnabled();
+                }
                 dispose();
             }
         });
@@ -171,7 +187,11 @@ public class UserExpressTemplate extends FrameHalf {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                fnd.setFndEnabled();
+                if (dd != null) {
+                    dd.setFndEnabled();
+                } else {
+                    dc.setFndEnabled();
+                }
                 dispose();
             }
         });
@@ -231,14 +251,21 @@ public class UserExpressTemplate extends FrameHalf {
         }
 
         if (error == false) {
+
             userAux = new User(name, lastName, phone, mail, rol);
             if (i == 1) {
                 daoU.saveUser(userAux);
             } else {
                 daoU.updateUser(userAux, userFull.getId());
             }
-            fnd.getDeliUser(userAux);
-            fnd.setFndEnabled();
+            if (dd != null) {
+                dd.getDeliUser(userAux);
+                dd.setFndEnabled();
+            } else {
+                dc.getDeliUser(userAux);
+                dc.setFndEnabled();
+            }
+
             dispose();
         } else {
             resetFields();

@@ -5,13 +5,18 @@
 package salonmanager.servicios;
 
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ListModel;
 import salonmanager.ConfigSalonFrame;
+import salonmanager.LandingFrame;
+import salonmanager.SalonManager;
 import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
 import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.entidades.graphics.PanelNestedSpace;
@@ -44,7 +49,7 @@ public class ServiceConfigSal {
 
         PanelNestedSpace pn = new PanelNestedSpace(selectedValue, cSF.getPanels().size());
 
-        panelManager(pn, selectedValue, cSF);        
+        panelManager(pn, selectedValue, cSF);
     }
 
     public void unSelSpace(String selectedValue, ConfigSalonFrame cSF) {
@@ -170,7 +175,6 @@ public class ServiceConfigSal {
         cSF.getSm().frameCloser();
         System.exit(0);
     }
-    
 
     private void data1Updater(ConfigSalonFrame cSF) {
         String st = "<html><b>SECTORES</b>: ";
@@ -287,8 +291,7 @@ public class ServiceConfigSal {
         cSF.getPanelPanel().revalidate();
         cSF.getPanelPanel().repaint();
     }
-    
-    
+
     public void updateValues(ConfigSalonFrame cSF) throws Exception {
         cSF.setCategoriesSel(cSF.getCfgGen().getTableItemCategories());
         cSF.setSpacesSel(cSF.getCfgGen().getTablePan());
@@ -335,9 +338,9 @@ public class ServiceConfigSal {
                 }
             }
         }
-        
+
         cSF.getSpinnerTip().setValue(cSF.getCfgGen().getTipPc());
-        
+
         data1Updater(cSF);
         data2Updater(cSF);
     }

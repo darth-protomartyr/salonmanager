@@ -1,6 +1,5 @@
 package salonmanager;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -18,10 +17,8 @@ import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemCard;
-import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -31,15 +28,9 @@ public class ItemcardInn extends FrameHalf {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    ServicioItemcard sic = new ServicioItemcard();
     DAOItemCard daoIC = new DAOItemCard();
     DAOConfig daoC = new DAOConfig();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
-    User userIn = null;
 
     ArrayList<ItemCard> itemsCardDB = null;
     String name = "";
@@ -60,9 +51,12 @@ public class ItemcardInn extends FrameHalf {
     JTextField fieldStock = new JTextField();
     JCheckBox checkTip = new JCheckBox("");
     JButtonMetalBlu butCreateItem = null;
-
-    public ItemcardInn() throws Exception {
+    Manager manager = null;
+    
+    public ItemcardInn(Manager man) throws Exception {
         sm.addFrame(this);
+        manager = man;
+        
         setTitle("Ingreso Item de Carta");
         itemsCardDB = daoIC.listarItemsCard();
         categoriesDB = daoC.askCategoriesConfig();
@@ -73,6 +67,9 @@ public class ItemcardInn extends FrameHalf {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("INGRESAR ITEMS AL MENÚ");
         labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 40, altoUnit * 4);
         panelPpal.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JPanel panelForm = utiliGraf.panelItemcardForm(fieldName, comboCategory, areaDescription, fieldCost, fieldPrice, fieldStock, checkTip, categoriesDB, null);
         panelPpal.add(panelForm);

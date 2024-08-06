@@ -1,7 +1,6 @@
 package salonmanager;
 
 import salonmanager.entidades.graphics.FrameWindow;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.awt.Color;
@@ -26,9 +25,6 @@ import javax.swing.event.DocumentListener;
 import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.entidades.bussiness.Table;
-import salonmanager.servicios.ServicioSalon;
-import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class MoneyType extends FrameWindow {

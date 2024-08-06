@@ -16,7 +16,7 @@ public class Delivery {
     String id;
     DeliveryClient consumer;
     Table tab;
-    User deli;
+    User deliUser;
     boolean open;
     boolean active;
 
@@ -27,7 +27,7 @@ public class Delivery {
         Timestamp ts = new Timestamp(new Date().getTime());
         this.id = utili.emptyToStr(ts + "");
         this.consumer = consumerBack(phone);
-        this.deli = daoU.getUserById(userId);
+        this.deliUser = daoU.getUserById(userId);
         this.open = true;
         this.active = true;
     }
@@ -36,7 +36,7 @@ public class Delivery {
         this.id = id;
         this.consumer = consumerBack(phone);
         this.tab = tabBack(tab);
-        this.deli = deliBack(deli);
+        this.deliUser = deliBack(deli);
         this.open = open;
         this.active = active;
     }
@@ -80,12 +80,12 @@ public class Delivery {
         this.tab = tab;
     }
 
-    public User getDeli() {
-        return deli;
+    public User getDeliUser() {
+        return deliUser;
     }
 
-    public void setDeli(User deli) {
-        this.deli = deli;
+    public void setDeliUser(User deliUser) {
+        this.deliUser = deliUser;
     }
 
     public boolean isOpen() {

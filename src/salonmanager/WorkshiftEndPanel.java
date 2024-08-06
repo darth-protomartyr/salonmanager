@@ -146,17 +146,20 @@ public class WorkshiftEndPanel extends FrameHalf {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, frame.getWidth(), altoUnit * 6);
+        panelLabel.setBounds(0, 0, frame.getWidth()- anchoUnit * 10, altoUnit * 6);
         panelPpal.add(panelLabel);
+        
+        JLabel labelTit = utiliGraf.labelTitleBackerA4W(tit2);
+        panelLabel.add(labelTit);
 
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
+        
         String nomCashier = cashier.getName();
         String pronomCashier = cashier.getLastName();
 
         String nomCashierEnd = manager.getUser().getName();
         String pronomCashierEnd = manager.getUser().getLastName();
-
-        JLabel labelTit = utiliGraf.labelTitleBackerA4W(tit2);
-        panelLabel.add(labelTit);
 
         JLabel labelCashier = utiliGraf.labelTitleBacker2W("Titular caja: " + nomCashier.toUpperCase() + " " + pronomCashier.toUpperCase());
         labelCashier.setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 30, altoUnit * 3);

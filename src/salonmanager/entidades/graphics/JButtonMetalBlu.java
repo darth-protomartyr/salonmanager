@@ -12,20 +12,16 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.metal.MetalButtonUI;
 
-/**
- *
- * @author Gonzalo
- */
 public class JButtonMetalBlu extends JButton{
     Color bluSSt = new Color(4, 97, 80);
     public JButtonMetalBlu() {
         setUI(new MetalButtonUI() {
             protected Color getDisabledTextColor() {
-                return Color.WHITE; // Cambia el color del texto cuando el botón está deshabilitado
+                return Color.WHITE;
             }
 
             protected Color getDisabledBorderColor() {
-                return Color.GRAY; // Cambia el color del borde cuando el botón está deshabilitado
+                return Color.GRAY; 
             }
 
             public void paint(Graphics g, JComponent c) {
@@ -36,17 +32,16 @@ public class JButtonMetalBlu extends JButton{
                 ButtonModel model = button.getModel();
 
                 if (model.isArmed()) {
-                    g2.setColor(new Color(4, 77, 60)); // Color cuando se presiona el botón
+                    g2.setColor(new Color(4, 77, 60));
                 } else if (model.isRollover()) {
-                    g2.setColor(new Color(4, 127, 110)); // Color cuando el ratón pasa por encima del botón
+                    g2.setColor(new Color(4, 127, 110));
                 } else {
-                    g2.setColor(new Color(4, 107, 90)); // Color normal del botón
+                    g2.setColor(new Color(4, 107, 90));
                 }
 
-                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 10, 10); // Dibuja el botón redondeado
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 10, 10);
 
                 g2.setColor(Color.WHITE);
-//                g2.drawRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 10, 10); // Dibuja el borde del botón
 
                 FontMetrics fm = g2.getFontMetrics();
                 Rectangle textRect = fm.getStringBounds(button.getText(), g2).getBounds();
@@ -54,12 +49,12 @@ public class JButtonMetalBlu extends JButton{
                 int textY = (c.getHeight() - textRect.height) / 2 + fm.getMaxAscent();
 
                 g2.setColor(Color.WHITE);
-                g2.drawString(button.getText(), textX, textY); // Dibuja el texto centrado en el botón
+                g2.drawString(button.getText(), textX, textY);
 
                 g2.dispose();
             }
         });
-        setContentAreaFilled(false); // Hace que el área interior del botón sea transparente
-        setFocusPainted(false); // Elimina el resaltado del botón cuando tiene el foco
+        setContentAreaFilled(false);
+        setFocusPainted(false);
     }
 }

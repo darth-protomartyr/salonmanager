@@ -1,12 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.servicios;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import salonmanager.LandingFrame;
 import salonmanager.Salon;
+import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
@@ -15,18 +15,18 @@ import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
+import salonmanager.utilidades.UtilidadesMensajes;
 
-/**
- *
- * @author Gonzalo
- */
 public class ServicioWorkshift {
+
     DAOConfig daoC = new DAOConfig();
     DAOItemCard daoI = new DAOItemCard();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioTable st = new ServicioTable();
+    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+
     public void saveWorkshift(Workshift actualWs, Workshift newWs, ArrayList<Table> actualTabs, ArrayList<Table> newTabs, ArrayList<Table> toEraseTabs, ArrayList<Table> toUpdTabs, Salon salon) throws Exception {
         boolean isTabs = false;
         if (actualTabs.size() + newTabs.size() + toUpdTabs.size() > 0) {
@@ -35,7 +35,7 @@ public class ServicioWorkshift {
         daoW.updateWorkshiftCash(actualWs);
         daoW.updateWorkshiftElectronic(actualWs);
         daoW.updateWorkshiftTabs(actualWs);
-        daoW.updateWorkshiftMountWs(actualWs); 
+        daoW.updateWorkshiftMountWs(actualWs);
         daoW.updateWorkshiftError(actualWs);
         daoW.updateWorkshiftErrorWs(actualWs);
         daoW.updateWorkshiftClose(actualWs, isTabs);
@@ -45,7 +45,6 @@ public class ServicioWorkshift {
         daoC.updateCfgActOpenIdWs(0);
         daoC.updateCfgActModTabs(new ArrayList<String>());
         if (newWs != null) {
-            
             daoW.saveWorkshift(newWs);
             int id = daoW.askWorshiftActualId();
             daoC.updateCfgActOpenWs(true);
@@ -101,6 +100,11 @@ public class ServicioWorkshift {
             for (Table t : newTabs) {
                 st.saveTableCompleteChangeWs(t, salon);
             }
+            utiliMsg.cargaCloseWsPending();
+            SalonManager.frameCloser();
+            System.exit(0);
+        } else {
+            utiliMsg.cargaCloseWs();
         }
     }
 }

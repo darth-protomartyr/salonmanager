@@ -85,6 +85,8 @@ public class TableAdder extends FrameThird {
 
     ArrayList<ItemCard> itemsDB = new ArrayList<>();
     ArrayList<ItemCard> items = new ArrayList<>();
+    ArrayList<ItemCard> itemsNew = new ArrayList<>();
+
     ArrayList<ItemCard> itemsGift = new ArrayList<>();
     ArrayList<ItemCard> itemsPartialPayed = new ArrayList<>();
     ArrayList<ItemCard> itemsPartialPayedND = new ArrayList<>();
@@ -151,6 +153,9 @@ public class TableAdder extends FrameThird {
         JLabel labelTit = utiliGraf.labelTitleBackerA4W(tit.toUpperCase());
         labelTit.setBounds(anchoUnit * 4, altoUnit * 1, anchoUnit * 26, altoUnit * 5);
         panelPpal.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         comboItems.setModel(utili.itemsComboModelReturnWNull(itemsDB));
         comboItems.setFont(font4);
@@ -398,6 +403,7 @@ public class TableAdder extends FrameThird {
         int counter = 0;
         while (counter < num) {
             items.add(ic);
+            itemsNew.add(ic);
             counter += 1;
         }
         setTableItems();
@@ -426,11 +432,12 @@ public class TableAdder extends FrameThird {
                 tab.setAmountCash(amountCash);
                 tab.setAmountElectronic(amountElec);
                 tab.setTotal(totalMount - error);
-                tab.setComments("Los datos de la mesa fueron ingresados con posterirdad.");
+                tab.setComments("Los datos de la mesa fueron ingresados con posteriodad.");
                 daoT.saveTable(tab, dateCloseWs);
                 tab.setOrder(items);
                 for (int i = 0; i < tab.getOrder().size(); i++) {
                     daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
+                    daoI.updateItemStockUpDown(tab.getOrder().get(i), false);
                 }
                 for (int i = 0; i < tab.getGifts().size(); i++) {
                     daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
@@ -471,6 +478,10 @@ public class TableAdder extends FrameThird {
                     daoI.downActiveItemOrderTableAll(tabAux);
                     for (int i = 0; i < tabAux.getOrder().size(); i++) {
                         daoI.saveItemOrderTable(tabAux.getOrder().get(i), tabAux);
+                    }
+                    
+                    for (int i = 0; i < itemsNew.size(); i++) {
+                        daoI.updateItemStockUpDown(itemsNew.get(i), false);
                     }
 
                     tabAux.setGifts(itemsGift);

@@ -27,18 +27,18 @@ public class ServiceAdmin {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
+    
     public void selectUser(Admin admin) {
         String selection = (String) admin.getComboUsers().getSelectedItem();
         if (!selection.equals("")) {
             admin.setUserMod(utili.userSelReturn(selection, admin.getUsers()));
+            int index = 0;            
             admin.getComboRol().setSelectedItem(admin.getUserMod().getRol());
-            String state = "";
             if (admin.getUserMod().isActiveUser()) {
-                state = "alta";
+                admin.getComboAct().setSelectedIndex(1);
             } else {
-                state = "baja";
+                admin.getComboAct().setSelectedIndex(2);
             }
-            admin.getComboAct().setSelectedItem(state);
             admin.getLabelUserMod().setText("Usuario: " + admin.getUserMod().getName() + " " + admin.getUserMod().getLastName());
         }
     }

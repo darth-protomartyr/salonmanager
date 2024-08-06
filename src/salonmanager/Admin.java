@@ -72,6 +72,9 @@ public class Admin extends FrameHalf {
         JLabel labelTit = utiliGraf.labelTitleBackerA3W("Administrar");
         labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
         panelPpal.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
 //----------------Panel Users-------------------------------------------------
 //----------------Panel Users-------------------------------------------------

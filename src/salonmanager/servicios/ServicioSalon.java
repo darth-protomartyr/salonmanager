@@ -204,7 +204,12 @@ public class ServicioSalon {
 
     public void createTable(Salon sal, Table tableAux) throws Exception {
         daoT.saveTable(tableAux, sal.getWorkshiftNow().getOpenDateWs());
+        if (tableAux.getPos().equals("delivery")) {
+            String deli = sal.getJbdAux().getDelivery().getId();
+            daoD.updateDeliveryTable(tableAux.getId(), deli);
+        }
         daoU.saveWaiterTable(tableAux);
+        
     }
 
     public ArrayList<ItemCard> itemDeployer(ItemCard ic, int num) {
@@ -220,6 +225,7 @@ public class ServicioSalon {
     public void addItemOrder(Salon sal, Table tableAux, ArrayList<ItemCard> arrayAux, boolean indiBool) throws Exception {
         for (int i = 0; i < arrayAux.size(); i++) {
             daoIC.saveItemOrderTable(arrayAux.get(i), tableAux);
+            daoIC.updateItemStockUpDown(arrayAux.get(i), false);
             sim.createItemMonitor(sal, tableAux, arrayAux.get(i), indiBool);
         }
     }
@@ -350,6 +356,7 @@ public class ServicioSalon {
                 salon.setItemsTableAux(itemTableLesser(salon.getItemsTableAux(), ic));
                 salon.getTableAux().setOrder(salon.getItemsTableAux());
                 daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
+                daoIC.updateItemStockUpDown(ic, true);
                 break;
             case 2:
                 salon.setItemsGift(itemTableLesser(salon.getItemsGift(), ic));

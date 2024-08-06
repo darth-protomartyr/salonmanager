@@ -28,14 +28,9 @@ import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ItemSaleViewer extends FrameFull {
 
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-    Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
 
     DAOItemCard daoI = new DAOItemCard();
     DAOUser daoU = new DAOUser();
@@ -78,11 +73,14 @@ public class ItemSaleViewer extends FrameFull {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, this.getWidth(), anchoUnit * 6);
+        panelLabel.setBounds(0, 0, this.getWidth() - anchoUnit * 10, anchoUnit * 6);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Lista de transacciones");
         panelLabel.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         rows = iSales.size();
         data = (new String[rows][cols]);

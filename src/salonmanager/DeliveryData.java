@@ -1,6 +1,5 @@
 package salonmanager;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
 import salonmanager.entidades.bussiness.Delivery;
@@ -25,34 +23,23 @@ import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
-import salonmanager.utilidades.UtilidadesGraficasDeliTemplate;
+import salonmanager.utilidades.UtilidadesGraficasDeliData;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
 
-public class DeliveryTemplate extends FrameHalf {
+public class DeliveryData extends FrameHalf {
 
     DAODeliveryClient daoC = new DAODeliveryClient();
     DAOUser daoU = new DAOUser();
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-    UtilidadesGraficasDeliTemplate utiliGrafDT = new UtilidadesGraficasDeliTemplate();
+    UtilidadesGraficasDeliData utiliGrafDD = new UtilidadesGraficasDeliData();
 
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
 
     Utilidades utili = new Utilidades();
     ImageIcon icono = new ImageIcon("menu.png");
-
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
-    Color redLg = new Color(243, 103, 91);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
-    Color narLg = new Color(252, 203, 5);
-    Color viol = new Color(205, 128, 255);
-    Color bluLg = new Color(194, 242, 206);
 
     JComboBox comboConsumers = new JComboBox();
     JComboBox comboDelis = new JComboBox();
@@ -79,6 +66,9 @@ public class DeliveryTemplate extends FrameHalf {
     ArrayList<String> consumers = new ArrayList<>();
     ArrayList<User> deliverys = new ArrayList<>();
 
+    JPanel panelConsumer = null;
+    JPanel panelDelivery = null;
+    
     JButtonMetalBlu butOpConsumer = null;
     JButtonMetalBlu butOpDeliUser = null;
     JButtonMetalBlu butUpdateConsumer = null;
@@ -87,29 +77,20 @@ public class DeliveryTemplate extends FrameHalf {
     JButtonMetalBlu butOpDelivery = null;
 
     DeliveryClient cmrAux = null;
-    User deliAux = null;
+    User deliUserAux = null;
     Salon salon = null;
     Delivery deliFull = null;
     boolean change = false;
 
-    public DeliveryTemplate(Salon sal, Delivery deli) throws Exception {
+    public DeliveryData(Salon sal, Delivery deli) throws Exception {
         salon = sal;
         deliFull = deli;
-        if (deliFull != null) {
-            if (deliFull.getDeli() != null) {
-                deliAux = deli.getDeli();
-            }
-            cmrAux = deli.getConsumer();
-        }
+        deliUserAux = deli.getDeliUser();
+        cmrAux = deli.getConsumer();
         setIconImage(icono.getImage());
 
         String title = "";
-        if (deliFull == null) {
-            title = "INICIAR ENVIO";
-        } else {
-            title = "DATOS ENVIO";
-        }
-
+        title = "DATOS ENVIO";
         consumers = daoC.getConsumersPhone();
         deliverys = daoU.listUserByRol("DELIVERY");
 
@@ -124,48 +105,30 @@ public class DeliveryTemplate extends FrameHalf {
         labelTit.setBounds(anchoUnit, altoUnit * 2, anchoUnit * 12, altoUnit * 3);
         panelPpal.add(labelTit);
 
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
+
         //---------------------------------------DeliveryConsumer
-        JPanel panelConsumer = utiliGrafDT.panelConsumerBacker(this);
+        panelConsumer = utiliGrafDD.panelConsumerBacker(this);
         panelPpal.add(panelConsumer);
 
         //---------------------------------------Delivery
-        JPanel panelDelivery = utiliGrafDT.panelDeliveryBacker(this);
+        panelDelivery = utiliGrafDD.panelDeliveryBacker(this);
         panelPpal.add(panelDelivery);
 
-//        if (deliFull != null) {
-//            setDeliveryFields(deliAux);
-//        }
-        butOpDelivery = utiliGraf.button1("CREAR ENVÍO", anchoUnit * 17, altoUnit * 90, anchoUnit * 16);
-        if (deliFull == null) {
-            butOpDelivery.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        createDeliveryOrder();
-                    } catch (Exception ex) {
-                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        butOpDelivery = utiliGraf.button1("CAMBIAR ENVÍO", anchoUnit * 17, altoUnit * 90, anchoUnit * 16);
+        butOpDelivery.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    updateDeliveryOrder();
+                } catch (Exception ex) {
+                    Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            );
-        } else {
-            butOpDelivery.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        updateDeliveryOrder();
-                    } catch (Exception ex) {
-                        Logger.getLogger(CustomDialogConfirm.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            );
         }
+        );
         panelPpal.add(butOpDelivery);
-        if (deliFull != null) {
-            butOpDelivery.setVisible(false);
-            butOpDelivery.setText("CONFIRMAR CAMBIOS");
-        }
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir(frame);
         butSalir.addActionListener(new ActionListener() {
@@ -184,11 +147,11 @@ public class DeliveryTemplate extends FrameHalf {
         });
     }
 
-    void getDeliUser(User user) {
-        deliAux = user;
-        DeliveryTemplate dt = this;
-        utiliGrafDT.setDeliveryFields(deliAux, dt);
-        deliverys.add(deliAux);
+    public void getDeliUser(User user) {
+        deliUserAux = user;
+        DeliveryData dt = this;
+//        utiliGrafDD.setDeliveryUserFields(deliUserAux, this);
+        deliverys.add(deliUserAux);
         comboDelis.setModel(utili.userComboModelReturnWNull(deliverys));
         comboDelis.setSelectedIndex(deliverys.size() - 1);
         if (deliFull != null) {
@@ -197,33 +160,9 @@ public class DeliveryTemplate extends FrameHalf {
         setFndEnabled();
     }
 
-    private void createDeliveryOrder() throws Exception {
-//        if (deliAux != null && cmrAux != null) {
-        if (cmrAux != null) {
-            String id = "";
-            if (deliAux != null) {
-                id = deliAux.getId();
-            }
-
-            Delivery deliOrder = new Delivery(cmrAux.getPhone(), id);
-            utiliGrafSal.getDeliOrder(deliOrder, salon);
-            salon.setEnabled(true);
-            dispose();
-
-        } else {
-//            if (deliAux == null) {
-//                utiliMsg.errorDeliveryNull();
-//            }
-
-            if (cmrAux == null) {
-                utiliMsg.errorConsumerNull();
-            }
-        }
-    }
-
     private void updateDeliveryOrder() throws Exception {
         deliFull.setConsumer(cmrAux);
-        deliFull.setDeli(deliAux);
+        deliFull.setDeliUser(deliUserAux);
         utiliGrafSal.setDeliOrder(deliFull, salon);
         salon.setEnabled(true);
         dispose();
@@ -231,30 +170,6 @@ public class DeliveryTemplate extends FrameHalf {
 
     public void setFndEnabled() {
         setEnabled(true);
-    }
-
-    public DAODeliveryClient getDaoC() {
-        return daoC;
-    }
-
-    public void setDaoC(DAODeliveryClient daoC) {
-        this.daoC = daoC;
-    }
-
-    public DAOUser getDaoU() {
-        return daoU;
-    }
-
-    public void setDaoU(DAOUser daoU) {
-        this.daoU = daoU;
-    }
-
-    public ImageIcon getIcono() {
-        return icono;
-    }
-
-    public void setIcono(ImageIcon icono) {
-        this.icono = icono;
     }
 
     public JComboBox getComboConsumers() {
@@ -482,11 +397,11 @@ public class DeliveryTemplate extends FrameHalf {
     }
 
     public User getDeliAux() {
-        return deliAux;
+        return deliUserAux;
     }
 
     public void setDeliAux(User deliAux) {
-        this.deliAux = deliAux;
+        this.deliUserAux = deliAux;
     }
 
     public Salon getSalon() {
@@ -521,4 +436,21 @@ public class DeliveryTemplate extends FrameHalf {
         this.accessibleContext = accessibleContext;
     }
 
+    public JPanel getPanelConsumer() {
+        return panelConsumer;
+    }
+
+    public void setPanelConsumer(JPanel panelConsumer) {
+        this.panelConsumer = panelConsumer;
+    }
+
+    public JPanel getPanelDelivery() {
+        return panelDelivery;
+    }
+
+    public void setPanelDelivery(JPanel panelDelivery) {
+        this.panelDelivery = panelDelivery;
+    }
+    
+    
 }

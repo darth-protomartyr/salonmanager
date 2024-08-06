@@ -63,11 +63,14 @@ public class MoneyFlowViewer extends FrameHalfFlat {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, this.getWidth(), anchoUnit * 6);
+        panelLabel.setBounds(0, 0, this.getWidth() -  anchoUnit * 10, anchoUnit * 6);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("PAGO PARCIAL");
         panelLabel.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         rows = moneyFlowList.size();
         data = (new String[rows][cols]);

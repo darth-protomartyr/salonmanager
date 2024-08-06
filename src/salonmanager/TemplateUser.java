@@ -71,6 +71,9 @@ public class TemplateUser extends FrameHalf {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("REGISTRAR");
         labelTit.setBounds(anchoUnit * 2, altoUnit * 0, anchoUnit * 20, altoUnit * 4);
         panelPpal.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JPanel panelA = new JPanel();
         panelA.setLayout(null);

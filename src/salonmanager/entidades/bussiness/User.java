@@ -50,18 +50,11 @@ public class User {
         this.mail = mail;
         this.phone = phone;
         this.rol = rol;
+        this.routeImage = "C:|Users|Gonzalo|Documents|NetbeansProject|SalonManager|resources|images|avatar.jpg";
+        this.nameImage = "avatar.jpg";
+        this.password = "";
         this.activeUser = true;
     }
-
-//    public User(String id, String name, String lastName, String mail, String phone, boolean activeUser) {
-//        this.id = id;
-//        this.name = name;
-//        this.lastName = lastName;
-//        this.mail = mail;
-//        this.rol = "MOZO";
-//        this.phone = phone;
-//        this.activeUser = activeUser;
-//    }
 
     public String getId() {
         return id;

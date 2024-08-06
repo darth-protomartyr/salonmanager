@@ -1,11 +1,12 @@
 package salonmanager.entidades.graphics;
 
+import java.awt.Color;
 import salonmanager.entidades.bussiness.Table;
 import javax.swing.JButton;
 import salonmanager.entidades.bussiness.Delivery;
 
 public class JButtonDelivery extends JButton {
-
+    Color bluStBarr = new Color(2, 82, 67);
     String pos;
     int num;
     Table table;
@@ -15,6 +16,8 @@ public class JButtonDelivery extends JButton {
     
 
     public JButtonDelivery() {
+        super();
+        initialize();
     }
 
     public JButtonDelivery(int num, Delivery delivery) {
@@ -24,6 +27,7 @@ public class JButtonDelivery extends JButton {
         this.text = pos + " " + num;
         this.openJBD = false;
         this.delivery = delivery;
+        initialize();
     }
 
     public JButtonDelivery(String pos, int num, Table table, String text, boolean openJBB, Delivery delivery) {
@@ -33,6 +37,12 @@ public class JButtonDelivery extends JButton {
         this.text = text;
         this.openJBD = openJBB;
         this.delivery = delivery;
+        initialize();
+    }
+    
+    private void initialize() {
+        this.setForeground(bluStBarr); // Establece el color de texto por defecto
+        this.setText(this.text); // Asegura que el texto se establece en el botón
     }
 
     public String getPos() {

@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import static javax.swing.SwingConstants.CENTER;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -49,16 +50,10 @@ import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.graphics.CustomJMenuBar;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOTable;
-import salonmanager.persistencia.DAOUser;
-import salonmanager.persistencia.DAOWorkshift;
-import salonmanager.servicios.ServicioSalon;
-import salonmanager.servicios.ServicioTable;
-import salonmanager.utilidades.Utilidades;
-import salonmanager.utilidades.UtilidadesMensajes;
 
 public class UtilidadesGraficas extends JFrame {
 
+    Color whi = new Color(255, 255, 255);
     Color bluSt = new Color(3, 166, 136);
     Color bluStBarr = new Color(2, 82, 67);
     Color bluLg = new Color(194, 242, 206);
@@ -67,15 +62,10 @@ public class UtilidadesGraficas extends JFrame {
     Color white = new Color(255, 255, 255);
 
     Utilidades utili = new Utilidades();
-    ServicioSalon ss = new ServicioSalon();
-    ServicioTable st = new ServicioTable();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     SalonManager sm = new SalonManager();
     Manager manager = null;
     DAOConfig daoC = new DAOConfig();
-    DAOUser daoU = new DAOUser();
-    DAOWorkshift daoW = new DAOWorkshift();
-    DAOTable daoT = new DAOTable();
     Toolkit pantalla = Toolkit.getDefaultToolkit();
     Dimension tamanioPantalla = pantalla.getScreenSize();
     int anchoFrame = tamanioPantalla.width;
@@ -197,7 +187,7 @@ public class UtilidadesGraficas extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     if (user.getPassword().equals(pass)) {
-                        new ItemcardInn();
+                        new ItemcardInn(manager);
                     } else {
                         sm.salir();
                     }
@@ -238,7 +228,6 @@ public class UtilidadesGraficas extends JFrame {
         }
         );
 
-        
         itemSalon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -253,7 +242,6 @@ public class UtilidadesGraficas extends JFrame {
             }
         });
 
-        
         if (sm.rolPermission(2)) {
             itemStatics.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,7 +257,6 @@ public class UtilidadesGraficas extends JFrame {
                 }
             });
         }
-
         return menuBar;
     }
 
@@ -329,6 +316,7 @@ public class UtilidadesGraficas extends JFrame {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(75f);
+        title.setForeground(bluStBarr);
         title.setFont(newFont);
         return title;
     }
@@ -338,6 +326,7 @@ public class UtilidadesGraficas extends JFrame {
         Font font = title.getFont();
         Font newFont = font.deriveFont(50f);
         title.setFont(newFont);
+        title.setForeground(bluStBarr);
         return title;
     }
 
@@ -346,13 +335,42 @@ public class UtilidadesGraficas extends JFrame {
         Font font = title.getFont();
         Font newFont = font.deriveFont(42f);
         title.setFont(newFont);
+        title.setForeground(bluStBarr);
         return title;
     }
+    
+//    public JLabel labelTitleBackerA2bSt(String tit) {
+//        JLabel title = new JLabel(tit);
+//        Font font = title.getFont();
+//        Font newFont = font.deriveFont(42f);
+//        title.setForeground(bluStBarr);
+//        title.setFont(newFont);
+//        return title;
+//    }
 
     public JLabel labelTitleBackerA3(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(35f);
+        title.setForeground(bluStBarr);
+        title.setFont(newFont);
+        return title;
+    }
+    
+//    public JLabel labelTitleBackerA3St(String tit) {
+//        JLabel title = new JLabel(tit);
+//        Font font = title.getFont();
+//        Font newFont = font.deriveFont(35f);
+//        title.setForeground(bluStBarr);
+//        title.setFont(newFont);
+//        return title;
+//    }
+    
+    public JLabel labelTitleBackerA3bW(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(40f);
+        title.setForeground(white);
         title.setFont(newFont);
         return title;
     }
@@ -371,6 +389,7 @@ public class UtilidadesGraficas extends JFrame {
         Font font = title.getFont();
         Font newFont = font.deriveFont(25f);
         title.setFont(newFont);
+        title.setForeground(bluStBarr);
         return title;
     }
 
@@ -383,14 +402,24 @@ public class UtilidadesGraficas extends JFrame {
         return title;
     }
     
+//    public JLabel labelTitleBackerA4St(String tit) {
+//        JLabel title = new JLabel(tit);
+//        Font font = title.getFont();
+//        Font newFont = font.deriveFont(25f);
+//        title.setFont(newFont);
+//        title.setForeground(bluStBarr);
+//        return title;
+//    }
+
     public JLabel labelTitleBackerA5(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(23f);
+        title.setForeground(bluStBarr);
         title.setFont(newFont);
         return title;
     }
-    
+
     public JLabel labelTitleBackerA5W(String tit) {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
@@ -404,9 +433,19 @@ public class UtilidadesGraficas extends JFrame {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(20f);
+        title.setForeground(bluStBarr);
         title.setFont(newFont);
         return title;
     }
+    
+//    public JLabel labelTitleBacker1St(String tit) {
+//        JLabel title = new JLabel(tit);
+//        Font font = title.getFont();
+//        Font newFont = font.deriveFont(20f);
+//        title.setFont(newFont);
+//        title.setForeground(bluStBarr);
+//        return title;
+//    }
 
     public JLabel labelTitleBacker1W(String tit) {
         JLabel title = new JLabel(tit);
@@ -422,6 +461,7 @@ public class UtilidadesGraficas extends JFrame {
         title.setText(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(16f);
+        title.setForeground(bluStBarr);
         title.setFont(newFont);
         return title;
     }
@@ -440,9 +480,19 @@ public class UtilidadesGraficas extends JFrame {
         JLabel title = new JLabel(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(13f);
+        title.setForeground(bluStBarr);
         title.setFont(newFont);
         return title;
     }
+    
+//    public JLabel labelTitleBacker3St(String tit) {
+//        JLabel title = new JLabel(tit);
+//        Font font = title.getFont();
+//        Font newFont = font.deriveFont(13f);
+//        title.setForeground(bluStBarr);
+//        title.setFont(newFont);
+//        return title;
+//    }
 
     public JLabel labelTitleBacker3W(String tit) {
         JLabel title = new JLabel(tit);
@@ -458,16 +508,44 @@ public class UtilidadesGraficas extends JFrame {
         Font font = title.getFont();
         Font newFont = font.deriveFont(9f);
         title.setFont(newFont);
+        title.setForeground(bluStBarr);
+        return title;
+    }
+
+    public JLabel labelTitleBacker4W(String tit) {
+        JLabel title = new JLabel(tit);
+        Font font = title.getFont();
+        Font newFont = font.deriveFont(9f);
+        title.setFont(newFont);
+        title.setForeground(white);
         return title;
     }
 
     public JLabel labelLegal(int width, int height, int col, int hLess) {
-        String tit = "SALOON MANAGER - 2024 - Software Services";
+        String fontName1 = "Arial";
+        String fontName2 = "Tahoma";
+        int fontSize1 = 9;
+        String colorHex1 = "#FFFFFF";
+        String colorHex2 = "#000000";
+        String colorHex3 = "#FCCB05";
+        
+        String span1 = "span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex1 + ";'";
+        String span2 = "span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex2 + ";'";
+        String span = span2;
+
+        if(col == 1) {
+            span = span1;
+        }
+         
+        String tit ="<html><" + span +">bar</span>"
+                + "<span style='font-family: " + fontName2 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex3 + ";'>IA</span> - 2024 - Naxoft</html>";
+                
         JLabel title = new JLabel();
         title.setText(tit);
         Font font = title.getFont();
         Font newFont = font.deriveFont(12f);
         title.setFont(newFont);
+        title.setForeground(bluStBarr);
         title.setHorizontalAlignment(SwingConstants.CENTER);
         if (col == 1) {
             title.setForeground(white);
@@ -709,6 +787,7 @@ public class UtilidadesGraficas extends JFrame {
         panelData7.setBounds(anchoUnit * 20, altoUnit * 62, anchoUnit * 15, altoUnit * 7);
         checkTip.setBounds(anchoUnit * 12, altoUnit * 2, altoUnit * 3, altoUnit * 3);
         checkTip.setBackground(bluLg);
+        checkTip.setSelected(true);
         panelData7.add(checkTip);
         panelA.add(panelData7);
 
@@ -777,5 +856,74 @@ public class UtilidadesGraficas extends JFrame {
                 applyEmptyBorder(subComponent, emptyBorder);
             }
         }
+    }
+
+    public JPanel panelTitleBacker(int i) {
+        Font newFontST = new Font("Lucida Sans", Font.BOLD, altoUnit * 3);
+
+        JPanel panelTitle = new JPanel(null);
+        panelTitle.setBounds(anchoUnit * 2, altoUnit * 3, anchoUnit * 35, altoUnit * 24);
+        panelTitle.setBackground(bluSt);
+
+        String fontName1 = "Arial";
+        String fontName2 = "Tahoma";
+        int fontSize1 = altoUnit * 18;
+        String colorHex1 = "#FFFFFF"; // Color en formato hexadecimal
+        String colorHex2 = "#FCCB05"; // Color en formato hexadecimal
+
+        String text = "<html><span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex1 + ";'>bar</span>"
+                + "<span style='font-family: " + fontName2 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex2 + ";'>IA</span></html>";
+        JLabel labelTitleProgram = new JLabel(text);
+        labelTitleProgram.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 35, altoUnit * 19);
+
+        JPanel panelSubTitle = new JPanel();
+        panelSubTitle.setBounds(anchoUnit * 0, altoUnit * 19, anchoUnit * 35, altoUnit * 5);
+        panelSubTitle.setBackground(bluSt);
+        panelTitle.add(panelSubTitle);
+
+        JLabel labelSTitleProgram = new JLabel("Software para Locales Gastronómicos");
+        labelSTitleProgram.setFont(newFontST);
+        labelSTitleProgram.setHorizontalAlignment(CENTER);
+        labelSTitleProgram.setForeground(whi);
+        
+        if (i == 2) {
+            newFontST = new Font("Lucida Sans", Font.BOLD, anchoUnit);
+            panelTitle.setBounds(anchoUnit * 27, altoUnit * 2, anchoUnit * 27, altoUnit * 17);
+            panelSubTitle.setBounds(anchoUnit * 0, altoUnit * 13, anchoUnit * 27, altoUnit * 3);
+            fontSize1 = altoUnit * 12;
+            labelSTitleProgram.setFont(newFontST);
+            
+            text = "<html><span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex1 + ";'>bar</span>"
+                + "<span style='font-family: " + fontName2 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex2 + ";'>IA</span></html>";
+                labelTitleProgram = new JLabel(text);
+                labelTitleProgram.setBounds(anchoUnit * 2, altoUnit * 0, anchoUnit * 35, altoUnit * 13);
+        }
+
+        panelTitle.add(labelTitleProgram);
+        panelSubTitle.add(labelSTitleProgram);
+        return panelTitle;
+    }
+
+    public JPanel panelLogoBacker2(int width) {
+        JPanel panelTitle = new JPanel(null);
+        panelTitle.setBounds(width - anchoUnit * 6, altoUnit * 1, anchoUnit * 4, altoUnit * 3);
+        panelTitle.setBorder(BorderFactory.createLineBorder(whi, 1));
+        panelTitle.setBackground(bluSt);
+
+        String fontName1 = "Arial";
+        String fontName2 = "Tahoma";
+        int fontSize1 = 13;
+        int fontSize2 = 13;
+        String colorHex1 = "#FFFFFF";
+        String colorHex2 = "#FCCB05";
+
+        String text = "<html><span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex1 + ";'>bar</span>"
+                + "<span style='font-family: " + fontName2 + "; font-weight: bold; font-size: " + fontSize2 + "px; color: " + colorHex2 + ";'>IA</span></html>";
+        JLabel labelTitleProgram = new JLabel(text);
+        labelTitleProgram.setBounds(anchoUnit * 0 + 2, altoUnit * 0, anchoUnit * 4, altoUnit * 3);
+
+        panelTitle.add(labelTitleProgram);
+
+        return panelTitle;
     }
 }

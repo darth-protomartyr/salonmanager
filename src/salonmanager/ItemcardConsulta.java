@@ -13,24 +13,16 @@ import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
-import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
-import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ItemcardConsulta extends FrameThird {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
-    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    ServicioItemcard sic = new ServicioItemcard();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
     Color narUlg = new Color(255, 255, 176);
-    Color viol = new Color(242, 29, 41);
     SalonManager sm = new SalonManager();
-    User userIn = null;
     ItemCard itemAux = null;
 
     public ItemcardConsulta(ItemCard ic) {
@@ -43,6 +35,9 @@ public class ItemcardConsulta extends FrameThird {
         JLabel labelTit = utiliGraf.labelTitleBackerA4W("Consulta Item de la Carta");
         labelTit.setBounds(anchoUnit * 5, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
         panelPpal.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JPanel panelB = new JPanel();
         panelB.setLayout(null);

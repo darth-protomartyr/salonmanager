@@ -23,18 +23,22 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
-import salonmanager.utilidades.UtilidadesGraficasDeliTemplate;
+import salonmanager.utilidades.UtilidadesGraficasDeliCreate;
+import salonmanager.utilidades.UtilidadesGraficasDeliData;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ConsumerTemplate extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-    UtilidadesGraficasDeliTemplate utiliGrafDT = new UtilidadesGraficasDeliTemplate();
+    UtilidadesGraficasDeliCreate utiliGrafDC = new UtilidadesGraficasDeliCreate();
+    UtilidadesGraficasDeliData utiliGrafDD = new UtilidadesGraficasDeliData();
+
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     DAODeliveryClient daoC = new DAODeliveryClient();
 
-    DeliveryTemplate fnd = null;
+    DeliveryData dd = null;
+    DeliveryCreate dc = null;
 
     Color black = new Color(50, 50, 50);
     Color red = new Color(240, 82, 7);
@@ -76,7 +80,9 @@ public class ConsumerTemplate extends FrameHalf {
     JButtonMetalBlu butCreateConsumer = null;
     DeliveryClient cmrFull = null;
 
-    public ConsumerTemplate(DeliveryTemplate f, DeliveryClient cmr) throws Exception {
+    public ConsumerTemplate(DeliveryCreate dCr, DeliveryData dDa, DeliveryClient cmr) throws Exception {
+//    public ConsumerTemplate(DeliveryData dDa, DeliveryCreate dCr, DeliveryClient cmr) throws Exception {
+
         String tit = "";
         if (cmr != null) {
             cmrFull = cmr;
@@ -85,8 +91,16 @@ public class ConsumerTemplate extends FrameHalf {
             tit = "Alta Cliente";
         }
 
+        if (dCr != null) {
+            dc = dCr;
+        }
+
+        if (dDa != null) {
+            dd = dDa;
+        }
+
         setTitle(tit);
-        fnd = f;
+
         phonesCmrs = daoC.getConsumersPhone();
 
         setBounds(0, 0, anchoFrame / 2, alturaFrame);
@@ -97,6 +111,9 @@ public class ConsumerTemplate extends FrameHalf {
         JLabel labelTit = utiliGraf.labelTitleBacker1(tit);
         labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 40, altoUnit * 4);
         panelPpal.add(labelTit);
+
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JPanel panelForm = new JPanel();
         panelForm.setLayout(null);
@@ -216,7 +233,11 @@ public class ConsumerTemplate extends FrameHalf {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                fnd.setFndEnabled();
+                if (dd != null) {
+                    dd.setFndEnabled();
+                } else {
+                    dc.setFndEnabled();
+                }
                 dispose();
             }
         });
@@ -224,7 +245,11 @@ public class ConsumerTemplate extends FrameHalf {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                fnd.setFndEnabled();
+                if (dd != null) {
+                    dd.setFndEnabled();
+                } else {
+                    dc.setFndEnabled();
+                }
                 dispose();
             }
         });
@@ -268,6 +293,30 @@ public class ConsumerTemplate extends FrameHalf {
             utiliMsg.errorEmptyFields();
         }
 
+        if (details.equals("")) {
+            details = "--";
+        }
+
+        if (deptFloor.equals("")) {
+            deptFloor = "--";
+        }
+
+        if (deptNum.equals("")) {
+            deptNum = "--";
+        }
+
+        if (district.equals("")) {
+            district = "--";
+        }
+
+        if (area.equals("")) {
+            area = "--";
+        }
+
+        if (socialNetwork.equals("")) {
+            socialNetwork = "--";
+        }        
+
         if (error == false) {
             cmrAux = new DeliveryClient(id, street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
             if (i == 1) {
@@ -275,8 +324,17 @@ public class ConsumerTemplate extends FrameHalf {
             } else {
                 daoC.updateConsumer(cmrAux, cmrFull.getId());
             }
-            utiliGrafDT.getConsumer(cmrAux, fnd);
-            fnd.setFndEnabled();
+
+            if (dc != null) {
+                utiliGrafDC.getConsumer(cmrAux, dc);
+                dc.setFndEnabled();
+            }
+
+            if (dd != null) {
+                utiliGrafDD.getConsumer(cmrAux, dd);
+                dd.setFndEnabled();
+            }
+
             dispose();
 
         } else {

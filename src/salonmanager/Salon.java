@@ -48,14 +48,12 @@ public class Salon extends FrameFull {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasSalon utiliGrafSal = new UtilidadesGraficasSalon();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    Utilidades utili = new Utilidades();
     SalonManager sm = new SalonManager();
     DAOUser daoU = new DAOUser();
     DAOItemCard daoI = new DAOItemCard();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOConfig daoC = new DAOConfig();
     ServicioTable st = new ServicioTable();
-    ServicioSalon ss = new ServicioSalon();
 
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(252, 203, 5);
@@ -200,6 +198,11 @@ public class Salon extends FrameFull {
         JPanel panelActual = utiliGrafSal.panelActualBacker(sal);
         panelPpal.add(panelActual);
 
+        
+        JPanel panelTitle = utiliGraf.panelTitleBacker(2);
+        panelPpal.add(panelTitle);
+        
+        
 //PANEL MONITOR--------------------------------------------------------------------------------------------------------
 //PANEL MONITOR--------------------------------------------------------------------------------------------------------
         JPanel panelMonitor = utiliGrafSal.panelMonitor(sal);
@@ -331,6 +334,7 @@ public class Salon extends FrameFull {
             }
         });
         panelTable.add(butErrorTable);
+
 //Panel Count---------------------------------------------------------
 //Panel Count---------------------------------------------------------
         panelCount = utiliGrafSal.returnPanelCount(sal);

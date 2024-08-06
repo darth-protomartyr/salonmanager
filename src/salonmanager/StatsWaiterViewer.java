@@ -50,12 +50,8 @@ public class StatsWaiterViewer extends FrameFull {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServiceStatics statsS = new ServiceStatics();
     StaticsManager sMan = null;
-    CategoryChart chartItemsSelled = null;
-    CategoryChart chartItemPriceEvol = null;
     JPanel panelChart1 = new JPanel();
     JPanel panelChart2 = new JPanel();
-    HashMap<Integer, Integer> countItems = new HashMap<Integer, Integer>();
-    HashMap<Integer, Integer> newCountItems = new HashMap<Integer, Integer>();
     ArrayList<ItemSale> iSales = null;
     ArrayList<User> usersDB = null;
     ArrayList<ItemSale> iSalesByWaiter = null;
@@ -81,11 +77,14 @@ public class StatsWaiterViewer extends FrameFull {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, this.getWidth(), altoUnit * 6);
+        panelLabel.setBounds(0, 0, this.getWidth() - anchoUnit * 10, altoUnit * 6);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("");
         panelLabel.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         panelChart1.setLayout(new BorderLayout());
         panelPpal.add(panelChart1);

@@ -1,7 +1,5 @@
 package salonmanager.persistencia;
 
-import salonmanager.utilidades.Utilidades;
-import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ public class DAODeliveryClient extends DAO {
             String socialNetwork = SalonManager.encrypt(cmr.getSocialNetwork());
             String active = SalonManager.encryptBoolean(cmr.isConsumerActive());
 
-            String sql1 = "INSERT INTO delivery_clients(delivery_client_id, delivery_client_street, delivery_client_street_num, delivery_client_dept_floor, delivery_client_dept_num, delivery_client_district, delivery_client_area, delivery_client_details, delivery_client_name, delivery_client_phone, consume_social_network, delivery_client_active)"
-                    + "VALUES('" +  SalonManager.encryptInt(id) + "', '" + SalonManager.encrypt(street) + "', '" +  SalonManager.encrypt(numSt) + "', '" +  SalonManager.encrypt(deptFloor) + "', '" +  SalonManager.encrypt(deptNum) + "', '" +  SalonManager.encrypt(district) + "', '" +  SalonManager.encrypt(area) + "', '" +  SalonManager.encrypt(details) + "', '" +  SalonManager.encrypt(name) + "', '" +  SalonManager.encrypt(phone) + "', '" +  SalonManager.encrypt(socialNetwork) + "', '" +  SalonManager.encrypt(active) + "');";
+            String sql1 = "INSERT INTO delivery_clients(delivery_client_id, delivery_client_street, delivery_client_street_num, delivery_client_dept_floor, delivery_client_dept_num, delivery_client_district, delivery_client_area, delivery_client_details, delivery_client_name, delivery_client_phone, delivery_client_social_network, delivery_client_active)"
+                    + "VALUES('" +  id + "', '" + street + "', '" +  numSt + "', '" +  deptFloor + "', '" +  deptNum + "', '" +  district + "', '" +  area + "', '" +  details + "', '" +  name + "', '" +  phone + "', '" +  socialNetwork + "', '" +  active + "');";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -128,7 +126,7 @@ public class DAODeliveryClient extends DAO {
             String sql1 = "UPDATE delivery_clients SET delivery_client_street = '" + street + "', delivery_client_street_num = '" + numSt
                     + "', delivery_client_dept_floor = '" + deptFloor +"', delivery_client_dept_num = '" + deptNum + "', delivery_client_district = '" + district
                     + "', delivery_client_area = '" + area +"', delivery_client_details = '" + details +"', delivery_client_name = '" + name + "', delivery_client_phone = '" + phone
-                    + "', consume_social_network = '" + socialNetwork + "', delivery_client_active = '" + active
+                    + "', delivery_client_social_network = '" + socialNetwork + "', delivery_client_active = '" + active
                     + "' WHERE delivery_client_id = '" + SalonManager.encryptInt(id) + "';";
             
             System.out.println(sql1);

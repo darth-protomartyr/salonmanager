@@ -45,8 +45,13 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
-    public void cargaUsuario() {
-        CustomDialog cm = new CustomDialog("El usuario fue ingresado. El Administrador le asignara un rol a la brevedad", 1);
+    public void cargaUsuarioRolNull() {
+        CustomDialog cm = new CustomDialog("El usuario fue ingresado, el Administrador le asignara un rol en brevedad", 1);
+        cm.setVisible(true);
+    }
+    
+    public void cargaUsuarioRolFull() {
+        CustomDialog cm = new CustomDialog("El usuario fue ingresado", 1);
         cm.setVisible(true);
     }
 
@@ -789,5 +794,15 @@ public class UtilidadesMensajes extends JFrame {
     public void errorSumCorrection() {
         CustomDialog cm = new CustomDialog("Error: el monto ingresado es superior al faltante", 2);
         cm.setVisible(true);
+    }
+
+    public void cargaCloseWsPending() {
+        CustomDialog cm = new CustomDialog("Se realizó el cierre de caja. A continuación se finalizará la sesión por cambio de turno.", 1);
+        cm.setVisible(true); 
+    }
+
+    public void cargaCloseWs() {
+        CustomDialog cm = new CustomDialog("El cierre de caja fue exitoso.", 1);
+        cm.setVisible(true); 
     }
 }

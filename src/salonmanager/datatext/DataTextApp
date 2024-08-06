@@ -1,6 +1,6 @@
 ----Infotext from Salonmanager APK----------------------------------------------
 
-
+    Color whi = new Color(255, 255, 255);
     Color red = new Color(240, 82, 7);
     Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
@@ -9,3 +9,4 @@
     Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
     Color viol = new Color(242, 29, 41);
+    Color bluStBarr = new Color(2, 82, 67);

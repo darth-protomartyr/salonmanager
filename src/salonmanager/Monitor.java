@@ -85,9 +85,16 @@ public class Monitor extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
+        JPanel panelLabel = new JPanel();
+        panelLabel.setBackground(bluSt);
+        panelLabel.setBounds(0, 0, this.getWidth() -  anchoUnit * 10, anchoUnit * 6);
+        panelPpal.add(panelLabel);
+
         JLabel labelTit = utiliGraf.labelTitleBacker1W("SEGUIMIENTO DE ÓRDENES");
-        labelTit.setBounds(10, 20, 400, 30);
-        panelPpal.add(labelTit);
+        panelLabel.add(labelTit);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JButtonMetalBlu butMonitTabs = utiliGraf.button2("Órdenes de Mesa", anchoUnit * 2, altoUnit * 8, anchoUnit * 15);
         butMonitTabs.addActionListener(new ActionListener() {

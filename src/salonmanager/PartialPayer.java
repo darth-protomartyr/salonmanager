@@ -25,7 +25,6 @@ import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.servicios.ServicioSalon;
-import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 
 public class PartialPayer extends FrameWindow {

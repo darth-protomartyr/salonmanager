@@ -1,5 +1,6 @@
 package salonmanager.entidades.graphics;
 
+import java.awt.Color;
 import salonmanager.entidades.bussiness.Table;
 import javax.swing.JButton;
 
@@ -9,8 +10,11 @@ public class JButtonBarr extends JButton {
     Table table;
     String text;
     boolean openJBB;
+    Color bluStBarr = new Color(2, 82, 67);
 
     public JButtonBarr() {
+        super();
+        initialize();
     }
 
     public JButtonBarr(int num) {
@@ -19,6 +23,7 @@ public class JButtonBarr extends JButton {
         this.table = null;
         this.text = pos + " " + num;
         this.openJBB = false;
+        initialize();
     }
 
     public JButtonBarr(String pos, int num, Table table, String text, boolean openJBB) {
@@ -27,6 +32,12 @@ public class JButtonBarr extends JButton {
         this.table = table;
         this.text = text;
         this.openJBB = openJBB;
+        initialize();
+    }
+    
+    private void initialize() {
+        this.setForeground(bluStBarr); // Establece el color de texto por defecto
+        this.setText(this.text); // Asegura que el texto se establece en el botón
     }
 
     public String getPos() {

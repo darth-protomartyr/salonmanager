@@ -18,7 +18,12 @@ public class DAOUser extends DAO {
             String apellido = SalonManager.encrypt(user.getLastName());
             String mail = SalonManager.encrypt(user.getMail());
             String id = SalonManager.encrypt(user.getId());
-            String rol = SalonManager.encrypt("NULL");
+            String rol = "";
+            if (user.getRol() == null) {
+                rol = SalonManager.encrypt("NULL");
+            } else {
+                rol = SalonManager.encrypt(user.getRol());
+            }
             String routeImage = SalonManager.encrypt(user.getRouteImage());
             String nameImage = SalonManager.encrypt(user.getNameImage());
             String pass = SalonManager.encrypt(user.getPassword());
@@ -29,8 +34,11 @@ public class DAOUser extends DAO {
                     + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
-            utiliMsg.cargaUsuario();
-
+            if (rol.equals("")) {
+                utiliMsg.cargaUsuarioRolNull();
+            } else {
+                utiliMsg.cargaUsuarioRolFull();
+            }
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -49,6 +57,9 @@ public class DAOUser extends DAO {
             String mail = SalonManager.encrypt(user.getMail());
             String id = SalonManager.encrypt(user.getId());
             String rol = SalonManager.encrypt(user.getRol());
+            if (rol == null) {
+                rol = "NULL";
+            }
             String routeImage = SalonManager.encrypt(user.getRouteImage());
             String nameImage = SalonManager.encrypt(user.getNameImage());
             String pass = SalonManager.encrypt(user.getPassword());
@@ -115,7 +126,11 @@ public class DAOUser extends DAO {
                 user.setName(SalonManager.decrypt(resultado.getString(2)));
                 user.setLastName(SalonManager.decrypt(resultado.getString(3)));
                 user.setMail(SalonManager.decrypt(resultado.getString(4)));
-                user.setRol(SalonManager.decrypt(resultado.getString(5)));
+                String role = SalonManager.decrypt(resultado.getString(5));
+                if (role.equals("NULL")) {
+                    role = null;
+                }
+                user.setRol(role);
                 user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
                 user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
                 user.setPassword(SalonManager.decrypt(resultado.getString(8)));
@@ -144,7 +159,11 @@ public class DAOUser extends DAO {
             user.setName(SalonManager.decrypt(resultado.getString(2)));
             user.setLastName(SalonManager.decrypt(resultado.getString(3)));
             user.setMail(SalonManager.decrypt(resultado.getString(4)));
-            user.setRol(SalonManager.decrypt(resultado.getString(5)));
+            String role = SalonManager.decrypt(resultado.getString(5));
+            if (role.equals("NULL")) {
+                role = null;
+            }
+            user.setRol(role);
             user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
             user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
             user.setPassword(SalonManager.decrypt(resultado.getString(8)));
@@ -157,7 +176,7 @@ public class DAOUser extends DAO {
     }
 
     public ArrayList<User> listarUsersCompleto() throws Exception {
-        String sql = "SELECT * FROM users WHERE user_role =  '" + SalonManager.encrypt("MANAGER") + "' OR user_role = '" + SalonManager.encrypt("MOZO") + "' OR user_role = '" + SalonManager.encrypt("CAJERO") + "' OR user_role = '" + SalonManager.encrypt("DELIVERY") + "' OR user_role = '" + SalonManager.encrypt("NULL") +"';";
+        String sql = "SELECT * FROM users WHERE user_role =  '" + SalonManager.encrypt("MANAGER") + "' OR user_role = '" + SalonManager.encrypt("MOZO") + "' OR user_role = '" + SalonManager.encrypt("CAJERO") + "' OR user_role = '" + SalonManager.encrypt("DELIVERY") + "' OR user_role = '" + SalonManager.encrypt("NULL") + "';";
         System.out.println(sql);
         consultarBase(sql);
         User user = null;
@@ -168,7 +187,11 @@ public class DAOUser extends DAO {
             user.setName(SalonManager.decrypt(resultado.getString(2)));
             user.setLastName(SalonManager.decrypt(resultado.getString(3)));
             user.setMail(SalonManager.decrypt(resultado.getString(4)));
-            user.setRol(SalonManager.decrypt(resultado.getString(5)));
+            String role = SalonManager.decrypt(resultado.getString(5));
+            if (role.equals("NULL")) {
+                role = null;
+            }
+            user.setRol(role);
             user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
             user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
             user.setPassword(SalonManager.decrypt(resultado.getString(8)));
@@ -211,7 +234,11 @@ public class DAOUser extends DAO {
             user.setName(SalonManager.decrypt(resultado.getString(2)));
             user.setLastName(SalonManager.decrypt(resultado.getString(3)));
             user.setMail(SalonManager.decrypt(resultado.getString(4)));
-            user.setRol(SalonManager.decrypt(resultado.getString(5)));
+            String role = SalonManager.decrypt(resultado.getString(5));
+            if (role.equals("NULL")) {
+                role = null;
+            }
+            user.setRol(role);
             user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
             user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
             user.setPassword(SalonManager.decrypt(resultado.getString(8)));
@@ -273,7 +300,11 @@ public class DAOUser extends DAO {
                 user.setName(SalonManager.decrypt(resultado.getString(2)));
                 user.setLastName(SalonManager.decrypt(resultado.getString(3)));
                 user.setMail(SalonManager.decrypt(resultado.getString(4)));
-                user.setRol(SalonManager.decrypt(resultado.getString(5)));
+                String role = SalonManager.decrypt(resultado.getString(5));
+                if (role.equals("NULL")) {
+                    role = null;
+                }
+                user.setRol(role);
                 user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
                 user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
                 user.setPassword(SalonManager.decrypt(resultado.getString(8)));
@@ -315,6 +346,9 @@ public class DAOUser extends DAO {
         String lastName = SalonManager.encrypt(userAux.getLastName());
         String mail = SalonManager.encrypt(userAux.getMail());
         String rol = SalonManager.encrypt(userAux.getRol());
+        if (rol == null) {
+            rol = "NULL";
+        }
         String routeImage = SalonManager.encrypt(userAux.getRouteImage());
         String nameImage = SalonManager.encrypt(userAux.getNameImage());
         String password = SalonManager.encrypt(userAux.getPassword());
@@ -342,11 +376,11 @@ public class DAOUser extends DAO {
         User cashier = null;
         String cashierId = "";
         try {
-            String sql = "SELECT cashier_id_fkey FROM cashier_workshifts WHERE workshift_id_fkey = " + wsId + ";";
+            String sql = "SELECT cashier_id_fkey FROM cashier_workshifts WHERE workshift_id_fkey = '" + SalonManager.encryptInt(wsId) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                cashierId = SalonManager.encrypt(resultado.getString(1));
+                cashierId = SalonManager.decrypt(resultado.getString(1));
             }
             cashier = getUserById(cashierId);
         } catch (SQLException e) {

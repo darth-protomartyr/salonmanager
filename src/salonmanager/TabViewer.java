@@ -62,8 +62,11 @@ public class TabViewer extends FrameFull {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, this.getWidth(), anchoUnit * 6);
+        panelLabel.setBounds(0, 0, this.getWidth() - 7, anchoUnit * 6);
         panelPpal.add(panelLabel);
+        
+        JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
+        panelPpal.add(panelLogo);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("Lista de transacciones");
         panelLabel.add(labelTit);
