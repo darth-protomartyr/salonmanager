@@ -53,7 +53,7 @@ public class TabViewer extends FrameFull {
     String[][] data = null;
     ArrayList<Table> tabs = null;
 
-    public TabViewer(ArrayList<Table> tables) throws Exception {
+    public TabViewer(ArrayList<Table> tables, StaticsManager statsM) throws Exception {
         sm.addFrame(this);
         setTitle("Lista de transacciones");
         tabs = tables;
@@ -177,6 +177,7 @@ public class TabViewer extends FrameFull {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                statsM.setEnabled(true);
                 dispose();
             }
         });
@@ -185,6 +186,7 @@ public class TabViewer extends FrameFull {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                statsM.setEnabled(true);
                 dispose();
             }
         });

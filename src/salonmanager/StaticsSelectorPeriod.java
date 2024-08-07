@@ -23,10 +23,12 @@ import javax.swing.event.ChangeListener;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.servicios.ServiceStatics;
+import salonmanager.utilidades.UtilidadesGraficasStatics;
 
 
 public class StaticsSelectorPeriod extends FrameWindow {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasStatics utiliGrafStats = new UtilidadesGraficasStatics();
     ServiceStatics sStats = new ServiceStatics();
     SalonManager sm = new SalonManager();
     Color bluSt = new Color(3, 166, 136);
@@ -227,7 +229,7 @@ public class StaticsSelectorPeriod extends FrameWindow {
         Timestamp timestampInit = Timestamp.valueOf(date1);
         Timestamp timestampEnd = Timestamp.valueOf(date2);
         
-        sStats.staticBacker(timestampInit, timestampEnd, statsM, 0);
+        utiliGrafStats.staticBacker(timestampInit, timestampEnd, statsM, 0);
         statsM.setEnabled(true);
         dispose();
     }

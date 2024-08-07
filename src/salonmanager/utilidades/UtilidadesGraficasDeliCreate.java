@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package salonmanager.utilidades;
 
 import java.awt.Color;
@@ -22,10 +18,6 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
 import salonmanager.persistencia.DAODeliveryClient;
 
-/**
- *
- * @author Gonzalo
- */
 public class UtilidadesGraficasDeliCreate {
 
     Toolkit pantalla = Toolkit.getDefaultToolkit();
@@ -37,23 +29,14 @@ public class UtilidadesGraficasDeliCreate {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     DAODeliveryClient daoC = new DAODeliveryClient();
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
-    Color redLg = new Color(243, 103, 91);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-    Color viol = new Color(205, 128, 255);
-    Color bluLg = new Color(194, 242, 206);
 
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
     public JPanel panelConsumerBacker(DeliveryCreate dc) {
-        JPanel panelConsumer = panelBacker("Cliente", anchoUnit, altoUnit * 6, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 9));
+        JPanel panelConsumer = panelBacker("Cliente", altoUnit * 6, (alturaFrame / 2 - altoUnit * 9));
 
         dc.setLabelSelectPhone(utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:"));
         dc.getLabelSelectPhone().setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 23, altoUnit * 4);
@@ -77,7 +60,7 @@ public class UtilidadesGraficasDeliCreate {
         panelConsumer.add(dc.getComboConsumers());
 
         
-        dc.setButOpConsumer(utiliGraf.button2("CREAR CLIENTE", anchoUnit * 38, altoUnit * 7, anchoUnit * 11));
+        dc.setButOpConsumer(utiliGraf.button2("CREAR CLIENTE", anchoUnit * 37, altoUnit * 7, anchoUnit * 12));
         dc.getButOpConsumer().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -143,9 +126,9 @@ public class UtilidadesGraficasDeliCreate {
         return panelConsumer;
     }
 
-    public JPanel panelBacker(String tit, int i, int i0, int i1, int i2) {
+    public JPanel panelBacker(String tit, int hPos, int h) {
         JPanel panel = new JPanel(null);
-        panel.setBounds(i, i0, i1, i2);
+        panel.setBounds(anchoUnit, hPos, (anchoFrame / 2) - anchoUnit * 3, h);
         panel.setBackground(narLg);
 
         JPanel panelLabel = new JPanel();
@@ -187,25 +170,12 @@ public class UtilidadesGraficasDeliCreate {
         dc.setEnabled(false);
     }
 
-//    private void changeConsumer(DeliveryCreate dc) {
-//        dc.getLabelSelectPhone().setVisible(true);
-//        dc.getComboConsumers().setVisible(true);
-//        dc.getButOpConsumer().setVisible(false);
-//        dc.getButUpdateConsumer().setVisible(false);
-//    }
-//    private void updateConsumer(DeliveryCreate dc) throws Exception {
-//        new ConsumerTemplate(dc, dc.getCmrAux());
-//        dc.setEnabled(false);
-//    }
     public void getConsumer(DeliveryClient cmr, DeliveryCreate dc) {
         dc.setCmrAux(cmr);
         setConsumerFields(dc.getCmrAux(), dc);
         dc.getConsumers().add(dc.getCmrAux().getPhone());
         dc.getComboConsumers().setModel(utili.consumerComboModelReturnWNull(dc.getConsumers()));
         dc.getComboConsumers().setSelectedIndex(dc.getConsumers().size() - 1);
-//        if (dc.getDeliFull() != null) {
-//            dc.getButOpDelivery().setVisible(true);
-//        }
         dc.setFndEnabled();
     }
 
@@ -214,7 +184,7 @@ public class UtilidadesGraficasDeliCreate {
 //--------------------------------DRIVER----------------------------------------
 //--------------------------------DRIVER----------------------------------------
     public JPanel panelDeliveryBacker(DeliveryCreate dc) {
-        JPanel panelDelivery = panelBacker("Delivery", anchoUnit, alturaFrame / 2, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 16));
+        JPanel panelDelivery = panelBacker("Delivery", alturaFrame / 2, (alturaFrame / 2 - altoUnit * 14));
 
         dc.setLabelSelectDeli(utiliGraf.labelTitleBacker1("Elija Delivery para envíar:"));
         dc.getLabelSelectDeli().setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 19, altoUnit * 4);
@@ -231,9 +201,6 @@ public class UtilidadesGraficasDeliCreate {
             public void actionPerformed(ActionEvent e) {
                 try {
                     deliveryBacker(dc);
-//                    if (dc.getDeliFull() != null) {
-//                        dc.getButOpDelivery().setVisible(true);
-//                    }
                 } catch (Exception ex) {
                     Logger.getLogger(DeliveryCreate.class.getName()).log(Level.SEVERE, null, ex);
                 }

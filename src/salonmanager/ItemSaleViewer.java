@@ -64,7 +64,7 @@ public class ItemSaleViewer extends FrameFull {
 //        ConfigGeneral cg = man.getCfgGen();
         sm.addFrame(this);
         setTitle("Lista de transacciones");
-        iSales = stM.getItemsales();
+        iSales = stM.getISales();
         items = daoI.listarItemsCard();
         PanelPpal panelPpal = new PanelPpal(this);
         add(panelPpal);

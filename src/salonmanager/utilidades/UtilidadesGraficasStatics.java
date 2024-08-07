@@ -8,8 +8,15 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -23,13 +30,18 @@ import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.PieSeries;
+import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.style.Styler;
 import salonmanager.StaticsManager;
+import salonmanager.entidades.bussiness.ItemSale;
+import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemSale;
+import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServiceStatics;
@@ -45,25 +57,18 @@ public class UtilidadesGraficasStatics {
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
 
-    DAOItemCard daoI = new DAOItemCard();
+        DAOWorkshift daoW = new DAOWorkshift();
+    DAOTable daoT = new DAOTable();
+    DAOItemSale daoIs = new DAOItemSale();
     DAOUser daoU = new DAOUser();
-    DAOWorkshift daoW = new DAOWorkshift();
+    DAOItemCard daoI = new DAOItemCard();
     Utilidades utili = new Utilidades();
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    UtilidadesUpdate utiliUpd = new UtilidadesUpdate();
     ServiceStatics sStats = new ServiceStatics();
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color bluLg = new Color(194, 242, 206);
-    Color viol = new Color(242, 29, 41);
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
     Color narUlg = new Color(255, 255, 176);
-    Color narUlgX = new Color(255, 255, 210);
-    Color narLg = new Color(252, 203, 5);
 
     public PieChart chartOrderBacker(StaticsManager statsM) {
         PieChart chartOrder = new PieChartBuilder().width(anchoUnit * 25).height(altoUnit * 25).build();
@@ -80,7 +85,7 @@ public class UtilidadesGraficasStatics {
     public XYChart chartCurveBacker(StaticsManager statsM) {
         ArrayList<Timestamp> turnos = new ArrayList<>();
         ArrayList<Double> sales = new ArrayList<>();
-        ArrayList<Workshift> wsS = statsM.getWorkshift();
+        ArrayList<Workshift> wsS = statsM.getWorkshifts();
 
         for (Workshift ws : wsS) {
             turnos.add(ws.getOpenDateWs());
@@ -306,9 +311,6 @@ public class UtilidadesGraficasStatics {
         JLabel labelStatsWs = utiliGraf.labelTitleBacker1("Por turno:");
         labelStatsWs.setBounds(anchoUnit * 1, altoUnit * 21, anchoUnit * 18, altoUnit * 3);
         panelStatsBySell.add(labelStatsWs);
-
-        
-        
         
         JComboBox comboWs = new JComboBox();
         
@@ -419,8 +421,6 @@ public class UtilidadesGraficasStatics {
         statsM.getFieldTotalReal().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldTotalReal().setEditable(false);
         panelStatsBySell.add(statsM.getFieldTotalReal());
-
-        
         
         JLabel labelPromTab = utiliGraf.labelTitleBacker2("Prom. gasto por orden:");
         labelPromTab.setBounds(anchoUnit * 2, altoUnit * 73, anchoUnit * 16, altoUnit * 3);
@@ -462,7 +462,7 @@ public class UtilidadesGraficasStatics {
             ws = Integer.parseInt(w);
         }
 
-        sStats.staticBacker(null, null, statsM, ws);
+        staticBacker(null, null, statsM, ws);
     }
 
     public JPanel panelOrderBacker(StaticsManager statsM) {
@@ -547,10 +547,10 @@ public class UtilidadesGraficasStatics {
         labelItemsCategory.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 40, altoUnit * 4);
         panelItemsCategory.add(labelItemsCategory);
 
-        statsM.getPanelItemsCategory().setLayout(new BorderLayout());
-        statsM.getPanelItemsCategory().setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 24, altoUnit * 29);
-        statsM.getPanelItemsCategory().setBackground(bluSt);
-        panelItemsCategory.add(statsM.getPanelItemsCategory());
+//        panelItemsCategory.setLayout(new BorderLayout());
+//        statsM.getPanelItemsCategory().setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 24, altoUnit * 29);
+//        statsM.getPanelItemsCategory().setBackground(bluSt);
+//        panelItemsCategory.add(statsM.getPanelItemsCategory());
 
         statsM.setLabelCategory0(utiliGraf.labelTitleBacker3(""));
         statsM.getLabelCategory0().setBounds(anchoUnit * 26, altoUnit * 5, anchoUnit * 20, altoUnit * 3);
@@ -647,4 +647,274 @@ public class UtilidadesGraficasStatics {
         DefaultComboBoxModel<String> modeloCombo = utili.wsComboModelReturnWNu(wssSt);
         return modeloCombo; 
     }
+    
+    public void staticBacker(Timestamp timestampInit, Timestamp timestampEnd, StaticsManager statsM, int wsId) throws Exception {
+        ArrayList<Workshift> wsS = new ArrayList<>();
+
+        if (wsId == 0) {
+            ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
+            for (Integer id : wsIds) {
+                Workshift ws = daoW.askWorshiftById(id);
+                wsS.add(ws);
+            }
+        } else {
+            Workshift ws = daoW.askWorshiftById(wsId);
+            wsS.add(ws);
+        }
+
+        ArrayList<Timestamp> tsList = new ArrayList<>();
+        for (Workshift ws : wsS) {
+            Timestamp tsOpen = ws.getOpenDateWs();
+            Timestamp tsClose = ws.getCloseDateWs();
+            if (tsClose == null) {
+                tsClose = new Timestamp(new Date().getTime());
+            }
+            tsList.add(tsOpen);
+            tsList.add(tsClose);
+        }
+
+        Collections.sort(tsList, new Comparator<Timestamp>() {
+            @Override
+            public int compare(Timestamp t1, Timestamp t2) {
+                return t1.compareTo(t2);
+            }
+        });
+
+        int size = tsList.size();
+        if (size == 0) {
+            utiliMsg.errorNullDates();
+            statsM.setEnabled(true);
+        } else {
+            Timestamp ts1 = tsList.get(0);
+            Timestamp ts2 = tsList.get(size - 1);
+            ArrayList<Table> tabs = daoT.listarTablesByDate(ts1, ts2);
+            ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
+            Collections.sort(tabs, new TimestampComparator());
+            if (timestampInit != null && timestampEnd != null) {
+                statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
+                statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
+            } else {
+                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
+                statsM.setPeriod("TURNO " + wsS.get(0).getId());
+            }
+            statsM.setISales(is);
+            statsM.setTabs(tabs);
+            statsM.setWorkshifts(wsS);
+            statsM.setEnabled(true);
+            setPanelStatsBySell(statsM);
+            updater(statsM);
+        }
+    }
+
+    private void setPanelStatsBySell(StaticsManager statsM) {
+        statsM.getPanelOrder().setVisible(true);
+        statsM.getPanelSellCurve().setVisible(true);
+        statsM.getPanelItemsCategory().setVisible(true);
+        statsM.getPanelWaiterStatics().setVisible(true);
+    }
+    
+    
+    public void updater(StaticsManager statsM) throws Exception {
+        double tot = 0;
+//        double totReal = 0;
+        double errorTab = 0;
+        double errorWs = 0;
+        double promTab = 0;
+        long totTime = 0;
+        int tabInt = 0;
+        statsM.setCountCat(new HashMap<>());
+        statsM.setCountWSells(new HashMap<String, Double>());
+        statsM.setCountWWs(new HashMap<String, Integer>());
+        ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
+        ArrayList<String> waiterIds = new ArrayList<>();
+//        ArrayList<Integer> idSales = new ArrayList<>();
+//        ArrayList<Integer> cantSales = new ArrayList<>();
+        ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
+        for (Table tab : statsM.getTabs()) {
+            tot += tab.getTotal();
+            if (tab.getPos().equals("barra")) {
+                statsM.setNumBar(statsM.getNumBar() + tab.getTotal());
+            } else if (tab.getPos().equals("delivery")) {
+                statsM.setNumBar(statsM.getNumDeli() + tab.getTotal());
+            } else {
+                statsM.setNumTabs( statsM.getNumTabs() + tab.getTotal());
+            }
+
+            long time1 = tab.getOpenTime().getTime();
+            long time2 = tab.getCloseTime().getTime();
+
+            // Calcular la diferencia en milisegundos
+            long differenceInMillis = time2 - time1;
+            if (differenceInMillis < 28800000 && !tab.getPos().equals("barra") && !tab.getPos().equals("delivery")) {
+                totTime += differenceInMillis;
+                tabInt += 1;
+            }
+        }
+        
+        for (int i = 0; i < statsM.getWorkshifts().size(); i++) {
+            errorTab += statsM.getWorkshifts().get(i).getErrorMountTabs();
+            errorWs += statsM.getWorkshifts().get(i).getErrorMountWs() - statsM.getWorkshifts().get(i).getErrorMountTabs();
+        }
+
+        for (int i = 0; i < statsM.getCategories().size(); i++) {
+            statsM.getCountCat().put(statsM.getCategories().get(i), 0.0);
+        }
+
+        for (ItemSale is : statsM.getISales()) {
+            for (Map.Entry<String, Double> entry : statsM.getCountCat().entrySet()) {
+                String key = entry.getKey();
+                double newValue = 0;
+                double value = entry.getValue();
+                if (key.equals(is.getItemSaleCategory())) {
+                    newValue = value + is.getItemSalePrice();
+                    entry.setValue(newValue);
+                }
+            }
+
+            for (int i = 0; i < waiterIdsDB.size(); i++) {
+                String id1 = waiterIdsDB.get(i);
+                String Id2 = is.getItemSaleWaiterId();
+                if (id1.equals(Id2)) {
+                    waiterIds.add(is.getItemSaleWaiterId());
+                    HashSet<Integer> counterWs = new HashSet<Integer>();
+                    listHS.add(counterWs);
+                }
+            }
+        }
+
+        ArrayList<String> ids = new ArrayList<>(waiterIds);
+        for (int i = 0; i < ids.size(); i++) {
+            String id = ids.get(i);
+            statsM.getCountWSells().put(id, 0.0);
+            statsM.getCountWWs().put(id, 0);
+        }
+
+        for (ItemSale is : statsM.getISales()) {
+            for (Map.Entry<String, Double> entry : statsM.getCountWSells().entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(is.getItemSaleWaiterId())) {
+                    double value = entry.getValue();
+                    double newValue = value + is.getItemSalePrice();
+                    entry.setValue(newValue);
+                }
+            }
+
+            int counter = 0;
+            for (Map.Entry<String, Integer> entry : statsM.getCountWWs().entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(is.getItemSaleWaiterId())) {
+                    listHS.get(counter).add(is.getItemSaleWorkshiftId());
+                    int newValue = listHS.get(counter).size();
+                    entry.setValue(newValue);
+                }
+                counter += 1;
+            }
+        }
+
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
+        String formattedTotal = df.format(tot);
+        statsM.getFieldTotal().setText("$" + formattedTotal);
+
+        df.setMaximumFractionDigits(0);
+        String formattedErrorTab = df.format(errorTab);
+        statsM.getFieldErrorTab().setText(formattedErrorTab);
+
+        df.setMaximumFractionDigits(0);
+        String formattedErrorWs = df.format(errorWs);
+        statsM.getFieldErrorWs().setText(formattedErrorWs);        
+        
+        df.setMaximumFractionDigits(0);
+        String formattedTotalReal = df.format(tot - errorTab - errorWs);
+        statsM.getFieldTotalReal().setText("$" + formattedTotalReal);         
+        
+        promTab = utili.round2Dec(tot / statsM.getTabs().size());
+        String formattedPromTab = promTab + "";
+        statsM.getFieldPromTab().setText("$" + formattedPromTab);
+
+        long timeTab = 0;
+        if (totTime > 0) {
+            timeTab = totTime / tabInt;
+        }
+        LocalTime time = utili.toLongHAndM(timeTab);
+        statsM.getFieldTimeTab().setText(time.getHour() + " horas, " + time.getMinute() + " min.");
+
+        statsM.getPanelStatsBySell().setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 89);
+
+        //Sells bykind of order
+        statsM.setChartOrder(chartOrderBacker(statsM));
+        statsM.getPanelChartByOrder().removeAll();
+        statsM.getPanelChartByOrder().add(new XChartPanel<>(statsM.getChartOrder()));
+        statsM.getPanelChartByOrder().revalidate();
+        statsM.getPanelChartByOrder().repaint();
+
+//        Curve by mount volume
+        statsM.setChartCurveSell(chartCurveBacker(statsM));
+        statsM.getPanelChartSellCurve().removeAll();
+        statsM.getPanelChartSellCurve().add(new XChartPanel<>(statsM.getChartCurveSell()));
+        statsM.getPanelChartSellCurve().revalidate();
+        statsM.getPanelChartSellCurve().repaint();
+
+        //Volume by item Category
+        statsM.setChartCategoryPie(chartCategoryBacker(statsM.getCountCat(), statsM));
+        statsM.getPanelChartCategory().removeAll();
+        statsM.getPanelChartCategory().add(new XChartPanel<>(statsM.getChartCategoryPie()));
+        statsM.getPanelChartCategory().revalidate();
+        statsM.getPanelChartCategory().repaint();
+
+        //TOP Waiters Sell
+        ArrayList<String> waitersSell1 = new ArrayList<>(statsM.getCountWSells().keySet());
+        ArrayList<String> waitersSell2 = new ArrayList<>();
+        ArrayList<Double> amounts1 = new ArrayList<>(statsM.getCountWSells().values());
+        ArrayList<Double> amounts2 = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            if (i < waitersSell1.size()) {
+                String name = daoU.getUserNameById(waitersSell1.get(i));
+                waitersSell2.add(name);
+                amounts2.add(amounts1.get(i));
+            } else {
+                waitersSell2.add("--");
+                amounts2.add(0.0);
+            }
+        }
+
+        //TOP Waiters Workshift
+        ArrayList<String> waitersWs1 = new ArrayList<>(statsM.getCountWWs().keySet());
+        ArrayList<String> waitersWs2 = new ArrayList<>();
+        ArrayList<Integer> wss1 = new ArrayList<>(statsM.getCountWWs().values());
+        ArrayList<Integer> wss2 = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            if (i < waitersWs1.size()) {
+                String name = daoU.getUserNameById(waitersWs1.get(i));
+                waitersWs2.add(name);
+                wss2.add(wss1.get(i));
+            } else {
+                waitersWs2.add("--");
+                wss2.add(0);
+            }
+        }
+
+        statsM.getLabelWaiter1().setText("1- " + waitersSell2.get(0) + " $: " + amounts2.get(0));
+        statsM.getLabelWaiter2().setText("2- " + waitersSell2.get(1) + " $: " + amounts2.get(1));
+        statsM.getLabelWaiter3().setText("3- " + waitersSell2.get(2) + " $: " + amounts2.get(2));
+        statsM.getLabelWaiter4().setText("4- " + waitersSell2.get(3) + " $: " + amounts2.get(3));
+        statsM.getLabelWaiter5().setText("5- " + waitersSell2.get(4) + " $: " + amounts2.get(4));
+
+        statsM.getLabelWaiter6().setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turnos.");
+        statsM.getLabelWaiter7().setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1) + " turnos.");
+        statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turnos.");
+        statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turnos.");
+        statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turnos.");
+    }
+    
+    public class TimestampComparator implements Comparator<Table> {
+        @Override
+        public int compare(Table o1, Table o2) {
+            return o1.getOpenTime().compareTo(o2.getOpenTime());
+        }
+    }
+    
+    
 }

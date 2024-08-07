@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package salonmanager.utilidades;
 
 import java.awt.Color;
@@ -16,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import salonmanager.ConsumerTemplate;
-import salonmanager.DeliveryCreate;
 import salonmanager.DeliveryData;
 import salonmanager.UserExpressTemplate;
 import salonmanager.entidades.bussiness.DeliveryClient;
@@ -24,10 +19,6 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.graphics.CustomDialogConfirm;
 import salonmanager.persistencia.DAODeliveryClient;
 
-/**
- *
- * @author Gonzalo
- */
 public class UtilidadesGraficasDeliData {
 
     Toolkit pantalla = Toolkit.getDefaultToolkit();
@@ -39,23 +30,14 @@ public class UtilidadesGraficasDeliData {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     DAODeliveryClient daoC = new DAODeliveryClient();
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
-    Color redLg = new Color(243, 103, 91);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-    Color viol = new Color(205, 128, 255);
-    Color bluLg = new Color(194, 242, 206);
 
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
 //--------------------------------CONSUMER--------------------------------------
     public JPanel panelConsumerBacker(DeliveryData dd) {
-        JPanel panelConsumer = panelBacker("Cliente", anchoUnit, altoUnit * 6, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 9));
+        JPanel panelConsumer = panelBacker("Cliente", altoUnit * 6, (alturaFrame / 2 - altoUnit * 9));
 
         dd.setLabelSelectPhone(utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:"));
         dd.getLabelSelectPhone().setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 23, altoUnit * 4);
@@ -162,9 +144,9 @@ public class UtilidadesGraficasDeliData {
         return panelConsumer;
     }
 
-    private JPanel panelBacker(String tit, int i, int i0, int i1, int i2) {
+    public JPanel panelBacker(String tit, int hPos, int h) {
         JPanel panel = new JPanel(null);
-        panel.setBounds(i, i0, i1, i2);
+        panel.setBounds(anchoUnit, hPos, (anchoFrame / 2) - anchoUnit * 3, h);
         panel.setBackground(narLg);
 
         JPanel panelLabel = new JPanel();
@@ -239,7 +221,7 @@ public class UtilidadesGraficasDeliData {
 //--------------------------------DRIVER----------------------------------------
 //--------------------------------DRIVER----------------------------------------
     public JPanel panelDeliveryBacker(DeliveryData dd) {
-        JPanel panelDelivery = panelBacker("Delivery", anchoUnit, alturaFrame / 2, (anchoFrame / 2) - anchoUnit * 3, (alturaFrame / 2 - altoUnit * 15));
+        JPanel panelDelivery = panelBacker("Delivery", alturaFrame / 2, (alturaFrame / 2 - altoUnit * 14));
 
         dd.setLabelSelectDeli(utiliGraf.labelTitleBacker1("Elija Delivery para envíar:"));
         dd.getLabelSelectDeli().setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 19, altoUnit * 4);
@@ -326,8 +308,6 @@ public class UtilidadesGraficasDeliData {
         dd.getLabelRolDeli().setBounds(anchoUnit * 8, altoUnit * 31, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dd.getLabelRolDeli());
 
-//        setDeliveryUserFields(dd.getDeliAux(), dd);
-
         return panelDelivery;
     }
 
@@ -349,21 +329,6 @@ public class UtilidadesGraficasDeliData {
         dd.setEnabled(false);
     }
 
-//    private void setConsumerFields(DeliveryData dd, DeliveryClient dc) {
-//        dd.setLabelName(utiliGraf.labelTitleBacker2("Nombre: " + dc.getName().toUpperCase(Locale.ITALY)));
-//        dd.setLabelPhone(utiliGraf.labelTitleBacker2("Teléfono: " + dc.getPhone().toUpperCase(Locale.ITALY)));
-//        dd.setLabelSn(utiliGraf.labelTitleBacker2("Red Social: " + dc.getSocialNetwork().toUpperCase(Locale.ITALY)));
-//        dd.setLabelStreet(utiliGraf.labelTitleBacker2("Calle: " + dc.getStreet().toUpperCase(Locale.ITALY)));
-//        dd.setLabelNumSt(utiliGraf.labelTitleBacker2("Numéro: " + dc.getNumSt().toUpperCase(Locale.ITALY)));
-//        dd.setLabelFloorD(utiliGraf.labelTitleBacker2("Piso: " + dc.getDeptFloor().toUpperCase(Locale.ITALY)));
-//        dd.setLabelNumD(utiliGraf.labelTitleBacker2("Nro departamento: " + dc.getDeptNum().toUpperCase(Locale.ITALY)));
-//        dd.setLabelDistrict(utiliGraf.labelTitleBacker2("Barrio: " + dc.getArea().toUpperCase(Locale.ITALY)));
-//        dd.setLabelArea(utiliGraf.labelTitleBacker2("Localidad: " + dc.getDistrict().toUpperCase(Locale.ITALY)));
-//        String details = "<html>" + dc.getDetails() + "</html>";
-//        dd.setLabelDetails(utiliGraf.labelTitleBacker3(details));
-//        dd.getPanelConsumer().revalidate();
-//        dd.getPanelConsumer().repaint();
-//    }
     
     public void setDeliveryFields(User deli, DeliveryData dd) {
         dd.getLabelNameDeli().setText("Nombre: " + deli.getName());
@@ -372,14 +337,4 @@ public class UtilidadesGraficasDeliData {
         dd.getLabelMailDeli().setText("Mail: " + deli.getMail());
         dd.getLabelRolDeli().setText("Ocupación: " + deli.getRol());
     }
-
-//    public void setDeliveryUserField(User user, DeliveryData dd) {
-//        dd.setLabelNameDeli(utiliGraf.labelTitleBacker1("Nombre:" + user.getName()));
-//        dd.setLabelLastNameDeli(utiliGraf.labelTitleBacker1("Apellido: " + user.getLastName()));
-//        dd.setLabelPhoneDeli(utiliGraf.labelTitleBacker1("Teléfono: " + user.getPhone()));
-//        dd.setLabelMailDeli(utiliGraf.labelTitleBacker1("Numéro: " + user.getPhone()));
-//        dd.setLabelRolDeli(utiliGraf.labelTitleBacker1("Ocupación: " + user.getRol()));
-//        dd.getPanelDelivery().revalidate();
-//        dd.getPanelDelivery().repaint();    
-//    }
 }

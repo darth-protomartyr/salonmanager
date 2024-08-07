@@ -69,7 +69,7 @@ public class StatsWaiterViewer extends FrameFull {
         sMan = statsM;
         kind = k;
         String tit = "";
-        iSales = statsM.getItemsales();
+        iSales = statsM.getISales();
         usersDB = daoU.listUserByRol("MOZO");
 
         PanelPpal panelPpal = new PanelPpal(this);

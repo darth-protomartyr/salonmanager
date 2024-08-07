@@ -3,21 +3,24 @@ package salonmanager.servicios;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.knowm.xchart.XChartPanel;
 import salonmanager.ItemSaleViewer;
 import salonmanager.StaticsManager;
 import salonmanager.StaticsSelectorPeriod;
 import salonmanager.StatsItemViewer;
 import salonmanager.StatsWaiterViewer;
-import salonmanager.ConfigItemList;
 import salonmanager.TabViewer;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
@@ -27,23 +30,12 @@ import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.utilidades.Utilidades;
+import salonmanager.utilidades.UtilidadesGraficasStatics;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ServiceStatics {
 
-    DAOWorkshift daoW = new DAOWorkshift();
-    DAOTable daoT = new DAOTable();
-    DAOItemSale daoIs = new DAOItemSale();
-    DAOItemSale daoIS = new DAOItemSale();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAOUser daoU = new DAOUser();
-    Utilidades utili = new Utilidades();
-    Toolkit pantalla = Toolkit.getDefaultToolkit();
-    Dimension tamanioPantalla = pantalla.getScreenSize();
-    int anchoFrame = tamanioPantalla.width;
-    int alturaFrame = tamanioPantalla.height - tamanioPantalla.height / 14;
-    int anchoUnit = anchoFrame / 100;
-    int altoUnit = alturaFrame / 100;
 
     public static HashMap<Integer, Integer> orderHsII(HashMap<Integer, Integer> hashMap) {
         List<Map.Entry<Integer, Integer>> lista = new LinkedList<>(hashMap.entrySet());
@@ -118,7 +110,7 @@ public class ServiceStatics {
     }
 
     public void openItemSaleViewer(StaticsManager statsM) throws Exception {
-        if (statsM.getiSales() != null) {
+        if (statsM.getISales() != null) {
             new ItemSaleViewer(statsM);
             statsM.setEnabled(false);
         } else {
@@ -128,8 +120,8 @@ public class ServiceStatics {
 
     public void openTabViewer(StaticsManager statsM) throws Exception {
         if (statsM.getTabs() != null) {
-            new TabViewer(statsM.getTabs());
-            statsM.setEnabled(false);
+            new TabViewer(statsM.getTabs(), statsM);
+//            statsM.setEnabled(false);
         } else {
             utiliMsg.errorPeriodNull();
         }
@@ -141,69 +133,5 @@ public class ServiceStatics {
 
     public void openWSellsViewer(int i, StaticsManager statsM) throws Exception {
         new StatsWaiterViewer(statsM, i, statsM.getPeriod());
-    }
-
-    public void staticBacker(Timestamp timestampInit, Timestamp timestampEnd, StaticsManager statsM, int wsId) throws Exception {
-        ArrayList<Workshift> wsS = new ArrayList<>();
-
-        if (wsId == 0) {
-            ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
-            for (Integer id : wsIds) {
-                Workshift ws = daoW.askWorshiftById(id);
-                wsS.add(ws);
-            }
-        } else {
-            Workshift ws = daoW.askWorshiftById(wsId);
-            wsS.add(ws);
-        }
-
-        ArrayList<Timestamp> tsList = new ArrayList<>();
-        for (Workshift ws : wsS) {
-            Timestamp tsOpen = ws.getOpenDateWs();
-            Timestamp tsClose = ws.getCloseDateWs();
-            if (tsClose == null) {
-                tsClose = new Timestamp(new Date().getTime());
-            }
-            tsList.add(tsOpen);
-            tsList.add(tsClose);
-        }
-
-        Collections.sort(tsList, new Comparator<Timestamp>() {
-            @Override
-            public int compare(Timestamp t1, Timestamp t2) {
-                return t1.compareTo(t2);
-            }
-        });
-
-        int size = tsList.size();
-        if (size == 0) {
-            utiliMsg.errorNullDates();
-            statsM.setEnabled(true);
-        } else {
-            Timestamp ts1 = tsList.get(0);
-            Timestamp ts2 = tsList.get(size - 1);
-            ArrayList<Table> tabs = daoT.listarTablesByDate(ts1, ts2);
-            ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
-            Collections.sort(tabs, new TimestampComparator());
-            if (timestampInit != null && timestampEnd != null) {
-                statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
-                statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
-            } else {
-                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
-                statsM.setPeriod("TURNO " + wsS.get(0).getId());
-            }
-            statsM.setItemsSale(is);
-            statsM.setTabs(tabs);
-            statsM.setWorkshifts(wsS);
-            statsM.setEnabled(true);
-        }
-    }
-
-    public class TimestampComparator implements Comparator<Table> {
-
-        @Override
-        public int compare(Table o1, Table o2) {
-            return o1.getOpenTime().compareTo(o2.getOpenTime());
-        }
     }
 }

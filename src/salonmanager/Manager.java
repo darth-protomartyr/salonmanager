@@ -15,8 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
@@ -120,7 +118,7 @@ public class Manager extends FrameFull {
         panelWorkshift.setBounds(anchoUnit * 54, altoUnit * 24, anchoUnit * 49, altoUnit * 20);
         panelPpal.add(panelWorkshift);
 
-        JLabel labelWsTit = utiliGraf.labelTitleBackerA4("INFORMACIÓN TURNO ACTUAL:");
+        JLabel labelWsTit = utiliGraf.labelTitleBackerA4W("INFORMACIÓN TURNO ACTUAL:");
         labelWsTit.setBounds(anchoUnit * 2, altoUnit * 1, anchoUnit * 46, altoUnit * 5);
         panelWorkshift.add(labelWsTit);
 
@@ -141,7 +139,7 @@ public class Manager extends FrameFull {
         panelCard.setBounds(anchoUnit * 54, altoUnit * 47, anchoUnit * 49, altoUnit * 11);
         panelPpal.add(panelCard);
 
-        JLabel labelCard = utiliGraf.labelTitleBackerA4("CONSULTAR CARTA COMPLETA:");
+        JLabel labelCard = utiliGraf.labelTitleBackerA4W("CONSULTAR CARTA COMPLETA:");
         labelCard.setBounds(anchoUnit * 2, altoUnit * 3, anchoUnit * 35, altoUnit * 5);
         panelCard.add(labelCard);
 

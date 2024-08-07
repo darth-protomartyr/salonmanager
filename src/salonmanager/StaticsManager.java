@@ -7,14 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -22,23 +18,19 @@ import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
 import org.knowm.xchart.*;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.UtilidadesGraficasStatics;
 
 public class StaticsManager extends FrameFull {
 
     DAOConfig daoC = new DAOConfig();
-    DAOUser daoU = new DAOUser();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasStatics utiliGrafStats = new UtilidadesGraficasStatics();
-    Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Color bluLg = new Color(194, 242, 206);
 
@@ -64,6 +56,12 @@ public class StaticsManager extends FrameFull {
     JPanel panelChartCategory = new JPanel();
     JPanel panelStatsBySell = new JPanel();
 
+    JPanel panelOrder = null;
+    JPanel panelSellCurve = null;
+    JPanel panelItemsCategory = null;
+    JPanel panelWaiterStatics = null;
+
+    
     JTextField fieldTotal = null;
     JTextField fieldErrorTab = null;
     JTextField fieldErrorWs = null;
@@ -119,46 +117,48 @@ public class StaticsManager extends FrameFull {
         panelStatsBySell.setBackground(bluLg);
         panelPpal.add(panelStatsBySell);
         
-        
-
 //PANEL ORDER KIND--------------------------------------------------------------        
 //PANEL ORDER KIND--------------------------------------------------------------        
 //PANEL ORDER KIND--------------------------------------------------------------        
 //PANEL ORDER KIND--------------------------------------------------------------        
-        JPanel panelOrder = utiliGrafStats.panelOrderBacker(this);
+        panelOrder = utiliGrafStats.panelOrderBacker(this);
         panelOrder.setLayout(null);
         panelOrder.setBounds(anchoUnit * 21, altoUnit * 10, anchoUnit * 32, altoUnit * 37);
         panelOrder.setBackground(bluLg);
+        panelOrder.setVisible(false);
         panelPpal.add(panelOrder);
 
 //PANEL WORKSHIFT SELL CURVE----------------------------------------------------        
 //PANEL WORKSHIFT SELL CURVE----------------------------------------------------        
 //PANEL WORKSHIFT SELL CURVE----------------------------------------------------        
 //PANEL WORKSHIFT SELL CURVE----------------------------------------------------        
-        JPanel panelSellCurve = utiliGrafStats.panelSellCurveBacker(this);
+        panelSellCurve = utiliGrafStats.panelSellCurveBacker(this);
         panelSellCurve.setLayout(null);
         panelSellCurve.setBounds(anchoUnit * 54, altoUnit * 10, anchoUnit * 49, altoUnit * 37);
         panelSellCurve.setBackground(bluLg);
+        panelSellCurve.setVisible(false);
         panelPpal.add(panelSellCurve);
 
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
-        JPanel panelItemsCategory = utiliGrafStats.panelItemsStaticsBacker(this);
+        panelItemsCategory = utiliGrafStats.panelItemsStaticsBacker(this);
         panelItemsCategory.setLayout(null);
         panelItemsCategory.setBounds(anchoUnit * 21, altoUnit * 49, anchoUnit * 40, altoUnit * 45);
         panelItemsCategory.setBackground(bluLg);
+        panelItemsCategory.setVisible(false);
         panelPpal.add(panelItemsCategory);
 
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
 //PANEL WAITER STATIC-----------------------------------------------------------        
-        JPanel panelWaiterStatics = utiliGrafStats.panelWaiterStaticsBacker(this);
+        panelWaiterStatics = utiliGrafStats.panelWaiterStaticsBacker(this);
         panelWaiterStatics.setBackground(bluLg);
         panelWaiterStatics.setLayout(null);
         panelWaiterStatics.setBounds(anchoUnit * 62, altoUnit * 49, anchoUnit * 41, altoUnit * 45);
+        panelWaiterStatics.setVisible(false);
         panelPpal.add(panelWaiterStatics);
 
 //EXTRAS------------------------------------------------------------------------        
@@ -194,248 +194,246 @@ public class StaticsManager extends FrameFull {
 //FUNCTIONS---------------------------------------------------------------------        
 //FUNCTIONS---------------------------------------------------------------------        
 //FUNCTIONS---------------------------------------------------------------------        
-    private void updater(StaticsManager statsM) throws Exception {
-        double tot = 0;
-//        double totReal = 0;
-        double errorTab = 0;
-        double errorWs = 0;
-        double promTab = 0;
-        long totTime = 0;
-        int tabInt = 0;
-        countCat = new HashMap<>();
-        countWSells = new HashMap<String, Double>();
-        countWWs = new HashMap<String, Integer>();
-        ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
-        ArrayList<String> waiterIds = new ArrayList<>();
-        ArrayList<Integer> idSales = new ArrayList<>();
-        ArrayList<Integer> cantSales = new ArrayList<>();
-        ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
-        for (Table tab : tabs) {
-            tot += tab.getTotal();
-            if (tab.getPos().equals("barra")) {
-                numBar += tab.getTotal();
-            } else if (tab.getPos().equals("delivery")) {
-                numDeli += tab.getTotal();
-            } else {
-                numTabs += tab.getTotal();
-            }
-
-            long time1 = tab.getOpenTime().getTime();
-            long time2 = tab.getCloseTime().getTime();
-
-            // Calcular la diferencia en milisegundos
-            long differenceInMillis = time2 - time1;
-            if (differenceInMillis < 28800000 && !tab.getPos().equals("barra") && !tab.getPos().equals("delivery")) {
-                totTime += differenceInMillis;
-                tabInt += 1;
-            }
-        }
-        
-        for (int i = 0; i < workshifts.size(); i++) {
-            errorTab += workshifts.get(i).getErrorMountTabs();
-            errorWs += workshifts.get(i).getErrorMountWs() - workshifts.get(i).getErrorMountTabs();
-        }
-
-        for (int i = 0; i < categories.size(); i++) {
-            countCat.put(categories.get(i), 0.0);
-        }
-
-        for (ItemSale is : iSales) {
-            for (Map.Entry<String, Double> entry : countCat.entrySet()) {
-                String key = entry.getKey();
-                double newValue = 0;
-                double value = entry.getValue();
-                if (key.equals(is.getItemSaleCategory())) {
-                    newValue = value + is.getItemSalePrice();
-                    entry.setValue(newValue);
-                }
-            }
-
-            for (int i = 0; i < waiterIdsDB.size(); i++) {
-                String id1 = waiterIdsDB.get(i);
-                String Id2 = is.getItemSaleWaiterId();
-                if (id1.equals(Id2)) {
-                    waiterIds.add(is.getItemSaleWaiterId());
-                    HashSet<Integer> counterWs = new HashSet<Integer>();
-                    listHS.add(counterWs);
-                }
-            }
-        }
-
-        ArrayList<String> ids = new ArrayList<>(waiterIds);
-        for (int i = 0; i < ids.size(); i++) {
-            String id = ids.get(i);
-            countWSells.put(id, 0.0);
-            countWWs.put(id, 0);
-        }
-
-        for (ItemSale is : iSales) {
-            for (Map.Entry<String, Double> entry : countWSells.entrySet()) {
-                String key = entry.getKey();
-                if (key.equals(is.getItemSaleWaiterId())) {
-                    double value = entry.getValue();
-                    double newValue = value + is.getItemSalePrice();
-                    entry.setValue(newValue);
-                }
-            }
-
-            int counter = 0;
-            for (Map.Entry<String, Integer> entry : countWWs.entrySet()) {
-                String key = entry.getKey();
-                if (key.equals(is.getItemSaleWaiterId())) {
-                    listHS.get(counter).add(is.getItemSaleWorkshiftId());
-                    int newValue = listHS.get(counter).size();
-                    entry.setValue(newValue);
-                }
-                counter += 1;
-            }
-        }
-
-        DecimalFormat df = new DecimalFormat("#");
-        df.setMaximumFractionDigits(0);
-        String formattedTotal = df.format(tot);
-        fieldTotal.setText("$" + formattedTotal);
-
-        df.setMaximumFractionDigits(0);
-        String formattedErrorTab = df.format(errorTab);
-        fieldErrorTab.setText(formattedErrorTab);
-
-        df.setMaximumFractionDigits(0);
-        String formattedErrorWs = df.format(errorWs);
-        fieldErrorWs.setText(formattedErrorWs);        
-        
-        df.setMaximumFractionDigits(0);
-        String formattedTotalReal = df.format(tot - errorTab - errorWs);
-        fieldTotalReal.setText("$" + formattedTotalReal);         
-        
-        promTab = utili.round2Dec(tot / tabs.size());
-        String formattedPromTab = promTab + "";
-        fieldPromTab.setText("$" + formattedPromTab);
-
-        long timeTab = 0;
-        if (totTime > 0) {
-            timeTab = totTime / tabInt;
-        }
-        LocalTime time = utili.toLongHAndM(timeTab);
-        fieldTimeTab.setText(time.getHour() + " horas, " + time.getMinute() + " min.");
-
-        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 89);
-
-        //Sells bykind of order
-        chartOrder = utiliGrafStats.chartOrderBacker(this);
-        panelChartByOrder.removeAll();
-        panelChartByOrder.add(new XChartPanel<>(chartOrder));
-        panelChartByOrder.revalidate();
-        panelChartByOrder.repaint();
-
-//        Curve by mount volume
-        chartCurveSell = utiliGrafStats.chartCurveBacker(this);
-        panelChartSellCurve.removeAll();
-        panelChartSellCurve.add(new XChartPanel<>(chartCurveSell));
-        panelChartSellCurve.revalidate();
-        panelChartSellCurve.repaint();
-
-        //Volume by item Category
-        chartCategoryPie = utiliGrafStats.chartCategoryBacker(countCat, this);
-        panelChartCategory.removeAll();
-        panelChartCategory.add(new XChartPanel<>(chartCategoryPie));
-        panelChartCategory.revalidate();
-        panelChartCategory.repaint();
-
-        //TOP Waiters Sell
-        ArrayList<String> waitersSell1 = new ArrayList<>(countWSells.keySet());
-        ArrayList<String> waitersSell2 = new ArrayList<>();
-        ArrayList<Double> amounts1 = new ArrayList<>(countWSells.values());
-        ArrayList<Double> amounts2 = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            if (i < waitersSell1.size()) {
-                String name = daoU.getUserNameById(waitersSell1.get(i));
-                waitersSell2.add(name);
-                amounts2.add(amounts1.get(i));
-            } else {
-                waitersSell2.add("--");
-                amounts2.add(0.0);
-            }
-        }
-
-        //TOP Waiters Workshift
-        ArrayList<String> waitersWs1 = new ArrayList<>(countWWs.keySet());
-        ArrayList<String> waitersWs2 = new ArrayList<>();
-        ArrayList<Integer> wss1 = new ArrayList<>(countWWs.values());
-        ArrayList<Integer> wss2 = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            if (i < waitersWs1.size()) {
-                String name = daoU.getUserNameById(waitersWs1.get(i));
-                waitersWs2.add(name);
-                wss2.add(wss1.get(i));
-            } else {
-                waitersWs2.add("--");
-                wss2.add(0);
-            }
-        }
-
-        labelWaiter1.setText("1- " + waitersSell2.get(0) + " $: " + amounts2.get(0));
-        labelWaiter2.setText("2- " + waitersSell2.get(1) + " $: " + amounts2.get(1));
-        labelWaiter3.setText("3- " + waitersSell2.get(2) + " $: " + amounts2.get(2));
-        labelWaiter4.setText("4- " + waitersSell2.get(3) + " $: " + amounts2.get(3));
-        labelWaiter5.setText("5- " + waitersSell2.get(4) + " $: " + amounts2.get(4));
-
-        labelWaiter6.setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turnos.");
-        labelWaiter7.setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1) + " turnos.");
-        labelWaiter8.setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turnos.");
-        labelWaiter9.setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turnos.");
-        labelWaiter10.setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turnos.");
-    }
+//    private void updater(StaticsManager statsM) throws Exception {
+//        double tot = 0;
+////        double totReal = 0;
+//        double errorTab = 0;
+//        double errorWs = 0;
+//        double promTab = 0;
+//        long totTime = 0;
+//        int tabInt = 0;
+//        countCat = new HashMap<>();
+//        countWSells = new HashMap<String, Double>();
+//        countWWs = new HashMap<String, Integer>();
+//        ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
+//        ArrayList<String> waiterIds = new ArrayList<>();
+//        ArrayList<Integer> idSales = new ArrayList<>();
+//        ArrayList<Integer> cantSales = new ArrayList<>();
+//        ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
+//        for (Table tab : tabs) {
+//            tot += tab.getTotal();
+//            if (tab.getPos().equals("barra")) {
+//                numBar += tab.getTotal();
+//            } else if (tab.getPos().equals("delivery")) {
+//                numDeli += tab.getTotal();
+//            } else {
+//                numTabs += tab.getTotal();
+//            }
+//
+//            long time1 = tab.getOpenTime().getTime();
+//            long time2 = tab.getCloseTime().getTime();
+//
+//            // Calcular la diferencia en milisegundos
+//            long differenceInMillis = time2 - time1;
+//            if (differenceInMillis < 28800000 && !tab.getPos().equals("barra") && !tab.getPos().equals("delivery")) {
+//                totTime += differenceInMillis;
+//                tabInt += 1;
+//            }
+//        }
+//        
+//        for (int i = 0; i < workshifts.size(); i++) {
+//            errorTab += workshifts.get(i).getErrorMountTabs();
+//            errorWs += workshifts.get(i).getErrorMountWs() - workshifts.get(i).getErrorMountTabs();
+//        }
+//
+//        for (int i = 0; i < categories.size(); i++) {
+//            countCat.put(categories.get(i), 0.0);
+//        }
+//
+//        for (ItemSale is : iSales) {
+//            for (Map.Entry<String, Double> entry : countCat.entrySet()) {
+//                String key = entry.getKey();
+//                double newValue = 0;
+//                double value = entry.getValue();
+//                if (key.equals(is.getItemSaleCategory())) {
+//                    newValue = value + is.getItemSalePrice();
+//                    entry.setValue(newValue);
+//                }
+//            }
+//
+//            for (int i = 0; i < waiterIdsDB.size(); i++) {
+//                String id1 = waiterIdsDB.get(i);
+//                String Id2 = is.getItemSaleWaiterId();
+//                if (id1.equals(Id2)) {
+//                    waiterIds.add(is.getItemSaleWaiterId());
+//                    HashSet<Integer> counterWs = new HashSet<Integer>();
+//                    listHS.add(counterWs);
+//                }
+//            }
+//        }
+//
+//        ArrayList<String> ids = new ArrayList<>(waiterIds);
+//        for (int i = 0; i < ids.size(); i++) {
+//            String id = ids.get(i);
+//            countWSells.put(id, 0.0);
+//            countWWs.put(id, 0);
+//        }
+//
+//        for (ItemSale is : iSales) {
+//            for (Map.Entry<String, Double> entry : countWSells.entrySet()) {
+//                String key = entry.getKey();
+//                if (key.equals(is.getItemSaleWaiterId())) {
+//                    double value = entry.getValue();
+//                    double newValue = value + is.getItemSalePrice();
+//                    entry.setValue(newValue);
+//                }
+//            }
+//
+//            int counter = 0;
+//            for (Map.Entry<String, Integer> entry : countWWs.entrySet()) {
+//                String key = entry.getKey();
+//                if (key.equals(is.getItemSaleWaiterId())) {
+//                    listHS.get(counter).add(is.getItemSaleWorkshiftId());
+//                    int newValue = listHS.get(counter).size();
+//                    entry.setValue(newValue);
+//                }
+//                counter += 1;
+//            }
+//        }
+//
+//        DecimalFormat df = new DecimalFormat("#");
+//        df.setMaximumFractionDigits(0);
+//        String formattedTotal = df.format(tot);
+//        fieldTotal.setText("$" + formattedTotal);
+//
+//        df.setMaximumFractionDigits(0);
+//        String formattedErrorTab = df.format(errorTab);
+//        fieldErrorTab.setText(formattedErrorTab);
+//
+//        df.setMaximumFractionDigits(0);
+//        String formattedErrorWs = df.format(errorWs);
+//        fieldErrorWs.setText(formattedErrorWs);        
+//        
+//        df.setMaximumFractionDigits(0);
+//        String formattedTotalReal = df.format(tot - errorTab - errorWs);
+//        fieldTotalReal.setText("$" + formattedTotalReal);         
+//        
+//        promTab = utili.round2Dec(tot / tabs.size());
+//        String formattedPromTab = promTab + "";
+//        fieldPromTab.setText("$" + formattedPromTab);
+//
+//        long timeTab = 0;
+//        if (totTime > 0) {
+//            timeTab = totTime / tabInt;
+//        }
+//        LocalTime time = utili.toLongHAndM(timeTab);
+//        fieldTimeTab.setText(time.getHour() + " horas, " + time.getMinute() + " min.");
+//
+//        panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 89);
+//
+//        //Sells bykind of order
+//        chartOrder = utiliGrafStats.chartOrderBacker(this);
+//        panelChartByOrder.removeAll();
+//        panelChartByOrder.add(new XChartPanel<>(chartOrder));
+//        panelChartByOrder.revalidate();
+//        panelChartByOrder.repaint();
+//
+////        Curve by mount volume
+//        chartCurveSell = utiliGrafStats.chartCurveBacker(this);
+//        panelChartSellCurve.removeAll();
+//        panelChartSellCurve.add(new XChartPanel<>(chartCurveSell));
+//        panelChartSellCurve.revalidate();
+//        panelChartSellCurve.repaint();
+//
+//        //Volume by item Category
+//        chartCategoryPie = utiliGrafStats.chartCategoryBacker(countCat, this);
+//        panelChartCategory.removeAll();
+//        panelChartCategory.add(new XChartPanel<>(chartCategoryPie));
+//        panelChartCategory.revalidate();
+//        panelChartCategory.repaint();
+//
+//        //TOP Waiters Sell
+//        ArrayList<String> waitersSell1 = new ArrayList<>(countWSells.keySet());
+//        ArrayList<String> waitersSell2 = new ArrayList<>();
+//        ArrayList<Double> amounts1 = new ArrayList<>(countWSells.values());
+//        ArrayList<Double> amounts2 = new ArrayList<>();
+//
+//        for (int i = 0; i < 5; i++) {
+//            if (i < waitersSell1.size()) {
+//                String name = daoU.getUserNameById(waitersSell1.get(i));
+//                waitersSell2.add(name);
+//                amounts2.add(amounts1.get(i));
+//            } else {
+//                waitersSell2.add("--");
+//                amounts2.add(0.0);
+//            }
+//        }
+//
+//        //TOP Waiters Workshift
+//        ArrayList<String> waitersWs1 = new ArrayList<>(countWWs.keySet());
+//        ArrayList<String> waitersWs2 = new ArrayList<>();
+//        ArrayList<Integer> wss1 = new ArrayList<>(countWWs.values());
+//        ArrayList<Integer> wss2 = new ArrayList<>();
+//
+//        for (int i = 0; i < 5; i++) {
+//            if (i < waitersWs1.size()) {
+//                String name = daoU.getUserNameById(waitersWs1.get(i));
+//                waitersWs2.add(name);
+//                wss2.add(wss1.get(i));
+//            } else {
+//                waitersWs2.add("--");
+//                wss2.add(0);
+//            }
+//        }
+//
+//        labelWaiter1.setText("1- " + waitersSell2.get(0) + " $: " + amounts2.get(0));
+//        labelWaiter2.setText("2- " + waitersSell2.get(1) + " $: " + amounts2.get(1));
+//        labelWaiter3.setText("3- " + waitersSell2.get(2) + " $: " + amounts2.get(2));
+//        labelWaiter4.setText("4- " + waitersSell2.get(3) + " $: " + amounts2.get(3));
+//        labelWaiter5.setText("5- " + waitersSell2.get(4) + " $: " + amounts2.get(4));
+//
+//        labelWaiter6.setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turnos.");
+//        labelWaiter7.setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1) + " turnos.");
+//        labelWaiter8.setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turnos.");
+//        labelWaiter9.setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turnos.");
+//        labelWaiter10.setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turnos.");
+//    }
 
 
     
     //Paneles
     //Paneles
-    public JPanel getPanelChartByOrder() {
-        return panelChartByOrder;
+
+    public ArrayList<Table> getTabs() {
+        return tabs;
     }
 
-    public void setPanelChartByOrder(JPanel panelChartByOrder) {
-        this.panelChartByOrder = panelChartByOrder;
-    }
-    
-    
-    public JPanel getPanelChartSellCurve() {
-        return panelChartSellCurve;
+    public void setTabs(ArrayList<Table> tabs) {
+        this.tabs = tabs;
     }
 
-    public void setPanelChartSellCurve(JPanel panelChartSellCurve) {
-        this.panelChartSellCurve = panelChartSellCurve;
+    public ArrayList<ItemSale> getISales() {
+        return iSales;
     }
 
-    public JPanel getPanelItemsCategory() {
-        return panelChartCategory;
+    public void setISales(ArrayList<ItemSale> iSales) {
+        this.iSales = iSales;
     }
 
-    public void setPanelItemsCategory(JPanel panelItemsCategory) {
-        this.panelChartCategory = panelItemsCategory;
+    public ArrayList<Workshift> getWorkshifts() {
+        return workshifts;
     }
 
-    public JPanel getPanelStatsBySell() {
-        return panelStatsBySell;
+    public void setWorkshifts(ArrayList<Workshift> workshifts) {
+        this.workshifts = workshifts;
     }
 
-    public void setPanelStatsBySell(JPanel panelStatsBySell) {
-        this.panelStatsBySell = panelStatsBySell;
+    public ArrayList<String> getCategories() {
+        return categories;
     }
 
-    public JPanel getPanelChartCategory() {
-        return panelChartCategory;
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
     }
 
-    public void setPanelChartCategory(JPanel panelChartCategory) {
-        this.panelChartCategory = panelChartCategory;
+    public Manager getManager() {
+        return manager;
     }
-    
-    //Charts
-    //Charts
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
     public PieChart getChartOrder() {
         return chartOrder;
     }
@@ -443,7 +441,7 @@ public class StaticsManager extends FrameFull {
     public void setChartOrder(PieChart chartOrder) {
         this.chartOrder = chartOrder;
     }
-    
+
     public XYChart getChartCurveSell() {
         return chartCurveSell;
     }
@@ -451,7 +449,7 @@ public class StaticsManager extends FrameFull {
     public void setChartCurveSell(XYChart chartCurveSell) {
         this.chartCurveSell = chartCurveSell;
     }
-    
+
     public CategoryChart getChartItemsSelled() {
         return chartItemsSelled;
     }
@@ -467,46 +465,13 @@ public class StaticsManager extends FrameFull {
     public void setChartCategoryPie(PieChart chartCategoryPie) {
         this.chartCategoryPie = chartCategoryPie;
     }
-    
-    public void setTabs(ArrayList tables) {
-        tabs = tables;
+
+    public String getPeriod() {
+        return period;
     }
 
-    public ArrayList<Table> getTabs() {
-        return tabs;
-    }
-
-    public void setItemsSale(ArrayList iSs) {
-        iSales = iSs;
-    }
-
-    public ArrayList<ItemSale> getItemsales() {
-        return iSales;
-    }
-
-    public void setWorkshifts(ArrayList<Workshift> workshifts) throws Exception {
-        this.workshifts = workshifts;
-        updater(this);
-    }
-
-    public ArrayList<Workshift> getWorkshift() {
-        return workshifts;
-    }
-
-    public Manager getManager() {
-        return manager;
-    }
-
-    public void setManager(Manager manager) {
-        this.manager = manager;
-    }
-
-    public ArrayList<ItemSale> getiSales() {
-        return iSales;
-    }
-
-    public void setiSales(ArrayList<ItemSale> iSales) {
-        this.iSales = iSales;
+    public void setPeriod(String period) {
+        this.period = period;
     }
 
     public double getNumTabs() {
@@ -531,6 +496,126 @@ public class StaticsManager extends FrameFull {
 
     public void setNumDeli(double numDeli) {
         this.numDeli = numDeli;
+    }
+
+    public HashMap<String, Double> getCountWSells() {
+        return countWSells;
+    }
+
+    public void setCountWSells(HashMap<String, Double> countWSells) {
+        this.countWSells = countWSells;
+    }
+
+    public HashMap<String, Integer> getCountWWs() {
+        return countWWs;
+    }
+
+    public void setCountWWs(HashMap<String, Integer> countWWs) {
+        this.countWWs = countWWs;
+    }
+
+    public HashMap<String, Double> getCountCat() {
+        return countCat;
+    }
+
+    public void setCountCat(HashMap<String, Double> countCat) {
+        this.countCat = countCat;
+    }
+
+    public JPanel getPanelChartByOrder() {
+        return panelChartByOrder;
+    }
+
+    public void setPanelChartByOrder(JPanel panelChartByOrder) {
+        this.panelChartByOrder = panelChartByOrder;
+    }
+
+    public JPanel getPanelChartSellCurve() {
+        return panelChartSellCurve;
+    }
+
+    public void setPanelChartSellCurve(JPanel panelChartSellCurve) {
+        this.panelChartSellCurve = panelChartSellCurve;
+    }
+
+    public JPanel getPanelChartCategory() {
+        return panelChartCategory;
+    }
+
+    public void setPanelChartCategory(JPanel panelChartCategory) {
+        this.panelChartCategory = panelChartCategory;
+    }
+
+    public JPanel getPanelStatsBySell() {
+        return panelStatsBySell;
+    }
+
+    public void setPanelStatsBySell(JPanel panelStatsBySell) {
+        this.panelStatsBySell = panelStatsBySell;
+    }
+
+    public JPanel getPanelOrder() {
+        return panelOrder;
+    }
+
+    public void setPanelOrder(JPanel panelOrder) {
+        this.panelOrder = panelOrder;
+    }
+
+    public JPanel getPanelSellCurve() {
+        return panelSellCurve;
+    }
+
+    public void setPanelSellCurve(JPanel panelSellCurve) {
+        this.panelSellCurve = panelSellCurve;
+    }
+
+    public JPanel getPanelItemsCategory() {
+        return panelItemsCategory;
+    }
+
+    public void setPanelItemsCategory(JPanel panelItemsCategory) {
+        this.panelItemsCategory = panelItemsCategory;
+    }
+
+    public JPanel getPanelWaiterStatics() {
+        return panelWaiterStatics;
+    }
+
+    public void setPanelWaiterStatics(JPanel panelWaiterStatics) {
+        this.panelWaiterStatics = panelWaiterStatics;
+    }
+
+    public JTextField getFieldTotal() {
+        return fieldTotal;
+    }
+
+    public void setFieldTotal(JTextField fieldTotal) {
+        this.fieldTotal = fieldTotal;
+    }
+
+    public JTextField getFieldErrorTab() {
+        return fieldErrorTab;
+    }
+
+    public void setFieldErrorTab(JTextField fieldErrorTab) {
+        this.fieldErrorTab = fieldErrorTab;
+    }
+
+    public JTextField getFieldErrorWs() {
+        return fieldErrorWs;
+    }
+
+    public void setFieldErrorWs(JTextField fieldErrorWs) {
+        this.fieldErrorWs = fieldErrorWs;
+    }
+
+    public JTextField getFieldTotalReal() {
+        return fieldTotalReal;
+    }
+
+    public void setFieldTotalReal(JTextField fieldTotalReal) {
+        this.fieldTotalReal = fieldTotalReal;
     }
 
     public JTextField getFieldPromTab() {
@@ -603,22 +688,6 @@ public class StaticsManager extends FrameFull {
 
     public void setLabelCategory5(JLabel labelCategory5) {
         this.labelCategory5 = labelCategory5;
-    }
-
-    public HashMap<String, Double> getCountWSells() {
-        return countWSells;
-    }
-
-    public void setCountWSells(HashMap<String, Double> countWSells) {
-        this.countWSells = countWSells;
-    }
-
-    public HashMap<String, Integer> getCountWWs() {
-        return countWWs;
-    }
-
-    public void setCountWWs(HashMap<String, Integer> countWWs) {
-        this.countWWs = countWWs;
     }
 
     public JLabel getLabelWaiter1() {
@@ -700,60 +769,8 @@ public class StaticsManager extends FrameFull {
     public void setLabelWaiter10(JLabel labelWaiter10) {
         this.labelWaiter10 = labelWaiter10;
     }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
-    }
-
-    public JTextField getFieldTotal() {
-        return fieldTotal;
-    }
-
-    public void setFieldTotal(JTextField fieldTotal) {
-        this.fieldTotal = fieldTotal;
-    }
-
-    public HashMap<String, Double> getCountCat() {
-        return countCat;
-    }
-
-    public void setCountCat(HashMap<String, Double> countCat) {
-        this.countCat = countCat;
-    }
-
-    public ArrayList<String> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
-    }
-
-    public JTextField getFieldErrorTab() {
-        return fieldErrorTab;
-    }
-
-    public void setFieldErrorTab(JTextField fieldErrorTab) {
-        this.fieldErrorTab = fieldErrorTab;
-    }
-
-    public JTextField getFieldErrorWs() {
-        return fieldErrorWs;
-    }
-
-    public void setFieldErrorWs(JTextField fieldErrorWs) {
-        this.fieldErrorWs = fieldErrorWs;
-    }
-
-    public JTextField getFieldTotalReal() {
-        return fieldTotalReal;
-    }
-
-    public void setFieldTotalReal(JTextField fieldTotalReal) {
-        this.fieldTotalReal = fieldTotalReal;
-    }
+    
+    
+    
+    
 }

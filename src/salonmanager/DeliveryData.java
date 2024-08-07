@@ -25,14 +25,12 @@ import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasDeliData;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
-import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DeliveryData extends FrameHalf {
 
     DAODeliveryClient daoC = new DAODeliveryClient();
     DAOUser daoU = new DAOUser();
 
-    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesGraficasDeliData utiliGrafDD = new UtilidadesGraficasDeliData();
 
@@ -450,7 +448,5 @@ public class DeliveryData extends FrameHalf {
 
     public void setPanelDelivery(JPanel panelDelivery) {
         this.panelDelivery = panelDelivery;
-    }
-    
-    
+    }    
 }

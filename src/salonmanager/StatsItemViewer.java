@@ -67,7 +67,7 @@ public class StatsItemViewer extends FrameFull {
         sMan = statsM;
         kind = k;
         String tit = "";
-        iSales = statsM.getItemsales();
+        iSales = statsM.getISales();
         itemsDB = daoI.listarItemsCard();
 
         PanelPpal panelPpal = new PanelPpal(this);
@@ -226,7 +226,7 @@ public class StatsItemViewer extends FrameFull {
 
         if (kind == 2) {
             HashSet<Integer> wsIds = new HashSet();
-            ArrayList<Workshift> wsS = sMan.getWorkshift();
+            ArrayList<Workshift> wsS = sMan.getWorkshifts();
             for (int i = 0; i < wsS.size(); i++) {
                 wsIds.add(wsS.get(i).getId());
             }
