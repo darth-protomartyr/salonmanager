@@ -887,7 +887,7 @@ public class UtilidadesGraficas extends JFrame {
         labelSTitleProgram.setForeground(whi);
         
         if (i == 2) {
-            newFontST = new Font("Lucida Sans", Font.BOLD, anchoUnit);
+            newFontST = new Font("Lucida Sans", Font.BOLD, altoUnit * 2);
             panelTitle.setBounds(anchoUnit * 27, altoUnit * 2, anchoUnit * 27, altoUnit * 17);
             panelSubTitle.setBounds(anchoUnit * 0, altoUnit * 13, anchoUnit * 27, altoUnit * 3);
             fontSize1 = altoUnit * 12;

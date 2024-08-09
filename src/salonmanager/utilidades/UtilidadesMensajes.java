@@ -805,4 +805,9 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("El cierre de caja fue exitoso.", 1);
         cm.setVisible(true); 
     }
+    
+    public void cargaTablesLoaded() {
+        CustomDialog cm = new CustomDialog("Se se realizó correctamente la instalación del programa.", 1);
+        cm.setVisible(true); 
+    }
 }

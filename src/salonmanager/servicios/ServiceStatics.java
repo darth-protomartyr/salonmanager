@@ -1,36 +1,18 @@
 package salonmanager.servicios;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.knowm.xchart.XChartPanel;
 import salonmanager.ItemSaleViewer;
 import salonmanager.StaticsManager;
 import salonmanager.StaticsSelectorPeriod;
 import salonmanager.StatsItemViewer;
 import salonmanager.StatsWaiterViewer;
 import salonmanager.TabViewer;
-import salonmanager.entidades.bussiness.ItemSale;
-import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.bussiness.Workshift;
-import salonmanager.persistencia.DAOItemSale;
-import salonmanager.persistencia.DAOTable;
-import salonmanager.persistencia.DAOUser;
-import salonmanager.persistencia.DAOWorkshift;
-import salonmanager.utilidades.Utilidades;
-import salonmanager.utilidades.UtilidadesGraficasStatics;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ServiceStatics {

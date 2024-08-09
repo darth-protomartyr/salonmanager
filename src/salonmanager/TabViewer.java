@@ -156,7 +156,6 @@ public class TabViewer extends FrameFull {
                 return component;
             }
         };
-        // Aplicar el renderizador personalizado a la columna 5
         jTable.getColumnModel().getColumn(10).setCellRenderer(tableCellRenderer);
 
         JScrollPane scrollPane = new JScrollPane(jTable);

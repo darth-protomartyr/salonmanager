@@ -22,6 +22,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAOInit;
 
 public class Inn extends FrameWindow {
 
@@ -30,6 +31,7 @@ public class Inn extends FrameWindow {
     Utilidades utili = new Utilidades();
     DAOUser daoU = new DAOUser();
     DAOConfig daoC = new DAOConfig();
+    DAOInit daoI = new DAOInit();
     SalonManager sm = new SalonManager();
     Color bluLg = new Color(3, 166, 136);
 
@@ -107,6 +109,14 @@ public class Inn extends FrameWindow {
     private void butInUserActionPerformed() throws Exception {
         mail = fieldMail.getText();
         pass = fieldPass.getText();
+        
+        daoI.createTables();
+        
+        boolean askCfg = daoC.askCfgNull();
+        if (!askCfg) {
+            daoI.fullerTables();
+            utili.cfgBacker();    
+        }
         boolean error = false;
 
         if (mail.equals("") || pass.equals("")) {
@@ -129,10 +139,6 @@ public class Inn extends FrameWindow {
                     sm.setPassIn(pass);
                     landing.dispose();
                     dispose();
-                    boolean askCfg = daoC.askCfgNull();
-                    if (!askCfg) {
-                        utili.cfgBacker();
-                    }
                     new Manager(userAux, pass);
 
                 } catch (Exception ex) {
