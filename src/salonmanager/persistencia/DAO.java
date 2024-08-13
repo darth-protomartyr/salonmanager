@@ -17,28 +17,70 @@ public class DAO {
     protected Connection conexion = null;
     protected ResultSet resultado = null;
     protected Statement sentencia = null;
+
+    
+    
+//LocalHost
+//LocalHost
+//LocalHost
+//LocalHost
+
     private final String user = "root";
     private final String pass = "root";
     private final String db = "salonmanager";
     private final String driver = "com.mysql.cj.jdbc.Driver";
-    
-//    private final String user = "rgvsacom_mariana";
-//    private final String pass = "negra_1980";
-//    private final String db = "rgvsacom_salonmanager";
-//    private final String driver = "com.mysql.cj.jdbc.Driver";
-    
 
     protected void conectarBase() throws Exception {
         try {
             Class.forName(driver);
             String urlBaseDeDatos = "jdbc:mysql://localhost:3306/" + db + "?useSSL=false";
-//            String urlBaseDeDatos = "jdbc:mysql://rvgsa.com.ar/:3306/" + db + "?useSSL=false";
-
             conexion = (Connection) DriverManager.getConnection(urlBaseDeDatos, user, pass);
         } catch (ClassNotFoundException | SQLException ex) {
             throw ex;
         }
     }
+    
+
+    
+// Remote host
+// Remote host    
+// Remote host    
+// Remote host    
+        
+//    private final String user = "rvgsacom_mari";
+//    private final String pass = "rvgsacom_mari";
+//    private final String db = "rvgsacom_mari";
+//    private final String driver = "com.mysql.cj.jdbc.Driver";
+//
+//    protected void conectarBase() throws Exception {
+//        try {
+//            Class.forName(driver);
+//            String urlBaseDeDatos = "jdbc:mysql://rvgsa.com.ar:3307/" + db + "?useSSL=false";
+//            conexion = (Connection) DriverManager.getConnection(urlBaseDeDatos, user, pass);
+//        } catch (ClassNotFoundException | SQLException ex) {
+//            throw ex;
+//        }
+//    }
+    
+    
+//SQLite
+//SQLite
+//SQLite
+//SQLite
+    
+//    private final String driver = "org.sqlite.JDBC"; //Cambia el driver a SQLite    
+//    private final String db = "salonmanager.db"; //Ruta al archivo de la base de datos SQLite
+//
+//    protected void conectarBase() throws Exception {
+//        try {
+//            Class.forName(driver);
+//            String urlBaseDeDatos = "jdbc:sqlite:" + db;
+//            conexion = DriverManager.getConnection(urlBaseDeDatos);
+//        } catch (ClassNotFoundException | SQLException ex) {
+//            throw ex;
+//        }
+//
+//    }
 
     protected void desconectarBase() throws Exception {
         try {
