@@ -25,20 +25,20 @@ public class DAO {
 //LocalHost
 //LocalHost
 
-    private final String user = "root";
-    private final String pass = "root";
-    private final String db = "salonmanager";
-    private final String driver = "com.mysql.cj.jdbc.Driver";
-
-    protected void conectarBase() throws Exception {
-        try {
-            Class.forName(driver);
-            String urlBaseDeDatos = "jdbc:mysql://localhost:3306/" + db + "?useSSL=false";
-            conexion = (Connection) DriverManager.getConnection(urlBaseDeDatos, user, pass);
-        } catch (ClassNotFoundException | SQLException ex) {
-            throw ex;
-        }
-    }
+//    private final String user = "root";
+//    private final String pass = "root";
+//    private final String db = "salonmanager";
+//    private final String driver = "com.mysql.cj.jdbc.Driver";
+//
+//    protected void conectarBase() throws Exception {
+//        try {
+//            Class.forName(driver);
+//            String urlBaseDeDatos = "jdbc:mysql://localhost:3306/" + db + "?useSSL=false";
+//            conexion = (Connection) DriverManager.getConnection(urlBaseDeDatos, user, pass);
+//        } catch (ClassNotFoundException | SQLException ex) {
+//            throw ex;
+//        }
+//    }
     
 
     
@@ -68,26 +68,24 @@ public class DAO {
 //SQLite
 //SQLite
     
-//    private final String driver = "org.sqlite.JDBC"; //Cambia el driver a SQLite    
-//    private final String db = "salonmanager.db"; //Ruta al archivo de la base de datos SQLite
-//
-//    protected void conectarBase() throws Exception {
-//        try {
-//            Class.forName(driver);
-//            String urlBaseDeDatos = "jdbc:sqlite:" + db;
-//            conexion = DriverManager.getConnection(urlBaseDeDatos);
-//        } catch (ClassNotFoundException | SQLException ex) {
-//            throw ex;
-//        }
-//
-//    }
+    private final String driver = "org.sqlite.JDBC"; //Cambia el driver a SQLite    
+    String urlBaseDeDatos = "jdbc:sqlite:" + "C:/Users/Gonzalo/Documents/NetbeansProject/bariaDB/salonmanager.s3db";
+
+    protected void conectarBase() throws Exception {
+        try {
+            Class.forName(driver);
+            conexion = DriverManager.getConnection(urlBaseDeDatos);
+        } catch (ClassNotFoundException | SQLException ex) {
+            throw ex;
+        }
+    }
 
     protected void desconectarBase() throws Exception {
         try {
             if (resultado != null) {
                 resultado.close();
             }
-            if (sentencia != null) {
+            if (sentencia != null) { 
                 sentencia.close();
             }
             if (conexion != null) {
@@ -100,6 +98,7 @@ public class DAO {
 
     protected void insertarModificarEliminar(String sql) throws Exception {
         try {
+            System.out.println(sql);
             conectarBase();
             sentencia = (Statement) conexion.createStatement();
             sentencia.executeUpdate(sql);
@@ -113,8 +112,10 @@ public class DAO {
 
     protected void consultarBase(String sql) throws Exception {
         try {
+            System.out.println(sql);
             conectarBase();
             sentencia = (Statement) conexion.createStatement();
+            
             resultado = sentencia.executeQuery(sql);
         } catch (Exception ex) {
             throw ex;
