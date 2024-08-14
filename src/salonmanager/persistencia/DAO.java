@@ -103,7 +103,6 @@ public class DAO {
             sentencia = (Statement) conexion.createStatement();
             sentencia.executeUpdate(sql);
         } catch (SQLException ex) {
-            //conexion.rollback();
             throw ex;
         } finally {
             desconectarBase();

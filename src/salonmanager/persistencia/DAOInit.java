@@ -235,7 +235,7 @@ public class DAOInit extends DAO {
                 insertarModificarEliminar(sqlWT);
 
                 String sqlCW = "CREATE TABLE IF NOT EXISTS cashier_workshifts("
-                        + " cashier_workshift_id INT PRIMARY KEY AUTO_INCREMENT,"
+                        + " cashier_workshift_id INT PRIMARY KEY,"
                         + " cashier_workshift_active VARCHAR(100),"
                         + " cashier_id_fkey VARCHAR(200),"
                         + " workshift_id_fkey VARCHAR(100),"
@@ -245,7 +245,7 @@ public class DAOInit extends DAO {
                 insertarModificarEliminar(sqlCW);
 
                 String sqlR = "CREATE TABLE IF NOT EXISTS registers("
-                        + "	register_id INT AUTO_INCREMENT PRIMARY KEY,"
+                        + "	register_id INT PRIMARY KEY,"
                         + " register_ejecution DATETIME(3),"
                         + " register_user VARCHAR(100),"
                         + " register_user_modify VARCHAR(100),"
