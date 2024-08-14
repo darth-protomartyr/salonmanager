@@ -5,18 +5,13 @@
 package salonmanager.servicios;
 
 import java.awt.Dimension;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ListModel;
 import salonmanager.ConfigSalonFrame;
-import salonmanager.LandingFrame;
-import salonmanager.SalonManager;
 import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
 import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.entidades.graphics.PanelNestedSpace;
@@ -171,7 +166,7 @@ public class ServiceConfigSal {
         for (int i = 0; i < cSF.getQuants().size(); i++) {
             totalTab += cSF.getQuants().get(i);
         }
-        daoC.saveConfigGeneral(totalTab, cSF.getQuants(), cSF.getCategoriesSel(), cSF.getSpacesSel(), cSF.getCharsSel(), tipPc, true);
+        daoC.saveConfigGeneral(totalTab, cSF.getQuants(), cSF.getCategoriesSel(), cSF.getSpacesSel(), cSF.getCharsSel(), tipPc, true, true);
         cSF.getSm().frameCloser();
         System.exit(0);
     }

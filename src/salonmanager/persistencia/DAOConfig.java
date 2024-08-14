@@ -13,9 +13,11 @@ public class DAOConfig extends DAO {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCat, ArrayList<String> chartPan, int tip, boolean cfgActive) throws Exception {
+    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCat, ArrayList<String> chartPan, int tip, boolean cfgActive, boolean init) throws Exception {
         try {
-            deleteConfigGeneral();
+            if (init) {
+                deleteConfigGeneral();
+            }
             String nums = SalonManager.encrypt(utili.arrayIntToStr(numTab));
             String pans = SalonManager.encrypt(utili.arrayStrToStr(strPan));
             String cats = SalonManager.encrypt(utili.arrayStrToStr(strCat));
@@ -278,10 +280,8 @@ public class DAOConfig extends DAO {
             String mod = SalonManager.encrypt(utili.arrayStrToStr(mods));
             String act = SalonManager.encryptBoolean(wsOpen);
             String id = SalonManager.encryptInt(wsId);
-
             String sql1 = "INSERT INTO config_actual(config_open_ws, config_open_ws_id, congif_defer_close_ws, congif_unmod_tabs)"
                     + "VALUES('" + act + "', '" + id + "', '" + def + "', '" + mod + "');";
-
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

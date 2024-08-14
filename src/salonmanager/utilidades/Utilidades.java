@@ -824,7 +824,7 @@ public class Utilidades {
         ArrayList<String> chars = new ArrayList<>();
         chars.add("s");
         chars.add("v");
-        daoC.saveConfigGeneral(59, tabsQ, categories, spaces, chars, 10, true);
+        daoC.saveConfigGeneral(59, tabsQ, categories, spaces, chars, 10, true, false);
         ArrayList<String> defer = new ArrayList<String>();
         ArrayList<String> mods = new ArrayList<String>();
 
