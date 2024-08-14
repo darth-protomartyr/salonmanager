@@ -13,19 +13,22 @@ public class DAOConfig extends DAO {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCat, ArrayList<String> chartPan, int tip, boolean cfgActive, boolean init) throws Exception {
+    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> chartPan, ArrayList<String> strCat, int tip, boolean cfgActive, boolean init) throws Exception {
         try {
             if (init) {
                 deleteConfigGeneral();
             }
+            String totTabs = SalonManager.encryptInt(totalTab); 
             String nums = SalonManager.encrypt(utili.arrayIntToStr(numTab));
             String pans = SalonManager.encrypt(utili.arrayStrToStr(strPan));
-            String cats = SalonManager.encrypt(utili.arrayStrToStr(strCat));
             String charts = SalonManager.encrypt(utili.arrayStrToStr(chartPan));
+            String cats = SalonManager.encrypt(utili.arrayStrToStr(strCat));
             String act = SalonManager.encryptBoolean(cfgActive);
+            String actTip = SalonManager.encryptInt(tip);
 
-            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_name_categories, config_table_chart_panes, config_table_tip , config_active)"
-                    + "VALUES('" + SalonManager.encryptInt(totalTab) + "', '" + nums + "', '" + pans + "', '" + cats + "', '" + charts + "', '" + SalonManager.encryptInt(tip) + "', '" + act + "');";
+
+            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_chart_panes, config_table_name_categories, config_table_tip , config_active)"
+                    + "VALUES('" + totTabs + "', '" + nums + "', '" + pans + "', '" + charts + "', '" + cats + "', '" + actTip + "', '" + act + "');";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
