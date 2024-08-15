@@ -121,13 +121,13 @@ public class SalonManager {
         return Integer.parseInt(decryptedStr);
     }
 
-    public static SecretKeySpec getKeyFromPassword(String password) throws Exception {
-        MessageDigest sha = MessageDigest.getInstance("SHA-256");
-        byte[] key = password.getBytes("UTF-8");
-        key = sha.digest(key);
-        key = java.util.Arrays.copyOf(key, 16);
-        return new SecretKeySpec(key, "AES");
-    }
+//    public static SecretKeySpec getKeyFromPassword(String password) throws Exception {
+//        MessageDigest sha = MessageDigest.getInstance("SHA-256");
+//        byte[] key = password.getBytes("UTF-8");
+//        key = sha.digest(key);
+//        key = java.util.Arrays.copyOf(key, 16);
+//        return new SecretKeySpec(key, "AES");
+//    }
 
     public static String encryptBoolean(boolean value) throws Exception {
         String bool;

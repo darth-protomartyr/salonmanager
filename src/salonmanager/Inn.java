@@ -114,7 +114,7 @@ public class Inn extends FrameWindow {
         
         boolean askCfg = daoC.askCfgNull();
         if (!askCfg) {
-            daoI.fullerTables();
+//            daoI.fullerTables();
             utili.cfgBacker();    
         }
         boolean error = false;
