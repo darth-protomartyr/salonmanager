@@ -171,7 +171,7 @@ public class ServiceConfigSal {
         for (int i = 0; i < cSF.getQuants().size(); i++) {
             totalTab += cSF.getQuants().get(i);
         }
-        daoC.saveConfigGeneral(totalTab, cSF.getQuants(), cSF.getCategoriesSel(), cSF.getSpacesSel(), cSF.getCharsSel(), tipPc, true);
+        daoC.saveConfigGeneral(totalTab, cSF.getQuants(), cSF.getSpacesSel(), cSF.getCharsSel(), cSF.getCategoriesSel(), tipPc, true);
         cSF.getSm().frameCloser();
         System.exit(0);
     }

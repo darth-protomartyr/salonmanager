@@ -14,9 +14,9 @@ public class DAOInit extends DAO {
             String sqlCfgGen = "CREATE TABLE IF NOT EXISTS config_general("
                     + "	config_table_total VARCHAR(100)," /*nro total de tabs*/
                     + " config_table_num_panes VARCHAR(100)," /*número de mesas por pane*/
-                    + " config_table_name_categories VARCHAR(2000)," /*nombre de rubros*/
                     + "	config_table_name_panes VARCHAR(2000)," /*nombre de cada pane*/
                     + " config_table_chart_panes VARCHAR(200)," /*Inicial de cada pane*/
+                    + " config_table_name_categories VARCHAR(2000)," /*nombre de rubros*/
                     + " config_table_tip VARCHAR(100)," /*porcentaje propina*/
                     + " config_active VARCHAR(100)"
                     + ");";

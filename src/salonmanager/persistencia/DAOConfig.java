@@ -13,17 +13,19 @@ public class DAOConfig extends DAO {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> strCat, ArrayList<String> chartPan, int tip, boolean cfgActive) throws Exception {
+    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> chartPan,  ArrayList<String> strCat, int tip, boolean cfgActive) throws Exception {
         try {
             deleteConfigGeneral();
+            String totalTabs = SalonManager.encryptInt(totalTab);
             String nums = SalonManager.encrypt(utili.arrayIntToStr(numTab));
             String pans = SalonManager.encrypt(utili.arrayStrToStr(strPan));
-            String cats = SalonManager.encrypt(utili.arrayStrToStr(strCat));
             String charts = SalonManager.encrypt(utili.arrayStrToStr(chartPan));
+            String cats = SalonManager.encrypt(utili.arrayStrToStr(strCat));
+            String tipAct = SalonManager.encryptInt(tip);
             String act = SalonManager.encryptBoolean(cfgActive);
 
-            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_name_categories, config_table_chart_panes, config_table_tip , config_active)"
-                    + "VALUES('" + SalonManager.encryptInt(totalTab) + "', '" + nums + "', '" + pans + "', '" + cats + "', '" + charts + "', '" + SalonManager.encryptInt(tip) + "', '" + act + "');";
+            String sql1 = "INSERT INTO config_general(config_table_total, config_table_num_panes, config_table_name_panes, config_table_chart_panes,  config_table_name_categories, config_table_tip , config_active)"
+                    + "VALUES('" + totalTabs + "', '" + nums + "', '" + pans + "', '" + charts + "', '" + cats + "', '" + tipAct + "', '" + act + "');";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -62,8 +64,8 @@ public class DAOConfig extends DAO {
             cfnGen.setTotalTable(SalonManager.decryptInt(resultado.getString(1)));
             cfnGen.setTableNum(utili.strToArrayInt(SalonManager.decrypt(resultado.getString(2))));
             cfnGen.setTablePan(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(3))));
-            cfnGen.setTableItemCategories(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(4))));
-            cfnGen.setTablePanCh(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(5))));
+            cfnGen.setTablePanCh(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(4))));
+            cfnGen.setTableItemCategories(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(5))));
             cfnGen.setTipPc(SalonManager.decryptInt(resultado.getString(6)));
             cfnGen.setActiveConfig(SalonManager.decryptBoolean(resultado.getString(7)));
         }
