@@ -98,7 +98,6 @@ public class DAO {
 
     protected void insertarModificarEliminar(String sql) throws Exception {
         try {
-            System.out.println(sql);
             conectarBase();
             sentencia = (Statement) conexion.createStatement();
             sentencia.executeUpdate(sql);
@@ -112,7 +111,6 @@ public class DAO {
 
     protected void consultarBase(String sql) throws Exception {
         try {
-            System.out.println(sql);
             conectarBase();
             sentencia = (Statement) conexion.createStatement();
             
