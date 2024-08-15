@@ -12,150 +12,150 @@ public class DAOInit extends DAO {
         Statement stmt = null;
         try {
             String sqlCfgGen = "CREATE TABLE IF NOT EXISTS config_general("
-                    + "	config_table_total VARCHAR(100)," /*nro total de tabs*/
-                    + " config_table_num_panes VARCHAR(100)," /*número de mesas por pane*/
-                    + "	config_table_name_panes VARCHAR(2000)," /*nombre de cada pane*/
-                    + " config_table_chart_panes VARCHAR(200)," /*Inicial de cada pane*/
-                    + " config_table_name_categories VARCHAR(2000)," /*nombre de rubros*/
-                    + " config_table_tip VARCHAR(100)," /*porcentaje propina*/
-                    + " config_active VARCHAR(100)"
+                    + "	config_table_total TEXT," /*nro total de tabs*/
+                    + " config_table_num_panes TEXT," /*número de mesas por pane*/
+                    + "	config_table_name_panes TEXT," /*nombre de cada pane*/
+                    + " config_table_chart_panes TEXT," /*Inicial de cada pane*/
+                    + " config_table_name_categories TEXT," /*nombre de rubros*/
+                    + " config_table_tip TEXT," /*porcentaje propina*/
+                    + " config_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlCfgGen);
             System.out.println(sqlCfgGen);
 
             String sqlAct = "CREATE TABLE IF NOT EXISTS config_actual("
-                    + " config_open_ws VARCHAR(100),"/*turno actual abierto*/
-                    + " config_open_ws_id VARCHAR(100)," /*openWsId*/
-                    + " congif_defer_close_ws VARCHAR(5000),"
-                    + " congif_unmod_tabs VARCHAR(5000)"
+                    + " config_open_ws TEXT,"/*turno actual abierto*/
+                    + " config_open_ws_id TEXT," /*openWsId*/
+                    + " congif_defer_close_ws TEXT,"
+                    + " congif_unmod_tabs TEXT"
                     + ");";
             insertarModificarEliminar(sqlAct);
             System.out.println(sqlAct);
 
             String sqlIC = "CREATE TABLE IF NOT EXISTS item_cards("
-                    + " item_card_id VARCHAR(100) PRIMARY KEY,"
-                    + " item_card_code VARCHAR(100) UNIQUE,"
-                    + " item_card_name VARCHAR(100),"
-                    + " item_card_category VARCHAR(100),"
-                    + " item_card_description VARCHAR(2500),"
-                    + " item_card_cost VARCHAR(100),"
-                    + " item_card_price VARCHAR(100),"
-                    + " item_card_stock VARCHAR(100),"
-                    + " item_card_date_creation TIMESTAMP(3),"
-                    + " item_card_date_update TIMESTAMP(3),"
-                    + " item_card_tip VARCHAR(100),"
-                    + " item_card_active VARCHAR(100)"
+                    + " item_card_id TEXT PRIMARY KEY,"
+                    + " item_card_code TEXT UNIQUE,"
+                    + " item_card_name TEXT,"
+                    + " item_card_category TEXT,"
+                    + " item_card_description TEXT,"
+                    + " item_card_cost TEXT,"
+                    + " item_card_price TEXT,"
+                    + " item_card_stock TEXT,"
+                    + " item_card_date_creation TEXT,"
+                    + " item_card_date_update TEXT,"
+                    + " item_card_tip TEXT,"
+                    + " item_card_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlIC);
             System.out.println(sqlIC);
 
             String sqlTabs = "CREATE TABLE IF NOT EXISTS tabs("
-                    + "	table_num VARCHAR(100),"
-                    + " table_pos VARCHAR(100),"
-                    + " table_open_time TIMESTAMP(3),"
-                    + " table_close_time TIMESTAMP(3),"
-                    + " table_id VARCHAR(100) PRIMARY KEY,"
-                    + " table_open VARCHAR(100),"
-                    + " table_bill VARCHAR(100),"
-                    + " table_to_pay VARCHAR(100),"
-                    + " table_discount VARCHAR(100),"
-                    + " table_error VARCHAR(100),"
-                    + " table_price_correction VARCHAR(100),"
-                    + " table_amount_cash VARCHAR(100),"
-                    + " table_amount_electronic VARCHAR(100),"
-                    + " table_total VARCHAR(100),"
-                    + " table_comments VARCHAR(500),"
-                    + " table_active VARCHAR(100)"
+                    + "	table_num TEXT,"
+                    + " table_pos TEXT,"
+                    + " table_open_time TEXT,"
+                    + " table_close_time TEXT,"
+                    + " table_id TEXT PRIMARY KEY,"
+                    + " table_open TEXT,"
+                    + " table_bill TEXT,"
+                    + " table_to_pay TEXT,"
+                    + " table_discount TEXT,"
+                    + " table_error TEXT,"
+                    + " table_price_correction TEXT,"
+                    + " table_amount_cash TEXT,"
+                    + " table_amount_electronic TEXT,"
+                    + " table_total TEXT,"
+                    + " table_comments TEXT,"
+                    + " table_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlTabs);
             System.out.println(sqlTabs);
 
             String sqlWs = "CREATE TABLE IF NOT EXISTS workshifts("
-                    + "	workshift_id VARCHAR(100) PRIMARY KEY,"
-                    + " workshift_open_time_shift TIMESTAMP(3),"
-                    + "	workshift_close_time_shift TIMESTAMP(3),"
-                    + "	workshift_state_shift VARCHAR(100),"
-                    + "	workshift_mount_cash VARCHAR(100),"
-                    + "	workshift_mount_electronic VARCHAR(100),"
-                    + "	workshift_total_mount_tabs VARCHAR(100),"
-                    + "	workshift_total_mount_ws VARCHAR(100),"
-                    + "	workshift_error_mount_tabs VARCHAR(100),"
-                    + "	workshift_error_mount_ws VARCHAR(100),"
-                    + " workshift_cash_flow_cash VARCHAR(100),"
-                    + " workshift_cash_flow_elec VARCHAR(100),"
-                    + " workshift_comment VARCHAR(5000),"
-                    + " workshift_error VARCHAR(100),"
-                    + " workshift_active VARCHAR(100)"
+                    + "	workshift_id TEXT PRIMARY KEY,"
+                    + " workshift_open_time_shift TEXT,"
+                    + "	workshift_close_time_shift TEXT,"
+                    + "	workshift_state_shift TEXT,"
+                    + "	workshift_mount_cash TEXT,"
+                    + "	workshift_mount_electronic TEXT,"
+                    + "	workshift_total_mount_tabs TEXT,"
+                    + "	workshift_total_mount_ws TEXT,"
+                    + "	workshift_error_mount_tabs TEXT,"
+                    + "	workshift_error_mount_ws TEXT,"
+                    + " workshift_cash_flow_cash TEXT,"
+                    + " workshift_cash_flow_elec TEXT,"
+                    + " workshift_comment TEXT,"
+                    + " workshift_error TEXT,"
+                    + " workshift_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlWs);
             System.out.println(sqlWs);
 
             String sqlUsers = "CREATE TABLE IF NOT EXISTS users("
-                    + " user_id VARCHAR(200) UNIQUE PRIMARY KEY,"
-                    + " user_name VARCHAR(100),"
-                    + " user_last_name VARCHAR(100),"
-                    + " user_mail VARCHAR(100) UNIQUE,"
-                    + " user_role VARCHAR(100),"
-                    + " user_image_route VARCHAR(5000),"
-                    + " user_image_name VARCHAR(100),"
-                    + " user_password VARCHAR(100),"
-                    + " user_phone VARCHAR(100) UNIQUE,"
-                    + " user_active VARCHAR(100)"
+                    + " user_id TEXT UNIQUE PRIMARY KEY,"
+                    + " user_name TEXT,"
+                    + " user_last_name TEXT,"
+                    + " user_mail TEXT UNIQUE,"
+                    + " user_role TEXT,"
+                    + " user_image_route TEXT,"
+                    + " user_image_name TEXT,"
+                    + " user_password TEXT,"
+                    + " user_phone TEXT UNIQUE,"
+                    + " user_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlUsers);
             System.out.println(sqlUsers);
 
             String sqlCat = "CREATE TABLE IF NOT EXISTS categories("
-                    + " category_name VARCHAR(100)"
+                    + " category_name TEXT"
                     + ");";
             insertarModificarEliminar(sqlCat);
             System.out.println(sqlCat);
 
             String sqlSpa = "CREATE TABLE IF NOT EXISTS spaces("
-                    + " space_name VARCHAR(100)"
+                    + " space_name TEXT"
                     + ");";
             insertarModificarEliminar(sqlSpa);
             System.out.println(sqlSpa);
 
             String sqlCh = "CREATE TABLE IF NOT EXISTS chars("
-                    + " char_name VARCHAR(100)"
+                    + " char_name TEXT"
                     + ");";
             insertarModificarEliminar(sqlCh);
             System.out.println(sqlCh);
 
             String sqlDeli = "CREATE TABLE IF NOT EXISTS deliverys("
-                    + "	delivery_id VARCHAR(100),"
-                    + " delivery_consumer_phone VARCHAR(100),"
-                    + " delivery_tab_id VARCHAR(100),"
-                    + " delivery_user_id VARCHAR(30),"
-                    + " delivery_open VARCHAR(100),"
-                    + " delivery_active VARCHAR(100)"
+                    + "	delivery_id TEXT,"
+                    + " delivery_consumer_phone TEXT,"
+                    + " delivery_tab_id TEXT,"
+                    + " delivery_user_id TEXT,"
+                    + " delivery_open TEXT,"
+                    + " delivery_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlDeli);
             System.out.println(sqlDeli);
 
             String sqlDeliCl = "CREATE TABLE IF NOT EXISTS delivery_clients ("
-                    + "	delivery_client_id VARCHAR(100) PRIMARY KEY,"
-                    + " delivery_client_street VARCHAR(100),"
-                    + " delivery_client_street_num VARCHAR(100),"
-                    + " delivery_client_dept_floor VARCHAR(100),"
-                    + " delivery_client_dept_num VARCHAR(100),"
-                    + " delivery_client_district VARCHAR(100),"
-                    + " delivery_client_area VARCHAR(100),"
-                    + " delivery_client_details VARCHAR(5000),"
-                    + " delivery_client_name VARCHAR(100),"
-                    + " delivery_client_phone VARCHAR(100),"
-                    + " delivery_client_social_network VARCHAR(100),"
-                    + " delivery_client_active VARCHAR(100)"
+                    + "	delivery_client_id TEXT PRIMARY KEY,"
+                    + " delivery_client_street TEXT,"
+                    + " delivery_client_street_num TEXT,"
+                    + " delivery_client_dept_floor TEXT,"
+                    + " delivery_client_dept_num TEXT,"
+                    + " delivery_client_district TEXT,"
+                    + " delivery_client_area TEXT,"
+                    + " delivery_client_details TEXT,"
+                    + " delivery_client_name TEXT,"
+                    + " delivery_client_phone TEXT,"
+                    + " delivery_client_social_network TEXT,"
+                    + " delivery_client_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlDeliCl);
             System.out.println(sqlDeliCl);
 
             String sqlICOT = "CREATE TABLE IF NOT EXISTS item_card_order_tabs("
-                    + " item_card_order_tab_id VARCHAR(100),"
-                    + " item_card_order_tab_active VARCHAR(100),"
-                    + " item_card_order_id_fkey VARCHAR(100),"
-                    + " table_id_fkey VARCHAR(100),"
+                    + " item_card_order_tab_id TEXT,"
+                    + " item_card_order_tab_active TEXT,"
+                    + " item_card_order_id_fkey TEXT,"
+                    + " table_id_fkey TEXT,"
                     + " FOREIGN KEY (item_card_order_id_fkey) REFERENCES item_cards(item_card_id),"
                     + " FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)"
                     + ");";
@@ -163,10 +163,10 @@ public class DAOInit extends DAO {
             System.out.println(sqlICOT);
 
             String sqlICGT = "CREATE TABLE IF NOT EXISTS item_card_gift_tabs("
-                    + " item_card_gift_tab_id VARCHAR(100), "
-                    + " item_card_gift_tab_active VARCHAR(100),"
-                    + " item_card_gift_id_fkey VARCHAR(100),"
-                    + " table_id_fkey VARCHAR(100),"
+                    + " item_card_gift_tab_id TEXT, "
+                    + " item_card_gift_tab_active TEXT,"
+                    + " item_card_gift_id_fkey TEXT,"
+                    + " table_id_fkey TEXT,"
                     + " FOREIGN KEY (item_card_gift_id_fkey) REFERENCES item_cards(item_card_id),"
                     + " FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)"
                     + ");";
@@ -174,10 +174,10 @@ public class DAOInit extends DAO {
             System.out.println(sqlICGT);
 
             String sqlICPT = "CREATE TABLE IF NOT EXISTS item_card_payed_tabs("
-                    + " item_card_payed_tab_id VARCHAR(100), "
-                    + " item_card_payed_tab_active VARCHAR(100),"
-                    + " item_card_payed_id_fkey VARCHAR(100),"
-                    + " table_id_fkey VARCHAR(100),"
+                    + " item_card_payed_tab_id TEXT, "
+                    + " item_card_payed_tab_active TEXT,"
+                    + " item_card_payed_id_fkey TEXT,"
+                    + " table_id_fkey TEXT,"
                     + " FOREIGN KEY (item_card_payed_id_fkey) REFERENCES item_cards(item_card_id),"
                     + " FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)"
                     + ");";
@@ -185,10 +185,10 @@ public class DAOInit extends DAO {
             System.out.println(sqlICPT);
 
             String sqlICPNT = "CREATE TABLE IF NOT EXISTS item_card_payed_nd_tabs("
-                    + " item_card_payed_nd_tab_id VARCHAR(100),"
-                    + " item_card_payed_nd_tab_active VARCHAR(100),"
-                    + " item_card_payed_nd_id_fkey VARCHAR(100),"
-                    + " table_id_fkey VARCHAR(100),"
+                    + " item_card_payed_nd_tab_id TEXT,"
+                    + " item_card_payed_nd_tab_active TEXT,"
+                    + " item_card_payed_nd_id_fkey TEXT,"
+                    + " table_id_fkey TEXT,"
                     + " FOREIGN KEY (item_card_payed_nd_id_fkey) REFERENCES item_cards(item_card_id),"
                     + " FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)"
                     + ");";
@@ -196,57 +196,57 @@ public class DAOInit extends DAO {
             System.out.println(sqlICPNT);
 
             String sqlIM = "CREATE TABLE IF NOT EXISTS item_monits("
-                    + "	item_monit_id VARCHAR(100),"
-                    + " item_monit_table_id VARCHAR(100),"
-                    + " item_monit_item_id VARCHAR(100),"
-                    + " item_monit_tipe VARCHAR(100),"
-                    + " item_monit_init_bool VARCHAR(100),"
+                    + "	item_monit_id TEXT,"
+                    + " item_monit_table_id TEXT,"
+                    + " item_monit_item_id TEXT,"
+                    + " item_monit_tipe TEXT,"
+                    + " item_monit_init_bool TEXT,"
                     + " item_monit_init_date DATETIME(3),"
-                    + " item_monit_cook_bool VARCHAR(100),"
+                    + " item_monit_cook_bool TEXT,"
                     + " item_monit_cook_date DATETIME(3),"
-                    + " item_monit_ready_bool VARCHAR(100),"
+                    + " item_monit_ready_bool TEXT,"
                     + " item_monit_ready_date DATETIME(3),"
-                    + " item_monit_otw_bool VARCHAR(100),"
+                    + " item_monit_otw_bool TEXT,"
                     + " item_monit_otw_date DATETIME(3),"
-                    + " item_monit_open VARCHAR(100),"
-                    + " item_monit_active VARCHAR(100),"
-                    + " item_monit_indications VARCHAR(5000)"
+                    + " item_monit_open TEXT,"
+                    + " item_monit_active TEXT,"
+                    + " item_monit_indications TEXT"
                     + ");";
             insertarModificarEliminar(sqlIM);
             System.out.println(sqlIM);
 
             String sqlISS = "CREATE TABLE IF NOT EXISTS item_sales_statics("
-                    + " item_sale_static_id VARCHAR(100),"
-                    + " item_sale_id VARCHAR(100),"
-                    + "	item_sale_category VARCHAR(100),"
-                    + " item_sale_tab_pos VARCHAR(100),"
-                    + " item_sale_waiter_id VARCHAR(100),"
-                    + " item_sale_workshift_id VARCHAR(100),"
-                    + " item_sale_price VARCHAR(100),"
+                    + " item_sale_static_id TEXT,"
+                    + " item_sale_id TEXT,"
+                    + "	item_sale_category TEXT,"
+                    + " item_sale_tab_pos TEXT,"
+                    + " item_sale_waiter_id TEXT,"
+                    + " item_sale_workshift_id TEXT,"
+                    + " item_sale_price TEXT,"
                     + " item_sale_date DATETIME(3),"
-                    + " item_sale_active VARCHAR(100)"
+                    + " item_sale_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlISS);
             System.out.println(sqlISS);
 
             String sqlMF = "CREATE TABLE IF NOT EXISTS money_flows("
-                    + " money_flow_id VARCHAR(100) PRIMARY KEY,"
-                    + "	money_flow_kind VARCHAR(100),"
-                    + " money_flow_m_k VARCHAR(100),"
-                    + " money_flow_amount VARCHAR(100),"
-                    + "	money_flow_comment VARCHAR(5000),"
-                    + " money_flow_date TIMESTAMP(3),"
-                    + "	money_flow_ws_id VARCHAR(100),"
-                    + " money_flow_active VARCHAR(100)"
+                    + " money_flow_id TEXT PRIMARY KEY,"
+                    + "	money_flow_kind TEXT,"
+                    + " money_flow_m_k TEXT,"
+                    + " money_flow_amount TEXT,"
+                    + "	money_flow_comment TEXT,"
+                    + " money_flow_date TEXT,"
+                    + "	money_flow_ws_id TEXT,"
+                    + " money_flow_active TEXT"
                     + ");";
             insertarModificarEliminar(sqlMF);
             System.out.println(sqlMF);
 
             String sqlWT = "CREATE TABLE IF NOT EXISTS waiter_tabs("
-                    + " waiter_tab_id VARCHAR(100),"
-                    + " waiter_tab_active VARCHAR(100),"
-                    + " waiter_id_fkey VARCHAR(200),"
-                    + " table_id_fkey VARCHAR(100),"
+                    + " waiter_tab_id TEXT,"
+                    + " waiter_tab_active TEXT,"
+                    + " waiter_id_fkey TEXT,"
+                    + " table_id_fkey TEXT,"
                     + "	FOREIGN KEY (waiter_id_fkey) REFERENCES users(user_id),"
                     + " FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)"
                     + ");";
@@ -255,9 +255,9 @@ public class DAOInit extends DAO {
 
             String sqlCW = "CREATE TABLE IF NOT EXISTS cashier_workshifts("
                     + " cashier_workshift_id INT PRIMARY KEY,"
-                    + " cashier_workshift_active VARCHAR(100),"
-                    + " cashier_id_fkey VARCHAR(200),"
-                    + " workshift_id_fkey VARCHAR(100),"
+                    + " cashier_workshift_active TEXT,"
+                    + " cashier_id_fkey TEXT,"
+                    + " workshift_id_fkey TEXT,"
                     + " FOREIGN KEY (cashier_id_fkey) REFERENCES users(user_id),"
                     + " FOREIGN KEY (workshift_id_fkey) REFERENCES workshifts(workshift_id)"
                     + ");";
@@ -267,11 +267,11 @@ public class DAOInit extends DAO {
             String sqlR = "CREATE TABLE IF NOT EXISTS registers("
                     + "	register_id INT PRIMARY KEY,"
                     + " register_ejecution DATETIME(3),"
-                    + " register_user VARCHAR(100),"
-                    + " register_user_modify VARCHAR(100),"
-                    + " register_operation VARCHAR(100),"
-                    + " register_object VARCHAR(100),"
-                    + " register_modification VARCHAR(2000)"
+                    + " register_user TEXT,"
+                    + " register_user_modify TEXT,"
+                    + " register_operation TEXT,"
+                    + " register_object TEXT,"
+                    + " register_modification TEXT"
                     + ");";
             insertarModificarEliminar(sqlR);
             System.out.println(sqlR);

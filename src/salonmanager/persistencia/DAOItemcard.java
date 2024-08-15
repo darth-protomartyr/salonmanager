@@ -14,7 +14,7 @@ public class DAOItemCard extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
-    
+
     public ArrayList<ItemCard> listarItemsCard() throws Exception {
         ArrayList<ItemCard> items = new ArrayList<>();
         try {
@@ -41,8 +41,6 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -59,8 +57,6 @@ public class DAOItemCard extends DAO {
             return itemsId;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -80,7 +76,7 @@ public class DAOItemCard extends DAO {
                 double cost = SalonManager.decryptDouble(resultado.getString(6));
                 ArrayList<Double> price = utili.strToArrayDou(SalonManager.decrypt(resultado.getString(7)));
                 int stock = SalonManager.decryptInt(resultado.getString(8));
-                Timestamp dateCreation = resultado.getTimestamp(9);                
+                Timestamp dateCreation = resultado.getTimestamp(9);
                 Timestamp dateCostUpdate = resultado.getTimestamp(10);
                 boolean activeTip = SalonManager.decryptBoolean(resultado.getString(11));
                 boolean activeItem = SalonManager.decryptBoolean(resultado.getString(12));
@@ -90,8 +86,6 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -112,13 +106,13 @@ public class DAOItemCard extends DAO {
             utiliMsg.errorPriceItem();
             error = true;
         }
-        
+
         String prices = SalonManager.encrypt(utili.arrayDouToStr(item.getPrice()));
 
         if (error == false) {
             try {
                 String sql = "INSERT INTO item_cards(item_card_id, item_card_code, item_card_name, item_card_category, item_card_description, item_card_cost, item_card_price,  item_card_stock, item_card_date_creation, item_card_tip, item_card_active) "
-                        + "VALUES( '" + SalonManager.encryptInt(item.getId()) + "', '"+ SalonManager.encrypt(item.getCode()) + "', '" + SalonManager.encrypt(item.getName()) + "', '" + SalonManager.encrypt(item.getCategory()) + "','" + SalonManager.encrypt(item.getDescription()) + "','" + SalonManager.encryptDouble(item.getCost()) + "','" + prices + "', '" + SalonManager.encryptInt(item.getStock()) + "', '" + item.getDateCreation() + "', '" + SalonManager.encryptBoolean(item.isActiveTip()) + "', '" + SalonManager.encryptBoolean(item.isActiveItem()) + "');";
+                        + "VALUES( '" + SalonManager.encryptInt(item.getId()) + "', '" + SalonManager.encrypt(item.getCode()) + "', '" + SalonManager.encrypt(item.getName()) + "', '" + SalonManager.encrypt(item.getCategory()) + "','" + SalonManager.encrypt(item.getDescription()) + "','" + SalonManager.encryptDouble(item.getCost()) + "','" + prices + "', '" + SalonManager.encryptInt(item.getStock()) + "', '" + item.getDateCreation() + "', '" + SalonManager.encryptBoolean(item.isActiveTip()) + "', '" + SalonManager.encryptBoolean(item.isActiveItem()) + "');";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
                 utiliMsg.cargaItem();
@@ -128,8 +122,6 @@ public class DAOItemCard extends DAO {
                 } else {
                     e.printStackTrace();
                 }
-            } finally {
-                desconectarBase();
             }
         }
     }
@@ -145,7 +137,7 @@ public class DAOItemCard extends DAO {
                     + "' WHERE item_card_id = " + SalonManager.encryptInt(id) + ";";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
             utiliMsg.cargaSuccesMod();
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
@@ -153,8 +145,6 @@ public class DAOItemCard extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -175,8 +165,6 @@ public class DAOItemCard extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -185,12 +173,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -199,25 +184,20 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
-    
     public void downActiveItemOrderTableAll(Table t) throws Exception {
         try {
             String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -226,11 +206,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -259,8 +237,6 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -281,8 +257,6 @@ public class DAOItemCard extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -291,11 +265,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_gift_tabs SET item_card_gift_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_gift_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_gift_tab_active = '" + SalonManager.encryptBoolean(true) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -304,11 +276,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_gift_tabs SET item_card_gift_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -317,11 +287,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_gift_tabs SET item_card_gift_tab_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id_fkey = '" + t.getId() + "' AND item_card_gift_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_gift_tab_active = '" + SalonManager.encryptBoolean(false) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -350,8 +318,6 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -372,8 +338,6 @@ public class DAOItemCard extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -382,11 +346,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_payed_tabs SET item_card_payed_tab_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_payed_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_payed_tab_active = '" + SalonManager.encryptBoolean(true) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -395,11 +357,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_payed_tabs SET item_card_payed_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -408,11 +368,9 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_payed_tabs SET item_card_payed_tab_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_payed_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_payed_tab_active = '" + SalonManager.encryptBoolean(false) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -442,8 +400,6 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -464,8 +420,6 @@ public class DAOItemCard extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -474,25 +428,20 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_payed_nd_tabs SET item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_payed_nd_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(true) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
-    
     public void downActiveItemPayedNDTableAll(Table t) throws Exception {
         try {
             String sql = "UPDATE item_card_payed_nd_tabs SET item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -520,14 +469,9 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
-    
-    
-    
     public ItemCard getItemById(int itemIMon) throws Exception {
         try {
             String sql = "SELECT * FROM item_cards WHERE item_card_active = '" + SalonManager.encryptBoolean(true) + "' AND item_card_id = '" + SalonManager.encryptInt(itemIMon) + "';";
@@ -552,8 +496,6 @@ public class DAOItemCard extends DAO {
             return ic;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -570,11 +512,9 @@ public class DAOItemCard extends DAO {
             return name;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
-    
+
     public int getItemStockById(int i) throws Exception {
         int stock = 0;
         try {
@@ -588,65 +528,78 @@ public class DAOItemCard extends DAO {
             return stock;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
 
     }
-    
 
     public void updateItemCategory(int id, String newCat) throws Exception {
-        String sql = "UPDATE item_cards "
-                + "SET item_card_category = '" + SalonManager.encrypt(newCat) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE item_cards "
+                    + "SET item_card_category = '" + SalonManager.encrypt(newCat) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
 
     public void updateItemStock(int id, int stock) throws Exception {
-        String sql = "UPDATE item_cards "
-                + "SET item_card_stock = '" + SalonManager.encryptInt(stock) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE item_cards "
+                    + "SET item_card_stock = '" + SalonManager.encryptInt(stock) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
-    
+
     public void updateItemStockUpDown(ItemCard ic, boolean upDown) throws Exception {
         int id = ic.getId();
         int stock = getItemStockById(id);
         if (upDown) {
-            stock +=1;
+            stock += 1;
         } else {
-            stock -=1;
+            stock -= 1;
         }
 
-        String sql = "UPDATE item_cards "
-                + "SET item_card_stock = '" + SalonManager.encryptInt(stock) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE item_cards "
+                    + "SET item_card_stock = '" + SalonManager.encryptInt(stock) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public void updateItemCost(int id, double cost) throws Exception {
-        String sql = "UPDATE item_cards "
-                + "SET item_card_cost = '" + SalonManager.encryptDouble(cost) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE item_cards "
+                    + "SET item_card_cost = '" + SalonManager.encryptDouble(cost) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public void updateItemPrice(int id, ArrayList<Double> price) throws Exception {
-        String st = utili.arrayDouToStr(price);
-        String sql = "UPDATE item_cards "
-                + "SET item_card_price = '" + SalonManager.encrypt(st) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String st = utili.arrayDouToStr(price);
+            String sql = "UPDATE item_cards "
+                    + "SET item_card_price = '" + SalonManager.encrypt(st) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (Exception e) {
+            throw e;
+        }
     }
-    
-    
+
     public int getItemId() throws Exception {
-        try {       
+        try {
             int id = 0;
             String sql = "SELECT COUNT(*) AS cantidad_filas FROM item_cards;";
             System.out.println(sql);
@@ -658,8 +611,6 @@ public class DAOItemCard extends DAO {
             return id;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
-    }  
+    }
 }

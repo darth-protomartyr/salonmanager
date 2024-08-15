@@ -23,8 +23,6 @@ public class DAOMoneyFlow extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -47,8 +45,6 @@ public class DAOMoneyFlow extends DAO {
             return cf;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
     
@@ -73,8 +69,6 @@ public class DAOMoneyFlow extends DAO {
             return cfList;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -92,8 +86,6 @@ public class DAOMoneyFlow extends DAO {
             return id;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 }

@@ -63,8 +63,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -82,8 +80,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -98,8 +94,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -114,8 +108,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -130,8 +122,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -146,8 +136,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -162,8 +150,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -178,8 +164,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -194,8 +178,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -225,8 +207,6 @@ public class DAOWorkshift extends DAO {
             return ws;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -256,8 +236,6 @@ public class DAOWorkshift extends DAO {
             return ws;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -273,8 +251,6 @@ public class DAOWorkshift extends DAO {
             return ws;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -289,8 +265,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -305,8 +279,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -321,8 +293,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -337,8 +307,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -356,8 +324,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -372,8 +338,6 @@ public class DAOWorkshift extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -391,8 +355,6 @@ public class DAOWorkshift extends DAO {
             return wss;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -409,8 +371,6 @@ public class DAOWorkshift extends DAO {
             return wssId;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -427,8 +387,6 @@ public class DAOWorkshift extends DAO {
             return wssTs;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -460,8 +418,6 @@ public class DAOWorkshift extends DAO {
             return wsError;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -478,8 +434,6 @@ public class DAOWorkshift extends DAO {
             return id;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -495,8 +449,6 @@ public class DAOWorkshift extends DAO {
             return ts;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 }

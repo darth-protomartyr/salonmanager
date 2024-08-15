@@ -25,8 +25,6 @@ public class DAOItemSale extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
     
@@ -51,8 +49,6 @@ public class DAOItemSale extends DAO {
             
         } catch(Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
         return itemSales;        
     } 
@@ -78,8 +74,6 @@ public class DAOItemSale extends DAO {
             return iS;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -105,9 +99,7 @@ public class DAOItemSale extends DAO {
             return listISale;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
-        }        
+        }       
     }
     
     public int getItemSaleId() throws Exception {
@@ -123,8 +115,6 @@ public class DAOItemSale extends DAO {
             return id;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 }

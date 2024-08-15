@@ -37,8 +37,6 @@ public class DAORegister extends DAO {
 //            } else {
 //                e.printStackTrace();
 //            }
-//        } finally {
-//            desconectarBase();
 //        }
 //    }
 
@@ -62,8 +60,6 @@ public class DAORegister extends DAO {
 //            return rgo;
 //        } catch (Exception e) {
 //            throw e;
-//        } finally {
-//            desconectarBase();
 //        }
 //    }
 //    public Register consultaRegisterByUser(String user) throws Exception {
@@ -83,8 +79,6 @@ public class DAORegister extends DAO {
 //            return rgo;
 //        } catch (Exception e) {
 //            throw e;
-//        } finally {
-//            desconectarBase();
 //        }
 //    }
     
@@ -108,8 +102,6 @@ public class DAORegister extends DAO {
 //            return registers;
 //        } catch (Exception e) {
 //            throw e;
-//        } finally {
-//            desconectarBase();
 //        }
 //    }
 
@@ -133,8 +125,6 @@ public class DAORegister extends DAO {
 //            return registers;
 //        } catch (Exception e) {
 //            throw e;
-//        } finally {
-//            desconectarBase();
 //        }
 //    }
 
@@ -158,8 +148,6 @@ public class DAORegister extends DAO {
 //            return registers;
 //        } catch (Exception e) {
 //            throw e;
-//        } finally {
-//            desconectarBase();
 //        }
 //    }
 }

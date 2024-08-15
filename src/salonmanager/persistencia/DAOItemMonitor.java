@@ -25,8 +25,6 @@ public class DAOItemMonitor extends DAO {
                 } else {
                     e.printStackTrace();
                 }
-            } finally {
-                desconectarBase();
             }
         } else {
             utiliMsg.errorIndiLenghtExcess();
@@ -38,11 +36,9 @@ public class DAOItemMonitor extends DAO {
             String sql = "UPDATE item_monits SET item_monit_open = '" + SalonManager.encryptBoolean(false) + "' WHERE item_monit_id = '" + SalonManager.encrypt(im.getIdIMon()) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            desconectarBase();
+            
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -76,8 +72,6 @@ public class DAOItemMonitor extends DAO {
             return aims;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -109,8 +103,6 @@ public class DAOItemMonitor extends DAO {
             return im;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 }

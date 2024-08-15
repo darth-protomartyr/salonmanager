@@ -39,8 +39,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -55,8 +53,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -73,7 +69,6 @@ public class DAOConfig extends DAO {
             cfnGen.setTipPc(SalonManager.decryptInt(resultado.getString(6)));
             cfnGen.setActiveConfig(SalonManager.decryptBoolean(resultado.getString(7)));
         }
-        desconectarBase();
         return cfnGen;
     }
 
@@ -97,7 +92,6 @@ public class DAOConfig extends DAO {
             }
             cfnAct.setArrayUnModTabs(modTabs);
         }
-        desconectarBase();
         return cfnAct;
     }
 
@@ -113,8 +107,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -129,8 +121,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -146,8 +136,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -159,7 +147,6 @@ public class DAOConfig extends DAO {
             String space = SalonManager.decrypt(resultado.getString(1));
             spaces.add(space);
         }
-        desconectarBase();
         return spaces;
     }
 
@@ -171,7 +158,6 @@ public class DAOConfig extends DAO {
             String cha = SalonManager.decrypt(resultado.getString(1));
             chars.add(cha);
         }
-        desconectarBase();
         return chars;
     }
 
@@ -183,7 +169,6 @@ public class DAOConfig extends DAO {
             String category = SalonManager.decrypt(resultado.getString(1));
             categories.add(category);
         }
-        desconectarBase();
         return categories;
     }
 
@@ -206,8 +191,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -223,8 +206,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -240,8 +221,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -261,8 +240,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -273,7 +250,7 @@ public class DAOConfig extends DAO {
         while (resultado.next()) {
             ask = SalonManager.decryptBoolean(resultado.getString(1));
         }
-        desconectarBase();
+        
         return ask;
     }
 
@@ -296,8 +273,6 @@ public class DAOConfig extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 }

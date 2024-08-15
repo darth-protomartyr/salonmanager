@@ -32,8 +32,6 @@ public class DAODelivery extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -65,8 +63,6 @@ public class DAODelivery extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -82,8 +78,6 @@ public class DAODelivery extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -111,8 +105,6 @@ public class DAODelivery extends DAO {
             return deli;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -127,8 +119,6 @@ public class DAODelivery extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 }

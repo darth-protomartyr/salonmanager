@@ -45,8 +45,6 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -76,41 +74,51 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
     public ArrayList<String> listarUserMails() throws Exception {
         boolean act = true;
         String active = SalonManager.encryptBoolean(act);
-        String sql = "SELECT user_mail FROM users WHERE user_active = '" + active + "';";
-        System.out.println(sql);
-        consultarBase(sql);
-        String mail = "";
         ArrayList<String> mails = new ArrayList<>();
-        while (resultado.next()) {
-            mail = "";
-            mail = SalonManager.decrypt(resultado.getString(1));
-            mails.add(mail);
+        try {
+            String sql = "SELECT user_mail FROM users WHERE user_active = '" + active + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            String mail = "";
+            while (resultado.next()) {
+                mail = "";
+                mail = SalonManager.decrypt(resultado.getString(1));
+                mails.add(mail);
+            }
+
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
         }
-        desconectarBase();
         return mails;
     }
 
     public ArrayList<String> listarUserByRol(String rol) throws Exception {
         boolean act = true;
         String active = SalonManager.encryptBoolean(act);
-        String sql = "SELECT user_id FROM users WHERE user_role = '" + rol + "' AND user_active = '" + active + "';";
-        System.out.println(sql);
-        consultarBase(sql);
-        ArrayList<String> ids = new ArrayList<>();
-        while (resultado.next()) {
-            String id = SalonManager.decrypt(resultado.getString(1));
-            ids.add(id);
+        try {
+            String sql = "SELECT user_id FROM users WHERE user_role = '" + rol + "' AND user_active = '" + active + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            ArrayList<String> ids = new ArrayList<>();
+            while (resultado.next()) {
+                String id = SalonManager.decrypt(resultado.getString(1));
+                ids.add(id);
+            }
+            return ids;
+        } catch (Exception e) {
+            throw e;
         }
-        desconectarBase();
-        return ids;
+
     }
 
     public User consultaUser(String mail) throws Exception {
@@ -140,113 +148,149 @@ public class DAOUser extends DAO {
             return user;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
     public ArrayList<User> listarUsers() throws Exception {
         boolean act = true;
+        ArrayList<User> users = new ArrayList<>();
         String active = SalonManager.encryptBoolean(act);
         String sql = "SELECT * FROM users WHERE user_active = '" + active + "';";
-        System.out.println(sql);
-        consultarBase(sql);
-        User user = null;
-        ArrayList<User> users = new ArrayList<>();
-        while (resultado.next()) {
-            user = new User();
-            user.setId(SalonManager.decrypt(resultado.getString(1)));
-            user.setName(SalonManager.decrypt(resultado.getString(2)));
-            user.setLastName(SalonManager.decrypt(resultado.getString(3)));
-            user.setMail(SalonManager.decrypt(resultado.getString(4)));
-            String role = SalonManager.decrypt(resultado.getString(5));
-            if (role.equals("NULL")) {
-                role = null;
+        try {
+            System.out.println(sql);
+            consultarBase(sql);
+            User user = null;
+            while (resultado.next()) {
+                user = new User();
+                user.setId(SalonManager.decrypt(resultado.getString(1)));
+                user.setName(SalonManager.decrypt(resultado.getString(2)));
+                user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+                user.setMail(SalonManager.decrypt(resultado.getString(4)));
+                String role = SalonManager.decrypt(resultado.getString(5));
+                if (role.equals("NULL")) {
+                    role = null;
+                }
+                user.setRol(role);
+                user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+                user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+                user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+                user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+                user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
+                users.add(user);
             }
-            user.setRol(role);
-            user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
-            user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
-            user.setPassword(SalonManager.decrypt(resultado.getString(8)));
-            user.setPhone(SalonManager.decrypt(resultado.getString(9)));
-            user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
-            users.add(user);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
         }
-        desconectarBase();
         return users;
     }
 
     public ArrayList<User> listarUsersCompleto() throws Exception {
-        String sql = "SELECT * FROM users WHERE user_role =  '" + SalonManager.encrypt("MANAGER") + "' OR user_role = '" + SalonManager.encrypt("MOZO") + "' OR user_role = '" + SalonManager.encrypt("CAJERO") + "' OR user_role = '" + SalonManager.encrypt("DELIVERY") + "' OR user_role = '" + SalonManager.encrypt("NULL") + "';";
-        System.out.println(sql);
-        consultarBase(sql);
-        User user = null;
         ArrayList<User> users = new ArrayList<>();
-        while (resultado.next()) {
-            user = new User();
-            user.setId(SalonManager.decrypt(resultado.getString(1)));
-            user.setName(SalonManager.decrypt(resultado.getString(2)));
-            user.setLastName(SalonManager.decrypt(resultado.getString(3)));
-            user.setMail(SalonManager.decrypt(resultado.getString(4)));
-            String role = SalonManager.decrypt(resultado.getString(5));
-            if (role.equals("NULL")) {
-                role = null;
-            }
-            user.setRol(role);
-            user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
-            user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
-            user.setPassword(SalonManager.decrypt(resultado.getString(8)));
-            user.setPhone(SalonManager.decrypt(resultado.getString(9)));
-            user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
+        String sql = "SELECT * FROM users WHERE user_role =  '" + SalonManager.encrypt("MANAGER") + "' OR user_role = '" + SalonManager.encrypt("MOZO") + "' OR user_role = '" + SalonManager.encrypt("CAJERO") + "' OR user_role = '" + SalonManager.encrypt("DELIVERY") + "' OR user_role = '" + SalonManager.encrypt("NULL") + "';";
+        try {
+            System.out.println(sql);
+            consultarBase(sql);
+            User user = null;
+            while (resultado.next()) {
+                user = new User();
+                user.setId(SalonManager.decrypt(resultado.getString(1)));
+                user.setName(SalonManager.decrypt(resultado.getString(2)));
+                user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+                user.setMail(SalonManager.decrypt(resultado.getString(4)));
+                String role = SalonManager.decrypt(resultado.getString(5));
+                if (role.equals("NULL")) {
+                    role = null;
+                }
+                user.setRol(role);
+                user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+                user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+                user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+                user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+                user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
 
-            users.add(user);
+                users.add(user);
+
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
         }
-        desconectarBase();
+
         return users;
     }
 
     public void userModActiveUser(String id, boolean activeUser) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_active = '" + SalonManager.encryptBoolean(activeUser)
-                + "' WHERE user_id = '" + id + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users "
+                    + "SET user_active = '" + SalonManager.encryptBoolean(activeUser)
+                    + "' WHERE user_id = '" + id + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void userModRol(String id, String newRol) throws Exception {
-        String sql = "UPDATE users SET user_rol = " + SalonManager.encrypt(newRol) + " WHERE user_id = '" + id + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users SET user_rol = " + SalonManager.encrypt(newRol) + " WHERE user_id = '" + id + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public ArrayList<User> listUserByRol(String rol) throws Exception {
         boolean act = true;
-        String active = SalonManager.encryptBoolean(act);
-        String sql = "SELECT * FROM users WHERE user_role = '" + SalonManager.encrypt(rol) + "' AND user_active = '" + active + "';";
-        System.out.println(sql);
-        consultarBase(sql);
-        User user = null;
         ArrayList<User> users = new ArrayList<>();
-        while (resultado.next()) {
-            user = new User();
-            user.setId(SalonManager.decrypt(resultado.getString(1)));
-            user.setName(SalonManager.decrypt(resultado.getString(2)));
-            user.setLastName(SalonManager.decrypt(resultado.getString(3)));
-            user.setMail(SalonManager.decrypt(resultado.getString(4)));
-            String role = SalonManager.decrypt(resultado.getString(5));
-            if (role.equals("NULL")) {
-                role = null;
+        String active = SalonManager.encryptBoolean(act);
+        try {
+            String sql = "SELECT * FROM users WHERE user_role = '" + SalonManager.encrypt(rol) + "' AND user_active = '" + active + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            User user = null;
+            while (resultado.next()) {
+                user = new User();
+                user.setId(SalonManager.decrypt(resultado.getString(1)));
+                user.setName(SalonManager.decrypt(resultado.getString(2)));
+                user.setLastName(SalonManager.decrypt(resultado.getString(3)));
+                user.setMail(SalonManager.decrypt(resultado.getString(4)));
+                String role = SalonManager.decrypt(resultado.getString(5));
+                if (role.equals("NULL")) {
+                    role = null;
+                }
+                user.setRol(role);
+                user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
+                user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
+                user.setPassword(SalonManager.decrypt(resultado.getString(8)));
+                user.setPhone(SalonManager.decrypt(resultado.getString(9)));
+                user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
+                users.add(user);
             }
-            user.setRol(role);
-            user.setRouteImage(SalonManager.decrypt(resultado.getString(6)));
-            user.setNameImage(SalonManager.decrypt(resultado.getString(7)));
-            user.setPassword(SalonManager.decrypt(resultado.getString(8)));
-            user.setPhone(SalonManager.decrypt(resultado.getString(9)));
-            user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
-            users.add(user);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorRegistroFallido();
+            } else {
+                e.printStackTrace();
+            }
         }
-        desconectarBase();
         return users;
     }
 
@@ -263,25 +307,31 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
     public User getWaiterByTable(String tabId) throws Exception {
         User waiter = null;
         String waiterId = "";
-        String sql = "SELECT waiter_id_fkey FROM waiter_tabs WHERE table_id_fkey = '" + SalonManager.encrypt(tabId) + "';";
-        System.out.println(sql);
-        consultarBase(sql);
-        while (resultado.next()) {
-            waiterId = SalonManager.decrypt(resultado.getString(1));
-        }
+        try {
+            String sql = "SELECT waiter_id_fkey FROM waiter_tabs WHERE table_id_fkey = '" + SalonManager.encrypt(tabId) + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                waiterId = SalonManager.decrypt(resultado.getString(1));
+            }
 
-        ArrayList<User> waiters = listUserByRol("MOZO");
-        for (int i = 0; i < waiters.size(); i++) {
-            if (waiters.get(i).getId().equals(waiterId)) {
-                waiter = waiters.get(i);
+            ArrayList<User> waiters = listUserByRol("MOZO");
+            for (int i = 0; i < waiters.size(); i++) {
+                if (waiters.get(i).getId().equals(waiterId)) {
+                    waiter = waiters.get(i);
+                }
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
             }
         }
         return waiter;
@@ -314,8 +364,6 @@ public class DAOUser extends DAO {
             return user;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -335,8 +383,6 @@ public class DAOUser extends DAO {
             return nameC;
         } catch (Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -367,8 +413,6 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -408,77 +452,138 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        } finally {
-            desconectarBase();
         }
     }
 
     public void updateActUser(String userId, boolean act) throws Exception {
         String bool = SalonManager.encryptBoolean(act);
-        String sql = "UPDATE users SET user_active = '" + bool + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users SET user_active = '" + bool + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updateRolUser(String userId, String rol) throws Exception {
-        String sql = "UPDATE users SET user_role = '" + SalonManager.encrypt(rol) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users SET user_role = '" + SalonManager.encrypt(rol) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updateNameUser(String userId, String name) throws Exception {
-        String sql = "UPDATE users SET user_name = '" + SalonManager.encrypt(name) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users SET user_name = '" + SalonManager.encrypt(name) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updateLastNameUser(String userId, String lastName) throws Exception {
-        String sql = "UPDATE users SET user_last_name = '" + SalonManager.encrypt(lastName) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users SET user_last_name = '" + SalonManager.encrypt(lastName) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updateMailUser(String userId, String mail) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_mail = '" + SalonManager.encrypt(mail) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users "
+                    + "SET user_mail = '" + SalonManager.encrypt(mail) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updateRouteImageUser(String userId, String route) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_image_route = '" + SalonManager.encrypt(route) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users "
+                    + "SET user_image_route = '" + SalonManager.encrypt(route) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updateNameImageUser(String userId, String name) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_image_name = '" + SalonManager.encrypt(name) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users "
+                    + "SET user_image_name = '" + SalonManager.encrypt(name) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updatePhoneUser(String userId, String phone) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_phone = '" + SalonManager.encrypt(phone) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users "
+                    + "SET user_phone = '" + SalonManager.encrypt(phone) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void updatePassUser(String userId, String pass) throws Exception {
-        String sql = "UPDATE users "
-                + "SET user_password = '" + SalonManager.encrypt(pass) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
-        System.out.println(sql);
-        insertarModificarEliminar(sql);
-        desconectarBase();
+        try {
+            String sql = "UPDATE users "
+                    + "SET user_password = '" + SalonManager.encrypt(pass) + "' WHERE user_id = '" + SalonManager.encrypt(userId) + "';";
+            System.out.println(sql);
+            insertarModificarEliminar(sql);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.cargaError();
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 }
