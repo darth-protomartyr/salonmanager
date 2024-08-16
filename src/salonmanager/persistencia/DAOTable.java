@@ -473,7 +473,7 @@ public class DAOTable extends DAO {
     public ArrayList<Integer> activeTabIcMod(int idItem, String idTab) throws Exception {
         ArrayList<Integer> idsTabsIc = new ArrayList<>();
         try {
-            String sql = "SELECT item_card_order_id_fkey FROM item_card_order_tabs WHERE item_card_order_id_fkey = " + idItem + " AND table_id_fkey = '" + SalonManager.encrypt(idTab) + "' ;";
+            String sql = "SELECT item_card_order_id_fkey FROM item_card_order_tabs WHERE item_card_order_id_fkey = '" + SalonManager.encryptInt(idItem) + "' AND table_id_fkey = '" + SalonManager.encrypt(idTab) + "' ;";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {

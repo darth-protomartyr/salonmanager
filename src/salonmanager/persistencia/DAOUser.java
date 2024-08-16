@@ -207,7 +207,7 @@ public class DAOUser extends DAO {
     public void userModActiveUser(String id, boolean activeUser) throws Exception {
         String sql = "UPDATE users "
                 + "SET user_active = '" + SalonManager.encryptBoolean(activeUser)
-                + "' WHERE user_id = '" + id + "';";
+                + "' WHERE user_id = '" + SalonManager.encrypt(id) + "';";
         System.out.println(sql);
         insertarModificarEliminar(sql);
         desconectarBase();
