@@ -249,6 +249,8 @@ public class DAOTable extends DAO {
             return tables;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -287,6 +289,8 @@ public class DAOTable extends DAO {
             return tables;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -317,6 +321,8 @@ public class DAOTable extends DAO {
             return tab;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -332,6 +338,8 @@ public class DAOTable extends DAO {
             return i;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -392,6 +400,8 @@ public class DAOTable extends DAO {
             return tables;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -411,6 +421,8 @@ public class DAOTable extends DAO {
             return ids;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -427,6 +439,8 @@ public class DAOTable extends DAO {
             return tables;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -443,6 +457,8 @@ public class DAOTable extends DAO {
             return idsTabsIc;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -458,6 +474,8 @@ public class DAOTable extends DAO {
             return comment;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -480,6 +498,8 @@ public class DAOTable extends DAO {
             return id;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 }

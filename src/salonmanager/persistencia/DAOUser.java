@@ -117,6 +117,8 @@ public class DAOUser extends DAO {
             return ids;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
 
     }
@@ -148,6 +150,8 @@ public class DAOUser extends DAO {
             return user;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -184,6 +188,8 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
+        }  finally {
+            desconectarBase();
         }
         return users;
     }
@@ -221,6 +227,8 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
+        }  finally {
+            desconectarBase();
         }
 
         return users;
@@ -290,6 +298,8 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
+        }  finally {
+            desconectarBase();
         }
         return users;
     }
@@ -333,6 +343,8 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
+        }  finally {
+            desconectarBase();
         }
         return waiter;
     }
@@ -364,6 +376,8 @@ public class DAOUser extends DAO {
             return user;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -383,6 +397,8 @@ public class DAOUser extends DAO {
             return nameC;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -413,6 +429,8 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -433,6 +451,8 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
+        }  finally {
+            desconectarBase();
         }
         return cashier;
     }

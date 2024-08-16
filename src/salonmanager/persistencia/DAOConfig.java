@@ -13,12 +13,12 @@ public class DAOConfig extends DAO {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
-    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> chartPan,  ArrayList<String> strCat, int tip, boolean cfgActive, boolean init) throws Exception {
+    public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> chartPan, ArrayList<String> strCat, int tip, boolean cfgActive, boolean init) throws Exception {
         try {
             if (init) {
                 deleteConfigGeneral();
             }
-            
+
             deleteConfigGeneral();
             String totalTabs = SalonManager.encryptInt(totalTab);
             String nums = SalonManager.encrypt(utili.arrayIntToStr(numTab));
@@ -57,40 +57,60 @@ public class DAOConfig extends DAO {
     }
 
     public ConfigGeneral askConfigGeneral() throws Exception {
-        String sql = "SELECT * FROM config_general;";
-        consultarBase(sql);
         ConfigGeneral cfnGen = new ConfigGeneral();
-        while (resultado.next()) {
-            cfnGen.setTotalTable(SalonManager.decryptInt(resultado.getString(1)));
-            cfnGen.setTableNum(utili.strToArrayInt(SalonManager.decrypt(resultado.getString(2))));
-            cfnGen.setTablePan(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(3))));
-            cfnGen.setTablePanCh(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(4))));
-            cfnGen.setTableItemCategories(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(5))));
-            cfnGen.setTipPc(SalonManager.decryptInt(resultado.getString(6)));
-            cfnGen.setActiveConfig(SalonManager.decryptBoolean(resultado.getString(7)));
+        try {
+            String sql = "SELECT * FROM config_general;";
+            consultarBase(sql);
+            while (resultado.next()) {
+                cfnGen.setTotalTable(SalonManager.decryptInt(resultado.getString(1)));
+                cfnGen.setTableNum(utili.strToArrayInt(SalonManager.decrypt(resultado.getString(2))));
+                cfnGen.setTablePan(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(3))));
+                cfnGen.setTablePanCh(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(4))));
+                cfnGen.setTableItemCategories(utili.strToArrayStr(SalonManager.decrypt(resultado.getString(5))));
+                cfnGen.setTipPc(SalonManager.decryptInt(resultado.getString(6)));
+                cfnGen.setActiveConfig(SalonManager.decryptBoolean(resultado.getString(7)));
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
         }
         return cfnGen;
     }
 
     public ConfigActual askConfigActual() throws Exception {
-        String sql = "SELECT * FROM config_actual;";
-        consultarBase(sql);
         ConfigActual cfnAct = new ConfigActual();
-        while (resultado.next()) {
-            cfnAct.setOpenWs(SalonManager.decryptBoolean(resultado.getString(1)));
-            cfnAct.setOpenIdWs(SalonManager.decryptInt(resultado.getString(2)));
-            String defers = resultado.getString(3);
-            ArrayList<String> deferTabs = new ArrayList<>();
-            if (defers != null) {
-                deferTabs = utili.strToArrayStrAlt(SalonManager.decrypt(defers));
+        try {
+            String sql = "SELECT * FROM config_actual;";
+            consultarBase(sql);
+            while (resultado.next()) {
+                cfnAct.setOpenWs(SalonManager.decryptBoolean(resultado.getString(1)));
+                cfnAct.setOpenIdWs(SalonManager.decryptInt(resultado.getString(2)));
+                String defers = resultado.getString(3);
+                ArrayList<String> deferTabs = new ArrayList<>();
+                if (defers != null) {
+                    deferTabs = utili.strToArrayStrAlt(SalonManager.decrypt(defers));
+                }
+                cfnAct.setArrayDeferWs(deferTabs);
+                String mods = resultado.getString(4);
+                ArrayList<String> modTabs = new ArrayList<>();
+                if (mods != null) {
+                    modTabs = utili.strToArrayStrAlt(SalonManager.decrypt(mods));
+                }
+                cfnAct.setArrayUnModTabs(modTabs);
             }
-            cfnAct.setArrayDeferWs(deferTabs);
-            String mods = resultado.getString(4);
-            ArrayList<String> modTabs = new ArrayList<>();
-            if (mods != null) {
-                modTabs = utili.strToArrayStrAlt(SalonManager.decrypt(mods));
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
             }
-            cfnAct.setArrayUnModTabs(modTabs);
+        } finally {
+            desconectarBase();
         }
         return cfnAct;
     }
@@ -141,33 +161,65 @@ public class DAOConfig extends DAO {
 
     public ArrayList<String> askSpaces() throws Exception {
         ArrayList<String> spaces = new ArrayList<>();
-        String sql = "SELECT * FROM spaces;";
-        consultarBase(sql);
-        while (resultado.next()) {
-            String space = SalonManager.decrypt(resultado.getString(1));
-            spaces.add(space);
+        try {
+            String sql = "SELECT * FROM spaces;";
+            consultarBase(sql);
+            while (resultado.next()) {
+                String space = SalonManager.decrypt(resultado.getString(1));
+                spaces.add(space);
+            }
+
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
         }
         return spaces;
     }
 
     public ArrayList<String> askChars() throws Exception {
         ArrayList<String> chars = new ArrayList<>();
-        String sql = "SELECT * FROM chars;";
-        consultarBase(sql);
-        while (resultado.next()) {
-            String cha = SalonManager.decrypt(resultado.getString(1));
-            chars.add(cha);
+        try {
+            String sql = "SELECT * FROM chars;";
+            consultarBase(sql);
+            while (resultado.next()) {
+                String cha = SalonManager.decrypt(resultado.getString(1));
+                chars.add(cha);
+            }
+
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
         }
         return chars;
     }
 
     public ArrayList<String> askCategories() throws Exception {
         ArrayList<String> categories = new ArrayList<>();
-        String sql = "SELECT * FROM categories;";
-        consultarBase(sql);
-        while (resultado.next()) {
-            String category = SalonManager.decrypt(resultado.getString(1));
-            categories.add(category);
+        try {
+            String sql = "SELECT * FROM categories;";
+            consultarBase(sql);
+            while (resultado.next()) {
+                String category = SalonManager.decrypt(resultado.getString(1));
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
         }
         return categories;
     }
@@ -245,18 +297,27 @@ public class DAOConfig extends DAO {
 
     public boolean askCfgNull() throws Exception {
         boolean ask = false;
-        String sql = "SELECT config_active FROM config_general;";
-        consultarBase(sql);
-        while (resultado.next()) {
-            ask = SalonManager.decryptBoolean(resultado.getString(1));
+        try {
+            String sql = "SELECT config_active FROM config_general;";
+            consultarBase(sql);
+            while (resultado.next()) {
+                ask = SalonManager.decryptBoolean(resultado.getString(1));
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
         }
-        
         return ask;
     }
 
     public void saveConfigActual(boolean wsOpen, int wsId, ArrayList<String> defers, ArrayList<String> mods) throws Exception {
         try {
-            
+
             String def = SalonManager.encrypt(utili.arrayStrToStr(defers));
             String mod = SalonManager.encrypt(utili.arrayStrToStr(mods));
             String act = SalonManager.encryptBoolean(wsOpen);

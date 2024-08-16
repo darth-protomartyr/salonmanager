@@ -63,6 +63,8 @@ public class DAODeliveryClient extends DAO {
             return cmr;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -80,6 +82,8 @@ public class DAODeliveryClient extends DAO {
             return cmrs;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -97,6 +101,8 @@ public class DAODeliveryClient extends DAO {
             return phones;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -145,6 +151,8 @@ public class DAODeliveryClient extends DAO {
             return id;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 }

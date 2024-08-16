@@ -109,14 +109,16 @@ public class Inn extends FrameWindow {
     private void butInUserActionPerformed() throws Exception {
         mail = fieldMail.getText();
         pass = fieldPass.getText();
+//        utili.cfgBacker();
         
-        daoI.createTables();
-        
-        boolean askCfg = daoC.askCfgNull();
-        if (!askCfg) {
+//        daoI.createTables();
+
+
+//        boolean askCfg = daoC.askCfgNull();
+//        if (!askCfg) {
 //            daoI.fullerTables();
-            utili.cfgBacker();    
-        }
+//            utili.cfgBacker();    
+//        }
         boolean error = false;
 
         if (mail.equals("") || pass.equals("")) {
@@ -140,7 +142,6 @@ public class Inn extends FrameWindow {
                     landing.dispose();
                     dispose();
                     new Manager(userAux, pass);
-
                 } catch (Exception ex) {
                     Logger.getLogger(Inn.class.getName()).log(Level.SEVERE, null, ex);
                 }

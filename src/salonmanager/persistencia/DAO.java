@@ -65,8 +65,6 @@ public class DAO {
             resultado = sentencia.executeQuery(sql);
         } catch (Exception ex) {
             throw ex;
-        }  finally {
-            desconectarBase();
         }
     }
 }

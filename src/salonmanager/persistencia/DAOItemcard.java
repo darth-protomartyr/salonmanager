@@ -41,6 +41,8 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -57,6 +59,8 @@ public class DAOItemCard extends DAO {
             return itemsId;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -86,6 +90,8 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -237,6 +243,8 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -318,6 +326,8 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -400,6 +410,8 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -469,6 +481,8 @@ public class DAOItemCard extends DAO {
             return items;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -496,6 +510,8 @@ public class DAOItemCard extends DAO {
             return ic;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -512,6 +528,8 @@ public class DAOItemCard extends DAO {
             return name;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 
@@ -528,6 +546,8 @@ public class DAOItemCard extends DAO {
             return stock;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
 
     }
@@ -611,6 +631,8 @@ public class DAOItemCard extends DAO {
             return id;
         } catch (Exception e) {
             throw e;
+        } finally {
+            desconectarBase();
         }
     }
 }

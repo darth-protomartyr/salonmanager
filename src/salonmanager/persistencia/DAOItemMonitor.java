@@ -72,6 +72,8 @@ public class DAOItemMonitor extends DAO {
             return aims;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 
@@ -103,6 +105,8 @@ public class DAOItemMonitor extends DAO {
             return im;
         } catch (Exception e) {
             throw e;
+        }  finally {
+            desconectarBase();
         }
     }
 }
