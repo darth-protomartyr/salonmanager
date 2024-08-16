@@ -87,7 +87,6 @@ public class DAOUser extends DAO {
             consultarBase(sql);
             String mail = "";
             while (resultado.next()) {
-                mail = "";
                 mail = SalonManager.decrypt(resultado.getString(1));
                 mails.add(mail);
             }
@@ -106,7 +105,7 @@ public class DAOUser extends DAO {
         boolean act = true;
         String active = SalonManager.encryptBoolean(act);
         try {
-            String sql = "SELECT user_id FROM users WHERE user_role = '" + rol + "' AND user_active = '" + active + "';";
+            String sql = "SELECT user_id FROM users WHERE user_role = '" + SalonManager.encrypt(rol) + "' AND user_active = '" + active + "';";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<String> ids = new ArrayList<>();
@@ -238,7 +237,7 @@ public class DAOUser extends DAO {
         try {
             String sql = "UPDATE users "
                     + "SET user_active = '" + SalonManager.encryptBoolean(activeUser)
-                    + "' WHERE user_id = '" + id + "';";
+                    + "' WHERE user_id = '" + SalonManager.encrypt(id) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
@@ -253,7 +252,7 @@ public class DAOUser extends DAO {
 
     public void userModRol(String id, String newRol) throws Exception {
         try {
-            String sql = "UPDATE users SET user_rol = " + SalonManager.encrypt(newRol) + " WHERE user_id = '" + id + "';";
+            String sql = "UPDATE users SET user_rol = " + SalonManager.encrypt(newRol) + " WHERE user_id = '" + SalonManager.encrypt(id) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
         } catch (SQLException e) {

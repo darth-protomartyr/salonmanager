@@ -168,7 +168,6 @@ public class DAOConfig extends DAO {
                 String space = SalonManager.decrypt(resultado.getString(1));
                 spaces.add(space);
             }
-
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -190,7 +189,6 @@ public class DAOConfig extends DAO {
                 String cha = SalonManager.decrypt(resultado.getString(1));
                 chars.add(cha);
             }
-
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -317,7 +315,6 @@ public class DAOConfig extends DAO {
 
     public void saveConfigActual(boolean wsOpen, int wsId, ArrayList<String> defers, ArrayList<String> mods) throws Exception {
         try {
-
             String def = SalonManager.encrypt(utili.arrayStrToStr(defers));
             String mod = SalonManager.encrypt(utili.arrayStrToStr(mods));
             String act = SalonManager.encryptBoolean(wsOpen);

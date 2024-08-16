@@ -51,7 +51,7 @@ public class DAORegister extends DAO {
 //            Register rgo = new Register();
 //            while (resultado.next()) {
 //                rgo.setId(resultado.getInt(1));
-//                rgo.setEjecution(resultado.getTimestamp(2));
+//                rgo.setEjecution(SalonManager.decryptTs(resultado.getString(2));
 //                rgo.setUser(resultado.getString(3));
 //                rgo.setOperation(resultado.getString(4));
 //                rgo.setObject(resultado.getString(5));
@@ -70,7 +70,7 @@ public class DAORegister extends DAO {
 //            Register rgo = new Register();
 //            while (resultado.next()) {
 //                rgo.setId(resultado.getInt(1));
-//                rgo.setEjecution(resultado.getTimestamp(2));
+//                rgo.setEjecution(SalonManager.decryptTs(resultado.getString(2));
 //                rgo.setUser(resultado.getString(3));
 //                rgo.setOperation(resultado.getString(4));
 //                rgo.setObject(resultado.getString(5));
@@ -91,7 +91,7 @@ public class DAORegister extends DAO {
 //            while (resultado.next()) {
 //                Register rgo = new Register();
 //                rgo.setId(resultado.getInt(1));
-//                rgo.setEjecution(resultado.getTimestamp(2));
+//                rgo.setEjecution(SalonManager.decryptTs(resultado.getString(2));
 //                rgo.setUser(resultado.getString(3));
 //                rgo.setUserModify(resultado.getString(4));
 //                rgo.setOperation(resultado.getString(5));
@@ -114,7 +114,7 @@ public class DAORegister extends DAO {
 //            while (resultado.next()) {
 //                Register rgo = new Register();
 //                rgo.setId(resultado.getInt(1));
-//                rgo.setEjecution(resultado.getTimestamp(2));
+//                rgo.setEjecution(SalonManager.decryptTs(resultado.getString(2));
 //                rgo.setUser(resultado.getString(3));
 //                rgo.setUserModify(resultado.getString(4));
 //                rgo.setOperation(resultado.getString(5));
@@ -137,7 +137,7 @@ public class DAORegister extends DAO {
 //            while (resultado.next()) {
 //                Register rgo = new Register();
 //                rgo.setId(resultado.getInt(1));
-//                rgo.setEjecution(resultado.getTimestamp(2));
+//                rgo.setEjecution(SalonManager.decryptTs(resultado.getString(2));
 //                rgo.setUser(resultado.getString(3));
 //                rgo.setUserModify(resultado.getString(4));
 //                rgo.setOperation(resultado.getString(5));

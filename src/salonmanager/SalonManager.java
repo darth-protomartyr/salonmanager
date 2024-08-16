@@ -1,21 +1,22 @@
 package salonmanager;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import salonmanager.entidades.bussiness.User;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.spec.KeySpec;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JFrame;
-import jdk.javadoc.internal.tool.Main;
 import salonmanager.persistencia.DAOConfig;
 
 public class SalonManager {
@@ -154,30 +155,29 @@ public class SalonManager {
         return bool;
     }
 
-//    public static String encryptTs(Timestamp timestamp) throws Exception {
-//        String ts = null;
-//        if (timestamp != null) {
-//            String data = timestamp.toString();
-//            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-//            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-//            byte[] encryptedBytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
-//            ts = Base64.getEncoder().encodeToString(encryptedBytes);
-//        }
-//        return ts;
-//    }
-//
-//    public static Timestamp decryptTs(String encryptedData) throws Exception {
-//        Timestamp ts = null;
-//        if (!encryptedData.equals("")) {
-//            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-//            cipher.init(Cipher.DECRYPT_MODE, keySpec);
-//            byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
-//            byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-//            String decryptedData = new String(decryptedBytes, StandardCharsets.UTF_8);
-//            ts = Timestamp.valueOf(decryptedData);
-//        }
-//        return ts;
-//    }
+    public static String encryptTs(Timestamp ts) throws Exception {
+        String st = null;
+        if (ts != null) {
+            st = encrypt(ts.toString());
+        }
+        return st;
+    }
+
+    public static Timestamp decryptTs(String encSt) throws Exception {
+        Timestamp ts = null;
+        encSt = decrypt(encSt);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        try {
+            Date parsedDate = dateFormat.parse(encSt);
+            Timestamp timestamp = new Timestamp(parsedDate.getTime());
+            System.out.println("Timestamp: " + timestamp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ts;
+    }
+    
+    
     public void salir() throws Exception {
         setPassIn("");
         setUserIn(null);

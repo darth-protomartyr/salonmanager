@@ -13,7 +13,6 @@ public class DAODelivery extends DAO {
             boolean open = deli.isOpen();
             boolean active = deli.isActive();
             String tabId = "";
-
             String cmrPhone = deli.getConsumer().getPhone();
             if (deli.getTab() != null) {
                 tabId = deli.getTab().getId();

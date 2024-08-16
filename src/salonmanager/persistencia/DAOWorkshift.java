@@ -33,8 +33,8 @@ public class DAOWorkshift extends DAO {
                 sql = "INSERT INTO workshifts(workshift_id, workshift_open_time_shift, workshift_close_time_shift, workshift_state_shift, workshift_mount_cash, workshift_mount_electronic, workshift_error_mount_tabs, workshift_error_mount_ws, workshift_total_mount_tabs, workshift_total_mount_ws, workshift_cash_flow_cash, workshift_cash_flow_elec, workshift_comment, workshift_error, workshift_active) "
                         + "VALUES( '"
                         + SalonManager.encryptInt(ws.getId()) + "', '"
-                        + ws.getOpenDateWs() + "', "
-                        + ws.getCloseDateWs() + ", '"
+                        + SalonManager.encryptTs(ws.getOpenDateWs()) + "', '"
+                        + SalonManager.encryptTs(ws.getCloseDateWs()) + "', '"
                         + SalonManager.encryptBoolean(ws.isStateWs()) + "', '"
                         + SalonManager.encryptDouble(ws.getTotalMountCashWs()) + "', '"
                         + SalonManager.encryptDouble(ws.getTotalMountElectronicWs()) + "', '"
@@ -49,7 +49,7 @@ public class DAOWorkshift extends DAO {
                         + SalonManager.encryptBoolean(true) + "');";
             } else {
                 sql = "INSERT INTO workshifts(workshift_open_time_shift, workshift_close_time_shift, workshift_state_shift, workshift_mount_cash, workshift_mount_electronic, workshift_error_mount_tabs, workshift_error_mount_ws, workshift_total_mount_tabs, workshift_total_mount_ws, workshift_cash_flow_cash, workshift_cash_flow_elec, workshift_comment, workshift_error, workshift_active) "
-                        + "VALUES( '" + SalonManager.encryptInt(ws.getId()) + "', '" + ws.getOpenDateWs() + "', '" + ws.getCloseDateWs() + "', '" + SalonManager.encryptBoolean(ws.isStateWs()) + "', '"
+                        + "VALUES( '" + SalonManager.encryptInt(ws.getId()) + "', '" + SalonManager.encryptTs(ws.getOpenDateWs()) + "', '" + SalonManager.encryptTs(ws.getCloseDateWs()) + "', '" + SalonManager.encryptBoolean(ws.isStateWs()) + "', '"
                         + SalonManager.encryptDouble(ws.getTotalMountCashWs()) + "', '" + SalonManager.encryptDouble(ws.getTotalMountElectronicWs()) + "', '" + SalonManager.encryptDouble(ws.getErrorMountTabs()) + "', '"
                         + SalonManager.encryptDouble(ws.getErrorMountWs()) + "', '" + SalonManager.encryptDouble(ws.getTotalMountTabs()) + "', '" + SalonManager.encryptDouble(ws.getTotalMountWs())
                         + SalonManager.encryptDouble(ws.getMoneyFlowWsCash()) + "', '" + SalonManager.encryptDouble(ws.getMoneyFlowWsElec()) + "', '" + SalonManager.encrypt(ws.getCommentWs()) + "', '" + SalonManager.encryptBoolean(ws.isError()) + "', '" + SalonManager.encryptBoolean(true) + "');";
@@ -71,7 +71,7 @@ public class DAOWorkshift extends DAO {
             if (isTabs == false) {
                 downWorkshiftActive(ws);//If WS doesnt have tabs
             }
-            String sql1 = "UPDATE workshifts SET workshift_close_time_shift = '" + ws.getCloseDateWs() + "' WHERE workshift_id = '" + SalonManager.encryptInt(ws.getId()) + "';";
+            String sql1 = "UPDATE workshifts SET workshift_close_time_shift = '" + SalonManager.encryptTs(ws.getCloseDateWs()) + "' WHERE workshift_id = '" + SalonManager.encryptInt(ws.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -184,13 +184,13 @@ public class DAOWorkshift extends DAO {
     public Workshift askWorshiftByTabDate(Timestamp ts1) throws Exception {
         Workshift ws = new Workshift();
         try {
-            String sql = "SELECT * FROM workshifts WHERE workshift_open_time_shift <= '" + ts1 + "' AND workshift_close_time_shift >= '" + ts1 + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
+            String sql = "SELECT * FROM workshifts WHERE workshift_open_time_shift <= '" + SalonManager.encryptTs(ts1) + "' AND workshift_close_time_shift >= '" + SalonManager.encryptTs(ts1) + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
                 ws.setId(SalonManager.decryptInt(resultado.getString(1)));
-                ws.setOpenDateWs(resultado.getTimestamp(2));
-                ws.setCloseDateWs(resultado.getTimestamp(3));
+                ws.setOpenDateWs(SalonManager.decryptTs(resultado.getString(2)));
+                ws.setCloseDateWs(SalonManager.decryptTs(resultado.getString(3)));
                 ws.setStateWs(SalonManager.decryptBoolean(resultado.getString(4)));
                 ws.setTotalMountCashWs(SalonManager.decryptDouble(resultado.getString(5)));
                 ws.setTotalMountElectronicWs(SalonManager.decryptDouble(resultado.getString(6)));
@@ -220,8 +220,8 @@ public class DAOWorkshift extends DAO {
             consultarBase(sql);
             while (resultado.next()) {
                 ws.setId(SalonManager.decryptInt(resultado.getString(1)));
-                ws.setOpenDateWs(resultado.getTimestamp(2));
-                ws.setCloseDateWs(resultado.getTimestamp(3));
+                ws.setOpenDateWs(SalonManager.decryptTs(resultado.getString(2)));
+                ws.setCloseDateWs(SalonManager.decryptTs(resultado.getString(3)));
                 ws.setStateWs(SalonManager.decryptBoolean(resultado.getString(4)));
                 ws.setTotalMountCashWs(SalonManager.decryptDouble(resultado.getString(5)));
                 ws.setTotalMountElectronicWs(SalonManager.decryptDouble(resultado.getString(6)));
@@ -350,7 +350,7 @@ public class DAOWorkshift extends DAO {
     public ArrayList<Integer> listIdByDate(Timestamp tsInit, Timestamp tsEnd) throws Exception {
         ArrayList<Integer> wss = new ArrayList<>();
         try {
-            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_time_shift >= '" + tsInit + "' AND workshift_open_time_shift <= '" + tsEnd + "' AND workshift_state_shift = '" + SalonManager.encryptBoolean(false) + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
+            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_time_shift >= '" + SalonManager.encryptTs(tsInit) + "' AND workshift_open_time_shift <= '" + SalonManager.encryptTs(tsEnd) + "' AND workshift_state_shift = '" + SalonManager.encryptBoolean(false) + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -391,7 +391,7 @@ public class DAOWorkshift extends DAO {
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
-                Timestamp wsTs = resultado.getTimestamp(1);
+                Timestamp wsTs = SalonManager.decryptTs(resultado.getString(1));
                 wssTs.add(wsTs);
             }
             return wssTs;
@@ -411,8 +411,8 @@ public class DAOWorkshift extends DAO {
             while (resultado.next()) {
                 Workshift ws = new Workshift();
                 ws.setId(SalonManager.decryptInt(resultado.getString(1)));
-                ws.setOpenDateWs(resultado.getTimestamp(2));
-                ws.setCloseDateWs(resultado.getTimestamp(3));
+                ws.setOpenDateWs(SalonManager.decryptTs(resultado.getString(2)));
+                ws.setCloseDateWs(SalonManager.decryptTs(resultado.getString(3)));
                 ws.setStateWs(SalonManager.decryptBoolean(resultado.getString(4)));
                 ws.setTotalMountCashWs(SalonManager.decryptDouble(resultado.getString(5)));
                 ws.setTotalMountElectronicWs(SalonManager.decryptDouble(resultado.getString(6)));
@@ -460,7 +460,7 @@ public class DAOWorkshift extends DAO {
             consultarBase(sql);
             Timestamp ts = null;
             while (resultado.next()) {
-                ts = resultado.getTimestamp(1);
+                ts = SalonManager.decryptTs(resultado.getString(1));
             }
             return ts;
         } catch (Exception e) {

@@ -13,7 +13,7 @@ public class DAOMoneyFlow extends DAO {
     public void saveMoneyFlow(MoneyFlow cf) throws Exception {
         try {
             String sql1 = "INSERT INTO money_flows( money_flow_id, money_flow_kind, money_flow_m_k, money_flow_amount, money_flow_comment, money_flow_date, money_flow_ws_id, money_flow_active)"
-                    + "VALUES('" + SalonManager.encryptInt(cf.getId()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwKind()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwMoneyKind()) + "', '" + SalonManager.encryptDouble(cf.getMoneyFwAmount()) + "', '" + SalonManager.encrypt(cf.getMoneyFwComment()) + "', '" + cf.getMoneyFwDate() + "', '" + SalonManager.encryptInt(cf.getMoneyFwWsId()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwActive()) + "');";
+                    + "VALUES('" + SalonManager.encryptInt(cf.getId()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwKind()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwMoneyKind()) + "', '" + SalonManager.encryptDouble(cf.getMoneyFwAmount()) + "', '" + SalonManager.encrypt(cf.getMoneyFwComment()) + "', '" + SalonManager.encryptTs(cf.getMoneyFwDate()) + "', '" + SalonManager.encryptInt(cf.getMoneyFwWsId()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwActive()) + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
             utiliMsg.cargaMoneyFlowSuccess();
@@ -38,7 +38,7 @@ public class DAOMoneyFlow extends DAO {
                 cf.setMoneyFwMoneyKind(SalonManager.decryptBoolean(resultado.getString(3)));
                 cf.setMoneyFwAmount(SalonManager.decryptDouble(resultado.getString(4)));
                 cf.setMoneyFwComment(SalonManager.decrypt(resultado.getString(5)));
-                cf.setMoneyFwDate(resultado.getTimestamp(6));
+                cf.setMoneyFwDate(SalonManager.decryptTs(resultado.getString(6)));
                 cf.setMoneyFwWsId(SalonManager.decryptInt(resultado.getString(7)));
                 cf.setMoneyFwActive(SalonManager.decryptBoolean(resultado.getString(8)));
             }
@@ -57,17 +57,14 @@ public class DAOMoneyFlow extends DAO {
             String sql = "SELECT money_flow_id FROM money_flows WHERE money_flow_ws_id = '" + SalonManager.encryptInt(wsId) + "' AND money_flo_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
-           
             while (resultado.next()) {
                 int i = SalonManager.decryptInt(resultado.getString(1));
                 ids.add(i);
             }
-            
             for (int i = 0; i < ids.size(); i++) {
                 MoneyFlow cf = askMFbyId(ids.get(i));
                 cfList.add(cf);
             }
-            
             return cfList;
         } catch (Exception e) {
             throw e;
