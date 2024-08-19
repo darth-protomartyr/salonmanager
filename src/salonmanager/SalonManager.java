@@ -129,7 +129,6 @@ public class SalonManager {
 //        key = java.util.Arrays.copyOf(key, 16);
 //        return new SecretKeySpec(key, "AES");
 //    }
-
     public static String encryptBoolean(boolean value) throws Exception {
         String bool;
         String encrypt = encrypt(keySecret);
@@ -165,19 +164,20 @@ public class SalonManager {
 
     public static Timestamp decryptTs(String encSt) throws Exception {
         Timestamp ts = null;
-        encSt = decrypt(encSt);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        try {
-            Date parsedDate = dateFormat.parse(encSt);
-            Timestamp timestamp = new Timestamp(parsedDate.getTime());
-            System.out.println("Timestamp: " + timestamp);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (encSt != null) {
+            encSt = decrypt(encSt);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            try {
+                Date parsedDate = dateFormat.parse(encSt);
+                Timestamp timestamp = new Timestamp(parsedDate.getTime());
+                System.out.println("Timestamp: " + timestamp);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return ts;
     }
-    
-    
+
     public void salir() throws Exception {
         setPassIn("");
         setUserIn(null);

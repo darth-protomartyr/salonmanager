@@ -654,7 +654,7 @@ public class UtilidadesGraficasStatics {
         ArrayList<Workshift> wsS = new ArrayList<>();
 
         if (wsId == 0) {
-            ArrayList<Integer> wsIds = daoW.listIdByDate(timestampInit, timestampEnd);
+            ArrayList<Integer> wsIds = listWsIdByDate(timestampInit, timestampEnd);            
             for (Integer id : wsIds) {
                 Workshift ws = daoW.askWorshiftById(id);
                 wsS.add(ws);
@@ -915,6 +915,15 @@ public class UtilidadesGraficasStatics {
         statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turnos.");
         statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turnos.");
         statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turnos.");
+    }
+
+    private ArrayList<Integer> listWsIdByDate(Timestamp timestampInit, Timestamp timestampEnd) throws Exception {
+        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<Workshift> wsS = daoW.listarWs();
+        for (Workshift w : wsS) {
+            ids.add(w.getId());
+        }
+        return ids;
     }
     
     public class TimestampComparator implements Comparator<Table> {

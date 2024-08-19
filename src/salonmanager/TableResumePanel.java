@@ -131,7 +131,11 @@ public class TableResumePanel extends FrameThird {
 
     private void confirmMount() throws Exception {
         boolean error = false;
-        Workshift ws = daoW.askWorshiftByTabDate(tabAux.getOpenTime());
+        
+        Workshift ws = askWorshiftByTabDate(tabAux.getOpenTime());
+
+        
+//        Workshift ws = daoW.askWorshiftByTabDate(tabAux.getOpenTime());
 
         if (ws.getCloseDateWs() == null) {
             utiliMsg.errorWsOpen();
@@ -236,5 +240,16 @@ public class TableResumePanel extends FrameThird {
             }
             dispose();
         }
+    }
+
+    private Workshift askWorshiftByTabDate(Timestamp ts) throws Exception {
+        Workshift ws = null;
+        ArrayList<Workshift> wss = daoW.listarWs();
+        for (Workshift w : wss) {
+            if (w.getOpenDateWs().before(ts) && w.getCloseDateWs().after(ts)) {
+                ws = w;
+            }
+        }
+        return ws;
     }
 }

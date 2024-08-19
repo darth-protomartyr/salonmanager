@@ -181,36 +181,36 @@ public class DAOWorkshift extends DAO {
         }
     }
 
-    public Workshift askWorshiftByTabDate(Timestamp ts1) throws Exception {
-        Workshift ws = new Workshift();
-        try {
-            String sql = "SELECT * FROM workshifts WHERE workshift_open_time_shift <= '" + SalonManager.encryptTs(ts1) + "' AND workshift_close_time_shift >= '" + SalonManager.encryptTs(ts1) + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
-            System.out.println(sql);
-            consultarBase(sql);
-            while (resultado.next()) {
-                ws.setId(SalonManager.decryptInt(resultado.getString(1)));
-                ws.setOpenDateWs(SalonManager.decryptTs(resultado.getString(2)));
-                ws.setCloseDateWs(SalonManager.decryptTs(resultado.getString(3)));
-                ws.setStateWs(SalonManager.decryptBoolean(resultado.getString(4)));
-                ws.setTotalMountCashWs(SalonManager.decryptDouble(resultado.getString(5)));
-                ws.setTotalMountElectronicWs(SalonManager.decryptDouble(resultado.getString(6)));
-                ws.setTotalMountTabs(SalonManager.decryptDouble(resultado.getString(7)));
-                ws.setTotalMountWs(SalonManager.decryptDouble(resultado.getString(8)));
-                ws.setErrorMountTabs(SalonManager.decryptDouble(resultado.getString(9)));
-                ws.setErrorMountWs(SalonManager.decryptDouble(resultado.getString(10)));
-                ws.setMoneyFlowWsCash(SalonManager.decryptDouble(resultado.getString(11)));
-                ws.setMoneyFlowWsElec(SalonManager.decryptDouble(resultado.getString(12)));
-                ws.setCommentWs(SalonManager.decrypt(resultado.getString(13)));
-                ws.setError(SalonManager.decryptBoolean(resultado.getString(14)));
-                ws.setActiveWs(SalonManager.decryptBoolean(resultado.getString(15)));
-            }
-            return ws;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            desconectarBase();
-        }
-    }
+//    public Workshift askWorshiftByTabDate(Timestamp ts1) throws Exception {
+//        Workshift ws = new Workshift();
+//        try {
+//            String sql = "SELECT * FROM workshifts WHERE workshift_open_time_shift <= '" + SalonManager.encryptTs(ts1) + "' AND workshift_close_time_shift >= '" + SalonManager.encryptTs(ts1) + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
+//            System.out.println(sql);
+//            consultarBase(sql);
+//            while (resultado.next()) {
+//                ws.setId(SalonManager.decryptInt(resultado.getString(1)));
+//                ws.setOpenDateWs(SalonManager.decryptTs(resultado.getString(2)));
+//                ws.setCloseDateWs(SalonManager.decryptTs(resultado.getString(3)));
+//                ws.setStateWs(SalonManager.decryptBoolean(resultado.getString(4)));
+//                ws.setTotalMountCashWs(SalonManager.decryptDouble(resultado.getString(5)));
+//                ws.setTotalMountElectronicWs(SalonManager.decryptDouble(resultado.getString(6)));
+//                ws.setTotalMountTabs(SalonManager.decryptDouble(resultado.getString(7)));
+//                ws.setTotalMountWs(SalonManager.decryptDouble(resultado.getString(8)));
+//                ws.setErrorMountTabs(SalonManager.decryptDouble(resultado.getString(9)));
+//                ws.setErrorMountWs(SalonManager.decryptDouble(resultado.getString(10)));
+//                ws.setMoneyFlowWsCash(SalonManager.decryptDouble(resultado.getString(11)));
+//                ws.setMoneyFlowWsElec(SalonManager.decryptDouble(resultado.getString(12)));
+//                ws.setCommentWs(SalonManager.decrypt(resultado.getString(13)));
+//                ws.setError(SalonManager.decryptBoolean(resultado.getString(14)));
+//                ws.setActiveWs(SalonManager.decryptBoolean(resultado.getString(15)));
+//            }
+//            return ws;
+//        } catch (Exception e) {
+//            throw e;
+//        } finally {
+//            desconectarBase();
+//        }
+//    }
 
     public Workshift askWorshiftById(int id) throws Exception {
         Workshift ws = new Workshift();
@@ -347,24 +347,24 @@ public class DAOWorkshift extends DAO {
         }
     }
 
-    public ArrayList<Integer> listIdByDate(Timestamp tsInit, Timestamp tsEnd) throws Exception {
-        ArrayList<Integer> wss = new ArrayList<>();
-        try {
-            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_time_shift >= '" + SalonManager.encryptTs(tsInit) + "' AND workshift_open_time_shift <= '" + SalonManager.encryptTs(tsEnd) + "' AND workshift_state_shift = '" + SalonManager.encryptBoolean(false) + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
-            System.out.println(sql);
-            consultarBase(sql);
-            while (resultado.next()) {
-                int wsId = 0;
-                wsId = SalonManager.decryptInt(resultado.getString(1));
-                wss.add(wsId);
-            }
-            return wss;
-        } catch (Exception e) {
-            throw e;
-        }  finally {
-            desconectarBase();
-        }
-    }
+//    public ArrayList<Integer> listIdByDate(Timestamp tsInit, Timestamp tsEnd) throws Exception {
+//        ArrayList<Integer> wss = new ArrayList<>();
+//        try {
+//            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_open_time_shift >= '" + SalonManager.encryptTs(tsInit) + "' AND workshift_open_time_shift <= '" + SalonManager.encryptTs(tsEnd) + "' AND workshift_state_shift = '" + SalonManager.encryptBoolean(false) + "' AND workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
+//            System.out.println(sql);
+//            consultarBase(sql);
+//            while (resultado.next()) {
+//                int wsId = 0;
+//                wsId = SalonManager.decryptInt(resultado.getString(1));
+//                wss.add(wsId);
+//            }
+//            return wss;
+//        } catch (Exception e) {
+//            throw e;
+//        }  finally {
+//            desconectarBase();
+//        }
+//    }
 
     public ArrayList<Integer> listIdWs() throws Exception {
         ArrayList<Integer> wssId = new ArrayList<>();
@@ -434,6 +434,42 @@ public class DAOWorkshift extends DAO {
             desconectarBase();
         }
     }
+    
+    
+    public ArrayList<Workshift> listarWs() throws Exception {
+        ArrayList<Workshift> wsError = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM workshifts WHERE workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                Workshift ws = new Workshift();
+                ws.setId(SalonManager.decryptInt(resultado.getString(1)));
+                ws.setOpenDateWs(SalonManager.decryptTs(resultado.getString(2)));
+                ws.setCloseDateWs(SalonManager.decryptTs(resultado.getString(3)));
+                ws.setStateWs(SalonManager.decryptBoolean(resultado.getString(4)));
+                ws.setTotalMountCashWs(SalonManager.decryptDouble(resultado.getString(5)));
+                ws.setTotalMountElectronicWs(SalonManager.decryptDouble(resultado.getString(6)));
+                ws.setTotalMountTabs(SalonManager.decryptDouble(resultado.getString(7)));
+                ws.setTotalMountWs(SalonManager.decryptDouble(resultado.getString(8)));
+                ws.setErrorMountTabs(SalonManager.decryptDouble(resultado.getString(9)));
+                ws.setErrorMountWs(SalonManager.decryptDouble(resultado.getString(10)));
+                ws.setMoneyFlowWsCash(SalonManager.decryptDouble(resultado.getString(11)));
+                ws.setMoneyFlowWsElec(SalonManager.decryptDouble(resultado.getString(12)));
+                ws.setCommentWs(SalonManager.decrypt(resultado.getString(13)));
+                ws.setError(SalonManager.decryptBoolean(resultado.getString(14)));
+                ws.setActiveWs(SalonManager.decryptBoolean(resultado.getString(15)));
+                wsError.add(ws);
+            }
+            return wsError;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
 
     public int getNewWorkshiftId() throws Exception {
         try {
