@@ -2,6 +2,8 @@ package salonmanager.servicios;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import salonmanager.Salon;
 import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.bussiness.Table;
@@ -10,12 +12,15 @@ import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemCard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
+import salonmanager.utilidades.Utilidades;
 
 public class ServicioTable {
+
     DAODelivery daoD = new DAODelivery();
     DAOTable daoT = new DAOTable();
     DAOItemCard daoI = new DAOItemCard();
     DAOUser daoU = new DAOUser();
+    Utilidades utili = new Utilidades();
 
     public int giftCounter(ArrayList<ItemCard> gifts, ItemCard ic) {
         int units = 0;
@@ -54,9 +59,9 @@ public class ServicioTable {
         ArrayList<Table> workshiftTabsOld = new ArrayList<>();
 
         if (opt == 1) {
-            workshiftTabsOld = daoT.listarTablesByWorkshift(ws); //All tabs
+            workshiftTabsOld = listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), false);
         } else if (opt == 2) {
-            workshiftTabsOld = daoT.listarTablesOpenByWorkshift(ws); //Open tabs
+            workshiftTabsOld = listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), true);
         }
         for (Table tab : workshiftTabsOld) {
             tab.setOrder(daoI.listarItemcardOrder(tab.getId()));
@@ -103,13 +108,28 @@ public class ServicioTable {
         tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
         return tab;
     }
-    
-    public ArrayList<Table> tabsBacke(ArrayList<String> tabIds) throws Exception {
+
+    public ArrayList<Table> listTablesByTs(Timestamp ts1, Timestamp ts2, boolean open) throws Exception {
+        if (ts2 == null) {
+            ts2 = new Timestamp(new Date().getTime());
+        }
+        ArrayList<Timestamp> tabsTs = daoT.listarTabsTs(open);
+        tabsTs = utili.tsFilter(tabsTs, ts1, ts2);
         ArrayList<Table> tabs = new ArrayList<>();
-        for (int i = 0; i < tabIds.size(); i++) {
-            Table tab = daoT.getTableById(tabIds.get(i));
+        for (int i = 0; i < tabsTs.size(); i++) {
+            Table tab = daoT.getTableByTs(tabsTs.get(i));
             tabs.add(tab);
         }
         return tabs;
+    }
+
+    public int maxBarrTab(Workshift ws) throws Exception {
+        ArrayList<Table> tabs =listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), false);
+        ArrayList<Integer> ints = new ArrayList<>();
+        for (Table t : tabs) {
+            ints.add(t.getNum());
+        }
+        int max = Collections.max(ints);
+        return max;
     }
 }

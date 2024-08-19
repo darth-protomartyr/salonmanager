@@ -4,10 +4,13 @@
  */
 package salonmanager.servicios;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import salonmanager.Admin;
 import salonmanager.TableAdder;
 import salonmanager.WorkshiftEndPanel;
+import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
@@ -86,7 +89,8 @@ public class ServiceAdmin {
         }
         User cashier = daoU.getCashierByWorkshift(ws.getId());
         ws.setCashierWs(cashier);
-        ArrayList<Table> tabs = daoT.listarTablesByWorkshift(ws);
+                
+        ArrayList<Table> tabs = st.listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), false);
         new WorkshiftEndPanel(null, adm, adm.getManager(), ws, null, tabs, null, null, null, false, 2);
         adm.setEnabled(false);
     }

@@ -1065,4 +1065,16 @@ public class Utilidades {
         }
         return redux;
     }
+
+    public ArrayList<Timestamp> tsFilter(ArrayList<Timestamp> salesTs, Timestamp ts1, Timestamp ts2) {
+        ArrayList<Timestamp> tsS = new ArrayList<Timestamp>();
+        for (int i = 0; i < salesTs.size(); i++) {
+            if(salesTs.get(i).after(ts1) && salesTs.get(i).before(ts2)) {
+               tsS.add(salesTs.get(i));
+            } 
+        }
+        return tsS;
+    }
+    
+    
 }

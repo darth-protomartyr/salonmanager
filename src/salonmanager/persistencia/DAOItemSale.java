@@ -80,33 +80,6 @@ public class DAOItemSale extends DAO {
             desconectarBase();
         }
     }
-
-
-    public ArrayList<ItemSale> listarItemSalesByDate(Timestamp open, Timestamp close) throws Exception {
-        ArrayList<ItemSale> listISale = new ArrayList<>();
-        try {
-            String sql = "SELECT item_sale_static_id FROM item_sales_statics WHERE item_sale_date >= '" + SalonManager.encryptTs(open) + "' AND item_sale_date <= '" + SalonManager.encryptTs(close) + "';";
-            System.out.println(sql);
-            consultarBase(sql);
-            ArrayList<Integer> ids = new ArrayList<>();
-            while (resultado.next()) {
-                int id = 0; 
-                id = SalonManager.decryptInt(resultado.getString(1));
-                ids.add(id);
-            }
-            
-            for (int id : ids) {
-                ItemSale is = askItemSaleById(id);
-                listISale.add(is);
-            }
-            
-            return listISale;
-        } catch (Exception e) {
-            throw e;
-        }  finally {
-            desconectarBase();
-        }     
-    }
     
     public int getItemSaleId() throws Exception {
         try {       
@@ -119,6 +92,50 @@ public class DAOItemSale extends DAO {
                 id = resultado.getInt(1) + 1;
             }
             return id;
+        } catch (Exception e) {
+            throw e;
+        }  finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<Timestamp> listarItemSalesTs() throws Exception {
+        ArrayList<Timestamp> listISaleDate = new ArrayList<>();
+        try {
+            String sql = "SELECT item_sale_date FROM item_sales_statics;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                int id = 0; 
+                Timestamp ts = SalonManager.decryptTs(resultado.getString(1));
+                listISaleDate.add(ts);
+            }
+            return listISaleDate;
+        } catch (Exception e) {
+            throw e;
+        }  finally {
+            desconectarBase();
+        }  
+    }
+
+    public ItemSale askItemSaleByDate(Timestamp ts) throws Exception {
+        ItemSale iS = new ItemSale();
+        try {
+            String sql = "SELECT * FROM item_sales_statics WHERE item_sale_date = '" + SalonManager.encryptTs(ts) + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                iS.setSaleId(SalonManager.decryptInt(resultado.getString(1)));
+                iS.setItemSaleId(SalonManager.decryptInt(resultado.getString(2)));
+                iS.setItemSaleCategory(SalonManager.decrypt(resultado.getString(3)));
+                iS.setItemSaleTabPos(SalonManager.decrypt(resultado.getString(4)));
+                iS.setItemSaleWaiterId(SalonManager.decrypt(resultado.getString(5)));
+                iS.setItemSaleWorkshiftId(SalonManager.decryptInt(resultado.getString(6)));
+                iS.setItemSalePrice(SalonManager.decryptDouble(resultado.getString(7)));
+                iS.setItemSaleDate(SalonManager.decryptTs(resultado.getString(8)));
+                iS.setItemSaleActive(SalonManager.decryptBoolean(resultado.getString(9)));
+            }
+            return iS;
         } catch (Exception e) {
             throw e;
         }  finally {

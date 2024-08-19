@@ -45,6 +45,7 @@ import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServiceStatics;
+import salonmanager.servicios.ServicioTable;
 
 /**
  */
@@ -57,7 +58,7 @@ public class UtilidadesGraficasStatics {
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
 
-        DAOWorkshift daoW = new DAOWorkshift();
+    DAOWorkshift daoW = new DAOWorkshift();
     DAOTable daoT = new DAOTable();
     DAOItemSale daoIs = new DAOItemSale();
     DAOUser daoU = new DAOUser();
@@ -67,6 +68,7 @@ public class UtilidadesGraficasStatics {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServiceStatics sStats = new ServiceStatics();
+    ServicioTable st = new ServicioTable();
     Color bluLg = new Color(194, 242, 206);
     Color narUlg = new Color(255, 255, 176);
 
@@ -687,14 +689,23 @@ public class UtilidadesGraficasStatics {
         } else {
             Timestamp ts1 = tsList.get(0);
             Timestamp ts2 = tsList.get(size - 1);
-            ArrayList<Table> tabs = daoT.listarTablesByDate(ts1, ts2);
-            ArrayList<ItemSale> is = daoIs.listarItemSalesByDate(ts1, ts2);
+            
+            ArrayList<Timestamp> isSalesTs = daoIs.listarItemSalesTs();
+            isSalesTs = utili.tsFilter(isSalesTs, ts1, ts2);
+            ArrayList<ItemSale> is = new ArrayList<>();
+            for (int i = 0; i < isSalesTs.size(); i++) {
+                ItemSale iSale = daoIs.askItemSaleByDate(isSalesTs.get(i)); 
+                is.add(iSale);
+            }
+            
+            ArrayList<Table> tabs = st.listTablesByTs(ts1, ts2, false);
+
             Collections.sort(tabs, new TimestampComparator());
             if (timestampInit != null && timestampEnd != null) {
                 statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
                 statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
             } else {
-                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
+                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br>INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
                 statsM.setPeriod("TURNO " + wsS.get(0).getId());
             }
             statsM.setISales(is);
@@ -716,7 +727,6 @@ public class UtilidadesGraficasStatics {
     
     public void updater(StaticsManager statsM) throws Exception {
         double tot = 0;
-//        double totReal = 0;
         double errorTab = 0;
         double errorWs = 0;
         double promTab = 0;
@@ -727,8 +737,6 @@ public class UtilidadesGraficasStatics {
         statsM.setCountWWs(new HashMap<String, Integer>());
         ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
         ArrayList<String> waiterIds = new ArrayList<>();
-//        ArrayList<Integer> idSales = new ArrayList<>();
-//        ArrayList<Integer> cantSales = new ArrayList<>();
         ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
         for (Table tab : statsM.getTabs()) {
             tot += tab.getTotal();

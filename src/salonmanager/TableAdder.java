@@ -124,7 +124,7 @@ public class TableAdder extends FrameThird {
             totalMountInit = tabAux.getTotal() - tabAux.getError();
             setTabElements();
         } else {
-            num = daoT.maxBarrTab(ws) + 1;
+            num = st.maxBarrTab(ws) + 1;
         }
 
         Timestamp ts = null;
