@@ -10,7 +10,6 @@ public class ItemCard {
     Utilidades utili = new Utilidades();
     ServicioItemcard sic = new ServicioItemcard();
     int id;
-    String code;
     String name;
     String category;
     String description;
@@ -28,7 +27,6 @@ public class ItemCard {
 
     public ItemCard(String name, String category, String description, double cost, ArrayList<Double> price, int stock, boolean activeTip) throws Exception {
         price = utili.ArrayRound2Dec(price);
-        this.code = sic.codeCreator(category);
         this.name = name;
         this.category = category;
         this.description = description;
@@ -40,10 +38,9 @@ public class ItemCard {
         this.activeItem = true;
     }
 
-    public ItemCard(int id, String code, String name, String category, String description, double cost, ArrayList<Double> price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
+    public ItemCard(int id, String name, String category, String description, double cost, ArrayList<Double> price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
         price = utili.ArrayRound2Dec(price);
         this.id = id;
-        this.code = code;
         this.name = name;
         this.category = category;
         this.description = description;
@@ -62,14 +59,6 @@ public class ItemCard {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {

@@ -24,18 +24,17 @@ public class DAOItemCard extends DAO {
             ItemCard ic = new ItemCard();
             while (resultado.next()) {
                 int id = SalonManager.decryptInt(resultado.getString(1));
-                String code = SalonManager.decrypt(resultado.getString(2));
-                String name = SalonManager.decrypt(resultado.getString(3));
-                String category = SalonManager.decrypt(resultado.getString(4));
-                String description = SalonManager.decrypt(resultado.getString(5));
-                double cost = SalonManager.decryptDouble(resultado.getString(6));
-                ArrayList<Double> price = utili.strToArrayDou(SalonManager.decrypt(resultado.getString(7)));
-                int stock = SalonManager.decryptInt(resultado.getString(8));
-                Timestamp dateCreation = SalonManager.decryptTs(resultado.getString(9));
-                Timestamp dateCostUpdate = SalonManager.decryptTs(resultado.getString(10));
-                boolean activeTip = SalonManager.decryptBoolean(resultado.getString(11));
-                boolean activeItem = SalonManager.decryptBoolean(resultado.getString(12));
-                ic = new ItemCard(id, code, name, category, description, cost, price, stock, dateCreation, dateCostUpdate, activeTip, activeItem);
+                String name = SalonManager.decrypt(resultado.getString(2));
+                String category = SalonManager.decrypt(resultado.getString(3));
+                String description = SalonManager.decrypt(resultado.getString(4));
+                double cost = SalonManager.decryptDouble(resultado.getString(5));
+                ArrayList<Double> price = utili.strToArrayDou(SalonManager.decrypt(resultado.getString(6)));
+                int stock = SalonManager.decryptInt(resultado.getString(7));
+                Timestamp dateCreation = SalonManager.decryptTs(resultado.getString(8));
+                Timestamp dateCostUpdate = SalonManager.decryptTs(resultado.getString(9));
+                boolean activeTip = SalonManager.decryptBoolean(resultado.getString(10));
+                boolean activeItem = SalonManager.decryptBoolean(resultado.getString(11));
+                ic = new ItemCard(id, name, category, description, cost, price, stock, dateCreation, dateCostUpdate, activeTip, activeItem);
                 items.add(ic);
             }
             return items;
@@ -73,18 +72,17 @@ public class DAOItemCard extends DAO {
             ItemCard ic = new ItemCard();
             while (resultado.next()) {
                 int id = SalonManager.decryptInt(resultado.getString(1));
-                String code = SalonManager.decrypt(resultado.getString(2));
-                String name = SalonManager.decrypt(resultado.getString(3));
-                String category = SalonManager.decrypt(resultado.getString(4));
-                String description = SalonManager.decrypt(resultado.getString(5));
-                double cost = SalonManager.decryptDouble(resultado.getString(6));
-                ArrayList<Double> price = utili.strToArrayDou(SalonManager.decrypt(resultado.getString(7)));
-                int stock = SalonManager.decryptInt(resultado.getString(8));
-                Timestamp dateCreation = SalonManager.decryptTs(resultado.getString(9));
-                Timestamp dateCostUpdate = SalonManager.decryptTs(resultado.getString(10));
-                boolean activeTip = SalonManager.decryptBoolean(resultado.getString(11));
-                boolean activeItem = SalonManager.decryptBoolean(resultado.getString(12));
-                ic = new ItemCard(id, code, name, category, description, cost, price, stock, dateCreation, dateCostUpdate, activeTip, activeItem);
+                String name = SalonManager.decrypt(resultado.getString(2));
+                String category = SalonManager.decrypt(resultado.getString(3));
+                String description = SalonManager.decrypt(resultado.getString(4));
+                double cost = SalonManager.decryptDouble(resultado.getString(5));
+                ArrayList<Double> price = utili.strToArrayDou(SalonManager.decrypt(resultado.getString(6)));
+                int stock = SalonManager.decryptInt(resultado.getString(7));
+                Timestamp dateCreation = SalonManager.decryptTs(resultado.getString(8));
+                Timestamp dateCostUpdate = SalonManager.decryptTs(resultado.getString(9));
+                boolean activeTip = SalonManager.decryptBoolean(resultado.getString(10));
+                boolean activeItem = SalonManager.decryptBoolean(resultado.getString(11));
+                ic = new ItemCard(id, name, category, description, cost, price, stock, dateCreation, dateCostUpdate, activeTip, activeItem);
                 items.add(ic);
             }
             return items;
@@ -117,8 +115,8 @@ public class DAOItemCard extends DAO {
 
         if (error == false) {
             try {
-                String sql = "INSERT INTO item_cards(item_card_id, item_card_code, item_card_name, item_card_category, item_card_description, item_card_cost, item_card_price,  item_card_stock, item_card_date_creation, item_card_tip, item_card_active) "
-                        + "VALUES( '" + SalonManager.encryptInt(item.getId()) + "', '" + SalonManager.encrypt(item.getCode()) + "', '" + SalonManager.encrypt(item.getName()) + "', '" + SalonManager.encrypt(item.getCategory()) + "','" + SalonManager.encrypt(item.getDescription()) + "','" + SalonManager.encryptDouble(item.getCost()) + "','" + prices + "', '" + SalonManager.encryptInt(item.getStock()) + "', '" + SalonManager.encryptTs(item.getDateCreation()) + "', '" + SalonManager.encryptBoolean(item.isActiveTip()) + "', '" + SalonManager.encryptBoolean(item.isActiveItem()) + "');";
+                String sql = "INSERT INTO item_cards(item_card_id, item_card_name, item_card_category, item_card_description, item_card_cost, item_card_price,  item_card_stock, item_card_date_creation, item_card_tip, item_card_active) "
+                        + "VALUES( '" + SalonManager.encryptInt(item.getId()) + "', '" + SalonManager.encrypt(item.getName()) + "', '" + SalonManager.encrypt(item.getCategory()) + "','" + SalonManager.encrypt(item.getDescription()) + "','" + SalonManager.encryptDouble(item.getCost()) + "','" + prices + "', '" + SalonManager.encryptInt(item.getStock()) + "', '" + SalonManager.encryptTs(item.getDateCreation()) + "', '" + SalonManager.encryptBoolean(item.isActiveTip()) + "', '" + SalonManager.encryptBoolean(item.isActiveItem()) + "');";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
                 utiliMsg.cargaItem();
@@ -179,7 +177,6 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-
         } catch (Exception e) {
             throw e;
         }
@@ -190,7 +187,6 @@ public class DAOItemCard extends DAO {
             String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "' LIMIT 1;";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-
         } catch (Exception e) {
             throw e;
         }
@@ -494,18 +490,17 @@ public class DAOItemCard extends DAO {
             ItemCard ic = new ItemCard();
             while (resultado.next()) {
                 int id = resultado.getInt(1);
-                String code = SalonManager.decrypt(resultado.getString(2));
-                String name = SalonManager.decrypt(resultado.getString(3));
-                String category = SalonManager.decrypt(resultado.getString(4));
-                String description = SalonManager.decrypt(resultado.getString(5));
-                double cost = SalonManager.decryptDouble(resultado.getString(6));
-                ArrayList<Double> price = utili.strToArrayDou(SalonManager.decrypt(resultado.getString(7)));
-                int stock = SalonManager.decryptInt(resultado.getString(8));
-                Timestamp dateCreation = SalonManager.decryptTs(resultado.getString(9));
-                Timestamp dateCostUpdate = SalonManager.decryptTs(resultado.getString(10));
-                boolean activeTip = SalonManager.decryptBoolean(resultado.getString(11));
-                boolean activeItem = SalonManager.decryptBoolean(resultado.getString(12));
-                ic = new ItemCard(id, code, name, category, description, cost, price, stock, dateCreation, dateCostUpdate, activeTip, activeItem);
+                String name = SalonManager.decrypt(resultado.getString(2));
+                String category = SalonManager.decrypt(resultado.getString(3));
+                String description = SalonManager.decrypt(resultado.getString(4));
+                double cost = SalonManager.decryptDouble(resultado.getString(5));
+                ArrayList<Double> price = utili.strToArrayDou(SalonManager.decrypt(resultado.getString(6)));
+                int stock = SalonManager.decryptInt(resultado.getString(7));
+                Timestamp dateCreation = SalonManager.decryptTs(resultado.getString(8));
+                Timestamp dateCostUpdate = SalonManager.decryptTs(resultado.getString(9));
+                boolean activeTip = SalonManager.decryptBoolean(resultado.getString(10));
+                boolean activeItem = SalonManager.decryptBoolean(resultado.getString(11));
+                ic = new ItemCard(id, name, category, description, cost, price, stock, dateCreation, dateCostUpdate, activeTip, activeItem);
             }
             return ic;
         } catch (Exception e) {

@@ -12,7 +12,6 @@ import salonmanager.entidades.graphics.FrameThird;
 import salonmanager.entidades.bussiness.ItemCard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.entidades.bussiness.User;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
@@ -53,23 +52,16 @@ public class ItemcardConsulta extends FrameThird {
         labelCategoryItem.setBounds(anchoUnit * 2, altoUnit * 9, anchoUnit * 26, altoUnit * 5);
         panelB.add(labelCategoryItem);
 
-        JLabel labelCodeItem = utiliGraf.labelTitleBacker1("Código del Item: " + itemAux.getCode());
-        labelCodeItem.setBounds(anchoUnit * 2, altoUnit * 16, anchoUnit * 26, altoUnit * 5);
-        panelB.add(labelCodeItem);
-
         JLabel labelDescriptionItem = utiliGraf.labelTitleBacker1("Descripcion: ");
-        labelDescriptionItem.setBounds(anchoUnit * 2, altoUnit * 23, anchoUnit * 26, altoUnit * 5);
+        labelDescriptionItem.setBounds(anchoUnit * 2, altoUnit * 16, anchoUnit * 26, altoUnit * 5);
         panelB.add(labelDescriptionItem);
-        
-//        String chat = utili.stringMsgFrd("que ella dirigiría su atención a un punto aleatorio de mi cara y parpadearía a cuarenta y ocho fotogramas por segundo para terminar en mis pupilas con una mirada apenas intimidatoria y algo parecido a una sonrisa en la boca, en ese instante sus ojos comenzarían a hurgar entre los pliegues de mi pensamiento. No es que yo fuera idiota o la persona más transparente del interior del país, o no necesariamente, pero a sus ojos todos éramos envases gigantes ", 20, 1);
-        
+                
         String descr = itemAux.getDescription();
-//                String descr = "<html>" + chat + "</html>";
 
         JLabel labelDescriptionTextItem = utiliGraf.labelTitleBacker2(utili.stringMsgFrd(descr, 22, 1));                
 
         JScrollPane scrollPane = new JScrollPane(labelDescriptionTextItem);
-        scrollPane.setBounds(anchoUnit * 4, altoUnit * 28, anchoUnit * 21, altoUnit * 12);
+        scrollPane.setBounds(anchoUnit * 4, altoUnit * 21, anchoUnit * 21, altoUnit * 17);
         scrollPane.setBackground(narUlg);
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);

@@ -170,7 +170,6 @@ public class SalonManager {
             try {
                 Date parsedDate = dateFormat.parse(encSt);
                 Timestamp timestamp = new Timestamp(parsedDate.getTime());
-                System.out.println("Timestamp: " + timestamp);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

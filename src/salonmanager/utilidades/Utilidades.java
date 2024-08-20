@@ -933,10 +933,10 @@ public class Utilidades {
     }
 
     public ArrayList<Double> ArrayRound2Dec(ArrayList<Double> prices) {
-        ArrayList<Double> pr = prices;
-        double pr1 = round2Dec(pr.get(0));
+        ArrayList<Double> pr = new ArrayList<>();
+        double pr1 = round2Dec(prices.get(0));
         pr.add(pr1);
-        double pr2 = round2Dec(pr.get(1));
+        double pr2 = round2Dec(prices.get(1));
         pr.add(pr2);
         return pr;
     }

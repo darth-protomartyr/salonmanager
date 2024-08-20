@@ -213,6 +213,6 @@ public class ItemcardInn extends FrameHalf {
         fieldCost.setText("");
         fieldPrice.setText("");
         fieldStock.setText("");
-        checkTip.setSelected(false);
+        checkTip.setSelected(true);
     }
 }

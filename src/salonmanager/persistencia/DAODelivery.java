@@ -111,7 +111,7 @@ public class DAODelivery extends DAO {
 
     public void updateDeliveryTable(String tabId, String deli) throws Exception {
         try {
-            String sql1 = "UPDATE deliverys SET delivery_tab_id = " + SalonManager.encrypt(tabId) + " WHERE delivery_id = '" + SalonManager.encrypt(deli) + "';";
+            String sql1 = "UPDATE deliverys SET delivery_tab_id = '" + SalonManager.encrypt(tabId) + "' WHERE delivery_id = '" + SalonManager.encrypt(deli) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
