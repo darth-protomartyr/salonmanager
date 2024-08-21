@@ -90,7 +90,7 @@ public class ItemcardList extends FrameHalf {
         String col2 = "Unidades";
         String col3 = "Precio";
 
-        ArrayList<ItemCard> totalItems = daoI.listarItemsCard();
+        ArrayList<ItemCard> totalItems = daoI.listarItemsCard(true);
         int rows = totalItems.size();
 
         String[] colNames = {col1, col2, col3};
@@ -131,7 +131,7 @@ public class ItemcardList extends FrameHalf {
     private void listUpdater() {
         try {
             // Obtener los datos actualizados
-            ArrayList<ItemCard> totalItems = daoI.listarItemsCard();
+            ArrayList<ItemCard> totalItems = daoI.listarItemsCard(true);
             int rows = totalItems.size();
 
             // Preparar los nuevos datos para la tabla

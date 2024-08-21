@@ -155,7 +155,7 @@ public class SalonManager {
     }
 
     public static String encryptTs(Timestamp ts) throws Exception {
-        String st = null;
+        String st = encrypt("null");
         if (ts != null) {
             st = encrypt(ts.toString());
         }
@@ -164,12 +164,12 @@ public class SalonManager {
 
     public static Timestamp decryptTs(String encSt) throws Exception {
         Timestamp ts = null;
-        if (encSt != null) {
+        if (!encSt.equals(encrypt("null"))) {
             encSt = decrypt(encSt);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             try {
                 Date parsedDate = dateFormat.parse(encSt);
-                Timestamp timestamp = new Timestamp(parsedDate.getTime());
+                ts = new Timestamp(parsedDate.getTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -65,11 +65,11 @@ public class ItemSaleViewer extends FrameFull {
         sm.addFrame(this);
         setTitle("Lista de transacciones");
         iSales = stM.getISales();
-        items = daoI.listarItemsCard();
+        items = daoI.listarItemsCard(true);
         PanelPpal panelPpal = new PanelPpal(this);
         add(panelPpal);
 
-        waiters = daoU.listUserByRol("MOZO");
+        waiters = daoU.listUserByRol("MOZO", true);
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);

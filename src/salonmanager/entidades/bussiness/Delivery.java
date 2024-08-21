@@ -27,7 +27,7 @@ public class Delivery {
         Timestamp ts = new Timestamp(new Date().getTime());
         this.id = utili.emptyToStr(ts + "");
         this.consumer = consumerBack(phone);
-        this.deliUser = daoU.getUserById(userId);
+        this.deliUser = daoU.getUserById(userId, true);
         this.open = true;
         this.active = true;
     }
@@ -52,7 +52,7 @@ public class Delivery {
     }
 
     private User deliBack(String deli) throws Exception {
-        User user = daoU.getUserById(deli);
+        User user = daoU.getUserById(deli, true);
         return user;        
     }
 

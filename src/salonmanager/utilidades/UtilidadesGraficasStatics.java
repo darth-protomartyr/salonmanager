@@ -150,13 +150,37 @@ public class UtilidadesGraficasStatics {
         ArrayList<String> categories = new ArrayList<>(hashMap.keySet());
         ArrayList<Double> amounts = new ArrayList<>(hashMap.values());
 
-        statsM.getLabelCategory0().setText(categories.get(0) + "$: " + amounts.get(0));
-        statsM.getLabelCategory1().setText(categories.get(1) + "$: " + amounts.get(1));
-        statsM.getLabelCategory2().setText(categories.get(2) + "$: " + amounts.get(2));
-        statsM.getLabelCategory3().setText(categories.get(3) + "$: " + amounts.get(3));
-        statsM.getLabelCategory4().setText(categories.get(4) + "$: " + amounts.get(4));
-        statsM.getLabelCategory5().setText(categories.get(5) + "$: " + amounts.get(5));
-
+        if (categories.size()> 0) {
+            statsM.getLabelCategory0().setText(categories.get(0) + "$: " + amounts.get(0));
+        } else {
+           statsM.getLabelCategory0().setText("--");
+        }
+        if (categories.size()> 1) {
+            statsM.getLabelCategory1().setText(categories.get(1) + "$: " + amounts.get(1));
+        } else {
+            statsM.getLabelCategory1().setText("--");
+        }
+        if (categories.size()> 2) {
+            statsM.getLabelCategory2().setText(categories.get(2) + "$: " + amounts.get(2));
+        } else {
+            statsM.getLabelCategory2().setText("--");
+        }    
+        if (categories.size()> 3) {
+            statsM.getLabelCategory3().setText(categories.get(3) + "$: " + amounts.get(3));
+        } else {
+            statsM.getLabelCategory3().setText("--");
+        }
+        if (categories.size()> 4) {
+            statsM.getLabelCategory4().setText(categories.get(4) + "$: " + amounts.get(4));
+        } else {
+            statsM.getLabelCategory4().setText("--");
+        }
+        if (categories.size()> 5) {
+            statsM.getLabelCategory5().setText(categories.get(5) + "$: " + amounts.get(5));
+        } else {
+            statsM.getLabelCategory5().setText("--");
+        }
+        
         for (int i = 0; i < hashMap.size(); i++) {
             chartCategory.addSeries(categories.get(i), amounts.get(i));
         }
@@ -692,6 +716,7 @@ public class UtilidadesGraficasStatics {
             
             ArrayList<Timestamp> isSalesTs = daoIs.listarItemSalesTs();
             isSalesTs = utili.tsFilter(isSalesTs, ts1, ts2);
+
             ArrayList<ItemSale> is = new ArrayList<>();
             for (int i = 0; i < isSalesTs.size(); i++) {
                 ItemSale iSale = daoIs.askItemSaleByDate(isSalesTs.get(i)); 
@@ -931,7 +956,5 @@ public class UtilidadesGraficasStatics {
         public int compare(Table o1, Table o2) {
             return o1.getOpenTime().compareTo(o2.getOpenTime());
         }
-    }
-    
-    
+    }      
 }

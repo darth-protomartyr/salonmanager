@@ -208,8 +208,7 @@ public class ServicioSalon {
             String deli = sal.getJbdAux().getDelivery().getId();
             daoD.updateDeliveryTable(tableAux.getId(), deli);
         }
-        daoU.saveWaiterTable(tableAux);
-        
+        daoU.saveWaiterTable(tableAux);   
     }
 
     public ArrayList<ItemCard> itemDeployer(ItemCard ic, int num) {

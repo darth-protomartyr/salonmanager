@@ -118,7 +118,7 @@ public class TableAdder extends FrameThird {
         manager = man;
         admin = adm;
         ws = w;
-        itemsDB = daoI.listarItemsCard();
+        itemsDB = daoI.listarItemsCard(true);
         if (tab != null) {
             tabAux = tab;
             totalMountInit = tabAux.getTotal() - tabAux.getError();

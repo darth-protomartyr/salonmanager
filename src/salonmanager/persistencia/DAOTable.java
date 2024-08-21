@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Table;
-import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
 
@@ -14,18 +13,21 @@ public class DAOTable extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
+
     public void saveTable(Table tab, Timestamp ts) throws Exception {
         if (tab.getComments().equals("<br>")) {
             tab.setComments("");
         }
         boolean error = false;
         if (ts != null) {
-            Timestamp close = new Timestamp(new Date().getTime());   
-            ArrayList<Timestamp> wsTs = listarTabsTs(false);
-            wsTs = utili.tsFilter(wsTs, ts, close);
-            for (int i = 0; i < wsTs.size(); i++) {
-                if (wsTs.get(i).equals(tab.getOpenTime())) {
-                    error = true;
+            Timestamp close = new Timestamp(new Date().getTime());
+            ArrayList<Timestamp> wsTs = listarTabsTsActive();
+            if (!wsTs.isEmpty()) {
+                wsTs = utili.tsFilter(wsTs, ts, close);
+                for (int i = 0; i < wsTs.size(); i++) {
+                    if (wsTs.get(i).equals(tab.getOpenTime())) {
+                        error = true;
+                    }
                 }
             }
         }
@@ -217,7 +219,6 @@ public class DAOTable extends DAO {
         }
     }
 
-    
 //    public ArrayList<Table> listarTablesByWorkshift(Workshift ws) throws Exception {
 //        ArrayList<Table> tables = new ArrayList<>();
 //        Timestamp open = ws.getOpenDateWs();
@@ -257,8 +258,6 @@ public class DAOTable extends DAO {
 //            desconectarBase();
 //        }
 //    }
-
-    
 //    public ArrayList<Table> listarTablesOpenByWorkshift(Workshift ws) throws Exception {
 //        ArrayList<Table> tables = new ArrayList<>();
 //        Timestamp open = ws.getOpenDateWs();
@@ -298,8 +297,6 @@ public class DAOTable extends DAO {
 //            desconectarBase();
 //        }
 //    }
-
-    
     public Table getTableById(String st) throws Exception {
         Table tab = new Table();
         try {
@@ -327,12 +324,11 @@ public class DAOTable extends DAO {
             return tab;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
 
-    
     public int getMaxTab(String st, Timestamp ds) throws Exception {
         int i = 0;
         try {
@@ -345,12 +341,11 @@ public class DAOTable extends DAO {
             return i;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
 
-    
     public void downActiveTable(Table t) throws Exception {
         try {
             String sql1 = "UPDATE tabs SET table_active = '" + SalonManager.encryptBoolean(false) + "' WHERE table_id = '" + SalonManager.encrypt(t.getId()) + "';";
@@ -365,7 +360,6 @@ public class DAOTable extends DAO {
         }
     }
 
-    
     public void upActiveTable(Table t) throws Exception {
         try {
             String sql1 = "UPDATE tabs SET table_active = '" + SalonManager.encryptBoolean(true) + "' WHERE table_id = '" + SalonManager.encrypt(t.getId()) + "';";
@@ -380,7 +374,6 @@ public class DAOTable extends DAO {
         }
     }
 
-    
 //    public ArrayList<Table> listarTablesByDat(Timestamp open, Timestamp close) throws Exception {
 //        ArrayList<Table> tables = new ArrayList<>();
 //        try {
@@ -414,8 +407,6 @@ public class DAOTable extends DAO {
 //            desconectarBase();
 //        }
 //    }
-
-    
 //    public ArrayList<String> listarIdByWorkshift(Timestamp ts) throws Exception {
 //        ArrayList<String> ids = new ArrayList<>();
 //        Timestamp open = ts;
@@ -436,7 +427,6 @@ public class DAOTable extends DAO {
 //            desconectarBase();
 //        }
 //    }
-
     public ArrayList<String> getActiveIds() throws Exception {
         ArrayList<String> tables = new ArrayList<>();
         try {
@@ -450,7 +440,7 @@ public class DAOTable extends DAO {
             return tables;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
@@ -468,7 +458,7 @@ public class DAOTable extends DAO {
             return idsTabsIc;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
@@ -485,7 +475,7 @@ public class DAOTable extends DAO {
             return comment;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
@@ -513,14 +503,10 @@ public class DAOTable extends DAO {
 //            desconectarBase();
 //        }
 //    }
-
-    public ArrayList<Timestamp> listarTabsTs(boolean open) throws Exception {
+    public ArrayList<Timestamp> listarTabsTsActive() throws Exception {
         ArrayList<Timestamp> tabsTs = new ArrayList<>();
         try {
             String sql = "SELECT table_open_time FROM tabs WHERE table_active = '" + SalonManager.encryptBoolean(true) + "';";
-            if (open == true) {
-                sql = "SELECT table_open_time FROM tabs WHERE table_open = '" + SalonManager.encryptBoolean(true) + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
-            }
             System.out.println(sql);
             consultarBase(sql);
             while (resultado.next()) {
@@ -530,10 +516,29 @@ public class DAOTable extends DAO {
             return tabsTs;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
-        }        
+        }
     }
+    
+    public ArrayList<Timestamp> listarTabsTsOpen() throws Exception {
+        ArrayList<Timestamp> tabsTs = new ArrayList<>();
+        try {
+            String sql = "SELECT table_open_time FROM tabs WHERE table_open = '" + SalonManager.encryptBoolean(true) + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                Timestamp ts = SalonManager.decryptTs(resultado.getString(1));
+                tabsTs.add(ts);
+            }
+            return tabsTs;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
 
     public Table getTableByTs(Timestamp ts) throws Exception {
         Table tab = new Table();
@@ -562,7 +567,7 @@ public class DAOTable extends DAO {
             return tab;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }

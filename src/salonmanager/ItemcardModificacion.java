@@ -63,7 +63,7 @@ public class ItemcardModificacion extends FrameHalf {
         manager = man;
         sm.addFrame(this);
         setTitle("Modificación Item de la Carta");
-        itemsCardDB = daoIC.listarItemsCard();
+        itemsCardDB = daoIC.listarItemsCard(true);
         categoriesDB = daoC.askCategoriesConfig();
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
@@ -245,7 +245,7 @@ public class ItemcardModificacion extends FrameHalf {
 
     
     private void resetItemcard() throws Exception {
-        itemsCardDB = daoIC.listarItemsCard();
+        itemsCardDB = daoIC.listarItemsCard(true);
         name = "";
         category = "";
         description = "";

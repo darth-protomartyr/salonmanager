@@ -68,7 +68,7 @@ public class StatsItemViewer extends FrameFull {
         kind = k;
         String tit = "";
         iSales = statsM.getISales();
-        itemsDB = daoI.listarItemsCard();
+        itemsDB = daoI.listarItemsCard(true);
 
         PanelPpal panelPpal = new PanelPpal(this);
         add(panelPpal);

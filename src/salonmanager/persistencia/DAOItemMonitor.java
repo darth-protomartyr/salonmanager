@@ -16,7 +16,7 @@ public class DAOItemMonitor extends DAO {
         if (indiLenght < 450) {
             try {
                 sql = "INSERT INTO item_monits(item_monit_id, item_monit_table_id, item_monit_item_id, item_monit_tipe, item_monit_init_bool, item_monit_init_date, item_monit_cook_bool, item_monit_cook_date, item_monit_ready_bool, item_monit_ready_date, item_monit_otw_bool, item_monit_otw_date, item_monit_open, item_monit_active, item_monit_indications) "
-                        + "VALUES( '" + SalonManager.encrypt(im.getIdIMon()) + "', '" + SalonManager.encrypt(im.getTableIMon().getId()) + "', '" + SalonManager.encryptInt(im.getItemIMon().getId()) + "', '" + SalonManager.encrypt(im.getPosIMon()) + "', '" + SalonManager.encryptBoolean(im.isInitIMon()) + "', '" + SalonManager.encryptTs(im.getDateInitIMon()) + "', '" + SalonManager.encryptBoolean(im.isCookIMon()) + "', " + SalonManager.encryptTs(im.getDateCookIMon()) + ", '" + SalonManager.encryptBoolean(im.isReadyIMon()) + "', " + SalonManager.encryptTs(im.getDateReadyIMon()) + ", '" + SalonManager.encryptBoolean(im.isOtwIMon()) + "', '" + SalonManager.encryptTs(im.getDateOtwIMon()) + "', '" + SalonManager.encryptBoolean(im.isOpenItemMonitor()) + "', '" + SalonManager.encryptBoolean(im.isActiveItemMonitor()) + "', '" + SalonManager.encrypt(im.getIndications()) + "');";
+                        + "VALUES( '" + SalonManager.encrypt(im.getIdIMon()) + "', '" + SalonManager.encrypt(im.getTableIMon().getId()) + "', '" + SalonManager.encryptInt(im.getItemIMon().getId()) + "', '" + SalonManager.encrypt(im.getPosIMon()) + "', '" + SalonManager.encryptBoolean(im.isInitIMon()) + "', '" + SalonManager.encryptTs(im.getDateInitIMon()) + "', '" + SalonManager.encryptBoolean(im.isCookIMon()) + "', '" + SalonManager.encryptTs(im.getDateCookIMon()) + "', '" + SalonManager.encryptBoolean(im.isReadyIMon()) + "', '" + SalonManager.encryptTs(im.getDateReadyIMon()) + "', '" + SalonManager.encryptBoolean(im.isOtwIMon()) + "', '" + SalonManager.encryptTs(im.getDateOtwIMon()) + "', '" + SalonManager.encryptBoolean(im.isOpenItemMonitor()) + "', '" + SalonManager.encryptBoolean(im.isActiveItemMonitor()) + "', '" + SalonManager.encrypt(im.getIndications()) + "');";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
             } catch (SQLException e) {
@@ -36,7 +36,6 @@ public class DAOItemMonitor extends DAO {
             String sql = "UPDATE item_monits SET item_monit_open = '" + SalonManager.encryptBoolean(false) + "' WHERE item_monit_id = '" + SalonManager.encrypt(im.getIdIMon()) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-            
         } catch (Exception e) {
             throw e;
         }

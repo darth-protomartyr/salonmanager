@@ -48,7 +48,7 @@ public class ItemSelector extends FrameWindow {
         manager = man;
         sel = s;
         sm.addFrame(this);
-        itemsDB = daoIC.listarItemsCard();
+        itemsDB = daoIC.listarItemsCard(true);
         if (s.equals("m")) {
             setTitle("Modificar Item");
         } else {

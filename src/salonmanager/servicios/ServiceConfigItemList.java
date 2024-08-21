@@ -329,7 +329,7 @@ public class ServiceConfigItemList {
     
     
     public void reset(ConfigItemList cil) throws Exception {
-        cil.setItems(daoI.listarItemsCard());
+        cil.setItems(daoI.listarItemsCard(true));
         utiliMsg.cargaSuccesMod();
         cil.getCheckBox().setVisible(false);
         cil.getCheckBox().setSelected(false);

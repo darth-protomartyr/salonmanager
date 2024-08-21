@@ -90,7 +90,7 @@ public class DeliveryData extends FrameHalf {
         String title = "";
         title = "DATOS ENVIO";
         consumers = daoC.getConsumersPhone();
-        deliverys = daoU.listUserByRol("DELIVERY");
+        deliverys = daoU.listUserByRol("DELIVERY", true);
 
         setTitle(title);
 

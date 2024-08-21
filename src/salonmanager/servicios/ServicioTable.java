@@ -64,11 +64,12 @@ public class ServicioTable {
             workshiftTabsOld = listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), true);
         }
         for (Table tab : workshiftTabsOld) {
-            tab.setOrder(daoI.listarItemcardOrder(tab.getId()));
-            tab.setGifts(daoI.listarItemcardGifts(tab.getId()));
-            tab.setPartialPayed(daoI.listarItemcardPartialPayed(tab.getId()));
-            tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(tab.getId()));
-            tab.setWaiter(daoU.getWaiterByTable(tab.getId()));
+            String id = tab.getId();
+            tab.setOrder(daoI.listarItemcardOrder(id));
+            tab.setGifts(daoI.listarItemcardGifts(id));
+            tab.setPartialPayed(daoI.listarItemcardPartialPayed(id));
+            tab.setPartialPayedND(daoI.listarItemcardPartialPayedND(id));
+            tab.setWaiter(daoU.getWaiterByTable(id));
             workshiftTabsNew.add(tab);
         }
         return workshiftTabsNew;
@@ -113,8 +114,15 @@ public class ServicioTable {
         if (ts2 == null) {
             ts2 = new Timestamp(new Date().getTime());
         }
-        ArrayList<Timestamp> tabsTs = daoT.listarTabsTs(open);
+        ArrayList<Timestamp> tabsTs = null;
+        if (!open) {
+            tabsTs = daoT.listarTabsTsActive();
+        } else {
+            tabsTs = daoT.listarTabsTsOpen();
+        }
         tabsTs = utili.tsFilter(tabsTs, ts1, ts2);
+        
+
         ArrayList<Table> tabs = new ArrayList<>();
         for (int i = 0; i < tabsTs.size(); i++) {
             Table tab = daoT.getTableByTs(tabsTs.get(i));
@@ -131,5 +139,5 @@ public class ServicioTable {
         }
         int max = Collections.max(ints);
         return max;
-    }
+    }    
 }

@@ -68,7 +68,7 @@ public class ConfigItemList extends FrameFull {
         sm.addFrame(this);
 
         setTitle("Modificar Items de la carta en Lista");
-        items = daoI.listarItemsCard();
+        items = daoI.listarItemsCard(true);
         ConfigGeneral cfgGen = daoC.askConfigGeneral();
         categories = cfgGen.getTableItemCategories();
         cat = "TODOS";

@@ -264,7 +264,7 @@ public class DAOUser extends DAO {
         }
     }
 
-    public ArrayList<User> listUserByRol(String rol) throws Exception {
+    public ArrayList<User> listUserByRol(String rol, boolean fin) throws Exception {
         boolean act = true;
         ArrayList<User> users = new ArrayList<>();
         String active = SalonManager.encryptBoolean(act);
@@ -298,7 +298,9 @@ public class DAOUser extends DAO {
                 e.printStackTrace();
             }
         }  finally {
-            desconectarBase();
+            if (fin) {
+                desconectarBase();
+            }
         }
         return users;
     }
@@ -330,7 +332,7 @@ public class DAOUser extends DAO {
                 waiterId = SalonManager.decrypt(resultado.getString(1));
             }
 
-            ArrayList<User> waiters = listUserByRol("MOZO");
+            ArrayList<User> waiters = listUserByRol("MOZO", false);
             for (int i = 0; i < waiters.size(); i++) {
                 if (waiters.get(i).getId().equals(waiterId)) {
                     waiter = waiters.get(i);
@@ -348,7 +350,7 @@ public class DAOUser extends DAO {
         return waiter;
     }
 
-    public User getUserById(String deliId) throws Exception {
+    public User getUserById(String deliId, boolean fin) throws Exception {
         try {
             boolean act = true;
             String active = SalonManager.encryptBoolean(act);
@@ -376,7 +378,9 @@ public class DAOUser extends DAO {
         } catch (Exception e) {
             throw e;
         }  finally {
-            desconectarBase();
+            if (fin) {
+                desconectarBase();
+            }
         }
     }
 
@@ -443,7 +447,7 @@ public class DAOUser extends DAO {
             while (resultado.next()) {
                 cashierId = SalonManager.decrypt(resultado.getString(1));
             }
-            cashier = getUserById(cashierId);
+            cashier = getUserById(cashierId, false);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();

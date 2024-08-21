@@ -89,7 +89,7 @@ public class DeliveryCreate extends FrameHalf {
         
 
         consumers = daoC.getConsumersPhone();
-        deliverys = daoU.listUserByRol("DELIVERY");
+        deliverys = daoU.listUserByRol("DELIVERY", true);
 
         setTitle(title);
 

@@ -46,7 +46,7 @@ public class WaiterSelector extends FrameWindow {
 
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
-        waiters = daoU.listUserByRol("MOZO");
+        waiters = daoU.listUserByRol("MOZO", true);
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);

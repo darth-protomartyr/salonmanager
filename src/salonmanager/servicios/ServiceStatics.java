@@ -103,7 +103,6 @@ public class ServiceStatics {
     public void openTabViewer(StaticsManager statsM) throws Exception {
         if (statsM.getTabs() != null) {
             new TabViewer(statsM.getTabs(), statsM);
-//            statsM.setEnabled(false);
         } else {
             utiliMsg.errorPeriodNull();
         }

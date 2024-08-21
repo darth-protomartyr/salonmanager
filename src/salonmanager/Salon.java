@@ -175,8 +175,8 @@ public class Salon extends FrameFull {
 
         setTitle("Salón Manager");
         sal = this;
-        itemsDB = daoI.listarItemsCard();
-        waiters = daoU.listUserByRol("MOZO");
+        itemsDB = daoI.listarItemsCard(true);
+        waiters = daoU.listUserByRol("MOZO", true);
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
