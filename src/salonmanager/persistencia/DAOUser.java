@@ -100,6 +100,7 @@ public class DAOUser extends DAO {
 
     public ArrayList<String> listarUserByRol(String rol) throws Exception {
         boolean act = true;
+        rol = SalonManager.encrypt(rol);
         String active = SalonManager.encryptBoolean(act);
         String sql = "SELECT user_id FROM users WHERE user_role = '" + rol + "' AND user_active = '" + active + "';";
         System.out.println(sql);

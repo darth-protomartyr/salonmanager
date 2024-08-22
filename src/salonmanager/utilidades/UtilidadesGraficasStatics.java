@@ -70,7 +70,7 @@ public class UtilidadesGraficasStatics {
     Color bluLg = new Color(194, 242, 206);
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
-    
+
     public PieChart chartOrderBacker(StaticsManager statsM) {
         PieChart chartOrder = new PieChartBuilder().width(anchoUnit * 25).height(altoUnit * 25).build();
         chartOrder.getStyler().setLegendVisible(true);
@@ -149,13 +149,25 @@ public class UtilidadesGraficasStatics {
         ArrayList<String> categories = new ArrayList<>(hashMap.keySet());
         ArrayList<Double> amounts = new ArrayList<>(hashMap.values());
 
-        statsM.getLabelCategory0().setText(categories.get(0) + "$: " + amounts.get(0));
-        statsM.getLabelCategory1().setText(categories.get(1) + "$: " + amounts.get(1));
-        statsM.getLabelCategory2().setText(categories.get(2) + "$: " + amounts.get(2));
-        statsM.getLabelCategory3().setText(categories.get(3) + "$: " + amounts.get(3));
-        statsM.getLabelCategory4().setText(categories.get(4) + "$: " + amounts.get(4));
-        statsM.getLabelCategory5().setText(categories.get(5) + "$: " + amounts.get(5));
-
+        if (statsM.getCategories().size() > 0) {
+            statsM.getLabelCategory0().setText(categories.get(0) + "$: " + amounts.get(0));
+        }
+        if (statsM.getCategories().size() > 0) {
+            statsM.getLabelCategory1().setText(categories.get(1) + "$: " + amounts.get(1));
+        }
+        if (statsM.getCategories().size() > 0) {
+            statsM.getLabelCategory2().setText(categories.get(2) + "$: " + amounts.get(2));
+        }
+        if (statsM.getCategories().size() > 0) {
+            statsM.getLabelCategory3().setText(categories.get(3) + "$: " + amounts.get(3));
+        }
+        if (statsM.getCategories().size() > 0) {
+            statsM.getLabelCategory4().setText(categories.get(4) + "$: " + amounts.get(4));
+        }
+        if (statsM.getCategories().size() > 0) {
+            statsM.getLabelCategory5().setText(categories.get(5) + "$: " + amounts.get(5));
+        }
+        
         for (int i = 0; i < hashMap.size(); i++) {
             chartCategory.addSeries(categories.get(i), amounts.get(i));
         }
@@ -312,9 +324,9 @@ public class UtilidadesGraficasStatics {
         JLabel labelStatsWs = utiliGraf.labelTitleBacker1("Por turno:");
         labelStatsWs.setBounds(anchoUnit * 1, altoUnit * 21, anchoUnit * 18, altoUnit * 3);
         panelStatsBySell.add(labelStatsWs);
-        
+
         JComboBox comboWs = new JComboBox();
-        
+
         comboWs.setModel(wsComboBacker());
         Font font = new Font("Arial", Font.BOLD, 16);
         comboWs.setFont(font);
@@ -325,7 +337,7 @@ public class UtilidadesGraficasStatics {
         butStatsWs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                String st = (String) comboWs.getSelectedItem();        
+                String st = (String) comboWs.getSelectedItem();
                 try {
                     if (!st.equals("")) {
                         workshiftSelector(st, statsM);
@@ -382,7 +394,7 @@ public class UtilidadesGraficasStatics {
         statsM.getFieldTotal().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldTotal().setEditable(false);
         panelStatsBySell.add(statsM.getFieldTotal());
-        
+
         JLabel labelErrorTabs = utiliGraf.labelTitleBacker3("Error Mesas Tot $:");
         labelErrorTabs.setBounds(anchoUnit * 1, altoUnit * 58, anchoUnit * 9, altoUnit * 3);
         panelStatsBySell.add(labelErrorTabs);
@@ -422,7 +434,7 @@ public class UtilidadesGraficasStatics {
         statsM.getFieldTotalReal().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldTotalReal().setEditable(false);
         panelStatsBySell.add(statsM.getFieldTotalReal());
-        
+
         JLabel labelPromTab = utiliGraf.labelTitleBacker2("Prom. gasto por orden:");
         labelPromTab.setBounds(anchoUnit * 2, altoUnit * 73, anchoUnit * 16, altoUnit * 3);
         panelStatsBySell.add(labelPromTab);
@@ -551,7 +563,7 @@ public class UtilidadesGraficasStatics {
         statsM.getPanelChartByCategory().setLayout(new BorderLayout());
         statsM.getPanelChartByCategory().setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 24, altoUnit * 27);
         panelItemsCategoryPie.add(statsM.getPanelChartByCategory());
-        
+
         panelItemsCategoryPie.setLayout(null);
         panelItemsCategoryPie.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 33);
         panelItemsCategoryPie.setBackground(narUlg);
@@ -635,7 +647,7 @@ public class UtilidadesGraficasStatics {
     private DefaultComboBoxModel wsComboBacker() throws Exception {
         ArrayList<Integer> wssId = daoW.listIdWs();
         ArrayList<Timestamp> wssTs = daoW.listTsIWs();
-        
+
         ArrayList<String> wssSt = new ArrayList<>();
         for (int i = 0; i < wssId.size(); i++) {
             String ts = utili.friendlyDate1(wssTs.get(i));
@@ -648,11 +660,11 @@ public class UtilidadesGraficasStatics {
         if (actual != 0) {
             wsa = "ACTUAL";
         }
-        wssSt.add(0,wsa);
+        wssSt.add(0, wsa);
         DefaultComboBoxModel<String> modeloCombo = utili.wsComboModelReturnWNu(wssSt);
-        return modeloCombo; 
+        return modeloCombo;
     }
-    
+
     public void staticBacker(Timestamp timestampInit, Timestamp timestampEnd, StaticsManager statsM, int wsId) throws Exception {
         ArrayList<Workshift> wsS = new ArrayList<>();
 
@@ -699,7 +711,7 @@ public class UtilidadesGraficasStatics {
                 statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
                 statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
             } else {
-                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
+                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() + "<br> INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
                 statsM.setPeriod("TURNO " + wsS.get(0).getId());
             }
             statsM.setISales(is);
@@ -717,11 +729,9 @@ public class UtilidadesGraficasStatics {
         statsM.getPanelItemsCategory().setVisible(true);
         statsM.getPanelWaiterStatics().setVisible(true);
     }
-    
-    
+
     public void updater(StaticsManager statsM) throws Exception {
         double tot = 0;
-//        double totReal = 0;
         double errorTab = 0;
         double errorWs = 0;
         double promTab = 0;
@@ -732,8 +742,6 @@ public class UtilidadesGraficasStatics {
         statsM.setCountWWs(new HashMap<String, Integer>());
         ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
         ArrayList<String> waiterIds = new ArrayList<>();
-//        ArrayList<Integer> idSales = new ArrayList<>();
-//        ArrayList<Integer> cantSales = new ArrayList<>();
         ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
         for (Table tab : statsM.getTabs()) {
             tot += tab.getTotal();
@@ -742,7 +750,7 @@ public class UtilidadesGraficasStatics {
             } else if (tab.getPos().equals("delivery")) {
                 statsM.setNumBar(statsM.getNumDeli() + tab.getTotal());
             } else {
-                statsM.setNumTabs( statsM.getNumTabs() + tab.getTotal());
+                statsM.setNumTabs(statsM.getNumTabs() + tab.getTotal());
             }
 
             long time1 = tab.getOpenTime().getTime();
@@ -755,7 +763,7 @@ public class UtilidadesGraficasStatics {
                 tabInt += 1;
             }
         }
-        
+
         for (int i = 0; i < statsM.getWorkshifts().size(); i++) {
             errorTab += statsM.getWorkshifts().get(i).getErrorMountTabs();
             errorWs += statsM.getWorkshifts().get(i).getErrorMountWs() - statsM.getWorkshifts().get(i).getErrorMountTabs();
@@ -827,12 +835,12 @@ public class UtilidadesGraficasStatics {
 
         df.setMaximumFractionDigits(0);
         String formattedErrorWs = df.format(errorWs);
-        statsM.getFieldErrorWs().setText(formattedErrorWs);        
-        
+        statsM.getFieldErrorWs().setText(formattedErrorWs);
+
         df.setMaximumFractionDigits(0);
         String formattedTotalReal = df.format(tot - errorTab - errorWs);
-        statsM.getFieldTotalReal().setText("$" + formattedTotalReal);         
-        
+        statsM.getFieldTotalReal().setText("$" + formattedTotalReal);
+
         promTab = utili.round2Dec(tot / statsM.getTabs().size());
         String formattedPromTab = promTab + "";
         statsM.getFieldPromTab().setText("$" + formattedPromTab);
@@ -907,13 +915,13 @@ public class UtilidadesGraficasStatics {
         statsM.getLabelWaiter4().setText("4- " + waitersSell2.get(3) + " $: " + amounts2.get(3));
         statsM.getLabelWaiter5().setText("5- " + waitersSell2.get(4) + " $: " + amounts2.get(4));
 
-        statsM.getLabelWaiter6().setText("1- " + waitersWs2.get(0) + " $: " + wss2.get(0) + " turnos.");
-        statsM.getLabelWaiter7().setText("2- " + waitersWs2.get(1) + " $: " + wss2.get(1) + " turnos.");
-        statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + " $: " + wss2.get(2) + " turnos.");
-        statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + " $: " + wss2.get(3) + " turnos.");
-        statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + " $: " + wss2.get(4) + " turnos.");
+        statsM.getLabelWaiter6().setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turno(s).");
+        statsM.getLabelWaiter7().setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1) + " turno(s).");
+        statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turno(s).");
+        statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turno(s).");
+        statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turno(s).");
     }
-    
+
     public class TimestampComparator implements Comparator<Table> {
         @Override
         public int compare(Table o1, Table o2) {
