@@ -3,21 +3,21 @@ package salonmanager.servicios;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import salonmanager.Salon;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.persistencia.DAODelivery;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 
 public class ServicioTable {
     DAODelivery daoD = new DAODelivery();
     DAOTable daoT = new DAOTable();
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     DAOUser daoU = new DAOUser();
 
-    public int giftCounter(ArrayList<ItemCard> gifts, ItemCard ic) {
+    public int giftCounter(ArrayList<Itemcard> gifts, Itemcard ic) {
         int units = 0;
         for (int i = 0; i < gifts.size(); i++) {
             if (gifts.get(i).getId() == ic.getId()) {
@@ -27,19 +27,19 @@ public class ServicioTable {
         return units;
     }
 
-    public String listarGifts(ArrayList<ItemCard> gifts) {
+    public String listarGifts(ArrayList<Itemcard> gifts) {
         String txt = "";
         txt = txt + "Obsequios:\n";
         if (gifts.size() > 0) {
             for (int i = 0; i < gifts.size(); i++) {
-                ItemCard ic = gifts.get(i);
+                Itemcard ic = gifts.get(i);
                 txt += ic.getName() + "\n";
             }
         }
         return txt;
     }
 
-    public int itemUnitsBacker(ArrayList<ItemCard> items, ItemCard ic) {
+    public int itemUnitsBacker(ArrayList<Itemcard> items, Itemcard ic) {
         int units = 0;
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getId() == ic.getId()) {

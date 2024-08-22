@@ -2,18 +2,18 @@ package salonmanager.entidades.bussiness;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 
 public class ItemMonitor {
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOUser daoU = new DAOUser();
 
     String idIMon;
     Table tableIMon; //alt 1
-    ItemCard itemIMon;// alt 1
+    Itemcard itemIMon;// alt 1
     String posIMon;
     boolean initIMon;
     Timestamp dateInitIMon;
@@ -30,7 +30,7 @@ public class ItemMonitor {
     public ItemMonitor() {
     }
 
-    public ItemMonitor(Table tableIMon, ItemCard itemIMon, String indications) {
+    public ItemMonitor(Table tableIMon, Itemcard itemIMon, String indications) {
         Timestamp ts = new Timestamp(new Date().getTime());
         String orderKind = okBacker(tableIMon);
         this.idIMon = tableIMon.getId() + "_" + itemIMon.getId();
@@ -50,7 +50,7 @@ public class ItemMonitor {
         this.indications = indications;
     }
 
-    public ItemMonitor(String idIMon, Table tableIMon, ItemCard itemIMon, String posIMon, boolean initIMon, Timestamp dateInitIMon, boolean cookIMon, Timestamp dateCookIMon, boolean readyIMon, Timestamp dateReadyIMon, boolean otwIMon, Timestamp dateOtwIMon, boolean openItemMonitor, boolean activeItemMonitor, String indications) {
+    public ItemMonitor(String idIMon, Table tableIMon, Itemcard itemIMon, String posIMon, boolean initIMon, Timestamp dateInitIMon, boolean cookIMon, Timestamp dateCookIMon, boolean readyIMon, Timestamp dateReadyIMon, boolean otwIMon, Timestamp dateOtwIMon, boolean openItemMonitor, boolean activeItemMonitor, String indications) {
         this.idIMon = idIMon;
         this.tableIMon = tableIMon;
         this.itemIMon = itemIMon;
@@ -103,11 +103,11 @@ public class ItemMonitor {
         this.tableIMon = tableIMon;
     }
 
-    public ItemCard getItemIMon() {
+    public Itemcard getItemIMon() {
         return itemIMon;
     }
 
-    public void setItemIMon(ItemCard itemIMon) {
+    public void setItemIMon(Itemcard itemIMon) {
         this.itemIMon = itemIMon;
     }
 

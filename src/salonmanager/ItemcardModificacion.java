@@ -14,12 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
@@ -32,12 +32,12 @@ public class ItemcardModificacion extends FrameHalf {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServicioItemcard si = new ServicioItemcard();
-    DAOItemCard daoIC = new DAOItemCard();
+    DAOItemcard daoIC = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOConfig daoC = new DAOConfig();
     SalonManager sm = new SalonManager();
 
-    ArrayList<ItemCard> itemsCardDB = null;
+    ArrayList<Itemcard> itemsCardDB = null;
     String name = "";
     String category = "";
     String description = "";
@@ -45,7 +45,7 @@ public class ItemcardModificacion extends FrameHalf {
     double price = 0;
     int stock = 0;
     boolean tipAlta = false;
-    ItemCard itemAux = new ItemCard();
+    Itemcard itemAux = new Itemcard();
     ArrayList<String> categoriesDB = null;
 
     JTextField fieldName = new JTextField();
@@ -58,7 +58,7 @@ public class ItemcardModificacion extends FrameHalf {
     JButtonMetalBlu butModificarItem = null;
     Manager manager = null;
 
-    public ItemcardModificacion(ItemCard ic, Manager man) throws Exception {
+    public ItemcardModificacion(Itemcard ic, Manager man) throws Exception {
         itemAux = ic;
         manager = man;
         sm.addFrame(this);
@@ -253,7 +253,7 @@ public class ItemcardModificacion extends FrameHalf {
         price = 0;
         stock = 0;
         tipAlta = false;
-        itemAux = new ItemCard();
+        itemAux = new Itemcard();
 
         fieldName.setText("");
         areaDescription.setText("");

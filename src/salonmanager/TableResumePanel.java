@@ -22,7 +22,7 @@ import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.utilidades.Utilidades;
@@ -34,7 +34,7 @@ public class TableResumePanel extends FrameThird {
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOConfig daoC = new DAOConfig();
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();

@@ -39,7 +39,7 @@ public class StaticsManager extends FrameFull {
     ArrayList<Workshift> workshifts = new ArrayList<>();
     ArrayList<String> categories = null;
     Manager manager = null;
-    PieChart chartOrder = null;
+    PieChart chartOrderPie = null;
     XYChart chartCurveSell = null;
     CategoryChart chartItemsSelled = null;
     PieChart chartCategoryPie = null;
@@ -53,7 +53,7 @@ public class StaticsManager extends FrameFull {
     HashMap<String, Double> countCat = null;
     JPanel panelChartByOrder = new JPanel();
     JPanel panelChartSellCurve = new JPanel();
-    JPanel panelChartCategory = new JPanel();
+    JPanel panelChartByCategory = new JPanel();
     JPanel panelStatsBySell = new JPanel();
 
     JPanel panelOrder = null;
@@ -143,7 +143,7 @@ public class StaticsManager extends FrameFull {
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
-        panelItemsCategory = utiliGrafStats.panelItemsStaticsBacker(this);
+        panelItemsCategory = utiliGrafStats.panelCategoryBacker(this);
         panelItemsCategory.setLayout(null);
         panelItemsCategory.setBounds(anchoUnit * 21, altoUnit * 49, anchoUnit * 40, altoUnit * 45);
         panelItemsCategory.setBackground(bluLg);
@@ -434,12 +434,12 @@ public class StaticsManager extends FrameFull {
         this.manager = manager;
     }
 
-    public PieChart getChartOrder() {
-        return chartOrder;
+    public PieChart getChartOrderPie() {
+        return chartOrderPie;
     }
 
-    public void setChartOrder(PieChart chartOrder) {
-        this.chartOrder = chartOrder;
+    public void setChartOrderPie(PieChart chartOrderPie) {
+        this.chartOrderPie = chartOrderPie;
     }
 
     public XYChart getChartCurveSell() {
@@ -538,12 +538,12 @@ public class StaticsManager extends FrameFull {
         this.panelChartSellCurve = panelChartSellCurve;
     }
 
-    public JPanel getPanelChartCategory() {
-        return panelChartCategory;
+    public JPanel getPanelChartByCategory() {
+        return panelChartByCategory;
     }
 
-    public void setPanelChartCategory(JPanel panelChartCategory) {
-        this.panelChartCategory = panelChartCategory;
+    public void setPanelChartByCategory(JPanel panelChartByCategory) {
+        this.panelChartByCategory = panelChartByCategory;
     }
 
     public JPanel getPanelStatsBySell() {

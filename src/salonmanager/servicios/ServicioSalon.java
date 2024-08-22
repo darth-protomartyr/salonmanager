@@ -9,7 +9,7 @@ import salonmanager.TableAdder;
 import salonmanager.TabsToEnd;
 import salonmanager.WorkshiftEndPanel;
 import salonmanager.entidades.bussiness.Delivery;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonTable;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
@@ -20,7 +20,7 @@ import salonmanager.entidades.graphics.JButtonDelivery;
 import salonmanager.persistencia.DAOMoneyFlow;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -31,7 +31,7 @@ public class ServicioSalon {
 
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
-    DAOItemCard daoIC = new DAOItemCard();
+    DAOItemcard daoIC = new DAOItemcard();
     DAOWorkshift daoW = new DAOWorkshift();
     DAODelivery daoD = new DAODelivery();
     DAOConfig daoC = new DAOConfig();
@@ -99,7 +99,7 @@ public class ServicioSalon {
         return configValues;
     }
 
-    public int itemRepeat(ItemCard ic, ArrayList<ItemCard> itemsTableAux) {
+    public int itemRepeat(Itemcard ic, ArrayList<Itemcard> itemsTableAux) {
         int rep = -1;
         for (int i = 0; i < itemsTableAux.size(); i++) {
             if (ic.equals(itemsTableAux.get(i))) {
@@ -109,8 +109,8 @@ public class ServicioSalon {
         return rep;
     }
 
-    public ArrayList<ItemCard> itemTableLesser(ArrayList<ItemCard> items, ItemCard ic) {
-        ArrayList<ItemCard> itemsLesser = new ArrayList<>(items);
+    public ArrayList<Itemcard> itemTableLesser(ArrayList<Itemcard> items, Itemcard ic) {
+        ArrayList<Itemcard> itemsLesser = new ArrayList<>(items);
         int index = -1;
 
         for (int i = 0; i < items.size(); i++) {
@@ -126,8 +126,8 @@ public class ServicioSalon {
     public double countBill(Table tableAux, Salon sal, boolean total) {
         double bill = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<ItemCard> itemsTable = tableAux.getOrder();
-        ArrayList<ItemCard> itemsTableND = tableAux.getPartialPayedND();
+        ArrayList<Itemcard> itemsTable = tableAux.getOrder();
+        ArrayList<Itemcard> itemsTableND = tableAux.getPartialPayedND();
         for (int i = 0; i < itemsTable.size(); i++) {
             if (itemsTable.get(i).isActiveItem()) {
                 bill = bill + utili.priceMod(itemsTable.get(i), sal);
@@ -150,8 +150,8 @@ public class ServicioSalon {
     public double countBillTip(Table tableAux, Salon sal, boolean total) {
         double bill = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<ItemCard> itemsTable = tableAux.getOrder();
-        ArrayList<ItemCard> itemsTableND = tableAux.getPartialPayedND();
+        ArrayList<Itemcard> itemsTable = tableAux.getOrder();
+        ArrayList<Itemcard> itemsTableND = tableAux.getPartialPayedND();
         for (int i = 0; i < itemsTable.size(); i++) {
             if (itemsTable.get(i).isActiveItem() && itemsTable.get(i).isActiveTip()) {
                 bill = bill + utili.priceMod(itemsTable.get(i), sal);
@@ -175,13 +175,13 @@ public class ServicioSalon {
     public double partialBillPayed(Table tableAux, Salon sal) {
         double partial = 0;
         int discount = tableAux.getDiscount();
-        ArrayList<ItemCard> itemsPartial = new ArrayList<>(tableAux.getPartialPayed());
+        ArrayList<Itemcard> itemsPartial = new ArrayList<>(tableAux.getPartialPayed());
         for (int i = 0; i < itemsPartial.size(); i++) {
             partial += utili.priceMod(itemsPartial.get(i), sal);
         }
         double disc = (double) discount;
         partial = partial * (1 - disc / 100);
-        ArrayList<ItemCard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
+        ArrayList<Itemcard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
             partialND += utili.priceMod(itemsPartialAux.get(i), sal);
@@ -192,9 +192,9 @@ public class ServicioSalon {
     }
 
 //Resumen de cuenta aplicada a ventana de pago parcial
-    public double billPartial(ArrayList<ItemCard> items, int discount, Salon sal) {
+    public double billPartial(ArrayList<Itemcard> items, int discount, Salon sal) {
         double bill = 0;
-        for (ItemCard ic : items) {
+        for (Itemcard ic : items) {
             bill += utili.priceMod(ic, sal);
         }
         double disc = discount;
@@ -212,8 +212,8 @@ public class ServicioSalon {
         
     }
 
-    public ArrayList<ItemCard> itemDeployer(ItemCard ic, int num) {
-        ArrayList<ItemCard> al = new ArrayList<>();
+    public ArrayList<Itemcard> itemDeployer(Itemcard ic, int num) {
+        ArrayList<Itemcard> al = new ArrayList<>();
         int count = 0;
         while (count < num) {
             al.add(ic);
@@ -222,7 +222,7 @@ public class ServicioSalon {
         return al;
     }
 
-    public void addItemOrder(Salon sal, Table tableAux, ArrayList<ItemCard> arrayAux, boolean indiBool) throws Exception {
+    public void addItemOrder(Salon sal, Table tableAux, ArrayList<Itemcard> arrayAux, boolean indiBool) throws Exception {
         for (int i = 0; i < arrayAux.size(); i++) {
             daoIC.saveItemOrderTable(arrayAux.get(i), tableAux);
             daoIC.updateItemStockUpDown(arrayAux.get(i), false);
@@ -257,7 +257,7 @@ public class ServicioSalon {
     //GIFT---------------------------------------------------------------------------------------------
     //GIFT---------------------------------------------------------------------------------------------
     //GIFT---------------------------------------------------------------------------------------------
-    public void giftBacker(ItemCard ic, Salon salon) throws Exception {
+    public void giftBacker(Itemcard ic, Salon salon) throws Exception {
         salon.getItemsGift().add(ic);
         salon.getTableAux().setGifts(salon.getItemsGift());
         salon.setItemsTableAux(itemTableLesser(salon.getTableAux().getOrder(), ic));
@@ -350,7 +350,7 @@ public class ServicioSalon {
     //CORRECTOR----------------------------------------------------------------------------------------
     //CORRECTOR----------------------------------------------------------------------------------------
     //CORRECTOR----------------------------------------------------------------------------------------    
-    public void correctItems(ItemCard ic, int num, Salon salon) throws Exception {
+    public void correctItems(Itemcard ic, int num, Salon salon) throws Exception {
         switch (num) {
             case 1:
                 salon.setItemsTableAux(itemTableLesser(salon.getItemsTableAux(), ic));
@@ -382,7 +382,7 @@ public class ServicioSalon {
     //PARTIAL PAY--------------------------------------------------------------------------------------
     //PARTIAL PAY--------------------------------------------------------------------------------------
     //PARTIAL PAY--------------------------------------------------------------------------------------
-    public void partialPayTaker(ArrayList<ItemCard> itemsPayed, Salon salon) throws Exception {
+    public void partialPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
         for (int i = 0; i < itemsPayed.size(); i++) {
             salon.setItemsTableAux(itemTableLesser(salon.getItemsTableAux(), itemsPayed.get(i)));
         }
@@ -394,7 +394,7 @@ public class ServicioSalon {
         daoT.updateTableTotal(salon.getTableAux());
         salon.getTableAux().setToPay(true);
         daoT.updateToPay(salon.getTableAux());
-        for (ItemCard ic : itemsPayed) {
+        for (Itemcard ic : itemsPayed) {
             daoIC.saveItemPayedTable(ic, salon.getTableAux());
             daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
         }
@@ -404,7 +404,7 @@ public class ServicioSalon {
         salon.setEnabled(true);
     }
 
-    public void totalPayTaker(ArrayList<ItemCard> itemsPayed, Salon salon) throws Exception {
+    public void totalPayTaker(ArrayList<Itemcard> itemsPayed, Salon salon) throws Exception {
         salon.getItemsTableAux().addAll(salon.getItemsPartialPaid());
         salon.getTableAux().setOrder(salon.getItemsTableAux());
         salon.setItemsPartialPaid(new ArrayList<>());
@@ -543,7 +543,7 @@ public class ServicioSalon {
                 User waiter = tab.getWaiter();
                 int discount = tab.getDiscount();
                 double total = 0;
-                ArrayList<ItemCard> orderNew = new ArrayList<>();
+                ArrayList<Itemcard> orderNew = new ArrayList<>();
                 String comments = tab.getComments();
                 if (tab.isToPay()) {
                     Thread.sleep(10);
@@ -661,9 +661,9 @@ public class ServicioSalon {
         }
     }
 
-    public double countBillTip2(ArrayList<ItemCard> items, int discount, Salon salon) {
+    public double countBillTip2(ArrayList<Itemcard> items, int discount, Salon salon) {
         double bill = 0;
-        for (ItemCard ic : items) {
+        for (Itemcard ic : items) {
             if (ic.isActiveTip()) {
                 bill += utili.priceMod(ic, salon);
             }

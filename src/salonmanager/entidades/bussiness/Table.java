@@ -16,10 +16,10 @@ public class Table {
     boolean open; //open/close tab
     boolean bill;
     boolean toPay;// indicate tha table has been partial paid 
-    ArrayList<ItemCard> order;
-    ArrayList<ItemCard> gifts;
-    ArrayList<ItemCard> partialPayed; //items partial paid
-    ArrayList<ItemCard> partialPayedND; //items partial paid no discount
+    ArrayList<Itemcard> order;
+    ArrayList<Itemcard> gifts;
+    ArrayList<Itemcard> partialPayed; //items partial paid
+    ArrayList<Itemcard> partialPayedND; //items partial paid no discount
     User waiter;
     int discount;
     double error;
@@ -60,7 +60,7 @@ public class Table {
     }
 
     //Consulta
-    public Table(int num, String pos, Timestamp openTime, Timestamp closeTime, String id, boolean open, boolean bill, boolean toPay,  boolean activeTable, ArrayList<ItemCard> order, ArrayList<ItemCard> gifts, ArrayList<ItemCard> partialPayed, ArrayList<ItemCard> partialPayedNoDiscount, ArrayList<ItemCard> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total, String comments) {
+    public Table(int num, String pos, Timestamp openTime, Timestamp closeTime, String id, boolean open, boolean bill, boolean toPay,  boolean activeTable, ArrayList<Itemcard> order, ArrayList<Itemcard> gifts, ArrayList<Itemcard> partialPayed, ArrayList<Itemcard> partialPayedNoDiscount, ArrayList<Itemcard> errorItems, User waiter, int discount, double error, double priceCorrection, double amountCash, double amountElectronic, double total, String comments) {
         this.num = num;
         this.pos = pos;
         this.openTime = openTime;
@@ -85,7 +85,7 @@ public class Table {
     }
     
     //crear table pendiente para cambio de turno
-    public Table(int num, String pos, boolean bill, boolean activeTable, ArrayList<ItemCard> order, User waiter, int discount, double total, String comments) {
+    public Table(int num, String pos, boolean bill, boolean activeTable, ArrayList<Itemcard> order, User waiter, int discount, double total, String comments) {
         this.num = num;
         this.pos = pos;
         this.openTime = new Timestamp(new Date().getTime());
@@ -136,7 +136,7 @@ public class Table {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        ItemCard itemcard = (ItemCard) obj;
+        Itemcard itemcard = (Itemcard) obj;
         return id.equals(itemcard.id); // Comparar basándose en el campo que identifica unívocamente al objeto
     }
 
@@ -201,19 +201,19 @@ public class Table {
         this.bill = bill;
     }
 
-    public ArrayList<ItemCard> getOrder() {
+    public ArrayList<Itemcard> getOrder() {
         return order;
     }
 
-    public void setOrder(ArrayList<ItemCard> order) {
+    public void setOrder(ArrayList<Itemcard> order) {
         this.order = order;
     }
 
-    public void setGifts(ArrayList<ItemCard> gifts) {
+    public void setGifts(ArrayList<Itemcard> gifts) {
         this.gifts = gifts;
     }
 
-    public ArrayList<ItemCard> getGifts() {
+    public ArrayList<Itemcard> getGifts() {
         return gifts;
     }
 
@@ -233,19 +233,19 @@ public class Table {
         return activeTable;
     }
     
-    public void setPartialPayed(ArrayList<ItemCard> partialPayed) {
+    public void setPartialPayed(ArrayList<Itemcard> partialPayed) {
         this.partialPayed = partialPayed;
     }
 
-    public ArrayList<ItemCard> getPartialPayed() {
+    public ArrayList<Itemcard> getPartialPayed() {
         return partialPayed;
     }
  
-    public void setPartialPayedND(ArrayList<ItemCard> partialPayedNoDiscount) {
+    public void setPartialPayedND(ArrayList<Itemcard> partialPayedNoDiscount) {
         this.partialPayedND = partialPayedNoDiscount;
     }
 
-    public ArrayList<ItemCard> getPartialPayedND() {
+    public ArrayList<Itemcard> getPartialPayedND() {
         return partialPayedND;
     }
 

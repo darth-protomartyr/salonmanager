@@ -45,7 +45,7 @@ import salonmanager.Admin;
 import salonmanager.StaticsManager;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.config.ConfigGeneral;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.graphics.CustomJMenuBar;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
@@ -718,7 +718,7 @@ public class UtilidadesGraficas extends JFrame {
         return scrollPane;
     }
 
-    public JPanel panelItemcardForm(JTextField fieldName, JComboBox comboCategory, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> categoriesDB, ItemCard item) {
+    public JPanel panelItemcardForm(JTextField fieldName, JComboBox comboCategory, JTextArea areaDescription, JTextField fieldCost, JTextField fieldPrice, JTextField fieldStock, JCheckBox checkTip, ArrayList<String> categoriesDB, Itemcard item) {
         int f4 = (int) Math.round(anchoUnit * 1.4);
         Font font4 = new Font("Arial", Font.BOLD, f4);
 
@@ -794,7 +794,7 @@ public class UtilidadesGraficas extends JFrame {
         return panelA;
     }
 
-    public JPanel panelListItemBack(int mWidth, int mHeight, int width, int height, JList listaItems, ArrayList<ItemCard> itemsDB, ArrayList<ItemCard> itemsMesa) {
+    public JPanel panelListItemBack(int mWidth, int mHeight, int width, int height, JList listaItems, ArrayList<Itemcard> itemsDB, ArrayList<Itemcard> itemsMesa) {
         JPanel panelListIngreDB = new JPanel();
         panelListIngreDB.setLayout(null);
         panelListIngreDB.setBackground(narSt);

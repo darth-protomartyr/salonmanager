@@ -16,7 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
@@ -49,11 +49,11 @@ public class CorrectorItem extends FrameWindow {
     Table tab = new Table();
     JButtonMetalBlu butInGift = new JButtonMetalBlu();
     Salon salon = null;
-    ArrayList<ItemCard> itemsOrder = new ArrayList<>();
-    ArrayList<ItemCard> itemsGift = new ArrayList<>();
-    ArrayList<ItemCard> itemsPayed = new ArrayList<>();
-    ArrayList<ItemCard> itemsPayedNoDiscount = new ArrayList<>();
-    ArrayList<ItemCard> itemsCombo = new ArrayList<>();
+    ArrayList<Itemcard> itemsOrder = new ArrayList<>();
+    ArrayList<Itemcard> itemsGift = new ArrayList<>();
+    ArrayList<Itemcard> itemsPayed = new ArrayList<>();
+    ArrayList<Itemcard> itemsPayedNoDiscount = new ArrayList<>();
+    ArrayList<Itemcard> itemsCombo = new ArrayList<>();
 
     int numArray = 1;
     String itemCategory = "a Pagar";
@@ -167,7 +167,7 @@ public class CorrectorItem extends FrameWindow {
         });
     }
 
-    private void itemsComboChanger(ArrayList<ItemCard> items, int num) {
+    private void itemsComboChanger(ArrayList<Itemcard> items, int num) {
         comboItems.setModel(utili.itemsComboModelReturn(items));
         numArray = num;
         switch (num) {
@@ -185,7 +185,7 @@ public class CorrectorItem extends FrameWindow {
 
     private void butCorrectionActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
-        ItemCard ic = new ItemCard();
+        Itemcard ic = new Itemcard();
         switch (numArray) {
             case 1:
                 ic = itemsOrder.get(i);

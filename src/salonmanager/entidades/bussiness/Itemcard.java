@@ -6,7 +6,7 @@ import java.util.Date;
 import salonmanager.servicios.ServicioItemcard;
 import salonmanager.utilidades.Utilidades;
 
-public class ItemCard {
+public class Itemcard {
     Utilidades utili = new Utilidades();
     ServicioItemcard sic = new ServicioItemcard();
     int id;
@@ -22,11 +22,11 @@ public class ItemCard {
     boolean activeTip;
     boolean activeItem;
 
-    public ItemCard() {
+    public Itemcard() {
         
     }
 
-    public ItemCard(String name, String category, String description, double cost, ArrayList<Double> price, int stock, boolean activeTip) throws Exception {
+    public Itemcard(String name, String category, String description, double cost, ArrayList<Double> price, int stock, boolean activeTip) throws Exception {
         price = utili.ArrayRound2Dec(price);
         this.code = sic.codeCreator(category);
         this.name = name;
@@ -40,7 +40,7 @@ public class ItemCard {
         this.activeItem = true;
     }
 
-    public ItemCard(int id, String code, String name, String category, String description, double cost, ArrayList<Double> price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
+    public Itemcard(int id, String code, String name, String category, String description, double cost, ArrayList<Double> price, int stock, Timestamp dateCreation, Timestamp dateUpdate, boolean activeTip, boolean activeItem) {
         price = utili.ArrayRound2Dec(price);
         this.id = id;
         this.code = code;
