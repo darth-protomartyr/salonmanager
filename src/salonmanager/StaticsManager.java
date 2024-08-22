@@ -53,7 +53,7 @@ public class StaticsManager extends FrameFull {
     HashMap<String, Double> countCat = null;
     JPanel panelChartByOrder = new JPanel();
     JPanel panelChartSellCurve = new JPanel();
-    JPanel panelChartCategory = new JPanel();
+    JPanel panelChartByCategory = new JPanel();
     JPanel panelStatsBySell = new JPanel();
 
     JPanel panelOrder = null;
@@ -143,7 +143,7 @@ public class StaticsManager extends FrameFull {
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
-        panelItemsCategory = utiliGrafStats.panelItemsStaticsBacker(this);
+        panelItemsCategory = utiliGrafStats.panelCategoryBacker(this);
         panelItemsCategory.setLayout(null);
         panelItemsCategory.setBounds(anchoUnit * 21, altoUnit * 49, anchoUnit * 40, altoUnit * 45);
         panelItemsCategory.setBackground(bluLg);
@@ -343,12 +343,12 @@ public class StaticsManager extends FrameFull {
         this.panelChartSellCurve = panelChartSellCurve;
     }
 
-    public JPanel getPanelChartCategory() {
-        return panelChartCategory;
+    public JPanel getPanelChartByCategory() {
+        return panelChartByCategory;
     }
 
-    public void setPanelChartCategory(JPanel panelChartCategory) {
-        this.panelChartCategory = panelChartCategory;
+    public void setPanelChartByCategory(JPanel panelChartByCategory) {
+        this.panelChartByCategory = panelChartByCategory;
     }
 
     public JPanel getPanelStatsBySell() {
@@ -574,8 +574,4 @@ public class StaticsManager extends FrameFull {
     public void setLabelWaiter10(JLabel labelWaiter10) {
         this.labelWaiter10 = labelWaiter10;
     }
-    
-    
-    
-    
 }

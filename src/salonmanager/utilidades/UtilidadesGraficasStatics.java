@@ -517,7 +517,8 @@ public class UtilidadesGraficasStatics {
         return panelSellCurve;
     }
 
-    public JPanel panelItemsStaticsBacker(StaticsManager statsM) {
+    
+    public JPanel panelCategoryBacker(StaticsManager statsM) {
         JPanel panelItemsStatics = new JPanel();
 
         JButtonMetalBlu butItemSells = utiliGraf.button2("VENTA ITEMS", anchoUnit * 1, altoUnit * 4, anchoUnit * 11);
@@ -563,47 +564,52 @@ public class UtilidadesGraficasStatics {
         labelItemsStatics.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 30, altoUnit * 3);
         panelItemsStatics.add(labelItemsStatics);
 
-        JPanel panelItemsCategory = new JPanel();
-        panelItemsCategory.setLayout(null);
-        panelItemsCategory.setBackground(narUlg);
-        panelItemsCategory.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 34);
-        panelItemsStatics.add(panelItemsCategory);
+        JPanel panelItemsCategoryPie = new JPanel();
+        panelItemsCategoryPie.setLayout(null);
+        panelItemsCategoryPie.setBackground(narUlg);
+        panelItemsCategoryPie.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 34);
+        panelItemsStatics.add(panelItemsCategoryPie);
 
         JLabel labelItemsCategory = utiliGraf.labelTitleBacker2("Volumen Venta por categoría");
         labelItemsCategory.setBounds(anchoUnit * 1, altoUnit * 0, anchoUnit * 40, altoUnit * 4);
-        panelItemsCategory.add(labelItemsCategory);
+        panelItemsCategoryPie.add(labelItemsCategory);
 
-//        panelItemsCategory.setLayout(new BorderLayout());
-//        statsM.getPanelItemsCategory().setBounds(anchoUnit * 1, altoUnit * 4, anchoUnit * 24, altoUnit * 29);
-//        statsM.getPanelItemsCategory().setBackground(bluSt);
-//        panelItemsCategory.add(statsM.getPanelItemsCategory());
+        statsM.getPanelChartByCategory().setLayout(new BorderLayout());
+        statsM.getPanelChartByCategory().setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 23, altoUnit * 27);
+        panelItemsCategoryPie.add(statsM.getPanelChartByCategory());
+        
+        panelItemsCategoryPie.setLayout(null);
+        panelItemsCategoryPie.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 33);
+        panelItemsCategoryPie.setBackground(narUlg);
+        panelItemsStatics.add(panelItemsCategoryPie);
 
         statsM.setLabelCategory0(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCategory0().setBounds(anchoUnit * 26, altoUnit * 5, anchoUnit * 20, altoUnit * 3);
-        panelItemsCategory.add(statsM.getLabelCategory0());
-
+        statsM.getLabelCategory0().setBounds(anchoUnit * 25, altoUnit * 6, anchoUnit * 14, altoUnit * 3);
+        panelItemsCategoryPie.add(statsM.getLabelCategory0());
+            
         statsM.setLabelCategory1(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCategory1().setBounds(anchoUnit * 26, altoUnit * 10, anchoUnit * 20, altoUnit * 3);
-        panelItemsCategory.add(statsM.getLabelCategory1());
+        statsM.getLabelCategory1().setBounds(anchoUnit * 25, altoUnit * 10, anchoUnit * 14, altoUnit * 3);
+        panelItemsCategoryPie.add(statsM.getLabelCategory1());
 
         statsM.setLabelCategory2(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCategory2().setBounds(anchoUnit * 26, altoUnit * 15, anchoUnit * 20, altoUnit * 3);
-        panelItemsCategory.add(statsM.getLabelCategory2());
+        statsM.getLabelCategory2().setBounds(anchoUnit * 25, altoUnit * 14, anchoUnit * 14, altoUnit * 3);
+        panelItemsCategoryPie.add(statsM.getLabelCategory2());
 
         statsM.setLabelCategory3(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCategory3().setBounds(anchoUnit * 26, altoUnit * 20, anchoUnit * 20, altoUnit * 3);
-        panelItemsCategory.add(statsM.getLabelCategory3());
+        statsM.getLabelCategory3().setBounds(anchoUnit * 25, altoUnit * 18, anchoUnit * 14, altoUnit * 3);
+        panelItemsCategoryPie.add(statsM.getLabelCategory3());
 
         statsM.setLabelCategory4(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCategory4().setBounds(anchoUnit * 26, altoUnit * 25, anchoUnit * 20, altoUnit * 3);
-        panelItemsCategory.add(statsM.getLabelCategory4());
+        statsM.getLabelCategory4().setBounds(anchoUnit * 25, altoUnit * 22, anchoUnit * 14, altoUnit * 3);
+        panelItemsCategoryPie.add(statsM.getLabelCategory4());
 
         statsM.setLabelCategory5(utiliGraf.labelTitleBacker3(""));
-        statsM.getLabelCategory5().setBounds(anchoUnit * 26, altoUnit * 30, anchoUnit * 20, altoUnit * 3);
-        panelItemsCategory.add(statsM.getLabelCategory5());
+        statsM.getLabelCategory5().setBounds(anchoUnit * 25, altoUnit * 26, anchoUnit * 14, altoUnit * 3);
+        panelItemsCategoryPie.add(statsM.getLabelCategory5());
 
         return panelItemsStatics;
     }
+
 
     public JPanel panelWaiterStaticsBacker(StaticsManager statsM) {
         JPanel panelWaiterStatics = new JPanel();
@@ -890,10 +896,10 @@ public class UtilidadesGraficasStatics {
 
         //Volume by item Category
         statsM.setChartCategoryPie(chartCategoryBacker(statsM.getCountCat(), statsM));
-        statsM.getPanelChartCategory().removeAll();
-        statsM.getPanelChartCategory().add(new XChartPanel<>(statsM.getChartCategoryPie()));
-        statsM.getPanelChartCategory().revalidate();
-        statsM.getPanelChartCategory().repaint();
+        statsM.getPanelChartByCategory().removeAll();
+        statsM.getPanelChartByCategory().add(new XChartPanel<>(statsM.getChartCategoryPie()));
+        statsM.getPanelChartByCategory().revalidate();
+        statsM.getPanelChartByCategory().repaint();
 
         //TOP Waiters Sell
         ArrayList<String> waitersSell1 = new ArrayList<>(statsM.getCountWSells().keySet());
@@ -935,11 +941,11 @@ public class UtilidadesGraficasStatics {
         statsM.getLabelWaiter4().setText("4- " + waitersSell2.get(3) + " $: " + amounts2.get(3));
         statsM.getLabelWaiter5().setText("5- " + waitersSell2.get(4) + " $: " + amounts2.get(4));
 
-        statsM.getLabelWaiter6().setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turnos.");
-        statsM.getLabelWaiter7().setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1) + " turnos.");
-        statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turnos.");
-        statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turnos.");
-        statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turnos.");
+        statsM.getLabelWaiter6().setText("1- " + waitersWs2.get(0) + " $: " + wss2.get(0) + " turnos.");
+        statsM.getLabelWaiter7().setText("2- " + waitersWs2.get(1) + " $: " + wss2.get(1) + " turnos.");
+        statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + " $: " + wss2.get(2) + " turnos.");
+        statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + " $: " + wss2.get(3) + " turnos.");
+        statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + " $: " + wss2.get(4) + " turnos.");
     }
 
     private ArrayList<Integer> listWsIdByDate(Timestamp timestampInit, Timestamp timestampEnd) throws Exception {
