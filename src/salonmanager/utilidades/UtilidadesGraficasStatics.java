@@ -730,6 +730,7 @@ public class UtilidadesGraficasStatics {
         statsM.getPanelWaiterStatics().setVisible(true);
     }
 
+    
     public void updater(StaticsManager statsM) throws Exception {
         double tot = 0;
         double errorTab = 0;
@@ -737,6 +738,7 @@ public class UtilidadesGraficasStatics {
         double promTab = 0;
         long totTime = 0;
         int tabInt = 0;
+        statsM.getLabelTitleProgram().setVisible(false);
         statsM.setCountCat(new HashMap<>());
         statsM.setCountWSells(new HashMap<String, Double>());
         statsM.setCountWWs(new HashMap<String, Integer>());

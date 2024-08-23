@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import static javax.swing.SwingConstants.CENTER;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.graphics.FrameFull;
@@ -23,6 +24,9 @@ import salonmanager.utilidades.UtilidadesMensajes;
 import org.knowm.xchart.*;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigGeneral;
+import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
+import static salonmanager.entidades.graphics.FrameGeneral.anchoFrame;
+import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.utilidades.UtilidadesGraficasStatics;
 
@@ -71,6 +75,8 @@ public class StaticsManager extends FrameFull {
     JTextField fieldTimeTab = null;
     JLabel labelPeriod = null;
 
+    JLabel labelTitleProgram = null;
+    
     JLabel labelCategory0 = null;
     JLabel labelCategory1 = null;
     JLabel labelCategory2 = null;
@@ -106,6 +112,19 @@ public class StaticsManager extends FrameFull {
         
         JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
         panelPpal.add(panelLogo);
+        
+        String fontName1 = "Arial";
+        String fontName2 = "Tahoma";
+        int fontSize1 = altoUnit * 30;
+        String colorHex1 = "#FFFFFF"; // Color en formato hexadecimal
+        String colorHex2 = "#FCCB05"; // Color en formato hexadecimal
+
+        String text = "<html><span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex1 + ";'>bar</span>"
+                + "<span style='font-family: " + fontName2 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex2 + ";'>IA</span></html>";
+        labelTitleProgram = new JLabel(text);
+        labelTitleProgram.setBounds(anchoUnit * 0, altoUnit * 30, anchoFrame, altoUnit * 39);
+        labelTitleProgram.setHorizontalAlignment(CENTER);
+        panelPpal.add(labelTitleProgram);
 
 //PANEL LATERAL IZQ-------------------------------------------------------------
 //PANEL LATERAL IZQ-------------------------------------------------------------        
@@ -769,8 +788,12 @@ public class StaticsManager extends FrameFull {
     public void setLabelWaiter10(JLabel labelWaiter10) {
         this.labelWaiter10 = labelWaiter10;
     }
-    
-    
-    
-    
+
+    public JLabel getLabelTitleProgram() {
+        return labelTitleProgram;
+    }
+
+    public void setLabelTitleProgram(JLabel labelTitleProgram) {
+        this.labelTitleProgram = labelTitleProgram;
+    }    
 }
