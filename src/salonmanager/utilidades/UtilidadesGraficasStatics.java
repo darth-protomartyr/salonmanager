@@ -769,6 +769,7 @@ public class UtilidadesGraficasStatics {
         ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
         ArrayList<String> waiterIds = new ArrayList<>();
         ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
+        statsM.getLabelTitleProgram().setVisible(false);
         for (Table tab : statsM.getTabs()) {
             tot += tab.getTotal();
             if (tab.getPos().equals("barra")) {
@@ -941,11 +942,11 @@ public class UtilidadesGraficasStatics {
         statsM.getLabelWaiter4().setText("4- " + waitersSell2.get(3) + " $: " + amounts2.get(3));
         statsM.getLabelWaiter5().setText("5- " + waitersSell2.get(4) + " $: " + amounts2.get(4));
 
-        statsM.getLabelWaiter6().setText("1- " + waitersWs2.get(0) + " $: " + wss2.get(0) + " turnos.");
-        statsM.getLabelWaiter7().setText("2- " + waitersWs2.get(1) + " $: " + wss2.get(1) + " turnos.");
-        statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + " $: " + wss2.get(2) + " turnos.");
-        statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + " $: " + wss2.get(3) + " turnos.");
-        statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + " $: " + wss2.get(4) + " turnos.");
+        statsM.getLabelWaiter6().setText("1- " + waitersWs2.get(0) + ": " + wss2.get(0) + " turno(s).");
+        statsM.getLabelWaiter7().setText("2- " + waitersWs2.get(1) + ": " + wss2.get(1) + " turno(s).");
+        statsM.getLabelWaiter8().setText("3- " + waitersWs2.get(2) + ": " + wss2.get(2) + " turno(s).");
+        statsM.getLabelWaiter9().setText("4- " + waitersWs2.get(3) + ": " + wss2.get(3) + " turno(s).");
+        statsM.getLabelWaiter10().setText("5- " + waitersWs2.get(4) + ": " + wss2.get(4) + " turno(s).");
     }
 
     private ArrayList<Integer> listWsIdByDate(Timestamp timestampInit, Timestamp timestampEnd) throws Exception {

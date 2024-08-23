@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import static javax.swing.SwingConstants.CENTER;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.graphics.FrameFull;
@@ -61,7 +62,6 @@ public class StaticsManager extends FrameFull {
     JPanel panelItemsCategory = null;
     JPanel panelWaiterStatics = null;
 
-    
     JTextField fieldTotal = null;
     JTextField fieldErrorTab = null;
     JTextField fieldErrorWs = null;
@@ -71,6 +71,8 @@ public class StaticsManager extends FrameFull {
     JTextField fieldTimeTab = null;
     JLabel labelPeriod = null;
 
+    JLabel labelTitleProgram = null;
+    
     JLabel labelCategory0 = null;
     JLabel labelCategory1 = null;
     JLabel labelCategory2 = null;
@@ -103,9 +105,22 @@ public class StaticsManager extends FrameFull {
         JLabel labelStatics = utiliGraf.labelTitleBackerA3W("Estadísticas");
         labelStatics.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
         panelPpal.add(labelStatics);
-        
+
         JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
         panelPpal.add(panelLogo);
+        
+        String fontName1 = "Arial";
+        String fontName2 = "Tahoma";
+        int fontSize1 = altoUnit * 30;
+        String colorHex1 = "#FFFFFF"; // Color en formato hexadecimal
+        String colorHex2 = "#FCCB05"; // Color en formato hexadecimal
+
+        String text = "<html><span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex1 + ";'>bar</span>"
+                + "<span style='font-family: " + fontName2 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex2 + ";'>IA</span></html>";
+        labelTitleProgram = new JLabel(text);
+        labelTitleProgram.setBounds(anchoUnit * 0, altoUnit * 30, anchoFrame, altoUnit * 39);
+        labelTitleProgram.setHorizontalAlignment(CENTER);
+        panelPpal.add(labelTitleProgram);
 
 //PANEL LATERAL IZQ-------------------------------------------------------------
 //PANEL LATERAL IZQ-------------------------------------------------------------        
@@ -116,7 +131,7 @@ public class StaticsManager extends FrameFull {
         panelStatsBySell.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 17, altoUnit * 39);
         panelStatsBySell.setBackground(bluLg);
         panelPpal.add(panelStatsBySell);
-        
+
 //PANEL ORDER KIND--------------------------------------------------------------        
 //PANEL ORDER KIND--------------------------------------------------------------        
 //PANEL ORDER KIND--------------------------------------------------------------        
@@ -194,11 +209,8 @@ public class StaticsManager extends FrameFull {
 //FUNCTIONS---------------------------------------------------------------------        
 //FUNCTIONS---------------------------------------------------------------------        
 //FUNCTIONS---------------------------------------------------------------------        
-
-    
     //Paneles
     //Paneles
-
     public ArrayList<Table> getTabs() {
         return tabs;
     }
@@ -574,4 +586,14 @@ public class StaticsManager extends FrameFull {
     public void setLabelWaiter10(JLabel labelWaiter10) {
         this.labelWaiter10 = labelWaiter10;
     }
+
+    public JLabel getLabelTitleProgram() {
+        return labelTitleProgram;
+    }
+
+    public void setLabelTitleProgram(JLabel labelTitleProgram) {
+        this.labelTitleProgram = labelTitleProgram;
+    }
+    
+    
 }
