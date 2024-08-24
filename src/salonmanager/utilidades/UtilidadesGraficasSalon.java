@@ -456,9 +456,9 @@ public class UtilidadesGraficasSalon {
             }
         });
         panelBarr.add(butCreateBarr);
-
+        
         salon.getPanelBarrBut().setBackground(narLg);
-        salon.getPanelBarrBut().setLayout(new GridLayout(0, 1, anchoUnit * 5, altoUnit * 5));
+        salon.getPanelBarrBut().setLayout(new FlowLayout(FlowLayout.CENTER));
         salon.setScrPaneBarr(new JScrollPane(salon.getPanelBarrBut()));
         salon.getScrPaneBarr().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         salon.getScrPaneBarr().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
