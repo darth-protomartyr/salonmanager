@@ -29,7 +29,7 @@ import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.servicios.ServiceStatics;
 import salonmanager.utilidades.Utilidades;
@@ -40,7 +40,7 @@ import salonmanager.utilidades.UtilidadesMensajes;
 public class StatsWaiterViewer extends FrameFull {
 
     DAOUser daoU = new DAOUser();
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     Color bluSt = new Color(3, 166, 136);
 
     SalonManager sm = new SalonManager();

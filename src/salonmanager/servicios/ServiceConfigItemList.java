@@ -8,11 +8,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import salonmanager.ConfigItemList;
 import salonmanager.ItemcardInn;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.PanelNestedItem;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -21,13 +21,13 @@ public class ServiceConfigItemList {
     
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOConfig daoC = new DAOConfig();
     
     
     public void select(String sel, boolean type, ConfigItemList cil) {
-        ArrayList<ItemCard> itemsSel = new ArrayList<>();
+        ArrayList<Itemcard> itemsSel = new ArrayList<>();
         if (sel.equals("TODOS")) {
             itemsSel = cil.getItems();
         } else {
@@ -265,7 +265,7 @@ public class ServiceConfigItemList {
 
                 if (error == false) {
                     int id = cil.getPanelsN().get(i).getIc().getId();
-                    ItemCard ic = cil.getPanelsN().get(i).getIc();
+                    Itemcard ic = cil.getPanelsN().get(i).getIc();
                     daoI.updateItemCategory(id, cat);
                     daoI.updateItemStock(id, stock);
                     daoI.updateItemCost(id, cost);

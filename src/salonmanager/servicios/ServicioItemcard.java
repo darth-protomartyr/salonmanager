@@ -1,9 +1,9 @@
 package salonmanager.servicios;
 
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 
 public class ServicioItemcard {
-    DAOItemCard daoIC = new DAOItemCard();
+    DAOItemcard daoIC = new DAOItemcard();
     DAOTable daoT = new DAOTable();
 }

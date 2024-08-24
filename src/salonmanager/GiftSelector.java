@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.Table;
@@ -46,9 +46,9 @@ public class GiftSelector extends FrameWindow {
     JButtonMetalBlu butInGift = new JButtonMetalBlu();
     Salon salon = null;
     TableAdder tadd = null;
-    ArrayList<ItemCard> aIC = null;
+    ArrayList<Itemcard> aIC = null;
 
-    public GiftSelector(Salon sal, Table tabAux, TableAdder ta, ArrayList<ItemCard> order) {
+    public GiftSelector(Salon sal, Table tabAux, TableAdder ta, ArrayList<Itemcard> order) {
         if (sal != null) {
             salon = sal;
             tab = salon.getTableAux();
@@ -120,7 +120,7 @@ public class GiftSelector extends FrameWindow {
 
     private void butInGiftActionPerformed() throws Exception {
         int i = comboItems.getSelectedIndex();
-        ItemCard ic = aIC.get(i);
+        Itemcard ic = aIC.get(i);
         if (salon != null) {
             ss.giftBacker(ic, salon);
             utiliGrafSal.setTableItems(salon);

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import salonmanager.Salon;
 import salonmanager.entidades.bussiness.ItemSale;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.persistencia.DAOItemSale;
 import salonmanager.utilidades.Utilidades;
 
@@ -13,7 +13,7 @@ public class ServicioItemSale {
     DAOItemSale daoI = new DAOItemSale();
     Utilidades utili = new Utilidades();
     public void createItemSale(Salon salon) throws Exception {
-        ArrayList<ItemCard> items = salon.getItemsTableAux();
+        ArrayList<Itemcard> items = salon.getItemsTableAux();
         String tabId = salon.getTableAux().getPos();
         if (!tabId.equals("barra") && !tabId.equals("delivery")) {
             tabId = "tab";
@@ -27,7 +27,7 @@ public class ServicioItemSale {
         }
 
         int wsId = salon.getWorkshiftNow().getId();
-        for(ItemCard ic : items) {
+        for(Itemcard ic : items) {
             Timestamp ts = new Timestamp(new Date().getTime());
             ItemSale is = new ItemSale(ic.getId(), ic.getCategory(), tabId, waiterId, wsId, utili.priceMod(ic, salon), ts);
             daoI.saveItemSale(is);

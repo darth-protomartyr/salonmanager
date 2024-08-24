@@ -39,7 +39,7 @@ import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOItemSale;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
@@ -62,7 +62,7 @@ public class UtilidadesGraficasStatics {
     DAOTable daoT = new DAOTable();
     DAOItemSale daoIs = new DAOItemSale();
     DAOUser daoU = new DAOUser();
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     Utilidades utili = new Utilidades();
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();

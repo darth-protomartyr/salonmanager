@@ -17,13 +17,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
 import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.graphics.FrameHalf;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.utilidades.UtilidadesGraficas;
 
 public class ItemcardList extends FrameHalf {
@@ -32,7 +32,7 @@ public class ItemcardList extends FrameHalf {
     SalonManager sm = new SalonManager();
     Color narUlg = new Color(255, 255, 176);
     Color narLg = new Color(252, 203, 5);
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     JTable tableItems = null;
 
     public ItemcardList(Manager man) throws Exception {
@@ -90,14 +90,14 @@ public class ItemcardList extends FrameHalf {
         String col2 = "Unidades";
         String col3 = "Precio";
 
-        ArrayList<ItemCard> totalItems = daoI.listarItemsCard(true);
+        ArrayList<Itemcard> totalItems = daoI.listarItemsCard(true);
         int rows = totalItems.size();
 
         String[] colNames = {col1, col2, col3};
         String[][] data = new String[rows][3];
 
         for (int i = 0; i < rows; i++) {
-            ItemCard ic = totalItems.get(i);
+            Itemcard ic = totalItems.get(i);
 
             data[i][0] = " " + ic.getName();
             data[i][1] = " " + ic.getStock() + " u.";
@@ -131,13 +131,13 @@ public class ItemcardList extends FrameHalf {
     private void listUpdater() {
         try {
             // Obtener los datos actualizados
-            ArrayList<ItemCard> totalItems = daoI.listarItemsCard(true);
+            ArrayList<Itemcard> totalItems = daoI.listarItemsCard(true);
             int rows = totalItems.size();
 
             // Preparar los nuevos datos para la tabla
             String[][] data = new String[rows][3];
             for (int i = 0; i < rows; i++) {
-                ItemCard ic = totalItems.get(i);
+                Itemcard ic = totalItems.get(i);
                 data[i][0] = " " + ic.getName();
                 data[i][1] = " " + ic.getStock() + " u.";
                 data[i][2] = " $ " + ic.getPrice().get(0);

@@ -14,11 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -28,11 +28,11 @@ public class ItemcardInn extends FrameHalf {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    DAOItemCard daoIC = new DAOItemCard();
+    DAOItemcard daoIC = new DAOItemcard();
     DAOConfig daoC = new DAOConfig();
     SalonManager sm = new SalonManager();
 
-    ArrayList<ItemCard> itemsCardDB = null;
+    ArrayList<Itemcard> itemsCardDB = null;
     String name = "";
     String category = "";
     String description = "";
@@ -40,7 +40,7 @@ public class ItemcardInn extends FrameHalf {
     double price = 0;
     int stock = 0;
     boolean tipAlta = false;
-    ItemCard itemAux = new ItemCard();
+    Itemcard itemAux = new Itemcard();
     ArrayList<String> categoriesDB = null;
 
     JTextField fieldName = new JTextField();
@@ -189,7 +189,7 @@ public class ItemcardInn extends FrameHalf {
             ArrayList<Double> prices = new ArrayList<>();
             prices.add(price);
             prices.add(0.0);
-            itemAux = new ItemCard(name, category, description, cost, prices, stock, tipAlta);
+            itemAux = new Itemcard(name, category, description, cost, prices, stock, tipAlta);
             int id = daoIC.getItemId();
             itemAux.setId(id);
             daoIC.saveItemcard(itemAux);
@@ -206,7 +206,7 @@ public class ItemcardInn extends FrameHalf {
         price = 0;
         stock = 0;
         tipAlta = false;
-        itemAux = new ItemCard();
+        itemAux = new Itemcard();
 
         fieldName.setText("");
         areaDescription.setText("");

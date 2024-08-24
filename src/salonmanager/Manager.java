@@ -24,7 +24,7 @@ import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
 import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.entidades.graphics.PanelPpalCustom;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
@@ -47,7 +47,7 @@ public class Manager extends FrameFull {
     Workshift actualWs = null;
     DAOConfig daoC = new DAOConfig();
     DAOWorkshift daoW = new DAOWorkshift();
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     DAOUser daoU = new DAOUser();
     Salon salon = null;
     int f1 = anchoUnit * 3;
@@ -289,14 +289,14 @@ public class Manager extends FrameFull {
 //        String col2 = "Unidades";
 //        String col3 = "Precio";
 //
-//        ArrayList<ItemCard> totalItems = daoI.listarItemsCard();
+//        ArrayList<Itemcard> totalItems = daoI.listarItemsCard();
 //        int rows = totalItems.size();
 //
 //        String[] colNames = {col1, col2, col3};
 //        String[][] data = new String[rows][3];
 //
 //        for (int i = 0; i < rows; i++) {
-//            ItemCard ic = totalItems.get(i);
+//            Itemcard ic = totalItems.get(i);
 //
 //            data[i][0] = " " + ic.getName();
 //            data[i][1] = " " + ic.getStock() + " u.";
@@ -334,14 +334,14 @@ public class Manager extends FrameFull {
 //            @Override
 //            protected Void doInBackground() throws Exception {
 //                // Obtener los nuevos datos para la tabla
-//                ArrayList<ItemCard> totalItems = daoI.listarItemsCard();
+//                ArrayList<Itemcard> totalItems = daoI.listarItemsCard();
 //                int rows = totalItems.size();
 //
 //                String[] colNames = {"Item", "Unidades", "Precio"};
 //                String[][] data = new String[rows][3];
 //
 //                for (int i = 0; i < rows; i++) {
-//                    ItemCard ic = totalItems.get(i);
+//                    Itemcard ic = totalItems.get(i);
 //                    data[i][0] = " " + ic.getName();
 //                    data[i][1] = " " + ic.getStock() + " u.";
 //                    data[i][2] = " $ " + ic.getPrice().get(0);

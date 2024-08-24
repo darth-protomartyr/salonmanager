@@ -29,14 +29,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import salonmanager.entidades.bussiness.ItemCard;
+import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.graphics.FrameThird;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemCard;
+import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -52,7 +52,7 @@ public class TableAdder extends FrameThird {
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     DAOConfig daoC = new DAOConfig();
-    DAOItemCard daoI = new DAOItemCard();
+    DAOItemcard daoI = new DAOItemcard();
     ServicioSalon ss = new ServicioSalon();
     ServicioTable st = new ServicioTable();
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
@@ -83,13 +83,13 @@ public class TableAdder extends FrameThird {
 
     int discount = 0;
 
-    ArrayList<ItemCard> itemsDB = new ArrayList<>();
-    ArrayList<ItemCard> items = new ArrayList<>();
-    ArrayList<ItemCard> itemsNew = new ArrayList<>();
+    ArrayList<Itemcard> itemsDB = new ArrayList<>();
+    ArrayList<Itemcard> items = new ArrayList<>();
+    ArrayList<Itemcard> itemsNew = new ArrayList<>();
 
-    ArrayList<ItemCard> itemsGift = new ArrayList<>();
-    ArrayList<ItemCard> itemsPartialPayed = new ArrayList<>();
-    ArrayList<ItemCard> itemsPartialPayedND = new ArrayList<>();
+    ArrayList<Itemcard> itemsGift = new ArrayList<>();
+    ArrayList<Itemcard> itemsPartialPayed = new ArrayList<>();
+    ArrayList<Itemcard> itemsPartialPayedND = new ArrayList<>();
 
     JTextField fieldAmountCash = new JTextField();
     JTextField fieldAmountElectronic = new JTextField();
@@ -394,7 +394,7 @@ public class TableAdder extends FrameThird {
     private void addItem() {
         String itemSt = (String) comboItems.getSelectedItem();
         int num = (int) spinner.getValue();
-        ItemCard ic = null;
+        Itemcard ic = null;
         for (int i = 0; i < itemsDB.size(); i++) {
             if (itemSt.equals(itemsDB.get(i).getName())) {
                 ic = itemsDB.get(i);
@@ -507,10 +507,10 @@ public class TableAdder extends FrameThird {
     }
 
     private void setTableItems() {
-        ArrayList<ItemCard> itemsAux = utili.unRepeatItems2(items);
-        ArrayList<ItemCard> partialsND = itemsPartialPayedND;
-        ArrayList<ItemCard> gifts = itemsGift;
-        ArrayList<ItemCard> totalItems = itemsAux;
+        ArrayList<Itemcard> itemsAux = utili.unRepeatItems2(items);
+        ArrayList<Itemcard> partialsND = itemsPartialPayedND;
+        ArrayList<Itemcard> gifts = itemsGift;
+        ArrayList<Itemcard> totalItems = itemsAux;
         totalItems.addAll(utili.unRepeatItems2(partialsND));
         totalItems.addAll(utili.unRepeatItems2(gifts));
         int rowsItems = totalItems.size();
@@ -528,7 +528,7 @@ public class TableAdder extends FrameThird {
         double disc = (double) discount / 100;
 
         for (int i = 0; i < totalItems.size(); i++) {
-            ItemCard ic = totalItems.get(i);
+            Itemcard ic = totalItems.get(i);
             if (i < itemsAux.size()) {
                 int u = st.itemUnitsBacker(items, ic);
                 data[i][0] = " " + u;
@@ -588,7 +588,7 @@ public class TableAdder extends FrameThird {
         totalMount = 0;
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isActiveItem()) {
-                ItemCard ic = items.get(i);
+                Itemcard ic = items.get(i);
                 double pr = ic.getPrice().get(0);
                 totalMount = totalMount + pr;
             }
@@ -600,7 +600,7 @@ public class TableAdder extends FrameThird {
 
         for (int i = 0; i < itemsPartialPayedND.size(); i++) {
             if (itemsPartialPayedND.get(i).isActiveItem()) {
-                ItemCard ic = itemsPartialPayedND.get(i);
+                Itemcard ic = itemsPartialPayedND.get(i);
                 double pr = ic.getPrice().get(0);
                 totalMount = totalMount + pr;
             }
@@ -662,12 +662,12 @@ public class TableAdder extends FrameThird {
         }
     }
 
-    public void addGift(ItemCard iCard) {
+    public void addGift(Itemcard iCard) {
         itemsGift.add(iCard);
-        Iterator<ItemCard> iterador = items.iterator();
+        Iterator<Itemcard> iterador = items.iterator();
         int counter = 0;
         while (iterador.hasNext()) {
-            ItemCard ic = iterador.next();
+            Itemcard ic = iterador.next();
             if (ic.getId() == iCard.getId()) {
                 while (counter < 1) {
                     iterador.remove();
