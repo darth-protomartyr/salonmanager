@@ -26,6 +26,9 @@ import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
+import salonmanager.entidades.graphics.JButtonBarr;
+import salonmanager.entidades.graphics.JButtonDelivery;
+import salonmanager.entidades.graphics.JButtonDeliverySee;
 import salonmanager.persistencia.DAOConfig;
 
 public class Utilidades {
@@ -825,10 +828,12 @@ public class Utilidades {
         chars.add("s");
         chars.add("v");
         daoC.saveConfigGeneral(59, tabsQ, spaces, chars, categories, 10, true);
-        ArrayList<String> defer = new ArrayList<String>();
-        ArrayList<String> mods = new ArrayList<String>();
-
-        daoC.saveConfigActual(false, 0, defer, mods);
+        ArrayList<String> defer = new ArrayList<>();
+        ArrayList<String> mods = new ArrayList<>();
+        ArrayList<Integer> indexes = new ArrayList<>();
+        indexes.add(0);
+        indexes.add(0);        
+        daoC.saveConfigActual(false, 0, defer, mods, indexes);
 
         ArrayList<String> categ = daoC.askCategories();
 

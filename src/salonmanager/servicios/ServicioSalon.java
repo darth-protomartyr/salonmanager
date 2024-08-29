@@ -207,6 +207,15 @@ public class ServicioSalon {
         if (tableAux.getPos().equals("delivery")) {
             String deli = sal.getJbdAux().getDelivery().getId();
             daoD.updateDeliveryTable(tableAux.getId(), deli);
+            ArrayList<Integer> indexes =  daoC.askIndexes();
+            indexes.set(1, tableAux.getNum());
+            daoC.updateIndexes(indexes);
+        }
+        
+        if (tableAux.getPos().equals("barra")) {
+            ArrayList<Integer> indexes =  daoC.askIndexes();
+            indexes.set(0, tableAux.getNum());
+            daoC.updateIndexes(indexes);
         }
         daoU.saveWaiterTable(tableAux);
         

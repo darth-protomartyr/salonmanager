@@ -6,6 +6,7 @@ import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
@@ -16,6 +17,7 @@ public class ServicioTable {
     DAOTable daoT = new DAOTable();
     DAOItemcard daoI = new DAOItemcard();
     DAOUser daoU = new DAOUser();
+    DAOConfig daoC = new DAOConfig();
 
     public int giftCounter(ArrayList<Itemcard> gifts, Itemcard ic) {
         int units = 0;
@@ -78,6 +80,22 @@ public class ServicioTable {
     }
 
     public void saveTableCompleteChangeWs(Table tab, Salon salon) throws Exception {
+        ArrayList<Integer> indexes = daoC.askIndexes();
+        if (tab.getPos().equals("delivery")) {
+            int i = indexes.get(1) + 1;
+            tab.setNum(i);
+            indexes.set(1, i);
+            daoC.updateIndexes(indexes);
+        }
+
+        if (tab.getPos().equals("barra")) {
+            int i = indexes.get(0) + 1;
+            tab.setNum(i);
+            indexes.set(0, i);
+            daoC.updateIndexes(indexes);
+        }        
+        
+        
         daoT.saveTable(tab, null);
         daoU.saveWaiterTable(tab);
         if (tab.getPos().equals("delivery")) {

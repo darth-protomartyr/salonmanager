@@ -37,9 +37,7 @@ import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameFull;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
-import salonmanager.servicios.ServicioSalon;
 import salonmanager.servicios.ServicioTable;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasSalon;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -74,9 +72,9 @@ public class Salon extends FrameFull {
     Font font3 = null;
     Font font4 = null;
     Font font5 = null;
-    JScrollPane scrPaneBarr = new JScrollPane();
     JPanel panelBarrBut = new JPanel();
     JPanel panelDeliBut = new JPanel();
+    JPanel panelBarrContainer = new JPanel();
     JPanel panelDeliContainer = new JPanel();
 
     ArrayList<Integer> tableNum = new ArrayList<>(); // número de mesa
@@ -366,7 +364,7 @@ public class Salon extends FrameFull {
 
             moneyFlowCash = workshiftNow.getMoneyFlowWsCash();
             moneyFlowElec = workshiftNow.getMoneyFlowWsElec();
-            ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 2);
+            ArrayList<Table> tabs = st.workshiftTableslistComplete(workshiftNow, 1);
             if (tabs.size() > 0) {
                 prevTabs = tabs;
             }
@@ -560,14 +558,6 @@ public class Salon extends FrameFull {
         this.font5 = font5;
     }
 
-    public JScrollPane getScrPaneBarr() {
-        return scrPaneBarr;
-    }
-
-    public void setScrPaneBarr(JScrollPane scrPaneBarr) {
-        this.scrPaneBarr = scrPaneBarr;
-    }
-
     public JPanel getPanelBarrBut() {
         return panelBarrBut;
     }
@@ -583,6 +573,14 @@ public class Salon extends FrameFull {
     public void setPanelDeliBut(JPanel panelDeliBut) {
         this.panelDeliBut = panelDeliBut;
     }
+    
+    public JPanel getPanelBarrContainer() {
+        return panelBarrContainer;
+    }
+
+    public void setPanelBarrContainer(JPanel panelBarrContainer) {
+        this.panelBarrContainer = panelBarrContainer;
+    }
 
     public JPanel getPanelDeliContainer() {
         return panelDeliContainer;
@@ -590,7 +588,7 @@ public class Salon extends FrameFull {
 
     public void setPanelDeliContainer(JPanel panelDeliContainer) {
         this.panelDeliContainer = panelDeliContainer;
-    }
+    }    
 
     public ArrayList<Integer> getTableNum() {
         return tableNum;

@@ -134,6 +134,7 @@ public class DeliveryCreate extends FrameHalf {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 dispose();
+                salon.setEnabled(true);
             }
         });
         panelPpal.add(butSalir);

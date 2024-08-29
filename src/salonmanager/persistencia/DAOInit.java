@@ -26,8 +26,9 @@ public class DAOInit extends DAO {
             String sqlAct = "CREATE TABLE IF NOT EXISTS config_actual("
                     + " config_open_ws VARCHAR(100),"/*turno actual abierto*/
                     + " config_open_ws_id VARCHAR(100)," /*openWsId*/
-                    + " congif_defer_close_ws VARCHAR(5000),"
-                    + " congif_unmod_tabs VARCHAR(5000)"
+                    + " config_defer_close_ws VARCHAR(5000),"
+                    + " config_unmod_tabs VARCHAR(5000), "
+                    + " config_indexes_buttons VARCHAR (5000)"
                     + ");";
             insertarModificarEliminar(sqlAct);
             System.out.println(sqlAct);

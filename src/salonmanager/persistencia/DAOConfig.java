@@ -92,6 +92,8 @@ public class DAOConfig extends DAO {
                 modTabs = utili.strToArrayStrAlt(SalonManager.decrypt(mods));
             }
             cfnAct.setArrayUnModTabs(modTabs);
+            String indexes = resultado.getString(5);
+            cfnAct.setArrayIndexes(utili.strToArrayInt(SalonManager.decrypt(indexes)));
         }
         desconectarBase();
         return cfnAct;
@@ -273,17 +275,47 @@ public class DAOConfig extends DAO {
         return ask;
     }
 
-    public void saveConfigActual(boolean wsOpen, int wsId, ArrayList<String> defers, ArrayList<String> mods) throws Exception {
+    public void saveConfigActual(boolean wsOpen, int wsId, ArrayList<String> defers, ArrayList<String> mods, ArrayList<Integer> indexes) throws Exception {
         try {
             
             String def = SalonManager.encrypt(utili.arrayStrToStr(defers));
             String mod = SalonManager.encrypt(utili.arrayStrToStr(mods));
+            String ind = SalonManager.encrypt(utili.arrayIntToStr(indexes));
+
             String act = SalonManager.encryptBoolean(wsOpen);
             String id = SalonManager.encryptInt(wsId);
 
-            String sql1 = "INSERT INTO config_actual(config_open_ws, config_open_ws_id, congif_defer_close_ws, congif_unmod_tabs)"
-                    + "VALUES('" + act + "', '" + id + "', '" + def + "', '" + mod + "');";
+            String sql1 = "INSERT INTO config_actual(config_open_ws, config_open_ws_id, config_defer_close_ws, config_unmod_tabs, config_indexes_buttons)"
+                    + "VALUES('" + act + "', '" + id + "', '" + def + "', '" + mod + "', '" + ind + "');";
 
+            System.out.println(sql1);
+            insertarModificarEliminar(sql1.trim());
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                utiliMsg.errorCargaDB();
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<Integer> askIndexes() throws Exception {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        ConfigActual cfgAct = askConfigActual();
+        indexes = cfgAct.getArrayIndexes();
+        return indexes;
+    }
+    
+    public void updateIndexes(ArrayList<Integer>indexes) throws Exception {
+        String stArray = "";
+        if (indexes.size() > 0) {
+            stArray = utili.arrayIntToStr(indexes);
+        }
+
+        try {
+            String sql1 = "UPDATE config_actual SET config_indexes_buttons = '" + SalonManager.encrypt(stArray) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

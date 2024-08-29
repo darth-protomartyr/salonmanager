@@ -6,6 +6,7 @@ public class ConfigActual {
     int openIdWs;
     ArrayList<String> arrayDeferWs;
     ArrayList<String> arrayUnModTabs;
+    ArrayList<Integer> arrayIndexes;
 
     
     
@@ -43,4 +44,15 @@ public class ConfigActual {
     public void setArrayUnModTabs(ArrayList<String> arrayUnModTabs) {
         this.arrayUnModTabs = arrayUnModTabs;
     }
+
+    public ArrayList<Integer> getArrayIndexes() {
+        return arrayIndexes;
+    }
+
+    public void setArrayIndexes(ArrayList<Integer> arrayIndexes) {
+        this.arrayIndexes = arrayIndexes;
+    }
+    
+    
+    
 }

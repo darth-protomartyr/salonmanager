@@ -51,6 +51,10 @@ public class ServicioWorkshift {
             daoC.updateCfgActOpenIdWs(id);
             salon.getCfgAct().setOpenWs(true);
             salon.getCfgAct().setOpenIdWs(newWs.getId());
+            ArrayList<Integer>indexes =  new  ArrayList<>();
+            indexes.add(0);
+            indexes.add(0);
+            daoC.updateIndexes(indexes);
             for (Table t : toEraseTabs) {
 
                 if (t.getOrder().size() > 0) {
