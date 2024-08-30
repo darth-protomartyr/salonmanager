@@ -436,13 +436,13 @@ public class UtilidadesGraficasSalon {
         JPanel panelBarr = new JPanel();
         panelBarr.setLayout(null);
         panelBarr.setBackground(bluLg);
-        panelBarr.setBounds(anchoUnit, altoUnit, anchoUnit * 34, altoUnit * 73);
+        panelBarr.setBounds(anchoUnit, altoUnit, anchoUnit * 28, altoUnit * 73);
 
         JLabel labelDP = utiliGraf.labelTitleBackerA4("Barra");
         labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
         panelBarr.add(labelDP);
 
-        JButtonMetalBlu butCreateBarr = utiliGraf.button1("Crear pedido Barra", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
+        JButtonMetalBlu butCreateBarr = utiliGraf.button1("Crear pedido Barra", anchoUnit * 4, altoUnit * 6, anchoUnit * 20);
         butCreateBarr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -456,7 +456,7 @@ public class UtilidadesGraficasSalon {
         panelBarr.add(butCreateBarr);
 
         salon.getPanelBarrContainer().setLayout(new FlowLayout(FlowLayout.CENTER));
-        salon.getPanelBarrContainer().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 56);
+        salon.getPanelBarrContainer().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 26, altoUnit * 56);
         panelBarr.add(salon.getPanelBarrContainer());
 
         panelBarrContainerSetter(salon);
@@ -490,7 +490,6 @@ public class UtilidadesGraficasSalon {
             newJBB.setTable(newTable);
             salon.getBarrButtons().add(0, newJBB);           
             
-            salon.getPanelBarrBut().repaint();
             panelBarrContainerSetter(salon);
             barrButUpdater(salon);
             resetTableValues(salon);
@@ -511,17 +510,17 @@ public class UtilidadesGraficasSalon {
             height = altoUnit * 52;
         }
 
-        salon.getPanelBarrBut().setPreferredSize(new Dimension(anchoUnit * 32, height));
+        salon.getPanelBarrBut().setPreferredSize(new Dimension(anchoUnit * 24, height));
         salon.getPanelBarrBut().setBackground(narLg);
         
         for (int i = 0; i < barrB.size(); i++) {
-            barrB.get(i).setBounds(anchoUnit, altoUnit * ((i * 10) + 1), anchoUnit * 29, altoUnit * 10);
+            barrB.get(i).setBounds(anchoUnit, altoUnit * ((i * 10) + 1), anchoUnit * 23, altoUnit * 10);
             salon.getPanelBarrBut().add(barrB.get(i));
             barrButtons.add(barrB.get(i));
         }
 
         JScrollPane scrPaneBarr = new JScrollPane(salon.getPanelBarrBut());
-        scrPaneBarr.setPreferredSize(new Dimension(anchoUnit * 32, altoUnit * 55));
+        scrPaneBarr.setPreferredSize(new Dimension(anchoUnit * 26, altoUnit * 55));
         scrPaneBarr.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrPaneBarr.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -537,7 +536,7 @@ public class UtilidadesGraficasSalon {
             butSelBarr.setBackground(narUlg);
             butSelBarr.setBorder(new LineBorder(narLg, 8));
             butSelBarr.setFont(salon.getFont2());
-            butSelBarr.setText("Barra pedido " + butSelBarr.getNum());
+            butSelBarr.setText("B-" + butSelBarr.getNum());
             butSelBarr.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -580,9 +579,14 @@ public class UtilidadesGraficasSalon {
             if (butSelBarr.isOpenJBB() == false && butSelBarr.getTable().isBill() == true) {
                 butSelBarr.setBackground(narUlgX);
                 butSelBarr.setEnabled(false);
-                butSelBarr.setText("B" + butSelBarr.getTable().getNum() + " Cerrado");
+                butSelBarr.setText("B-" + butSelBarr.getTable().getNum() + " Cerrado");
             }
         }
+        
+        salon.setBarrButtons(barrB);
+ 
+        salon.revalidate();
+        salon.repaint();
     }
 
     private void selectBarr(ActionEvent ae, Salon salon) {
@@ -643,13 +647,13 @@ public class UtilidadesGraficasSalon {
         JPanel panelDeli = new JPanel();
         panelDeli.setLayout(null);
         panelDeli.setBackground(bluLg);
-        panelDeli.setBounds(anchoUnit * 37, altoUnit, anchoUnit * 34, altoUnit * 73);
+        panelDeli.setBounds(anchoUnit * 31, altoUnit, anchoUnit * 40, altoUnit * 73);
 
         JLabel labelDP = utiliGraf.labelTitleBackerA4("Delivery");
         labelDP.setBounds(anchoUnit, altoUnit, anchoUnit * 12, altoUnit * 4);
         panelDeli.add(labelDP);
 
-        JButtonMetalBlu butCreateDeli = utiliGraf.button1("Crear pedido delivery", anchoUnit * 7, altoUnit * 6, anchoUnit * 20);
+        JButtonMetalBlu butCreateDeli = utiliGraf.button1("Crear pedido delivery", anchoUnit * 10, altoUnit * 6, anchoUnit * 20);
         butCreateDeli.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -663,7 +667,7 @@ public class UtilidadesGraficasSalon {
         panelDeli.add(butCreateDeli);
 
         salon.getPanelDeliContainer().setLayout(new FlowLayout(FlowLayout.CENTER));
-        salon.getPanelDeliContainer().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 32, altoUnit * 56);
+        salon.getPanelDeliContainer().setBounds(anchoUnit, altoUnit * 15, anchoUnit * 38, altoUnit * 56);
         panelDeli.add(salon.getPanelDeliContainer());
 
         panelDeliContainerSetter(salon);
@@ -722,16 +726,16 @@ public class UtilidadesGraficasSalon {
         
 
         for (int i = 0; i < deliB.size(); i++) {
-            deliB.get(i).setBounds(anchoUnit, altoUnit * ((i * 10) + 1), anchoUnit * 23, altoUnit * 10);
+            deliB.get(i).setBounds(anchoUnit, altoUnit * ((i * 10) + 1), anchoUnit * 29, altoUnit * 10);
             salon.getPanelDeliBut().add(deliB.get(i));
-            deliSeeB.get(i).setBounds(anchoUnit * 24, altoUnit * ((i * 10) + 1), anchoUnit * 6, altoUnit * 10);
+            deliSeeB.get(i).setBounds(anchoUnit * 30, altoUnit * ((i * 10) + 1), anchoUnit * 6, altoUnit * 10);
             salon.getPanelDeliBut().add(deliSeeB.get(i));
             deliButtons.add(deliB.get(i));
             deliSeeButtons.add(deliSeeB.get(i));
         }
 
         JScrollPane scrPaneDeli = new JScrollPane(salon.getPanelDeliBut());
-        scrPaneDeli.setPreferredSize(new Dimension(anchoUnit * 32, altoUnit * 55));
+        scrPaneDeli.setPreferredSize(new Dimension(anchoUnit * 38, altoUnit * 55));
         scrPaneDeli.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrPaneDeli.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -750,7 +754,7 @@ public class UtilidadesGraficasSalon {
             butSelDelivery.setBackground(narUlg);
             butSelDelivery.setBorder(new LineBorder(narLg, 8));
             butSelDelivery.setFont(salon.getFont2());
-            butSelDelivery.setText("Delivery pedido " + butSelDelivery.getNum());
+            butSelDelivery.setText("D-" + butSelDelivery.getNum() + " " + utili.cmrNameBacker(butSelDelivery.getDelivery().getConsumer()));
             butSelDelivery.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -828,8 +832,7 @@ public class UtilidadesGraficasSalon {
             if (butSelDelivery.isOpenJBD() == false && butSelDelivery.getTable().isBill() == true) {
                 butSelDelivery.setBackground(narUlgX);
                 butSelDelivery.setEnabled(false);
-                butSelDelivery.setText("D" + butSelDelivery.getTable().getNum() + " Cerrado");
-                //Test
+                butSelDelivery.setText("D-" + butSelDelivery.getTable().getNum() + " " + utili.cmrNameBacker(butSelDelivery.getDelivery().getConsumer())  + " Cerrado");
                 butSee.setBackground(narUlgX);
                 butSee.setEnabled(false);
             }
@@ -967,7 +970,7 @@ public class UtilidadesGraficasSalon {
         JButtonDeliverySee butSee = new JButtonDeliverySee(num, dOrder);
         salon.getDeliButtonsSees().add(0, butSee);
 
-        salon.getPanelDeliBut().repaint();
+//        salon.getPanelDeliBut().repaint();
 
         panelDeliContainerSetter(salon);
         deliButUpdater(salon);
@@ -1766,13 +1769,12 @@ public class UtilidadesGraficasSalon {
                 salon.getPanelBarrBut().removeAll();
                 barrButUpdater(salon);
                 panelBarrContainerSetter(salon);
-                
             } else {
                 salon.getJbbAux().setBackground(narUlgX);
                 salon.getJbbAux().setEnabled(false);
                 salon.getJbbAux().setOpenJBB(false);
                 salon.getJbbAux().setText("B" + salon.getJbbAux().getTable().getNum() + " Cerrado");
-                salon.getJbbAux().setBorder(null);
+                salon.getJbbAux().setBorder(new LineBorder(narLg, 8));
             }
         }
 
@@ -1794,10 +1796,9 @@ public class UtilidadesGraficasSalon {
                 salon.getJbdAux().setEnabled(false);
                 salon.getJbdSAux().setEnabled(false);
                 salon.getJbdAux().setOpenJBD(false);
-                salon.getJbdAux().setText("D" + salon.getJbdAux().getTable().getNum() + " Cerrado");
-                salon.getJbdAux().setBorder(null);
+                salon.getJbdAux().setText("D" + salon.getJbdAux().getTable().getNum() + " " + utili.cmrNameBacker(salon.getJbdSAux().getDelivery().getConsumer()) + " Cerrado");
+                salon.getJbdAux().setBorder(new LineBorder(narLg, 8));
                 salon.getJbdSAux().setBorder(null);
-
             }
         }
 

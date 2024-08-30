@@ -45,6 +45,7 @@ public class DeliveryData extends FrameHalf {
     JLabel labelSelectPhone = new JLabel();
     JLabel labelSelectDeli = new JLabel();
     JLabel labelName = new JLabel();
+    JLabel labelLastname = new JLabel();
     JLabel labelPhone = new JLabel();
     JLabel labelSn = new JLabel();
     JLabel labelStreet = new JLabel();
@@ -217,6 +218,15 @@ public class DeliveryData extends FrameHalf {
     public void setLabelName(JLabel labelName) {
         this.labelName = labelName;
     }
+    
+    public JLabel getLabelLastname() {
+        return labelLastname;
+    }
+
+    public void setLabelLastname(JLabel labelLastname) {
+        this.labelLastname = labelLastname;
+    }
+    
 
     public JLabel getLabelPhone() {
         return labelPhone;

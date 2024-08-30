@@ -13,6 +13,7 @@ public class DeliveryClient {
     String area;
     String details;
     String name;
+    String lastname;
     String phone;
     String socialNetwork;
     ArrayList<Table> consumerTabs;
@@ -21,7 +22,7 @@ public class DeliveryClient {
     public DeliveryClient() {
     }
 
-    public DeliveryClient(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork) {
+    public DeliveryClient(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String lastname, String phone, String socialNetwork) {
         this.id = id;
         this.street = street;
         this.numSt = numSt;
@@ -31,12 +32,13 @@ public class DeliveryClient {
         this.area = area;
         this.details = details;
         this.name = name;
+        this.lastname = lastname;
         this.phone = phone;
         this.socialNetwork = socialNetwork;
         this.consumerActive = true;
     }
 
-    public DeliveryClient(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String phone, String socialNetwork, ArrayList<Table> consumerTabs, boolean consumerActive) {
+    public DeliveryClient(int id, String street, String numSt, String deptFloor, String deptNum, String district, String area, String details, String name, String lastname, String phone, String socialNetwork, ArrayList<Table> consumerTabs, boolean consumerActive) {
         this.id = id;
         this.street = street;
         this.numSt = numSt;
@@ -46,6 +48,7 @@ public class DeliveryClient {
         this.area = area;
         this.details = details;
         this.name = name;
+        this.lastname = lastname;
         this.phone = phone;
         this.socialNetwork = socialNetwork;
         this.consumerTabs = consumerTabs;
@@ -122,6 +125,14 @@ public class DeliveryClient {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getPhone() {

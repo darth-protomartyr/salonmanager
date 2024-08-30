@@ -145,6 +145,7 @@ public class DAOInit extends DAO {
                     + " delivery_client_area VARCHAR(100),"
                     + " delivery_client_details VARCHAR(5000),"
                     + " delivery_client_name VARCHAR(100),"
+                    + " delivery_client_lastname VARCHAR(100),"
                     + " delivery_client_phone VARCHAR(100),"
                     + " delivery_client_social_network VARCHAR(100),"
                     + " delivery_client_active VARCHAR(100)"
@@ -353,16 +354,6 @@ public class DAOInit extends DAO {
             String sql15 = "INSERT INTO item_cards(item_card_id, item_card_code, item_card_name, item_card_category, item_card_description, item_card_cost, item_card_price,  item_card_stock, item_card_date_creation, item_card_tip, item_card_active) VALUES( '7', 'Wp+niVwi6v6LzKJbRjOudA==', 'dObOQEquPeMSJWtlChQcOw==', 'vJE0iCtYQQkdgPmO1UHFrw==','GSN118bs2oE9anxftZczPnZudd5X9h/IPE79oMlCY836w9Z1H2QvfXk6QV0M/4DDRDmPdUp+klx48maA06fDcw==','8111/1','3FJ2ho6v7VzGHE58acnlW9aSwWxOe8gK76eQEl4xcmE=', '23', '2024-07-27 19:44:39.947', 'K992SZTEVF57Ki/ju/UUXu/Y1r6cqpvxCcVQRsD/kqMLCyGGrRsI7QN8KEXphf3u', 'K992SZTEVF57Ki/ju/UUXu/Y1r6cqpvxCcVQRsD/kqMLCyGGrRsI7QN8KEXphf3u');";
             insertarModificarEliminar(sql15);
             System.out.println(sql15);
-
-
-            /*CLIENTS*/
-            String sql16 = "INSERT INTO delivery_clients(delivery_client_id, delivery_client_street, delivery_client_street_num, delivery_client_dept_floor, delivery_client_dept_num, delivery_client_district, delivery_client_area, delivery_client_details, delivery_client_name, delivery_client_phone, delivery_client_social_network, delivery_client_active)VALUES('1', 'Q3iinDDrdJpfO8MAgHAJ9Q==', 'PX2+Kjm0q1aMcjmlqNRTVw==', 'MxyuI1iRndQg8r3ImtVuOA==', 'MxyuI1iRndQg8r3ImtVuOA==', 'mzMfjIUTuzi+tqrPTe+G+Q==', 'ZFROSOEPeHK9R1usUwTb5w==', 'g45j7gsu0OstU9dKrtat7D30yF6jTQUbcPUhL7szOZHmHDy0/G57P/XP2kmDuRtb', 'GK4Dveqs+2UW0sqR0m6gXTtialfy71JALCWo7NgwHbs=', 'VJRRaWU1dtj0N+jOWgENqw==', 'tIss+UoHUbW3gZu5sCkgZw==', 'K992SZTEVF57Ki/ju/UUXu/Y1r6cqpvxCcVQRsD/kqMLCyGGrRsI7QN8KEXphf3u');";
-            insertarModificarEliminar(sql16);
-            System.out.println(sql16);
-
-            String sql17 = "INSERT INTO delivery_clients(delivery_client_id, delivery_client_street, delivery_client_street_num, delivery_client_dept_floor, delivery_client_dept_num, delivery_client_district, delivery_client_area, delivery_client_details, delivery_client_name, delivery_client_phone, delivery_client_social_network, delivery_client_active)VALUES('2', 'glWeQn7ea8XcPN5JzB5zFw==', 'PX2+Kjm0q1aMcjmlqNRTVw==', 'MxyuI1iRndQg8r3ImtVuOA==', 'MxyuI1iRndQg8r3ImtVuOA==', 'y4qB51ULgLI8BwZ+gXcGuQ==', 'dlvu0iZXjbzhBC6WAGDQeg==', 'AlvbnH4CufZgv3Bygx77/+AxhBpt/NI9b3qkWhEptFw=', 'nxuJ7v9T6d0kJbXi+ue366nTgTEI3Prk5drDuzKgQnc=', 'oNKgxXnMf+ti2D5L13gsAw==', 'K3POuWqlNOYryWuXtsr1kQ==', 'K992SZTEVF57Ki/ju/UUXu/Y1r6cqpvxCcVQRsD/kqMLCyGGrRsI7QN8KEXphf3u');";
-            insertarModificarEliminar(sql17);
-            System.out.println(sql17);
 
             utiliMsg.cargaTablesLoaded();
 

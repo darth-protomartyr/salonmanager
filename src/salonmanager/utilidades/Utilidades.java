@@ -22,6 +22,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import salonmanager.Salon;
+import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
@@ -832,7 +833,7 @@ public class Utilidades {
         ArrayList<String> mods = new ArrayList<>();
         ArrayList<Integer> indexes = new ArrayList<>();
         indexes.add(0);
-        indexes.add(0);        
+        indexes.add(0);
         daoC.saveConfigActual(false, 0, defer, mods, indexes);
 
         ArrayList<String> categ = daoC.askCategories();
@@ -1018,47 +1019,47 @@ public class Utilidades {
                     if (word.toLowerCase().equals("soda")) {
                         word = "S.";
                     }
-                    
+
                     if (word.toLowerCase().equals("pizza")) {
                         word = "P.";
-                    }                    
+                    }
 
                     if (word.toLowerCase().equals("malbec")) {
                         word = "Mal.";
                     }
-                    
+
                     if (word.toLowerCase().equals("cabernet")) {
                         word = "Cab.";
                     }
-                    
+
                     if (word.toLowerCase().equals("sauvignon")) {
                         word = "Sauv.";
                     }
-                    
+
                     if (word.toLowerCase().equals("pinot")) {
                         word = "Pi.";
                     }
-                    
+
                     if (word.toLowerCase().equals("tempranillo")) {
                         word = "Temp.";
                     }
-                    
+
                     if (word.toLowerCase().equals("merlot")) {
                         word = "Mer.";
                     }
-                    
+
                     if (word.toLowerCase().equals("syrah")) {
                         word = "Syr.";
                     }
-                    
+
                     if (word.toLowerCase().equals("champaña") || word.toLowerCase().equals("champagne")) {
                         word = "Champ.";
                     }
-                    
+
                     if (word.toLowerCase().equals("chardonnay") || word.toLowerCase().equals("chardonay") || word.toLowerCase().equals("chardoney")) {
                         word = "Chard.";
                     }
-                    
+
                     redux += word;
                     if (i < words.length - 1) {
                         redux += " ";
@@ -1069,5 +1070,23 @@ public class Utilidades {
             }
         }
         return redux;
+    }
+
+    public String cmrNameBacker(DeliveryClient cmr) {
+        String st = "";
+        String one = cmr.getName();
+        String[] first = one.split(" ");
+        String ch1 = first[0];
+        ch1 = ch1.substring(0, 1) + ".";
+
+        String ch2 = cmr.getLastname();
+        if (ch2.length() > 15) {
+            String[] second = ch2.split(" ");
+            ch2 = second[0];
+            if (ch2.length() > 15) {
+                ch2 = ch2.substring(0, 14) + ".";
+            }
+        }
+        return st = ch2 + " " + ch1;
     }
 }

@@ -21,12 +21,13 @@ public class DAODeliveryClient extends DAO {
             String area = SalonManager.encrypt(cmr.getArea());
             String details = SalonManager.encrypt(cmr.getDetails());
             String name = SalonManager.encrypt(cmr.getName());
+            String lastname = SalonManager.encrypt(cmr.getLastname());
             String phone = SalonManager.encrypt(cmr.getPhone());
             String socialNetwork = SalonManager.encrypt(cmr.getSocialNetwork());
             String active = SalonManager.encryptBoolean(cmr.isConsumerActive());
 
-            String sql1 = "INSERT INTO delivery_clients(delivery_client_id, delivery_client_street, delivery_client_street_num, delivery_client_dept_floor, delivery_client_dept_num, delivery_client_district, delivery_client_area, delivery_client_details, delivery_client_name, delivery_client_phone, delivery_client_social_network, delivery_client_active)"
-                    + "VALUES('" +  id + "', '" + street + "', '" +  numSt + "', '" +  deptFloor + "', '" +  deptNum + "', '" +  district + "', '" +  area + "', '" +  details + "', '" +  name + "', '" +  phone + "', '" +  socialNetwork + "', '" +  active + "');";
+            String sql1 = "INSERT INTO delivery_clients(delivery_client_id, delivery_client_street, delivery_client_street_num, delivery_client_dept_floor, delivery_client_dept_num, delivery_client_district, delivery_client_area, delivery_client_details, delivery_client_name, delivery_client_lastname, delivery_client_phone, delivery_client_social_network, delivery_client_active)"
+                    + "VALUES('" +  id + "', '" + street + "', '" +  numSt + "', '" +  deptFloor + "', '" +  deptNum + "', '" +  district + "', '" +  area + "', '" +  details + "', '" +  name + "', '"  +  lastname + "', '" +  phone + "', '" +  socialNetwork + "', '" +  active + "');";
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
@@ -58,9 +59,10 @@ public class DAODeliveryClient extends DAO {
                 cmr.setArea(SalonManager.decrypt(resultado.getString(7)));
                 cmr.setDetails(SalonManager.decrypt(resultado.getString(8)));
                 cmr.setName(SalonManager.decrypt(resultado.getString(9)));
-                cmr.setPhone(SalonManager.decrypt(resultado.getString(10)));
-                cmr.setSocialNetwork(SalonManager.decrypt(resultado.getString(11)));
-                cmr.setConsumerActive(SalonManager.decryptBoolean(resultado.getString(12)));
+                cmr.setLastname(SalonManager.decrypt(resultado.getString(10)));
+                cmr.setPhone(SalonManager.decrypt(resultado.getString(11)));
+                cmr.setSocialNetwork(SalonManager.decrypt(resultado.getString(12)));
+                cmr.setConsumerActive(SalonManager.decryptBoolean(resultado.getString(13)));
             }
             return cmr;
         } catch (Exception e) {
@@ -119,13 +121,14 @@ public class DAODeliveryClient extends DAO {
             String area = SalonManager.encrypt(cmr.getArea());
             String details = SalonManager.encrypt(cmr.getDetails());
             String name = SalonManager.encrypt(cmr.getName());
+            String lastname = SalonManager.encrypt(cmr.getLastname());            
             String phone = SalonManager.encrypt(cmr.getPhone());
             String socialNetwork = SalonManager.encrypt(cmr.getSocialNetwork());
             String active = SalonManager.encryptBoolean(cmr.isConsumerActive());
 
             String sql1 = "UPDATE delivery_clients SET delivery_client_street = '" + street + "', delivery_client_street_num = '" + numSt
                     + "', delivery_client_dept_floor = '" + deptFloor +"', delivery_client_dept_num = '" + deptNum + "', delivery_client_district = '" + district
-                    + "', delivery_client_area = '" + area +"', delivery_client_details = '" + details +"', delivery_client_name = '" + name + "', delivery_client_phone = '" + phone
+                    + "', delivery_client_area = '" + area +"', delivery_client_details = '" + details +"', delivery_client_name = '" + name + "', delivery_client_lastname = '" + lastname + "', delivery_client_phone = '" + phone
                     + "', delivery_client_social_network = '" + socialNetwork + "', delivery_client_active = '" + active
                     + "' WHERE delivery_client_id = '" + SalonManager.encryptInt(id) + "';";
             

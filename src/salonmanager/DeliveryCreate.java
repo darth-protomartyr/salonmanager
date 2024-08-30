@@ -47,6 +47,7 @@ public class DeliveryCreate extends FrameHalf {
     JLabel labelSelectPhone = new JLabel();
     JLabel labelSelectDeli = new JLabel();
     JLabel labelName = new JLabel();
+    JLabel labelLastname = new JLabel();
     JLabel labelPhone = new JLabel();
     JLabel labelSn = new JLabel();
     JLabel labelStreet = new JLabel();
@@ -114,7 +115,7 @@ public class DeliveryCreate extends FrameHalf {
         panelPpal.add(panelDelivery);
         
         butOpDelivery = utiliGraf.button1("CREAR ENVÍO", anchoUnit * 17, altoUnit * 90, anchoUnit * 16);
- 
+
             butOpDelivery.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -250,6 +251,15 @@ public class DeliveryCreate extends FrameHalf {
     public void setLabelName(JLabel labelName) {
         this.labelName = labelName;
     }
+    
+    public JLabel getLabelLastname() {
+        return labelLastname;
+    }
+
+    public void setLabelLastname(JLabel labelLastname) {
+        this.labelLastname = labelLastname;
+    }
+    
 
     public JLabel getLabelPhone() {
         return labelPhone;
@@ -465,5 +475,9 @@ public class DeliveryCreate extends FrameHalf {
 
     public void setDc(DeliveryCreate dc) {
         this.dc = dc;
+    }
+
+    public Object getLabelLastName() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

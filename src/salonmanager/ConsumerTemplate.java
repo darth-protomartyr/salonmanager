@@ -19,7 +19,6 @@ import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.entidades.bussiness.User;
 import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
@@ -40,17 +39,7 @@ public class ConsumerTemplate extends FrameHalf {
     DeliveryData dd = null;
     DeliveryCreate dc = null;
 
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
-    Color narUlgX = new Color(255, 255, 210);
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-    Color viol = new Color(205, 128, 255);
-    Color bluLg = new Color(194, 242, 206);
-    User userIn = null;
 
     String street = "";
     String streetNum = "";
@@ -60,6 +49,7 @@ public class ConsumerTemplate extends FrameHalf {
     String area = "";
     String details = "";
     String name = "";
+    String lastname = "";
     String phone = "";
     String socialNetwork = "";
 
@@ -74,6 +64,7 @@ public class ConsumerTemplate extends FrameHalf {
     JTextField fieldArea = new JTextField();
     JTextArea areaDetails = new JTextArea();
     JTextField fieldName = new JTextField();
+    JTextField fieldLastName = new JTextField();
     JTextField fieldPhone = new JTextField();
     JTextField fieldSN = new JTextField();
 
@@ -81,7 +72,6 @@ public class ConsumerTemplate extends FrameHalf {
     DeliveryClient cmrFull = null;
 
     public ConsumerTemplate(DeliveryCreate dCr, DeliveryData dDa, DeliveryClient cmr) throws Exception {
-//    public ConsumerTemplate(DeliveryData dDa, DeliveryCreate dCr, DeliveryClient cmr) throws Exception {
 
         String tit = "";
         if (cmr != null) {
@@ -108,7 +98,7 @@ public class ConsumerTemplate extends FrameHalf {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
 
-        JLabel labelTit = utiliGraf.labelTitleBacker1(tit);
+        JLabel labelTit = utiliGraf.labelTitleBacker1W(tit.toUpperCase());
         labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 40, altoUnit * 4);
         panelPpal.add(labelTit);
 
@@ -120,11 +110,17 @@ public class ConsumerTemplate extends FrameHalf {
         panelForm.setBounds(anchoUnit * 3, altoUnit * 8, anchoUnit * 45, altoUnit * 77);
         panelForm.setBackground(narLg);
 
-        JPanel panelData1 = utiliGraf.dataPanelBacker("Nombre y apellido: ", 14);
-        panelData1.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 43, altoUnit * 7);
-        fieldName.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 30, altoUnit * 5);
-        panelData1.add(fieldName);
-        panelForm.add(panelData1);
+        JPanel panelData1a = utiliGraf.dataPanelBacker("Nombre: ", 14);
+        panelData1a.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 21, altoUnit * 7);
+        fieldName.setBounds(anchoUnit * 6, altoUnit * 1, anchoUnit * 14, altoUnit * 5);
+        panelData1a.add(fieldName);
+        panelForm.add(panelData1a);
+
+        JPanel panelData1b = utiliGraf.dataPanelBacker("Apellido: ", 14);
+        panelData1b.setBounds(anchoUnit * 23, altoUnit * 5, anchoUnit * 21, altoUnit * 7);
+        fieldLastName.setBounds(anchoUnit * 6, altoUnit * 1, anchoUnit * 14, altoUnit * 5);
+        panelData1b.add(fieldLastName);
+        panelForm.add(panelData1b);
 
         JPanel panelData2 = utiliGraf.dataPanelBacker("Teléfono: ", 14);
         panelData2.setBounds(anchoUnit * 1, altoUnit * 18, anchoUnit * 17, altoUnit * 7);
@@ -225,6 +221,7 @@ public class ConsumerTemplate extends FrameHalf {
             fieldArea.setText(cmrFull.getArea());
             areaDetails.setText(cmrFull.getDetails());
             fieldName.setText(cmrFull.getName());
+            fieldLastName.setText(cmrFull.getLastname());
             fieldPhone.setText(cmrFull.getPhone());
             fieldSN.setText(cmrFull.getSocialNetwork());
         }
@@ -258,11 +255,12 @@ public class ConsumerTemplate extends FrameHalf {
     private void consumerOp(int i) throws Exception {
         boolean error = false;
         name = fieldName.getText();
+        lastname = fieldLastName.getText();
         phone = fieldPhone.getText();
         street = fieldStreet.getText();
         streetNum = fieldNumStreet.getText();
         deptFloor = fieldDeptFloor.getText();
-        deptNum = fieldDeptNum.getText();;
+        deptNum = fieldDeptNum.getText();
         district = fieldDistrict.getText();
         area = fieldArea.getText();
         details = areaDetails.getText();
@@ -274,6 +272,17 @@ public class ConsumerTemplate extends FrameHalf {
             utiliMsg.errorCantCharName();
         }
 
+        if (lastname.length() > 60 || lastname.length() < 2) {
+            error = true;
+            utiliMsg.errorCantCharName();
+        }
+        
+        if (socialNetwork.length() > 60 || socialNetwork.length() < 2) {
+            error = true;
+            utiliMsg.errorCantCharName();
+        }
+        
+
         if (i == 0) {
             if (utili.stringRepeat(phone, phonesCmrs)) {
                 error = true;
@@ -281,14 +290,15 @@ public class ConsumerTemplate extends FrameHalf {
             }
         }
 
-        if (details.length() > 150 || name.length() > 60 || name.length() < 2 || phone.length() > 19 || phone.length() < 7
-                || street.length() > 60 || street.length() < 2 || streetNum.length() > 6 || deptFloor.length() > 3
-                || deptNum.length() > 5 || district.length() > 40 || area.length() > 40 || socialNetwork.length() > 50) {
+        if (details.length() > 150 || name.length() > 60 || name.length() < 2 || lastname.length() > 60 || lastname.length() < 2
+                || phone.length() > 19 || phone.length() < 7 || street.length() > 60 || street.length() < 2
+                || streetNum.length() > 6 || deptFloor.length() > 3 || deptNum.length() > 5 || district.length() > 40
+                || area.length() > 40 || socialNetwork.length() > 50) {
             error = true;
             utiliMsg.errorCantCharDescription();
         }
 
-        if (name.equals("") || phone.equals("") || street.equals("") || streetNum.equals("")) {
+        if (name.equals("") || lastname.equals("") || phone.equals("") || street.equals("") || streetNum.equals("")) {
             error = true;
             utiliMsg.errorEmptyFields();
         }
@@ -315,10 +325,10 @@ public class ConsumerTemplate extends FrameHalf {
 
         if (socialNetwork.equals("")) {
             socialNetwork = "--";
-        }        
+        }
 
         if (error == false) {
-            cmrAux = new DeliveryClient(id, street, streetNum, deptFloor, deptNum, district, area, details, name, phone, socialNetwork);
+            cmrAux = new DeliveryClient(id, street, streetNum, deptFloor, deptNum, district, area, details, name, lastname, phone, socialNetwork);
             if (i == 1) {
                 daoC.saveConsumer(cmrAux);
             } else {
@@ -334,9 +344,7 @@ public class ConsumerTemplate extends FrameHalf {
                 utiliGrafDD.getConsumer(cmrAux, dd);
                 dd.setFndEnabled();
             }
-
             dispose();
-
         } else {
             resetFields();
         }
@@ -344,6 +352,7 @@ public class ConsumerTemplate extends FrameHalf {
 
     private void resetFields() throws Exception {
         fieldName.setText("");
+        fieldLastName.setText("");
         fieldPhone.setText("");
         fieldStreet.setText("");
         fieldNumStreet.setText("");
