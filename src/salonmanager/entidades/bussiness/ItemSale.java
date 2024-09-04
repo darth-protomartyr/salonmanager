@@ -12,19 +12,25 @@ public class ItemSale {
     private String itemSaleWaiterId;
     private int itemSaleWorkshiftId;
     private double itemSalePrice;
+    private int idClient; 
     private Timestamp itemSaleDate;
     private boolean itemSaleActive;
 
     public ItemSale() {
     }
 
-    public ItemSale(int itemSaleId, String itemSaleCategory, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSalePrice, Timestamp itemSaleDate) throws Exception {
+    public ItemSale(int itemSaleId, String itemSaleCategory, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSalePrice, int idClient, Timestamp itemSaleDate) throws Exception {
         this.itemSaleId = itemSaleId;
         this.itemSaleCategory = itemSaleCategory;
         this.itemSaleTabPos = itemSaleTabPos;
         this.itemSaleWaiterId = itemSaleWaiterId;
         this.itemSaleWorkshiftId = itemSaleWorkshiftId;
         this.itemSalePrice = utili.round2Dec(itemSalePrice);
+//        if (itemSaleTabPos.equals("delivery")) {
+            this.idClient = idClient;
+//        } else {
+//            this.idClient = 0;
+//        }
         this.itemSaleDate = itemSaleDate;
         this.itemSaleActive = true;
     }
@@ -85,6 +91,14 @@ public class ItemSale {
         this.itemSalePrice = utili.round2Dec(itemSalePrice);
     }
 
+    public int getIdClient() {
+        return idClient;
+    }
+
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
+    }
+    
     public Timestamp getItemSaleDate() {
         return itemSaleDate;
     }

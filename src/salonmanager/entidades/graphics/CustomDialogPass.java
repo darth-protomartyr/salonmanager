@@ -28,8 +28,8 @@ import javax.swing.border.Border;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
+public class CustomDialogPass extends JDialog {
 
-public class CustomDialogPass extends JDialog {    
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     Toolkit pantalla = Toolkit.getDefaultToolkit();
@@ -52,6 +52,8 @@ public class CustomDialogPass extends JDialog {
     Color viol = new Color(205, 128, 255);
     Color bluLg = new Color(194, 242, 206);
     JPasswordField fieldPass = new JPasswordField();
+    char[] passCh1 = null;
+
     
     public CustomDialogPass(String message) {
         setIconImage(icono.getImage());
@@ -72,7 +74,7 @@ public class CustomDialogPass extends JDialog {
         panelText.setBorder(bordeInterno);
         panelText.setBackground(viol);
         contentPane.add(panelText);
-        
+
         panelText.setLayout(new GridBagLayout());
         JLabel labelText = new JLabel();
         labelText.setText(utili.stringMsgFrd(message, 25, 2));
@@ -84,18 +86,18 @@ public class CustomDialogPass extends JDialog {
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;
         panelText.add(labelText, constraints);
-        
-        fieldPass.setBounds(anchoUnit * 9, altoUnit * 16, anchoUnit * 10, altoUnit * 5 );
+
+        fieldPass.setBounds(anchoUnit * 9, altoUnit * 16, anchoUnit * 10, altoUnit * 5);
         fieldPass.setFont(new Font("Arial", Font.PLAIN, 20));
         contentPane.add(fieldPass);
-        
+
         JButtonMetalBlu acceptButton = utiliGraf.button2("Aceptar", anchoUnit * 9, altoUnit * 28, anchoUnit * 10);
         acceptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    String pass = fieldPass.getText();
-                    caracteres = pass.toCharArray();
+                    passCh1 = fieldPass.getPassword();
+                    caracteres = passCh1;
                     dispose();
                 } catch (Exception ex) {
                     Logger.getLogger(CustomDialogPass.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,7 +106,7 @@ public class CustomDialogPass extends JDialog {
         }
         );
         contentPane.add(acceptButton);
-        
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
@@ -112,7 +114,7 @@ public class CustomDialogPass extends JDialog {
         }
         );
     }
-    
+
     public char[] getChar() {
         return caracteres;
     }

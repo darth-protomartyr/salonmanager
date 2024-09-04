@@ -19,7 +19,7 @@ public class DAOUser extends DAO {
             String mail = SalonManager.encrypt(user.getMail());
             String id = SalonManager.encrypt(user.getId());
             String rol = "";
-            if (user.getRol() == null) {
+            if (user.getRol() == "") {
                 rol = SalonManager.encrypt("NULL");
             } else {
                 rol = SalonManager.encrypt(user.getRol());
@@ -34,11 +34,8 @@ public class DAOUser extends DAO {
                     + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
-            if (rol.equals("")) {
-                utiliMsg.cargaUsuarioRolNull();
-            } else {
-                utiliMsg.cargaUsuarioRolFull();
-            }
+            utiliMsg.cargaUsuarioRolNull();
+
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -218,7 +215,6 @@ public class DAOUser extends DAO {
                 user.setActiveUser(SalonManager.decryptBoolean(resultado.getString(10)));
 
                 users.add(user);
-
             }
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {

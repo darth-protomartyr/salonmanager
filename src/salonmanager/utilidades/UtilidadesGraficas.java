@@ -526,7 +526,7 @@ public class UtilidadesGraficas extends JFrame {
         String fontName2 = "Tahoma";
         int fontSize1 = 9;
         String colorHex1 = "#FFFFFF";
-        String colorHex2 = "#000000";
+        String colorHex2 = "#025243";
         String colorHex3 = "#FCCB05";
         
         String span1 = "span style='font-family: " + fontName1 + "; font-weight: bold; font-size: " + fontSize1 + "px; color: " + colorHex1 + ";'";

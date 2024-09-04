@@ -436,6 +436,11 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Error: Todos los campos deben ser completados", 2);
         cm.setVisible(true);
     }
+    
+    public void errorEmptyFieldsCmr() {
+        CustomDialog cm = new CustomDialog("Error: Nombre Apellido y teléfono deben ser completados", 2);
+        cm.setVisible(true);
+    }
 
     public void errorNullDeli() {
         CustomDialog cm = new CustomDialog("Error: Aún no hay se han asignado datos al envío", 2);

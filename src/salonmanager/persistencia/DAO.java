@@ -13,7 +13,8 @@ public class DAO {
     protected Statement sentencia = null;
 
     private final String driver = "org.sqlite.JDBC"; // Cambia el driver a SQLite    
-    String urlBaseDeDatos = "jdbc:sqlite:" + "C:/Users/Gonzalo/Documents/NetbeansProject/bariaDB/salonmanager.s3db";
+//    String urlBaseDeDatos = "jdbc:sqlite:" + "C:/Users/Gonzalo/Documents/NetbeansProject/bariaDB/salonmanager.s3db";
+    String urlBaseDeDatos = "jdbc:sqlite:" + System.getProperty("user.dir") + "/bariaDB/salonmanager.s3db";
 
     protected void conectarBase() throws Exception {
         try {

@@ -143,14 +143,6 @@ public class TemplateUser extends FrameHalf {
 
         labelImage.setBounds(anchoUnit * 2, altoUnit * 61, anchoUnit * 9, altoUnit * 4);
         panelLabelImage.add(labelImage);
-//--------------------------------------TEST++++++++++++++++++++++++++++++++++++--
-
-            fieldName.setText("Mateo");
-            fieldLastName.setText("Lopez");
-            fieldMail.setText("mate@gmail.com");
-            fieldPhone.setText("2615613868");
-            fieldPass1.setText("27949874");
-            fieldPass2.setText("27949874");
         
         butCreateUser = utiliGraf.button1("Crear Usuario", anchoUnit * 16, altoUnit * 83, anchoUnit * 21);
         butCreateUser.addActionListener(new ActionListener() {
@@ -202,8 +194,14 @@ public class TemplateUser extends FrameHalf {
         mail = fieldMail.getText();
         boolean validMail = utili.isValidEmail(mail);
         phone = fieldPhone.getText();
-        pass1 = fieldPass1.getText();
-        pass2 = fieldPass2.getText();
+        char[] passCh1 = fieldPass1.getPassword();
+        String passString1 = new String(passCh1);
+        java.util.Arrays.fill(passCh1, ' ');
+        
+        char[] passCh2 = fieldPass2.getPassword();
+        String passString2 = new String(passCh2);
+        java.util.Arrays.fill(passCh2, ' ');
+        
         boolean error = false;
 
         if (name.length() > 30 || name.length() < 2) {
@@ -243,14 +241,14 @@ public class TemplateUser extends FrameHalf {
             }
         }
 
-        if (pass1.length() < 8 || pass1.length() > 30) {
+        if (passString1.length() < 4 || passString2.length() > 20) {
             utiliMsg.errorPassChar();
             fieldPass1.setText("");
             fieldPass2.setText("");
             error = true;
         }
 
-        if (!pass1.equals(pass2)) {
+        if (!passString1.equals(passString2)) {
             utiliMsg.errorPassCoincidence();
             fieldPass1.setText("");
             fieldPass2.setText("");
@@ -258,7 +256,7 @@ public class TemplateUser extends FrameHalf {
         }
 
         if (routeImage == "") {
-            routeImage = "C:|Users|Gonzalo|Documents|NetbeansProject|SalonManager|resources|images|avatar.jpg";
+            routeImage = "resources|images|avatar.jpg";
             nameImage = "avatar.jpg";
         }
 
@@ -269,9 +267,9 @@ public class TemplateUser extends FrameHalf {
 
         if (error == false) {
             if (userMod == null) {
-                User user = new User(name, lastName, mail, routeImage, nameImage, pass1, phone);
+                User user = new User(name, lastName, mail, routeImage, nameImage, passString1, phone);
                 user.setActiveUser(true);
-                user.setRol("ADMIN");
+                user.setRol("");
                 daoU.saveUser(user);
                 resetRegister();
                 if (admin != null) {
@@ -286,7 +284,7 @@ public class TemplateUser extends FrameHalf {
                 daoU.updateMailUser(id, mail);
                 daoU.updateNameImageUser(id, nameImage);
                 daoU.updatePhoneUser(id, phone);
-                daoU.updatePassUser(id, pass1);
+                daoU.updatePassUser(id, passString1);
                 utiliMsg.cargaUpdateUsuario();
                 if (admin != null) {
                     utiliGrafAdm.enabledTrue(2, admin);

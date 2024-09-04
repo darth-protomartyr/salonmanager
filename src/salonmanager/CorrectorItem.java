@@ -92,7 +92,6 @@ public class CorrectorItem extends FrameWindow {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     itemsComboChanger(itemsOrder, 1);
-//                    labelComboItems.setText("lista de pedidos:");
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -106,7 +105,6 @@ public class CorrectorItem extends FrameWindow {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     itemsComboChanger(itemsGift, 2);
-//                    labelComboItems.setText("lista de Obsequios:");
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -120,7 +118,6 @@ public class CorrectorItem extends FrameWindow {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     itemsComboChanger(itemsPayed, 3);
-//                    labelComboItems.setText("lista de pagados:");
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }

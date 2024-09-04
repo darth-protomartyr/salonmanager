@@ -38,13 +38,13 @@ public class UtilidadesGraficasDeliCreate {
     public JPanel panelConsumerBacker(DeliveryCreate dc) {
         JPanel panelConsumer = panelBacker("Cliente", altoUnit * 6, (alturaFrame / 2 - altoUnit * 9));
 
-        dc.setLabelSelectPhone(utiliGraf.labelTitleBacker1("Elija Cliente según teléfono:"));
-        dc.getLabelSelectPhone().setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 23, altoUnit * 4);
+        dc.setLabelSelectPhone(utiliGraf.labelTitleBacker1("Seleccione Cliente:"));
+        dc.getLabelSelectPhone().setBounds(anchoUnit * 3, altoUnit * 7, anchoUnit * 14, altoUnit * 4);
         panelConsumer.add(dc.getLabelSelectPhone());
 
-        dc.getComboConsumers().setModel(utili.consumerComboModelReturnWNull(dc.getConsumers()));
+        dc.getComboConsumers().setModel(utili.consumerComboModelReturnWNull(dc.getConsumers(), dc, null));
         dc.getComboConsumers().setFont(dc.getSalon().getFont4());
-        dc.getComboConsumers().setBounds(anchoUnit * 24, altoUnit * 7, anchoUnit * 12, altoUnit * 4);
+        dc.getComboConsumers().setBounds(anchoUnit * 17, altoUnit * 7, anchoUnit * 19, altoUnit * 4);
         dc.getComboConsumers().setSelectedIndex(dc.getConsumers().size());
         ActionListener actionListener1 = new ActionListener() {
             @Override
@@ -74,43 +74,47 @@ public class UtilidadesGraficasDeliCreate {
         );
         panelConsumer.add(dc.getButOpConsumer());
 
-        dc.setLabelName(utiliGraf.labelTitleBacker2("Nombre:"));
-        dc.getLabelName().setBounds(anchoUnit * 5, altoUnit * 13, anchoUnit * 22, altoUnit * 3);
+        dc.setLabelName(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Nombre:</span></html>"));
+        dc.getLabelName().setBounds(anchoUnit * 2, altoUnit * 13, anchoUnit * 22, altoUnit * 3);
         panelConsumer.add(dc.getLabelName());
+        
+        dc.setLabelLastname(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Apellido:</span></html>"));
+        dc.getLabelLastname().setBounds(anchoUnit * 2, altoUnit * 18, anchoUnit * 22, altoUnit * 3);
+        panelConsumer.add(dc.getLabelLastname());
 
-        dc.setLabelPhone(utiliGraf.labelTitleBacker2("Teléfono:"));
-        dc.getLabelPhone().setBounds(anchoUnit * 5, altoUnit * 18, anchoUnit * 22, altoUnit * 3);
+        dc.setLabelPhone(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Teléfono:</span></html>"));
+        dc.getLabelPhone().setBounds(anchoUnit * 2, altoUnit * 23, anchoUnit * 22, altoUnit * 3);
         panelConsumer.add(dc.getLabelPhone());
 
-        dc.setLabelSn(utiliGraf.labelTitleBacker2("Red Social:"));
-        dc.getLabelSn().setBounds(anchoUnit * 5, altoUnit * 23, anchoUnit * 22, altoUnit * 3);
+        dc.setLabelSn(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Red Social:</span></html>"));
+        dc.getLabelSn().setBounds(anchoUnit * 2, altoUnit * 28, anchoUnit * 30, altoUnit * 3);
         panelConsumer.add(dc.getLabelSn());
 
-        dc.setLabelStreet(utiliGraf.labelTitleBacker2("Calle:"));
-        dc.getLabelStreet().setBounds(anchoUnit * 5, altoUnit * 28, anchoUnit * 22, altoUnit * 3);
+        dc.setLabelStreet(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Calle:</span></html>"));
+        dc.getLabelStreet().setBounds(anchoUnit * 2, altoUnit * 33, anchoUnit * 22, altoUnit * 3);
         panelConsumer.add(dc.getLabelStreet());
 
-        dc.setLabelNumSt(utiliGraf.labelTitleBacker2("Numéro:"));
-        dc.getLabelNumSt().setBounds(anchoUnit * 5, altoUnit * 33, anchoUnit * 22, altoUnit * 3);
+        dc.setLabelNumSt(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Numéro:</span></html>"));
+        dc.getLabelNumSt().setBounds(anchoUnit * 2, altoUnit * 38, anchoUnit * 10, altoUnit * 3);
         panelConsumer.add(dc.getLabelNumSt());
 
-        dc.setLabelFloorD(utiliGraf.labelTitleBacker2("Piso:"));
-        dc.getLabelFloorD().setBounds(anchoUnit * 5, altoUnit * 38, anchoUnit * 22, altoUnit * 3);
+        dc.setLabelFloorD(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Piso:</span></html>"));
+        dc.getLabelFloorD().setBounds(anchoUnit * 15, altoUnit * 38, anchoUnit * 8, altoUnit * 3);
         panelConsumer.add(dc.getLabelFloorD());
 
-        dc.setLabelNumD(utiliGraf.labelTitleBacker2("Nro departamento:"));
+        dc.setLabelNumD(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Nro departamento:</span></html>"));
         dc.getLabelNumD().setBounds(anchoUnit * 30, altoUnit * 13, anchoUnit * 22, altoUnit * 3);
         panelConsumer.add(dc.getLabelNumD());
 
-        dc.setLabelDistrict(utiliGraf.labelTitleBacker2("Barrio:"));
+        dc.setLabelDistrict(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Barrio:</span></html>"));
         dc.getLabelDistrict().setBounds(anchoUnit * 30, altoUnit * 18, anchoUnit * 22, altoUnit * 3);
         panelConsumer.add(dc.getLabelDistrict());
 
-        dc.setLabelArea(utiliGraf.labelTitleBacker2("Localidad:"));
+        dc.setLabelArea(utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Localidad:</span></html>"));
         dc.getLabelArea().setBounds(anchoUnit * 30, altoUnit * 23, anchoUnit * 22, altoUnit * 3);
         panelConsumer.add(dc.getLabelArea());
 
-        JLabel labelDetailsTit = utiliGraf.labelTitleBacker2("Detalles Domicilio:");
+        JLabel labelDetailsTit = utiliGraf.labelTitleBacker2("<html><span style='font-weight: 400;'>Detalles Domicilio:</span></html>");
         labelDetailsTit.setBounds(anchoUnit * 30, altoUnit * 28, anchoUnit * 22, altoUnit * 3);
         panelConsumer.add(labelDetailsTit);
 
@@ -143,22 +147,24 @@ public class UtilidadesGraficasDeliCreate {
     }
 
     private void consumerPhoneBacker(DeliveryCreate dc) throws Exception {
-        String st = (String) dc.getComboConsumers().getSelectedItem();
-        DeliveryClient cmr = daoC.getConsumerByPhone(st);
+        int i = (int) dc.getComboConsumers().getSelectedIndex();
+        i = dc.getIdsCmr().get(i);
+        DeliveryClient cmr = daoC.getConsumerById(i);
         dc.setCmrAux(cmr);
         setConsumerFields(dc.getCmrAux(), dc);
     }
 
     public void setConsumerFields(DeliveryClient cmr, DeliveryCreate dc) {
-        dc.getLabelName().setText("Nombre: " + cmr.getName());
-        dc.getLabelPhone().setText("Teléfono: " + cmr.getPhone());
-        dc.getLabelSn().setText("Red Social: " + cmr.getSocialNetwork());
-        dc.getLabelStreet().setText("Calle: " + cmr.getStreet());
-        dc.getLabelNumSt().setText("Número: " + cmr.getNumSt());
-        dc.getLabelFloorD().setText("Piso: " + cmr.getDeptFloor());
-        dc.getLabelNumD().setText("Nro de Departamento: " + cmr.getDeptNum());
-        dc.getLabelDistrict().setText("Barrio: " + cmr.getDistrict());
-        dc.getLabelArea().setText("Localidad: " + cmr.getArea());
+        dc.getLabelName().setText("<html><span style='font-weight: 400;'>Nombre:</span> <span style='font-weight: 900;'>" + cmr.getName().toUpperCase() + "</span></html>");
+        dc.getLabelLastname().setText("<html><span style='font-weight: 400;'>Apellido:</span> <span style='font-weight: 900;'>" + cmr.getLastname().toUpperCase() + "</span></html>");
+        dc.getLabelPhone().setText("<html><span style='font-weight: 400;'>Teléfono:</span> <span style='font-weight: 900;'>" + cmr.getPhone().toUpperCase() + "</span></html>");
+        dc.getLabelSn().setText("<html><span style='font-weight: 400;'>Red Social:</span> <span style='font-weight: 900;'>" + cmr.getSocialNetwork() + "</span></html>");
+        dc.getLabelStreet().setText("<html><span style='font-weight: 400;'>Calle:</span> <span style='font-weight: 900;'>" + cmr.getStreet().toUpperCase() + "</span></html>");
+        dc.getLabelNumSt().setText("<html><span style='font-weight: 400;'>Número:</span> <span style='font-weight: 900;'>" + cmr.getNumSt().toUpperCase() + "</span></html>");
+        dc.getLabelFloorD().setText("<html><span style='font-weight: 400;'>Piso:</span> <span style='font-weight: 900;'>" + cmr.getDeptFloor().toUpperCase() + "</span></html>");
+        dc.getLabelNumD().setText("<html><span style='font-weight: 400;'>Nro de Departamento:</span> <span style='font-weight: 900;'>" + cmr.getDeptNum().toUpperCase() + "</span></html>");
+        dc.getLabelDistrict().setText("<html><span style='font-weight: 400;'>Barrio:</span> <span style='font-weight: 900;'>" + cmr.getDistrict().toUpperCase() + "</span></html>");
+        dc.getLabelArea().setText("<html><span style='font-weight: 400;'>Localidad:</span> <span style='font-weight: 900;'>" + cmr.getArea().toUpperCase() + "</span></html>");
         String details = utili.stringMsgFrd(cmr.getDetails(), 25, 1);
         dc.getLabelDetails().setText(details);
         dc.revalidate();
@@ -174,7 +180,7 @@ public class UtilidadesGraficasDeliCreate {
         dc.setCmrAux(cmr);
         setConsumerFields(dc.getCmrAux(), dc);
         dc.getConsumers().add(dc.getCmrAux().getPhone());
-        dc.getComboConsumers().setModel(utili.consumerComboModelReturnWNull(dc.getConsumers()));
+        dc.getComboConsumers().setModel(utili.consumerComboModelReturnWNull(dc.getConsumers(), dc, null));
         dc.getComboConsumers().setSelectedIndex(dc.getConsumers().size() - 1);
         dc.setFndEnabled();
     }
@@ -222,23 +228,23 @@ public class UtilidadesGraficasDeliCreate {
         );
         panelDelivery.add(dc.getButOpDeliUser());
 
-        dc.setLabelNameDeli(utiliGraf.labelTitleBacker1("Nombre:"));
+        dc.setLabelNameDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Nombre:</span></html>"));
         dc.getLabelNameDeli().setBounds(anchoUnit * 8, altoUnit * 11, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dc.getLabelNameDeli());
 
-        dc.setLabelLastNameDeli(utiliGraf.labelTitleBacker1("Apellido:"));
+        dc.setLabelLastNameDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Apellido:</span></html>"));
         dc.getLabelLastNameDeli().setBounds(anchoUnit * 8, altoUnit * 16, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dc.getLabelLastNameDeli());
 
-        dc.setLabelPhoneDeli(utiliGraf.labelTitleBacker1("Teléfono:"));
+        dc.setLabelPhoneDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Teléfono:</span></html>"));
         dc.getLabelPhoneDeli().setBounds(anchoUnit * 8, altoUnit * 21, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dc.getLabelPhoneDeli());
 
-        dc.setLabelMailDeli(utiliGraf.labelTitleBacker1("Numéro:"));
+        dc.setLabelMailDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Numéro:</span></html>"));
         dc.getLabelMailDeli().setBounds(anchoUnit * 8, altoUnit * 26, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dc.getLabelMailDeli());
 
-        dc.setLabelRolDeli(utiliGraf.labelTitleBacker1("Ocupación:"));
+        dc.setLabelRolDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Ocupación:</span></html>"));
         dc.getLabelRolDeli().setBounds(anchoUnit * 8, altoUnit * 31, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dc.getLabelRolDeli());
 
@@ -253,11 +259,11 @@ public class UtilidadesGraficasDeliCreate {
     }
 
     public void setDeliveryFields(User deli, DeliveryCreate dc) {
-        dc.getLabelNameDeli().setText("Nombre: " + deli.getName());
-        dc.getLabelLastNameDeli().setText("Apellido: " + deli.getLastName());
-        dc.getLabelPhoneDeli().setText("Teléfono: " + deli.getPhone());
-        dc.getLabelMailDeli().setText("Mail: " + deli.getMail());
-        dc.getLabelRolDeli().setText("Ocupación: " + deli.getRol());
+        dc.getLabelNameDeli().setText("<html><span style='font-weight: 400;'>Nombre:</span> <span style='font-weight: 900;'>" + deli.getName().toUpperCase() + "</span></html>");
+        dc.getLabelLastNameDeli().setText("<html><span style='font-weight: 400;'>Apellido:</span> <span style='font-weight: 900;'>" + deli.getLastName().toUpperCase() + "</span></html>");
+        dc.getLabelPhoneDeli().setText("<html><span style='font-weight: 400;'>Teléfono:</span> <span style='font-weight: 900;'>" + deli.getPhone().toUpperCase() + "</span></html>");
+        dc.getLabelMailDeli().setText("<html><span style='font-weight: 400;'>Mail:</span> <span style='font-weight: 900;'>" + deli.getMail().toUpperCase() + "</span></html>");
+        dc.getLabelRolDeli().setText("<html><span style='font-weight: 400;'>Ocupación:</span> <span style='font-weight: 900;'>" + deli.getRol().toUpperCase() + "</span></html>");
     }
 
     private void createDeliveryUser(DeliveryCreate dc) throws Exception {

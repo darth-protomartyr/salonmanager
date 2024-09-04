@@ -91,7 +91,10 @@ public class Manager extends FrameFull {
         panelUser.setBackground(narLg);
         panelPpal.add(panelUser);
 
-        String route = utili.barrReplaceInverse(userIn.getRouteImage());
+        String workingDir = System.getProperty("user.dir");
+        System.out.println("Current working directory: " + workingDir);
+        String route = utili.barrReplaceInverse(userIn.getRouteImage(), false);
+        System.out.println(route);
         ImageIcon imageIcon = new ImageIcon(route);
         Image originalImage = imageIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(anchoUnit * 8, altoUnit * 14, Image.SCALE_SMOOTH);

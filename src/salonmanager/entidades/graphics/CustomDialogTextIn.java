@@ -106,7 +106,10 @@ public class CustomDialogTextIn extends JDialog {
                     if (kind == 1) {
                         text = textArea.getText();
                     } else if (kind == 2){
-                        text = textFieldPass.getText();
+                        char[] passCh1 = textFieldPass.getPassword();
+                        String passString1 = new String(passCh1);
+                        text = passString1;
+                        java.util.Arrays.fill(passCh1, ' ');
                     } else if (kind == 3) {
                         text = textField.getText();
                     }

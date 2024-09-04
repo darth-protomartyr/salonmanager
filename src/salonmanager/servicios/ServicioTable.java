@@ -8,6 +8,7 @@ import salonmanager.Salon;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAODelivery;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
@@ -20,6 +21,7 @@ public class ServicioTable {
     DAOTable daoT = new DAOTable();
     DAOItemcard daoI = new DAOItemcard();
     DAOUser daoU = new DAOUser();
+    DAOConfig daoC = new DAOConfig();
     Utilidades utili = new Utilidades();
 
     public int giftCounter(ArrayList<Itemcard> gifts, Itemcard ic) {
@@ -84,6 +86,21 @@ public class ServicioTable {
     }
 
     public void saveTableCompleteChangeWs(Table tab, Salon salon) throws Exception {
+        ArrayList<Integer> indexes = daoC.askIndexes();
+        if (tab.getPos().equals("delivery")) {
+            int i = indexes.get(1) + 1;
+            tab.setNum(i);
+            indexes.set(1, i);
+            daoC.updateIndexes(indexes, true);
+        }
+
+        if (tab.getPos().equals("barra")) {
+            int i = indexes.get(0) + 1;
+            tab.setNum(i);
+            indexes.set(0, i);
+            daoC.updateIndexes(indexes, true);
+        }
+
         daoT.saveTable(tab, null);
         daoU.saveWaiterTable(tab);
         if (tab.getPos().equals("delivery")) {
@@ -114,30 +131,50 @@ public class ServicioTable {
         if (ts2 == null) {
             ts2 = new Timestamp(new Date().getTime());
         }
-        ArrayList<Timestamp> tabsTs = null;
+
+        ArrayList<Timestamp> tabsTs = new ArrayList<>();
+        ArrayList<Timestamp> tabsTsBarr = new ArrayList<>();
+        ArrayList<Timestamp> tabsTsDeli = new ArrayList<>();
         if (!open) {
             tabsTs = daoT.listarTabsTsActive();
         } else {
             tabsTs = daoT.listarTabsTsOpen();
+            tabsTsBarr = daoT.listarTabsTsActiveBarr();
+            tabsTsDeli = daoT.listarTabsTsActiveDeli();
         }
+
         tabsTs = utili.tsFilter(tabsTs, ts1, ts2);
-        
+        tabsTsBarr = utili.tsFilter(tabsTsBarr, ts1, ts2);
+        tabsTsDeli = utili.tsFilter(tabsTsDeli, ts1, ts2);
 
         ArrayList<Table> tabs = new ArrayList<>();
         for (int i = 0; i < tabsTs.size(); i++) {
             Table tab = daoT.getTableByTs(tabsTs.get(i));
+            if (!tab.getPos().equals("barra") && !tab.getPos().equals("delivery")) {
+                tabs.add(tab);
+            }
+        }
+
+        for (int i = 0; i < tabsTsBarr.size(); i++) {
+            Table tab = daoT.getTableByTs(tabsTsBarr.get(i));
             tabs.add(tab);
         }
+
+        for (int i = 0; i < tabsTsDeli.size(); i++) {
+            Table tab = daoT.getTableByTs(tabsTsDeli.get(i));
+            tabs.add(tab);
+        }
+
         return tabs;
     }
 
     public int maxBarrTab(Workshift ws) throws Exception {
-        ArrayList<Table> tabs =listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), false);
+        ArrayList<Table> tabs = listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), false);
         ArrayList<Integer> ints = new ArrayList<>();
         for (Table t : tabs) {
             ints.add(t.getNum());
         }
         int max = Collections.max(ints);
         return max;
-    }    
+    }
 }

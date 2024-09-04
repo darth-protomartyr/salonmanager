@@ -98,7 +98,6 @@ public class Admin extends FrameHalf {
 
 //----------------Panel Config------------------------------------------------
 //----------------Panel Config------------------------------------------------
-
         JPanel panelConfig = utiliGrafAdm.panelConfigBacker(adm);
         panelPpal.add(panelConfig);
 

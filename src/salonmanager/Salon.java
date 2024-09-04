@@ -72,10 +72,11 @@ public class Salon extends FrameFull {
     Font font3 = null;
     Font font4 = null;
     Font font5 = null;
-    JScrollPane scrPaneBarr = new JScrollPane();
     JPanel panelBarrBut = new JPanel();
     JPanel panelDeliBut = new JPanel();
+    JPanel panelBarrContainer = new JPanel();
     JPanel panelDeliContainer = new JPanel();
+
 
     ArrayList<Integer> tableNum = new ArrayList<>(); // número de mesa
     ArrayList<String> tablePan = new ArrayList<>(); // Nombre del sector
@@ -558,14 +559,6 @@ public class Salon extends FrameFull {
         this.font5 = font5;
     }
 
-    public JScrollPane getScrPaneBarr() {
-        return scrPaneBarr;
-    }
-
-    public void setScrPaneBarr(JScrollPane scrPaneBarr) {
-        this.scrPaneBarr = scrPaneBarr;
-    }
-
     public JPanel getPanelBarrBut() {
         return panelBarrBut;
     }
@@ -581,7 +574,15 @@ public class Salon extends FrameFull {
     public void setPanelDeliBut(JPanel panelDeliBut) {
         this.panelDeliBut = panelDeliBut;
     }
+    
+    public JPanel getPanelBarrContainer() {
+        return panelBarrContainer;
+    }
 
+    public void setPanelBarrContainer(JPanel panelBarrContainer) {
+        this.panelBarrContainer = panelBarrContainer;
+    }
+    
     public JPanel getPanelDeliContainer() {
         return panelDeliContainer;
     }
@@ -1124,7 +1125,6 @@ public class Salon extends FrameFull {
 
     public void setTipPc(double tipPc) {
         this.tipPc = tipPc;
-    }
-    
+    }   
     
 }

@@ -540,6 +540,44 @@ public class DAOTable extends DAO {
         }
     }
     
+    
+    public ArrayList<Timestamp> listarTabsTsActiveBarr() throws Exception {
+        ArrayList<Timestamp> tabsTs = new ArrayList<>();
+        try {
+            String sql = "SELECT table_open_time FROM tabs WHERE table_active = '" + SalonManager.encryptBoolean(true) + "' AND table_pos = '" + SalonManager.encrypt("barra") + "' ;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                Timestamp ts = SalonManager.decryptTs(resultado.getString(1));
+                tabsTs.add(ts);
+            }
+            return tabsTs;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    public ArrayList<Timestamp> listarTabsTsActiveDeli() throws Exception {
+        ArrayList<Timestamp> tabsTs = new ArrayList<>();
+        try {
+            String sql = "SELECT table_open_time FROM tabs WHERE table_active = '" + SalonManager.encryptBoolean(true) + "' AND table_pos = '" + SalonManager.encrypt("delivery") + "' ;";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                Timestamp ts = SalonManager.decryptTs(resultado.getString(1));
+                tabsTs.add(ts);
+            }
+            return tabsTs;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
 
     public Table getTableByTs(Timestamp ts) throws Exception {
         Table tab = new Table();

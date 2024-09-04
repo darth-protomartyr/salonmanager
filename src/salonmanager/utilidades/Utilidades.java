@@ -21,7 +21,10 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
+import salonmanager.DeliveryCreate;
+import salonmanager.DeliveryData;
 import salonmanager.Salon;
+import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
@@ -175,9 +178,13 @@ public class Utilidades {
         return path;
     }
 
-    public String barrReplaceInverse(String absolutePath) {
+    public String barrReplaceInverse(String absolutePath, boolean absolute) {
         String path = absolutePath;
+        if (absolute) {
         path = path.replace("|", "\\");
+        } else {
+            path = path.replace("|", "\\");
+        }
         return path;
     }
 
@@ -288,10 +295,40 @@ public class Utilidades {
         return modeloCombo;
     }
 
-    public ComboBoxModel consumerComboModelReturnWNull(ArrayList<String> cmrs) {
+    public ComboBoxModel consumerComboModelReturnWNull(ArrayList<String> cmrs, DeliveryCreate dc, DeliveryData dd) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (String cmr : cmrs) {
-            modeloCombo.addElement(cmr);
+            String[] words = cmr.split("/");
+            String st = "";
+            
+            String one = words[0];
+            String[] first = one.split(" ");
+            String ch1 = first[0];
+            
+            if (cmr.length() > 30) {
+                ch1 = ch1.substring(0, 1) + ".";
+            }
+                
+            String ch2 = words[1];
+            if (ch2.length() > 15) {
+                String[] second = ch2.split(" ");
+                ch2 = second[0];
+                if (ch2.length() > 15) {
+                    ch2 = ch2.substring(0, 14) + ".";
+                }
+            }
+            
+            String i =  words[2];
+            int id = (int) parseInt(i);
+            if (dc != null) {
+                dc.getIdsCmr().add(id);
+            } else {
+                dd.getIdsCmr().add(id);
+            }
+            
+            st = ch2 + ", " + ch1;
+
+            modeloCombo.addElement(st);
         }
         modeloCombo.addElement("");
         return modeloCombo;
@@ -523,7 +560,7 @@ public class Utilidades {
         return modeloLista;
     }
 
-    public boolean requiredPerm(char[] pass) {
+    public boolean requiredPerm(char[] pass, User user) {
         boolean perm = false;
         String p;
         if (pass == null) {
@@ -531,7 +568,7 @@ public class Utilidades {
         } else {
             p = new String(pass);
         }
-        String w = "papa";
+        String w = user.getPassword();
         if (p.equals(w)) {
             perm = true;
         }
@@ -807,7 +844,6 @@ public class Utilidades {
 
     public void cfgBacker() throws Exception {
         DAOConfig daoC = new DAOConfig();
-
         ArrayList<Integer> tabsQ = new ArrayList<>();
         tabsQ.add(35);
         tabsQ.add(24);
@@ -827,8 +863,11 @@ public class Utilidades {
         daoC.saveConfigGeneral(59, tabsQ, spaces, chars, categories, 10, true, false);
         ArrayList<String> defer = new ArrayList<String>();
         ArrayList<String> mods = new ArrayList<String>();
+        ArrayList<Integer> indexes = new ArrayList<>();
+        indexes.add(0);
+        indexes.add(0);
 
-        daoC.saveConfigActual(false, 0, defer, mods);
+        daoC.saveConfigActual(false, 0, defer, mods, indexes);
 
         ArrayList<String> categ = daoC.askCategories();
 
@@ -1013,47 +1052,47 @@ public class Utilidades {
                     if (word.toLowerCase().equals("soda")) {
                         word = "S.";
                     }
-                    
+
                     if (word.toLowerCase().equals("pizza")) {
                         word = "P.";
-                    }                    
+                    }
 
                     if (word.toLowerCase().equals("malbec")) {
                         word = "Mal.";
                     }
-                    
+
                     if (word.toLowerCase().equals("cabernet")) {
                         word = "Cab.";
                     }
-                    
+
                     if (word.toLowerCase().equals("sauvignon")) {
                         word = "Sauv.";
                     }
-                    
+
                     if (word.toLowerCase().equals("pinot")) {
                         word = "Pi.";
                     }
-                    
+
                     if (word.toLowerCase().equals("tempranillo")) {
                         word = "Temp.";
                     }
-                    
+
                     if (word.toLowerCase().equals("merlot")) {
                         word = "Mer.";
                     }
-                    
+
                     if (word.toLowerCase().equals("syrah")) {
                         word = "Syr.";
                     }
-                    
+
                     if (word.toLowerCase().equals("champaña") || word.toLowerCase().equals("champagne")) {
                         word = "Champ.";
                     }
-                    
+
                     if (word.toLowerCase().equals("chardonnay") || word.toLowerCase().equals("chardonay") || word.toLowerCase().equals("chardoney")) {
                         word = "Chard.";
                     }
-                    
+
                     redux += word;
                     if (i < words.length - 1) {
                         redux += " ";
@@ -1069,10 +1108,28 @@ public class Utilidades {
     public ArrayList<Timestamp> tsFilter(ArrayList<Timestamp> salesTs, Timestamp ts1, Timestamp ts2) {
         ArrayList<Timestamp> tsS = new ArrayList<Timestamp>();
         for (int i = 0; i < salesTs.size(); i++) {
-            if(salesTs.get(i).after(ts1) && salesTs.get(i).before(ts2)) {
-               tsS.add(salesTs.get(i));
-            } 
+            if (salesTs.get(i).after(ts1) && salesTs.get(i).before(ts2)) {
+                tsS.add(salesTs.get(i));
+            }
         }
         return tsS;
-    }    
+    }
+
+    String cmrNameBacker(DeliveryClient cmr) {
+        String st = "";
+        String one = cmr.getName();
+        String[] first = one.split(" ");
+        String ch1 = first[0];
+        ch1 = ch1.substring(0, 1) + ".";
+
+        String ch2 = cmr.getLastname();
+        if (ch2.length() > 15) {
+            String[] second = ch2.split(" ");
+            ch2 = second[0];
+            if (ch2.length() > 15) {
+                ch2 = ch2.substring(0, 14) + ".";
+            }
+        }
+        return st = ch2 + " " + ch1;
+    }
 }

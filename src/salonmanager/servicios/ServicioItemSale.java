@@ -25,11 +25,16 @@ public class ServicioItemSale {
         } else {
            waiterId = salon.getWaiterAux().getId();
         }
+        
+        int idClient = 0;
+        if (tabId.equals("delivery")) {
+            idClient = salon.getJbdAux().getDelivery().getConsumer().getId();
+        }
 
         int wsId = salon.getWorkshiftNow().getId();
         for(Itemcard ic : items) {
             Timestamp ts = new Timestamp(new Date().getTime());
-            ItemSale is = new ItemSale(ic.getId(), ic.getCategory(), tabId, waiterId, wsId, utili.priceMod(ic, salon), ts);
+            ItemSale is = new ItemSale(ic.getId(), ic.getCategory(), tabId, waiterId, wsId, utili.priceMod(ic, salon), idClient, ts);
             daoI.saveItemSale(is);
         }
     }

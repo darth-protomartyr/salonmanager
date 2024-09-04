@@ -44,6 +44,10 @@ public class ServicioWorkshift {
         daoC.updateCfgActOpenWs(false);
         daoC.updateCfgActOpenIdWs(0);
         daoC.updateCfgActModTabs(new ArrayList<String>());
+        ArrayList<Integer>indexes =  new  ArrayList<>();
+        indexes.add(0);
+        indexes.add(0);
+        daoC.updateIndexes(indexes, true);
         if (newWs != null) {
             daoW.saveWorkshift(newWs);
             int id = daoW.askWorshiftActualId();
@@ -91,7 +95,6 @@ public class ServicioWorkshift {
                             daoI.upActiveItemGiftTable(t, ic);
                         }
                     }
-
                     daoT.updateTableOpen(t);
                     daoT.updateToPay(t);
                 }

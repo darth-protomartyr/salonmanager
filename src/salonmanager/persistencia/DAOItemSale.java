@@ -15,8 +15,8 @@ public class DAOItemSale extends DAO {
         int id = getItemSaleId();
         itemSale.setSaleId(id);
         try {
-            String sql = "INSERT INTO item_sales_statics( item_sale_static_id, item_sale_id, item_sale_waiter_id, item_sale_category, item_sale_tab_pos, item_sale_workshift_id, item_sale_price, item_sale_date, item_sale_active)"
-                    + "VALUES('" + SalonManager.encryptInt(id) + "', '" + SalonManager.encryptInt(itemSale.getItemSaleId()) + "', '" + SalonManager.encrypt(itemSale.getItemSaleWaiterId()) + "', '" + SalonManager.encrypt(itemSale.getItemSaleCategory()) + "', '"  + SalonManager.encrypt(itemSale.getItemSaleTabPos()) +  "', '"   + SalonManager.encryptInt(itemSale.getItemSaleWorkshiftId()) + "', '" + SalonManager.encryptDouble(itemSale.getItemSalePrice()) + "', '" + SalonManager.encryptTs(itemSale.getItemSaleDate()) + "', '" + SalonManager.encryptBoolean(true) + "');";
+            String sql = "INSERT INTO item_sales_statics( item_sale_static_id, item_sale_id, item_sale_waiter_id, item_sale_category, item_sale_tab_pos, item_sale_workshift_id, item_sale_price, item_sale_client_id, item_sale_date, item_sale_active)"
+                    + "VALUES('" + SalonManager.encryptInt(id) + "', '" + SalonManager.encryptInt(itemSale.getItemSaleId()) + "', '" + SalonManager.encrypt(itemSale.getItemSaleWaiterId()) + "', '" + SalonManager.encrypt(itemSale.getItemSaleCategory()) + "', '"  + SalonManager.encrypt(itemSale.getItemSaleTabPos()) +  "', '"   + SalonManager.encryptInt(itemSale.getItemSaleWorkshiftId()) + "', '" + SalonManager.encryptDouble(itemSale.getItemSalePrice())  + "', '" + SalonManager.encryptInt(itemSale.getIdClient())  + "', '" + SalonManager.encryptTs(itemSale.getItemSaleDate()) + "', '" + SalonManager.encryptBoolean(true) + "');";
             System.out.println(sql);
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
@@ -70,8 +70,9 @@ public class DAOItemSale extends DAO {
                 iS.setItemSaleWaiterId(SalonManager.decrypt(resultado.getString(5)));
                 iS.setItemSaleWorkshiftId(SalonManager.decryptInt(resultado.getString(6)));
                 iS.setItemSalePrice(SalonManager.decryptDouble(resultado.getString(7)));
-                iS.setItemSaleDate(SalonManager.decryptTs(resultado.getString(8)));
-                iS.setItemSaleActive(SalonManager.decryptBoolean(resultado.getString(9)));
+                iS.setIdClient(SalonManager.decryptInt(resultado.getString(8)));
+                iS.setItemSaleDate(SalonManager.decryptTs(resultado.getString(9)));
+                iS.setItemSaleActive(SalonManager.decryptBoolean(resultado.getString(10)));
             }
             return iS;
         } catch (Exception e) {
@@ -132,8 +133,9 @@ public class DAOItemSale extends DAO {
                 iS.setItemSaleWaiterId(SalonManager.decrypt(resultado.getString(5)));
                 iS.setItemSaleWorkshiftId(SalonManager.decryptInt(resultado.getString(6)));
                 iS.setItemSalePrice(SalonManager.decryptDouble(resultado.getString(7)));
-                iS.setItemSaleDate(SalonManager.decryptTs(resultado.getString(8)));
-                iS.setItemSaleActive(SalonManager.decryptBoolean(resultado.getString(9)));
+                iS.setIdClient(SalonManager.decryptInt(resultado.getString(8)));
+                iS.setItemSaleDate(SalonManager.decryptTs(resultado.getString(9)));
+                iS.setItemSaleActive(SalonManager.decryptBoolean(resultado.getString(10)));
             }
             return iS;
         } catch (Exception e) {

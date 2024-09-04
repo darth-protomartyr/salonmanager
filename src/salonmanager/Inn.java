@@ -65,7 +65,7 @@ public class Inn extends FrameWindow {
         panelData1.setBounds(anchoUnit * 3, altoUnit * 10, anchoUnit * 23, altoUnit * 7);
         fieldMail.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 15, altoUnit * 5);
         fieldMail.setFont(font);
-        fieldMail.setText("gon@gmail.com");
+        fieldMail.setText("mbastias382@gmail.com");
         panelData1.add(fieldMail);
         panelPpal.add(panelData1);
 
@@ -73,7 +73,7 @@ public class Inn extends FrameWindow {
         panelData2.setBounds(anchoUnit * 3, altoUnit * 20, anchoUnit * 23, altoUnit * 7);
         fieldPass.setBounds(anchoUnit * 7, altoUnit * 1, anchoUnit * 15, altoUnit * 5);
         fieldPass.setFont(font);
-        fieldPass.setText("27949874");
+        fieldPass.setText("lana");
         panelData2.add(fieldPass);
         panelPpal.add(panelData2);
 
@@ -107,18 +107,12 @@ public class Inn extends FrameWindow {
     }
 
     private void butInUserActionPerformed() throws Exception {
-        mail = fieldMail.getText();
-        pass = fieldPass.getText();
-//        utili.cfgBacker();
+        mail = fieldMail.getText();        
+        char[] pass = fieldPass.getPassword();
+        String passString = new String(pass);
+        java.util.Arrays.fill(pass, ' ');
         
-//        daoI.createTables();
-
-
-//        boolean askCfg = daoC.askCfgNull();
-//        if (!askCfg) {
-//            daoI.fullerTables();
-//            utili.cfgBacker();    
-//        }
+        
         boolean error = false;
 
         if (mail.equals("") || pass.equals("")) {
@@ -135,13 +129,13 @@ public class Inn extends FrameWindow {
         }
 
         if (error == false && id != null) {
-            if (userAux.getPassword().equals(pass)) {
+            if (userAux.getPassword().equals(passString)) {
                 try {
                     sm.setUserIn(userAux);
-                    sm.setPassIn(pass);
+                    sm.setPassIn(passString);
                     landing.dispose();
                     dispose();
-                    new Manager(userAux, pass);
+                    new Manager(userAux, passString);
                 } catch (Exception ex) {
                     Logger.getLogger(Inn.class.getName()).log(Level.SEVERE, null, ex);
                 }

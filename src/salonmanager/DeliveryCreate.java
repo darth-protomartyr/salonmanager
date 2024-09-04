@@ -19,6 +19,10 @@ import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.entidades.bussiness.User;
+import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
+import static salonmanager.entidades.graphics.FrameGeneral.alturaFrame;
+import static salonmanager.entidades.graphics.FrameGeneral.anchoFrame;
+import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
@@ -41,12 +45,14 @@ public class DeliveryCreate extends FrameHalf {
     Utilidades utili = new Utilidades();
     ImageIcon icono = new ImageIcon("menu.png");
 
+    ArrayList<Integer> idsCmr = new ArrayList<>(); 
     JComboBox comboConsumers = new JComboBox();
     JComboBox comboDelis = new JComboBox();
     JPanel panelDetails = new JPanel();
     JLabel labelSelectPhone = new JLabel();
     JLabel labelSelectDeli = new JLabel();
     JLabel labelName = new JLabel();
+    JLabel labelLastname = new JLabel();
     JLabel labelPhone = new JLabel();
     JLabel labelSn = new JLabel();
     JLabel labelStreet = new JLabel();
@@ -88,7 +94,7 @@ public class DeliveryCreate extends FrameHalf {
         title = "INICIAR ENVIO";
         
 
-        consumers = daoC.getConsumersPhone();
+        consumers = daoC.getConsumersName();
         deliverys = daoU.listUserByRol("DELIVERY", true);
 
         setTitle(title);
@@ -114,7 +120,7 @@ public class DeliveryCreate extends FrameHalf {
         panelPpal.add(panelDelivery);
         
         butOpDelivery = utiliGraf.button1("CREAR ENVÍO", anchoUnit * 17, altoUnit * 90, anchoUnit * 16);
- 
+
             butOpDelivery.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -134,6 +140,7 @@ public class DeliveryCreate extends FrameHalf {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 dispose();
+                salon.setEnabled(true);
             }
         });
         panelPpal.add(butSalir);
@@ -249,6 +256,15 @@ public class DeliveryCreate extends FrameHalf {
     public void setLabelName(JLabel labelName) {
         this.labelName = labelName;
     }
+    
+    public JLabel getLabelLastname() {
+        return labelLastname;
+    }
+
+    public void setLabelLastname(JLabel labelLastname) {
+        this.labelLastname = labelLastname;
+    }
+    
 
     public JLabel getLabelPhone() {
         return labelPhone;
@@ -464,5 +480,13 @@ public class DeliveryCreate extends FrameHalf {
 
     public void setDc(DeliveryCreate dc) {
         this.dc = dc;
+    }
+
+    public ArrayList<Integer> getIdsCmr() {
+        return idsCmr;
+    }
+    
+    public void setIdsCmr(ArrayList<Integer> idsCmr) {
+        this.idsCmr = idsCmr;
     }
 }

@@ -19,14 +19,16 @@ import javax.swing.JPanel;
 import static javax.swing.SwingConstants.CENTER;
 import salonmanager.entidades.graphics.FrameGeneral;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
+import salonmanager.persistencia.DAOConfig;
 
 public class LandingFrame extends FrameGeneral {
 
     Color whi = new Color(255, 255, 255);
     Color bluSt = new Color(3, 166, 136);
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-
-    public LandingFrame() {
+    DAOConfig daoC = new DAOConfig();  
+    
+    public LandingFrame() throws Exception {
         setBounds(0, 0, anchoFrame, alturaFrame);
         setTitle("Ingreso");
         JPanel panelPpal = new JPanel();
@@ -34,6 +36,7 @@ public class LandingFrame extends FrameGeneral {
         panelPpal.setBackground(bluSt);
         panelPpal.setLayout(null);
         add(panelPpal);
+        
 
         JPanel panelTitle = new JPanel();
         panelTitle.setBounds(anchoUnit * 0, altoUnit * 20, anchoFrame, altoUnit * 39);
