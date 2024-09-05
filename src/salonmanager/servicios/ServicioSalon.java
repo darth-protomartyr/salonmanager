@@ -145,8 +145,7 @@ public class ServicioSalon {
         }
         return bill;
     }
-    
-    
+
     public double countBillTip(Table tableAux, Salon sal, boolean total) {
         double bill = 0;
         int discount = tableAux.getDiscount();
@@ -170,7 +169,6 @@ public class ServicioSalon {
         return bill * sal.getCfgGen().getTipPc() / 100;
     }
 
-    
     //resumen de cuenta abonada en pago parcial  
     public double partialBillPayed(Table tableAux, Salon sal) {
         double partial = 0;
@@ -202,22 +200,25 @@ public class ServicioSalon {
         return bill;
     }
 
-    public void createTable(Salon sal, Table tableAux) throws Exception {
-        daoT.saveTable(tableAux, sal.getWorkshiftNow().getOpenDateWs());
-        if (tableAux.getPos().equals("delivery")) {
-            String deli = sal.getJbdAux().getDelivery().getId();
-            daoD.updateDeliveryTable(tableAux.getId(), deli);
-            ArrayList<Integer> indexes =  daoC.askIndexes();
-            indexes.set(1, tableAux.getNum());
-            daoC.updateIndexes(indexes, false);
+    public boolean createTable(Salon sal, Table tableAux) throws Exception {
+        boolean done = daoT.saveTable(tableAux, sal.getWorkshiftNow().getOpenDateWs());
+        if (done) {
+            if (tableAux.getPos().equals("delivery")) {
+                String deli = sal.getJbdAux().getDelivery().getId();
+                daoD.updateDeliveryTable(tableAux.getId(), deli);
+                ArrayList<Integer> indexes = daoC.askIndexes();
+                indexes.set(1, tableAux.getNum());
+                daoC.updateIndexes(indexes, false);
+            }
+
+            if (tableAux.getPos().equals("barra")) {
+                ArrayList<Integer> indexes = daoC.askIndexes();
+                indexes.set(0, tableAux.getNum());
+                daoC.updateIndexes(indexes, false);
+            }
+            daoU.saveWaiterTable(tableAux);
         }
-        
-        if (tableAux.getPos().equals("barra")) {
-            ArrayList<Integer> indexes =  daoC.askIndexes();
-            indexes.set(0, tableAux.getNum());
-            daoC.updateIndexes(indexes, false);
-        }
-        daoU.saveWaiterTable(tableAux);   
+        return done;
     }
 
     public ArrayList<Itemcard> itemDeployer(Itemcard ic, int num) {
@@ -290,7 +291,7 @@ public class ServicioSalon {
             salon.getTableAux().setPartialPayedND(salon.getItemsPartialPaidNoDiscount());
             for (int i = 0; i < salon.getTableAux().getPartialPayed().size(); i++) {
                 daoIC.saveItemPayedNDTable(salon.getTableAux().getPartialPayed().get(i), salon.getTableAux());
-            }            
+            }
             salon.setItemsPartialPaid(new ArrayList<>());
             salon.getTableAux().setPartialPayed(salon.getItemsPartialPaid());
             daoIC.downActiveItemPayedTableAll(salon.getTableAux());
@@ -438,7 +439,6 @@ public class ServicioSalon {
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
     //CLOSE WORKSHIFT----------------------------------------------------------------------------------
     public void endWorkshift(Salon salon, Manager manager, boolean errorWs) throws Exception { //errorWs shows 
-//        salon.setEnabled(true);
         if (salon != null) {
             if (salon.getBarrButtons().size() > 0) {
                 if (salon.getBarrButtons().get(0).isOpenJBB() && salon.getBarrButtons().get(0).getTable().getTotal() == 0) {
@@ -605,7 +605,6 @@ public class ServicioSalon {
         return newWs;
     }
 
-
     private void workshiftConclusive(Salon salon, Manager manager, Workshift actWs, Workshift nWs, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> ersdTabs, ArrayList<Table> updTabs, boolean errorWs) throws Exception {
         Workshift actualWs = actWs;
         Workshift newWs = nWs;
@@ -678,6 +677,6 @@ public class ServicioSalon {
         }
         double disc = discount;
         bill = bill * (1 - disc / 100);
-        return bill * salon.getCfgGen().getTipPc()/100;
+        return bill * salon.getCfgGen().getTipPc() / 100;
     }
 }

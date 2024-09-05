@@ -11,6 +11,7 @@ public class ItemSale {
     private String itemSaleTabPos;
     private String itemSaleWaiterId;
     private int itemSaleWorkshiftId;
+    private double itemSaleCost; 
     private double itemSalePrice;
     private int idClient; 
     private Timestamp itemSaleDate;
@@ -19,12 +20,13 @@ public class ItemSale {
     public ItemSale() {
     }
 
-    public ItemSale(int itemSaleId, String itemSaleCategory, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSalePrice, int idClient, Timestamp itemSaleDate) throws Exception {
+    public ItemSale(int itemSaleId, String itemSaleCategory, String itemSaleTabPos, String itemSaleWaiterId, int itemSaleWorkshiftId, double itemSaleCost, double itemSalePrice, int idClient, Timestamp itemSaleDate) throws Exception {
         this.itemSaleId = itemSaleId;
         this.itemSaleCategory = itemSaleCategory;
         this.itemSaleTabPos = itemSaleTabPos;
         this.itemSaleWaiterId = itemSaleWaiterId;
         this.itemSaleWorkshiftId = itemSaleWorkshiftId;
+        this.itemSaleCost = utili.round2Dec(itemSaleCost);
         this.itemSalePrice = utili.round2Dec(itemSalePrice);
 //        if (itemSaleTabPos.equals("delivery")) {
             this.idClient = idClient;
@@ -83,6 +85,15 @@ public class ItemSale {
         this.itemSaleWorkshiftId = itemSaleWorkshiftId;
     }
 
+    public double getItemSaleCost() {
+        return itemSaleCost;
+    }
+
+    public void setItemSaleCost(double itemSaleCost) {
+        this.itemSaleCost = utili.round2Dec(itemSaleCost);
+    }
+    
+    
     public double getItemSalePrice() {
         return itemSalePrice;
     }

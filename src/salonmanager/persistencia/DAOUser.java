@@ -34,8 +34,13 @@ public class DAOUser extends DAO {
                     + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
-            utiliMsg.cargaUsuarioRolNull();
+            if (rol.equals("NULL")) {
+                utiliMsg.cargaUsuarioRolNull();
+            } else {
+                utiliMsg.cargaUsuarioRolFull();
+            }
 
+            
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();

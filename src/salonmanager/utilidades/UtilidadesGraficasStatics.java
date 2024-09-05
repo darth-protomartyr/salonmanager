@@ -511,7 +511,7 @@ public class UtilidadesGraficasStatics {
         panelSellCurve.add(labelSellCurve);
 
         statsM.getPanelChartSellCurve().setLayout(new BorderLayout());
-        statsM.getPanelChartSellCurve().setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 47, altoUnit * 30);
+        statsM.getPanelChartSellCurve().setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 28, altoUnit * 30);
         panelSellCurve.add(statsM.getPanelChartSellCurve());
 
         return panelSellCurve;
@@ -750,6 +750,7 @@ public class UtilidadesGraficasStatics {
 
     private void setPanelStatsBySell(StaticsManager statsM) {
         statsM.getPanelOrder().setVisible(true);
+        statsM.getPanelClients().setVisible(true);
         statsM.getPanelSellCurve().setVisible(true);
         statsM.getPanelItemsCategory().setVisible(true);
         statsM.getPanelWaiterStatics().setVisible(true);

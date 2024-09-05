@@ -59,6 +59,7 @@ public class StaticsManager extends FrameFull {
 
     JPanel panelOrder = null;
     JPanel panelSellCurve = null;
+    JPanel panelClients = null;
     JPanel panelItemsCategory = null;
     JPanel panelWaiterStatics = null;
 
@@ -149,10 +150,25 @@ public class StaticsManager extends FrameFull {
 //PANEL WORKSHIFT SELL CURVE----------------------------------------------------        
         panelSellCurve = utiliGrafStats.panelSellCurveBacker(this);
         panelSellCurve.setLayout(null);
-        panelSellCurve.setBounds(anchoUnit * 54, altoUnit * 10, anchoUnit * 49, altoUnit * 37);
+        panelSellCurve.setBounds(anchoUnit * 54, altoUnit * 10, anchoUnit * 30, altoUnit * 37);
         panelSellCurve.setBackground(bluLg);
         panelSellCurve.setVisible(false);
         panelPpal.add(panelSellCurve);
+        
+//PANEL CLIENT STATICS----------------------------------------------------------        
+//PANEL CLIENT STATICS----------------------------------------------------------        
+//PANEL CLIENT STATICS----------------------------------------------------------        
+//PANEL CLIENT STATICS----------------------------------------------------------        
+        panelClients = new JPanel();
+        JLabel labelClients = utiliGraf.labelTitleBacker2("Estadísticas Clientes");
+        labelClients.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 30, altoUnit * 3);
+        panelClients.add(labelClients);
+        panelClients.setLayout(null);
+        panelClients.setBounds(anchoUnit * 85, altoUnit * 10, anchoUnit * 18, altoUnit * 37);
+        panelClients.setBackground(bluLg);
+        panelClients.setVisible(false);
+        panelPpal.add(panelClients);
+        
 
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
@@ -385,6 +401,14 @@ public class StaticsManager extends FrameFull {
 
     public void setPanelSellCurve(JPanel panelSellCurve) {
         this.panelSellCurve = panelSellCurve;
+    }
+    
+    public JPanel getPanelClients() {
+        return panelClients;
+    }
+
+    public void setPanelClients(JPanel panelClients) {
+        this.panelClients = panelClients;
     }
 
     public JPanel getPanelItemsCategory() {

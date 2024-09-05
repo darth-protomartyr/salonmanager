@@ -14,7 +14,8 @@ public class DAOTable extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
 
-    public void saveTable(Table tab, Timestamp ts) throws Exception {
+    public boolean saveTable(Table tab, Timestamp ts) throws Exception {
+        boolean done = false;
         if (tab.getComments().equals("<br>")) {
             tab.setComments("");
         }
@@ -55,14 +56,18 @@ public class DAOTable extends DAO {
         if (error == false) {
             String sql = "";
             try {
-                
-                if (tab.getCloseTime() == null) {
-                    sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
-                            + "VALUES( '" + SalonManager.encryptInt(tab.getNum()) + "', '" + SalonManager.encrypt(tab.getPos()) + "', '" + SalonManager.encryptTs(tab.getOpenTime()) + "', '" + SalonManager.encryptTs(tab.getCloseTime()) + "', '" + SalonManager.encrypt(tab.getId()) + "', '" + SalonManager.encryptBoolean(tab.isOpen()) + "', '" + SalonManager.encryptBoolean(tab.isBill()) + "', '" + SalonManager.encryptBoolean(tab.isToPay()) + "', '" + SalonManager.encryptInt(tab.getDiscount()) + "', '" + SalonManager.encryptDouble(tab.getError()) + "', '" + SalonManager.encryptDouble(tab.getPriceCorrection()) + "', '" + SalonManager.encryptDouble(tab.getAmountCash()) + "', '" + SalonManager.encryptDouble(tab.getAmountElectronic()) + "', '" + SalonManager.encryptDouble(tab.getTotal()) + "', '" + SalonManager.encrypt(tab.getComments()) + "', '" + SalonManager.encryptBoolean(tab.isActiveTable()) + "');";
-                } else {
-                    sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
-                            + "VALUES( '" + SalonManager.encryptInt(tab.getNum()) + "', '" + SalonManager.encrypt(tab.getPos()) + "', '" + SalonManager.encryptTs(tab.getOpenTime()) + "', '" + SalonManager.encryptTs(tab.getCloseTime()) + "', '" + SalonManager.encrypt(tab.getId()) + "', '" + SalonManager.encryptBoolean(tab.isOpen()) + "', '" + SalonManager.encryptBoolean(tab.isBill()) + "', '" + SalonManager.encryptBoolean(tab.isToPay()) + "', '" + SalonManager.encryptInt(tab.getDiscount()) + "', '" + SalonManager.encryptDouble(tab.getError()) + "', '" + SalonManager.encryptDouble(tab.getPriceCorrection()) + "', '" + SalonManager.encryptDouble(tab.getAmountCash()) + "', '" + SalonManager.encryptDouble(tab.getAmountElectronic()) + "', '" + SalonManager.encryptDouble(tab.getTotal()) + "', '" + SalonManager.encrypt(tab.getComments()) + "', '" + SalonManager.encryptBoolean(tab.isActiveTable()) + "');";
+                if (!tab.getId().equals("") && tab.getId() != null) {
+                    if (tab.getCloseTime() == null) {
+                        sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
+                                + "VALUES( '" + SalonManager.encryptInt(tab.getNum()) + "', '" + SalonManager.encrypt(tab.getPos()) + "', '" + SalonManager.encryptTs(tab.getOpenTime()) + "', '" + SalonManager.encryptTs(tab.getCloseTime()) + "', '" + SalonManager.encrypt(tab.getId()) + "', '" + SalonManager.encryptBoolean(tab.isOpen()) + "', '" + SalonManager.encryptBoolean(tab.isBill()) + "', '" + SalonManager.encryptBoolean(tab.isToPay()) + "', '" + SalonManager.encryptInt(tab.getDiscount()) + "', '" + SalonManager.encryptDouble(tab.getError()) + "', '" + SalonManager.encryptDouble(tab.getPriceCorrection()) + "', '" + SalonManager.encryptDouble(tab.getAmountCash()) + "', '" + SalonManager.encryptDouble(tab.getAmountElectronic()) + "', '" + SalonManager.encryptDouble(tab.getTotal()) + "', '" + SalonManager.encrypt(tab.getComments()) + "', '" + SalonManager.encryptBoolean(tab.isActiveTable()) + "');";
+                    } else {
+                        sql = "INSERT INTO tabs(table_num, table_pos, table_open_time, table_close_time, table_id, table_open, table_bill, table_to_pay, table_discount, table_error, table_price_correction, table_amount_cash, table_amount_electronic, table_total, table_comments, table_active) "
+                                + "VALUES( '" + SalonManager.encryptInt(tab.getNum()) + "', '" + SalonManager.encrypt(tab.getPos()) + "', '" + SalonManager.encryptTs(tab.getOpenTime()) + "', '" + SalonManager.encryptTs(tab.getCloseTime()) + "', '" + SalonManager.encrypt(tab.getId()) + "', '" + SalonManager.encryptBoolean(tab.isOpen()) + "', '" + SalonManager.encryptBoolean(tab.isBill()) + "', '" + SalonManager.encryptBoolean(tab.isToPay()) + "', '" + SalonManager.encryptInt(tab.getDiscount()) + "', '" + SalonManager.encryptDouble(tab.getError()) + "', '" + SalonManager.encryptDouble(tab.getPriceCorrection()) + "', '" + SalonManager.encryptDouble(tab.getAmountCash()) + "', '" + SalonManager.encryptDouble(tab.getAmountElectronic()) + "', '" + SalonManager.encryptDouble(tab.getTotal()) + "', '" + SalonManager.encrypt(tab.getComments()) + "', '" + SalonManager.encryptBoolean(tab.isActiveTable()) + "');";
+                    }
+                    done = true;
                 }
+                
+                
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
             } catch (SQLException e) {
@@ -73,6 +78,7 @@ public class DAOTable extends DAO {
                 }
             }
         }
+        return done;
     }
 
     public void updateTableTotal(Table tab) throws Exception {
@@ -521,7 +527,7 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
+
     public ArrayList<Timestamp> listarTabsTsOpen() throws Exception {
         ArrayList<Timestamp> tabsTs = new ArrayList<>();
         try {
@@ -539,8 +545,7 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
-    
+
     public ArrayList<Timestamp> listarTabsTsActiveBarr() throws Exception {
         ArrayList<Timestamp> tabsTs = new ArrayList<>();
         try {
@@ -558,7 +563,7 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
+
     public ArrayList<Timestamp> listarTabsTsActiveDeli() throws Exception {
         ArrayList<Timestamp> tabsTs = new ArrayList<>();
         try {
@@ -576,8 +581,6 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
-    
-    
 
     public Table getTableByTs(Timestamp ts) throws Exception {
         Table tab = new Table();

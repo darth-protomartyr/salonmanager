@@ -47,7 +47,7 @@ public class ServicioWorkshift {
         ArrayList<Integer>indexes =  new  ArrayList<>();
         indexes.add(0);
         indexes.add(0);
-        daoC.updateIndexes(indexes, true);
+        daoC.updateIndexes(indexes, false);
         if (newWs != null) {
             daoW.saveWorkshift(newWs);
             int id = daoW.askWorshiftActualId();

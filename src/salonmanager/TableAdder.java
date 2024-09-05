@@ -153,7 +153,7 @@ public class TableAdder extends FrameThird {
         JLabel labelTit = utiliGraf.labelTitleBackerA4W(tit.toUpperCase());
         labelTit.setBounds(anchoUnit * 4, altoUnit * 1, anchoUnit * 26, altoUnit * 5);
         panelPpal.add(labelTit);
-        
+
         JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
         panelPpal.add(panelLogo);
 
@@ -231,8 +231,8 @@ public class TableAdder extends FrameThird {
         String st = "Monto Total $:";
         if (tabAux != null) {
             st = "Monto Abonado $:";
-        } 
-        
+        }
+
         JLabel labelTot1 = utiliGraf.labelTitleBacker1(st);
         labelTot1.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 14, altoUnit * 4);
         panelTotal.add(labelTot1);
@@ -433,23 +433,27 @@ public class TableAdder extends FrameThird {
                 tab.setAmountElectronic(amountElec);
                 tab.setTotal(totalMount - error);
                 tab.setComments("Los datos de la mesa fueron ingresados con posteriodad.");
-                daoT.saveTable(tab, dateCloseWs);
-                tab.setOrder(items);
-                for (int i = 0; i < tab.getOrder().size(); i++) {
-                    daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
-                    daoI.updateItemStockUpDown(tab.getOrder().get(i), false);
-                }
-                for (int i = 0; i < tab.getGifts().size(); i++) {
-                    daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
-                }
-                daoU.saveWaiterTable(tab);
-                boolean confirm1 = utiliMsg.cargaConfirmNewTab();
-                if (confirm1) {
-                    new TableAdder(ws, manager, null, null);
-                    dispose();
+                boolean done = daoT.saveTable(tab, dateCloseWs);
+                if (done) {
+                    tab.setOrder(items);
+                    for (int i = 0; i < tab.getOrder().size(); i++) {
+                        daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
+                        daoI.updateItemStockUpDown(tab.getOrder().get(i), false);
+                    }
+                    for (int i = 0; i < tab.getGifts().size(); i++) {
+                        daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
+                    }
+                    daoU.saveWaiterTable(tab);
+                    boolean confirm1 = utiliMsg.cargaConfirmNewTab();
+                    if (confirm1) {
+                        new TableAdder(ws, manager, null, null);
+                        dispose();
+                    } else {
+                        ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
+                        dispose();
+                    }
                 } else {
-                    ss.closeWorkshift(null, manager, ws, null, null, null, null, null, true, 2);
-                    dispose();
+                    utiliMsg.errorSaveTable();
                 }
             } else {
                 if (sum <= totalMount) {
@@ -479,7 +483,7 @@ public class TableAdder extends FrameThird {
                     for (int i = 0; i < tabAux.getOrder().size(); i++) {
                         daoI.saveItemOrderTable(tabAux.getOrder().get(i), tabAux);
                     }
-                    
+
                     for (int i = 0; i < itemsNew.size(); i++) {
                         daoI.updateItemStockUpDown(itemsNew.get(i), false);
                     }

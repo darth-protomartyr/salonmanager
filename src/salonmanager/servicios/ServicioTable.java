@@ -14,6 +14,7 @@ import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.utilidades.Utilidades;
+import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ServicioTable {
 
@@ -23,6 +24,7 @@ public class ServicioTable {
     DAOUser daoU = new DAOUser();
     DAOConfig daoC = new DAOConfig();
     Utilidades utili = new Utilidades();
+    UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
 
     public int giftCounter(ArrayList<Itemcard> gifts, Itemcard ic) {
         int units = 0;
@@ -65,6 +67,7 @@ public class ServicioTable {
         } else if (opt == 2) {
             workshiftTabsOld = listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), true);
         }
+
         for (Table tab : workshiftTabsOld) {
             String id = tab.getId();
             tab.setOrder(daoI.listarItemcardOrder(id));
@@ -101,19 +104,23 @@ public class ServicioTable {
             daoC.updateIndexes(indexes, true);
         }
 
-        daoT.saveTable(tab, null);
-        daoU.saveWaiterTable(tab);
-        if (tab.getPos().equals("delivery")) {
-            String deli = salon.getJbdAux().getDelivery().getId();
-            daoD.updateDeliveryTable(tab.getId(), deli);
-        }
+        boolean done = daoT.saveTable(tab, null);
+        if (done) {
+            daoU.saveWaiterTable(tab);
+            if (tab.getPos().equals("delivery")) {
+                String deli = salon.getJbdAux().getDelivery().getId();
+                daoD.updateDeliveryTable(tab.getId(), deli);
+            }
 
-        for (int i = 0; i < tab.getOrder().size(); i++) {
-            daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
-        }
+            for (int i = 0; i < tab.getOrder().size(); i++) {
+                daoI.saveItemOrderTable(tab.getOrder().get(i), tab);
+            }
 
-        for (int i = 0; i < tab.getGifts().size(); i++) {
-            daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
+            for (int i = 0; i < tab.getGifts().size(); i++) {
+                daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
+            }
+        } else {
+            utiliMsg.errorSaveTable();
         }
     }
 
@@ -150,19 +157,25 @@ public class ServicioTable {
         ArrayList<Table> tabs = new ArrayList<>();
         for (int i = 0; i < tabsTs.size(); i++) {
             Table tab = daoT.getTableByTs(tabsTs.get(i));
-            if (!tab.getPos().equals("barra") && !tab.getPos().equals("delivery")) {
+            if (open) {
+                if (!tab.getPos().equals("barra") && !tab.getPos().equals("delivery")) {
+                    tabs.add(tab);
+                }
+            } else {
                 tabs.add(tab);
             }
         }
 
-        for (int i = 0; i < tabsTsBarr.size(); i++) {
-            Table tab = daoT.getTableByTs(tabsTsBarr.get(i));
-            tabs.add(tab);
-        }
+        if (open) {
+            for (int i = 0; i < tabsTsBarr.size(); i++) {
+                Table tab = daoT.getTableByTs(tabsTsBarr.get(i));
+                tabs.add(tab);
+            }
 
-        for (int i = 0; i < tabsTsDeli.size(); i++) {
-            Table tab = daoT.getTableByTs(tabsTsDeli.get(i));
-            tabs.add(tab);
+            for (int i = 0; i < tabsTsDeli.size(); i++) {
+                Table tab = daoT.getTableByTs(tabsTsDeli.get(i));
+                tabs.add(tab);
+            }
         }
 
         return tabs;

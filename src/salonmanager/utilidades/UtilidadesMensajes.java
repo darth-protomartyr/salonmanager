@@ -815,4 +815,9 @@ public class UtilidadesMensajes extends JFrame {
         CustomDialog cm = new CustomDialog("Se se realizó correctamente la instalación del programa.", 1);
         cm.setVisible(true); 
     }
+
+    public void errorSaveTable() {
+        CustomDialog cm = new CustomDialog("Error: no se logró guardar la orden en la base de datos", 2);
+        cm.setVisible(true); 
+    }
 }
