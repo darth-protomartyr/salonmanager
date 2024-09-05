@@ -256,7 +256,7 @@ public class TemplateUser extends FrameHalf {
         }
 
         if (routeImage == "") {
-            routeImage = "resources|images|avatar.jpg";
+            routeImage = "resources|avatar.jpg";
             nameImage = "avatar.jpg";
         }
 

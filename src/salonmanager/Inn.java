@@ -108,7 +108,7 @@ public class Inn extends FrameWindow {
 
     private void butInUserActionPerformed() throws Exception {
         mail = fieldMail.getText();        
-        char[] pass = fieldPass.getPassword();
+        char[] pass = fieldPass.getPassword();  
         String passString = new String(pass);
         java.util.Arrays.fill(pass, ' ');
         
