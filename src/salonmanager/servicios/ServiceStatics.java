@@ -1,5 +1,6 @@
 package salonmanager.servicios;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import salonmanager.StaticsSelectorPeriod;
 import salonmanager.StatsItemViewer;
 import salonmanager.StatsWaiterViewer;
 import salonmanager.TabViewer;
+import salonmanager.entidades.bussiness.Table;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class ServiceStatics {
@@ -114,5 +116,15 @@ public class ServiceStatics {
 
     public void openWSellsViewer(int i, StaticsManager statsM) throws Exception {
         new StatsWaiterViewer(statsM, i, statsM.getPeriod());
+    }
+
+    public ArrayList<Table> filterTabsOpenState(ArrayList<Table> tabs) {
+        ArrayList<Table>tabsClose = new ArrayList<Table>();
+        for (int i = 0; i < tabs.size(); i++) {
+            if (tabs.get(i).getCloseTime() != null) {
+                tabsClose.add(tabs.get(i));
+            }
+        }
+        return tabsClose;
     }
 }

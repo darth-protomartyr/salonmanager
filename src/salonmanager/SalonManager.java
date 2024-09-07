@@ -181,7 +181,10 @@ public class SalonManager {
     public void salir() throws Exception {
         setPassIn("");
         setUserIn(null);
-        windowCloser();
+        JFrame[] ventanasAbiertas = (JFrame[]) JFrame.getFrames();
+        if (ventanasAbiertas.length> 0) {
+            windowCloser();
+        }
     }
 
     private static void windowCloser() {

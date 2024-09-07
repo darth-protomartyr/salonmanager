@@ -65,6 +65,11 @@ public class UtilidadesMensajes extends JFrame {
         cm.setVisible(true);
     }
 
+    public void cargaAdvertNotOpen() {
+        CustomDialog cm = new CustomDialog("Se mostraran solo las órdenes cerradas del Turno Actual", 1);
+        cm.setVisible(true);
+    }
+
     public void cargaSuccesMod() {
         CustomDialog cm = new CustomDialog("Las modificaciones fueron realizadas con éxito", 1);
         cm.setVisible(true);
@@ -148,7 +153,7 @@ public class UtilidadesMensajes extends JFrame {
     }
 
     public void errorNullItemDates() {
-        CustomDialog cm = new CustomDialog("Error: el item consultado no arroja resultados", 2);
+        CustomDialog cm = new CustomDialog("Error: la consulta no arroja resultados", 2);
         cm.setVisible(true);
     }
 
@@ -818,6 +823,16 @@ public class UtilidadesMensajes extends JFrame {
 
     public void errorSaveTable() {
         CustomDialog cm = new CustomDialog("Error: no se logró guardar la orden en la base de datos", 2);
+        cm.setVisible(true); 
+    }
+
+    public void errorNullWaiter() {
+        CustomDialog cm = new CustomDialog("Error: no hay mozos registrados en la base de datos", 2);
+        cm.setVisible(true); 
+    }
+    
+    public void errorNullOpWaiter() {
+        CustomDialog cm = new CustomDialog("Error: no hay operaciones registradas con mozos", 2);
         cm.setVisible(true); 
     }
 }

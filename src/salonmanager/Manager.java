@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
@@ -41,6 +43,7 @@ public class Manager extends FrameFull {
     Color narUlg = new Color(255, 255, 176);
     Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(252, 203, 5);
+    Color bluLg = new Color(194, 242, 206);
     SalonManager sm = new SalonManager();
     User user = null;
     String pass;
@@ -89,10 +92,11 @@ public class Manager extends FrameFull {
         panelUser.setLayout(null);
         panelUser.setBounds(anchoUnit * 82, altoUnit * 3, anchoUnit * 21, altoUnit * 18);
         panelUser.setBackground(narLg);
+        panelUser.setBorder(new LineBorder(bluLg, 4));
         panelPpal.add(panelUser);
 
-        String workingDir = System.getProperty("user.dir");
-        System.out.println("Current working directory: " + workingDir);
+//        String workingDir = System.getProperty("user.dir");
+//        System.out.println("Current working directory: " + workingDir);
         String route = utili.barrReplaceInverse(userIn.getRouteImage(), false);
         System.out.println(route);
         ImageIcon imageIcon = new ImageIcon(route);
@@ -119,13 +123,14 @@ public class Manager extends FrameFull {
         panelWorkshift.setLayout(null);
         panelWorkshift.setBackground(narLg);
         panelWorkshift.setBounds(anchoUnit * 54, altoUnit * 24, anchoUnit * 49, altoUnit * 20);
+        panelWorkshift.setBorder(new LineBorder(bluLg, 4));
         panelPpal.add(panelWorkshift);
 
         JLabel labelWsTit = utiliGraf.labelTitleBackerA4W("INFORMACIÓN TURNO ACTUAL:");
         labelWsTit.setBounds(anchoUnit * 2, altoUnit * 1, anchoUnit * 46, altoUnit * 5);
         panelWorkshift.add(labelWsTit);
 
-        String wsSt = "Estado del Turno: hay un turno iniciado.";
+        String wsSt = "Estado del Turno: NO hay un turno iniciado.";
         if (cfgAct.isOpenWs()) {
             Timestamp date = daoW.askInitWsDateById(cfgAct.getOpenIdWs());
             User cashier = daoU.getCashierByWorkshift(cfgAct.getOpenIdWs());
@@ -139,6 +144,7 @@ public class Manager extends FrameFull {
         JPanel panelCard = new JPanel();
         panelCard.setLayout(null);
         panelCard.setBackground(narLg);
+        panelCard.setBorder(new LineBorder(bluLg, 4));
         panelCard.setBounds(anchoUnit * 54, altoUnit * 47, anchoUnit * 49, altoUnit * 11);
         panelPpal.add(panelCard);
 

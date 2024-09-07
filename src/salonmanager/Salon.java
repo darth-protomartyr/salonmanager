@@ -77,7 +77,6 @@ public class Salon extends FrameFull {
     JPanel panelBarrContainer = new JPanel();
     JPanel panelDeliContainer = new JPanel();
 
-
     ArrayList<Integer> tableNum = new ArrayList<>(); // número de mesa
     ArrayList<String> tablePan = new ArrayList<>(); // Nombre del sector
     ArrayList<String> tablePanCh = new ArrayList<>(); // Primer Char del Nombre del sector
@@ -196,7 +195,6 @@ public class Salon extends FrameFull {
 //PANEL STATE----------------------------------------------------------------------------------------------------------        
         JPanel panelActual = utiliGrafSal.panelActualBacker(sal);
         panelPpal.add(panelActual);
-
         
         JPanel panelTitle = utiliGraf.panelTitleBacker(2);
         panelPpal.add(panelTitle);
@@ -341,16 +339,16 @@ public class Salon extends FrameFull {
 
 //End Elements--------------------------------------------------------
 //End Elements--------------------------------------------------------
-        JPanel panelEnd = new JPanel();
-        panelEnd.setLayout(null);
-        panelEnd.setBackground(bluLg);
-        panelEnd.setBounds(anchoUnit * 76, altoUnit * 95, anchoUnit * 19, altoUnit * 4);
-        panelPpal.add(panelEnd);
-
-        JPanel panelEndInn = new JPanel();
-        panelEndInn.setBackground(bluSt);
-        panelEndInn.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
-        panelEnd.add(panelEndInn);
+//        JPanel panelEnd = new JPanel();
+//        panelEnd.setLayout(null);
+//        panelEnd.setBackground(bluLg);
+//        panelEnd.setBounds(anchoUnit * 76, altoUnit * 95, anchoUnit * 19, altoUnit * 4);
+//        panelPpal.add(panelEnd);
+//
+//        JPanel panelEndInn = new JPanel();
+//        panelEndInn.setBackground(bluSt);
+//        panelEndInn.setBounds(anchoUnit, altoUnit, anchoUnit * 17, altoUnit * 2);
+//        panelEnd.add(panelEndInn);
 
 //EXTRAS--------------------------------------------------------------------------------------------------------------
 //EXTRAS--------------------------------------------------------------------------------------------------------------

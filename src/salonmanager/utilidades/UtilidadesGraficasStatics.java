@@ -37,6 +37,7 @@ import org.knowm.xchart.style.Styler;
 import salonmanager.StaticsManager;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
+import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOItemcard;
@@ -150,37 +151,37 @@ public class UtilidadesGraficasStatics {
         ArrayList<String> categories = new ArrayList<>(hashMap.keySet());
         ArrayList<Double> amounts = new ArrayList<>(hashMap.values());
 
-        if (categories.size()> 0) {
+        if (categories.size() > 0) {
             statsM.getLabelCategory0().setText(categories.get(0) + "$: " + amounts.get(0));
         } else {
-           statsM.getLabelCategory0().setText("--");
+            statsM.getLabelCategory0().setText("--");
         }
-        if (categories.size()> 1) {
+        if (categories.size() > 1) {
             statsM.getLabelCategory1().setText(categories.get(1) + "$: " + amounts.get(1));
         } else {
             statsM.getLabelCategory1().setText("--");
         }
-        if (categories.size()> 2) {
+        if (categories.size() > 2) {
             statsM.getLabelCategory2().setText(categories.get(2) + "$: " + amounts.get(2));
         } else {
             statsM.getLabelCategory2().setText("--");
-        }    
-        if (categories.size()> 3) {
+        }
+        if (categories.size() > 3) {
             statsM.getLabelCategory3().setText(categories.get(3) + "$: " + amounts.get(3));
         } else {
             statsM.getLabelCategory3().setText("--");
         }
-        if (categories.size()> 4) {
+        if (categories.size() > 4) {
             statsM.getLabelCategory4().setText(categories.get(4) + "$: " + amounts.get(4));
         } else {
             statsM.getLabelCategory4().setText("--");
         }
-        if (categories.size()> 5) {
+        if (categories.size() > 5) {
             statsM.getLabelCategory5().setText(categories.get(5) + "$: " + amounts.get(5));
         } else {
             statsM.getLabelCategory5().setText("--");
         }
-        
+
         for (int i = 0; i < hashMap.size(); i++) {
             chartCategory.addSeries(categories.get(i), amounts.get(i));
         }
@@ -337,9 +338,9 @@ public class UtilidadesGraficasStatics {
         JLabel labelStatsWs = utiliGraf.labelTitleBacker1("Por turno:");
         labelStatsWs.setBounds(anchoUnit * 1, altoUnit * 21, anchoUnit * 18, altoUnit * 3);
         panelStatsBySell.add(labelStatsWs);
-        
+
         JComboBox comboWs = new JComboBox();
-        
+
         comboWs.setModel(wsComboBacker());
         Font font = new Font("Arial", Font.BOLD, 16);
         comboWs.setFont(font);
@@ -350,7 +351,7 @@ public class UtilidadesGraficasStatics {
         butStatsWs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                String st = (String) comboWs.getSelectedItem();        
+                String st = (String) comboWs.getSelectedItem();
                 try {
                     if (!st.equals("")) {
                         workshiftSelector(st, statsM);
@@ -407,7 +408,7 @@ public class UtilidadesGraficasStatics {
         statsM.getFieldTotal().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldTotal().setEditable(false);
         panelStatsBySell.add(statsM.getFieldTotal());
-        
+
         JLabel labelErrorTabs = utiliGraf.labelTitleBacker3("Error Mesas Tot $:");
         labelErrorTabs.setBounds(anchoUnit * 1, altoUnit * 58, anchoUnit * 9, altoUnit * 3);
         panelStatsBySell.add(labelErrorTabs);
@@ -447,7 +448,7 @@ public class UtilidadesGraficasStatics {
         statsM.getFieldTotalReal().setHorizontalAlignment(SwingConstants.CENTER);
         statsM.getFieldTotalReal().setEditable(false);
         panelStatsBySell.add(statsM.getFieldTotalReal());
-        
+
         JLabel labelPromTab = utiliGraf.labelTitleBacker2("Prom. gasto por orden:");
         labelPromTab.setBounds(anchoUnit * 2, altoUnit * 73, anchoUnit * 16, altoUnit * 3);
         panelStatsBySell.add(labelPromTab);
@@ -481,6 +482,7 @@ public class UtilidadesGraficasStatics {
     private void workshiftSelector(String st, StaticsManager statsM) throws Exception {
         int ws = 0;
         if (st.equals("ACTUAL")) {
+            utiliMsg.cargaAdvertNotOpen();
             ws = daoW.askWorshiftActualId();
         } else {
             String[] words = st.split("\\.");
@@ -517,7 +519,6 @@ public class UtilidadesGraficasStatics {
         return panelSellCurve;
     }
 
-    
     public JPanel panelCategoryBacker(StaticsManager statsM) {
         JPanel panelItemsStatics = new JPanel();
 
@@ -577,16 +578,16 @@ public class UtilidadesGraficasStatics {
         statsM.getPanelChartByCategory().setLayout(new BorderLayout());
         statsM.getPanelChartByCategory().setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 23, altoUnit * 27);
         panelItemsCategoryPie.add(statsM.getPanelChartByCategory());
-        
+
         panelItemsCategoryPie.setLayout(null);
         panelItemsCategoryPie.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 33);
         panelItemsCategoryPie.setBackground(narUlg);
-        panelItemsStatics.add(panelItemsCategoryPie);
-
+        panelItemsStatics.add(panelItemsCategoryPie);       
+        
         statsM.setLabelCategory0(utiliGraf.labelTitleBacker3(""));
         statsM.getLabelCategory0().setBounds(anchoUnit * 25, altoUnit * 6, anchoUnit * 14, altoUnit * 3);
         panelItemsCategoryPie.add(statsM.getLabelCategory0());
-            
+
         statsM.setLabelCategory1(utiliGraf.labelTitleBacker3(""));
         statsM.getLabelCategory1().setBounds(anchoUnit * 25, altoUnit * 10, anchoUnit * 14, altoUnit * 3);
         panelItemsCategoryPie.add(statsM.getLabelCategory1());
@@ -610,8 +611,9 @@ public class UtilidadesGraficasStatics {
         return panelItemsStatics;
     }
 
+    public JPanel panelWaiterStaticsBacker(StaticsManager statsM) throws Exception {
+        ArrayList<User> waiters = daoU.listUserByRol("MOZO", true);
 
-    public JPanel panelWaiterStaticsBacker(StaticsManager statsM) {
         JPanel panelWaiterStatics = new JPanel();
 
         JLabel labelWaiterStatics = utiliGraf.labelTitleBacker2("Estadísticas de Mozos");
@@ -635,7 +637,11 @@ public class UtilidadesGraficasStatics {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    sStats.openWSellsViewer(1, statsM);
+                    if (waiters.size() > 0) {
+                        sStats.openWSellsViewer(1, statsM);
+                    }  else {
+                        utiliMsg.errorNullWaiter();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -648,7 +654,11 @@ public class UtilidadesGraficasStatics {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    sStats.openWSellsViewer(2, statsM);
+                    if (waiters.size() > 0) {
+                        sStats.openWSellsViewer(2, statsM);
+                    } else {
+                        utiliMsg.errorNullWaiter();
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -662,7 +672,7 @@ public class UtilidadesGraficasStatics {
     private DefaultComboBoxModel wsComboBacker() throws Exception {
         ArrayList<Integer> wssId = daoW.listIdWs();
         ArrayList<Timestamp> wssTs = daoW.listTsIWs();
-        
+
         ArrayList<String> wssSt = new ArrayList<>();
         for (int i = 0; i < wssId.size(); i++) {
             String ts = utili.friendlyDate1(wssTs.get(i));
@@ -675,16 +685,16 @@ public class UtilidadesGraficasStatics {
         if (actual != 0) {
             wsa = "ACTUAL";
         }
-        wssSt.add(0,wsa);
+        wssSt.add(0, wsa);
         DefaultComboBoxModel<String> modeloCombo = utili.wsComboModelReturnWNu(wssSt);
-        return modeloCombo; 
+        return modeloCombo;
     }
-    
+
     public void staticBacker(Timestamp timestampInit, Timestamp timestampEnd, StaticsManager statsM, int wsId) throws Exception {
         ArrayList<Workshift> wsS = new ArrayList<>();
 
         if (wsId == 0) {
-            ArrayList<Integer> wsIds = listWsIdByDate(timestampInit, timestampEnd);            
+            ArrayList<Integer> wsIds = listWsIdByDate(timestampInit, timestampEnd);
             for (Integer id : wsIds) {
                 Workshift ws = daoW.askWorshiftById(id);
                 wsS.add(ws);
@@ -719,32 +729,38 @@ public class UtilidadesGraficasStatics {
         } else {
             Timestamp ts1 = tsList.get(0);
             Timestamp ts2 = tsList.get(size - 1);
-            
+
             ArrayList<Timestamp> isSalesTs = daoIs.listarItemSalesTs();
             isSalesTs = utili.tsFilter(isSalesTs, ts1, ts2);
 
             ArrayList<ItemSale> is = new ArrayList<>();
             for (int i = 0; i < isSalesTs.size(); i++) {
-                ItemSale iSale = daoIs.askItemSaleByDate(isSalesTs.get(i)); 
+                ItemSale iSale = daoIs.askItemSaleByDate(isSalesTs.get(i));
                 is.add(iSale);
             }
-            
-            ArrayList<Table> tabs = st.listTablesByTs(ts1, ts2, false);
 
-            Collections.sort(tabs, new TimestampComparator());
-            if (timestampInit != null && timestampEnd != null) {
-                statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
-                statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
+            ArrayList<Table> tabs = st.listTablesByTs(ts1, ts2, false);
+            tabs = sStats.filterTabsOpenState(tabs);
+
+            if (tabs.size() > 0) {
+                Collections.sort(tabs, new TimestampComparator());
+                if (timestampInit != null && timestampEnd != null) {
+                    statsM.getLabelPeriod().setText("<html>LAPSO DE ANÁLISIS:<br>de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd) + "</html>");
+                    statsM.setPeriod("de " + utili.friendlyDate3(timestampInit) + " a " + utili.friendlyDate3(timestampEnd));
+                } else {
+                    statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() + "<br>INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
+                    statsM.setPeriod("TURNO " + wsS.get(0).getId());
+                }
+                statsM.setISales(is);
+                statsM.setTabs(tabs);
+                statsM.setWorkshifts(wsS);
+                statsM.setEnabled(true);
+                setPanelStatsBySell(statsM);
+                updater(statsM);
             } else {
-                statsM.getLabelPeriod().setText("<html>TURNO : " + wsS.get(0).getId() +"<br>INICIO: " + utili.friendlyDate2(wsS.get(0).getOpenDateWs()) + "</html>");
-                statsM.setPeriod("TURNO " + wsS.get(0).getId());
+                utiliMsg.errorNullDates();
+                statsM.setEnabled(true);
             }
-            statsM.setISales(is);
-            statsM.setTabs(tabs);
-            statsM.setWorkshifts(wsS);
-            statsM.setEnabled(true);
-            setPanelStatsBySell(statsM);
-            updater(statsM);
         }
     }
 
@@ -755,8 +771,7 @@ public class UtilidadesGraficasStatics {
         statsM.getPanelItemsCategory().setVisible(true);
         statsM.getPanelWaiterStatics().setVisible(true);
     }
-    
-    
+
     public void updater(StaticsManager statsM) throws Exception {
         double tot = 0;
         double errorTab = 0;
@@ -778,7 +793,7 @@ public class UtilidadesGraficasStatics {
             } else if (tab.getPos().equals("delivery")) {
                 statsM.setNumBar(statsM.getNumDeli() + tab.getTotal());
             } else {
-                statsM.setNumTabs( statsM.getNumTabs() + tab.getTotal());
+                statsM.setNumTabs(statsM.getNumTabs() + tab.getTotal());
             }
 
             long time1 = tab.getOpenTime().getTime();
@@ -791,7 +806,7 @@ public class UtilidadesGraficasStatics {
                 tabInt += 1;
             }
         }
-        
+
         for (int i = 0; i < statsM.getWorkshifts().size(); i++) {
             errorTab += statsM.getWorkshifts().get(i).getErrorMountTabs();
             errorWs += statsM.getWorkshifts().get(i).getErrorMountWs() - statsM.getWorkshifts().get(i).getErrorMountTabs();
@@ -863,12 +878,12 @@ public class UtilidadesGraficasStatics {
 
         df.setMaximumFractionDigits(0);
         String formattedErrorWs = df.format(errorWs);
-        statsM.getFieldErrorWs().setText(formattedErrorWs);        
-        
+        statsM.getFieldErrorWs().setText(formattedErrorWs);
+
         df.setMaximumFractionDigits(0);
         String formattedTotalReal = df.format(tot - errorTab - errorWs);
-        statsM.getFieldTotalReal().setText("$" + formattedTotalReal);         
-        
+        statsM.getFieldTotalReal().setText("$" + formattedTotalReal);
+
         promTab = utili.round2Dec(tot / statsM.getTabs().size());
         String formattedPromTab = promTab + "";
         statsM.getFieldPromTab().setText("$" + formattedPromTab);
@@ -958,11 +973,12 @@ public class UtilidadesGraficasStatics {
         }
         return ids;
     }
-    
+
     public class TimestampComparator implements Comparator<Table> {
+
         @Override
         public int compare(Table o1, Table o2) {
             return o1.getOpenTime().compareTo(o2.getOpenTime());
         }
-    }      
+    }
 }

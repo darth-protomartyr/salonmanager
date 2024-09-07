@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
+import salonmanager.utilidades.Utilidades;
 
 public class DAOUser extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-
+    Utilidades utili = new Utilidades();
     public void saveUser(User user) throws Exception {
         try {
             String name = SalonManager.encrypt(user.getName());
@@ -396,6 +397,7 @@ public class DAOUser extends DAO {
             while (resultado.next()) {
                 String name = SalonManager.decrypt(resultado.getString(1));
                 String lastName = SalonManager.decrypt(resultado.getString(2));
+                name = name.substring(0, 1) + ".";
                 nameC = name + " " + lastName;
             }
             return nameC;

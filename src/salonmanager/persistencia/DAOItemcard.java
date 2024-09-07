@@ -295,15 +295,7 @@ public class DAOItemcard extends DAO {
     //Tabla Itemcard_gift_tabs-----------------------------------------------------------------------
     public void saveItemGiftTable(Itemcard ic, Table tab) throws Exception {
         try {
-            String id = idRandom();
-/*
-                item_card_gift_tab_id TEXT,
-    item_card_gift_tab_active TEXT,
-    item_card_gift_id_fkey TEXT,
-    table_id_fkey TEXT,
-    FOREIGN KEY (item_card_gift_id_fkey) REFERENCES item_cards(item_card_id),
-    FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)
-*/            
+            String id = idRandom();          
             String sql = "INSERT INTO item_card_gift_tabs(item_card_gift_tab_id, item_card_gift_tab_active, item_card_gift_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES('" + SalonManager.encrypt(id) + "', '" + SalonManager.encryptBoolean(true) + "', '" + SalonManager.encryptInt(ic.getId()) + "', '" + SalonManager.encrypt(tab.getId()) + "');";
             sql += parcialA;

@@ -1190,35 +1190,36 @@ public class UtilidadesGraficasSalon {
                         salon.getJbdSAux().setBackground(green);
                     }
                 }
-
-                Itemcard ic = null;
-
-                ic = utili.ItemcardBacker(item, salon.getItemsDB());
-                salon.getButCloseTable().setText("CERRAR CUENTA");
-                int counter = 0;
-                while (counter < u) {
-                    salon.getItemsTableAux().add(ic);
-                    counter += 1;
-                }
-                salon.getTableAux().setOrder(salon.getItemsTableAux());
-                salon.getSpinnerUnitsItem().setValue(1);
-                salon.setTotal(ss.countBill(salon.getTableAux(), salon, false));
-                salon.getTableAux().setTotal(salon.getTotal());
-                daoT.updateTableTotal(salon.getTableAux());
-                ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
-                ss.addItemOrder(salon, salon.getTableAux(), arrayAux, salon.isIndiBool());
-                jButExtSetter(salon);
-                salon.getLabelCuenta().setText("" + salon.getTotal());
-                salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
-                salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
-                setTableItems(salon);
-            } else {
-                utiliMsg.errorSaveTable();
-//                jButExtSetter(salon);
-//                resetTableFull(salon);
-//                setTableItems(salon);
-//                salon.setEnabled(true);
             }
+
+            Itemcard ic = null;
+
+            ic = utili.ItemcardBacker(item, salon.getItemsDB());
+            salon.getButCloseTable().setText("CERRAR CUENTA");
+            int counter = 0;
+            while (counter < u) {
+                salon.getItemsTableAux().add(ic);
+                counter += 1;
+            }
+            salon.getTableAux().setOrder(salon.getItemsTableAux());
+            salon.getSpinnerUnitsItem().setValue(1);
+            salon.setTotal(ss.countBill(salon.getTableAux(), salon, false));
+            salon.getTableAux().setTotal(salon.getTotal());
+            daoT.updateTableTotal(salon.getTableAux());
+            ArrayList<Itemcard> arrayAux = ss.itemDeployer(ic, u);
+            ss.addItemOrder(salon, salon.getTableAux(), arrayAux, salon.isIndiBool());
+            jButExtSetter(salon);
+            salon.getLabelCuenta().setText("" + salon.getTotal());
+            salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
+            salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
+            setTableItems(salon);
+//            } else {
+//                utiliMsg.errorSaveTable();
+////                jButExtSetter(salon);
+////                resetTableFull(salon);
+////                setTableItems(salon);
+////                salon.setEnabled(true);
+//            }
         }
     }
 

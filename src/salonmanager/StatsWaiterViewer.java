@@ -82,7 +82,7 @@ public class StatsWaiterViewer extends FrameFull {
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("");
         panelLabel.add(labelTit);
-        
+
         JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
         panelPpal.add(panelLogo);
 
@@ -115,15 +115,20 @@ public class StatsWaiterViewer extends FrameFull {
             labelPanel2.setBounds(anchoUnit * 53, altoUnit * 6, anchoUnit * 20, altoUnit * 4);
 
             HashMap<String, Integer> countWWs = sMan.getCountWWs();
-            CategoryChart chartWWs = utiliGrafStats.chartWWsBacker(countWWs, statsM);
+            if (countWWs.size() > 0) {
+                CategoryChart chartWWs = utiliGrafStats.chartWWsBacker(countWWs, statsM);
 
-            JScrollPane scrollPane = new JScrollPane(new XChartPanel<>(chartWWs));
-            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            panelPpal.add(scrollPane);
+                JScrollPane scrollPane = new JScrollPane(new XChartPanel<>(chartWWs));
+                scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                panelPpal.add(scrollPane);
 
-            panelChart2.setBounds(anchoUnit * 53, altoUnit * 12, anchoUnit * 50, altoUnit * 80);
-            panelChart2.add(scrollPane);
+                panelChart2.setBounds(anchoUnit * 53, altoUnit * 12, anchoUnit * 50, altoUnit * 80);
+                panelChart2.add(scrollPane);
+            } else {
+                utiliMsg.errorNullOpWaiter();
+                dispose();
+            }
 
         } else if (k == 2) {
             tit = "Estadísticas individuales de Mozos(" + period + ")";
@@ -196,8 +201,10 @@ public class StatsWaiterViewer extends FrameFull {
 
         iSalesByWaiter = new ArrayList<>();
         for (ItemSale is : iSales) {
-            if (is.getItemSaleWaiterId().equals(user.getId())) {
-                iSalesByWaiter.add(is);
+            if (is.getItemSaleWaiterId() != null) {
+                if (is.getItemSaleWaiterId().equals(user.getId())) {
+                    iSalesByWaiter.add(is);
+                }
             }
         }
 
@@ -262,7 +269,6 @@ public class StatsWaiterViewer extends FrameFull {
             panelChart1.revalidate();
             panelChart1.repaint();
 
-            
             items = statsS.orderHsII(items);
             ArrayList<Integer> ids = new ArrayList<>(items.keySet());
             ArrayList<String> iNames = new ArrayList<>();

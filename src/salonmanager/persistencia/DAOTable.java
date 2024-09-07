@@ -28,9 +28,12 @@ public class DAOTable extends DAO {
                 for (int i = 0; i < wsTs.size(); i++) {
                     if (wsTs.get(i).equals(tab.getOpenTime())) {
                         error = true;
+//                        done = true;
                     }
                 }
             }
+        } else {
+            error = true;
         }
 
         if (tab.getNum() == 0) {
@@ -66,8 +69,6 @@ public class DAOTable extends DAO {
                     }
                     done = true;
                 }
-                
-                
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
             } catch (SQLException e) {
@@ -78,6 +79,7 @@ public class DAOTable extends DAO {
                 }
             }
         }
+        
         return done;
     }
 
