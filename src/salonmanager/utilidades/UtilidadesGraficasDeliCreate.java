@@ -172,16 +172,20 @@ public class UtilidadesGraficasDeliCreate {
     }
 
     private void createConsumer(DeliveryCreate dc) throws Exception {
-        new ConsumerTemplate(dc, null, null);
+        new ConsumerTemplate(null, dc, null, null);
         dc.setEnabled(false);
     }
 
     public void getConsumer(DeliveryClient cmr, DeliveryCreate dc) {
         dc.setCmrAux(cmr);
-        setConsumerFields(dc.getCmrAux(), dc);
-        dc.getConsumers().add(dc.getCmrAux().getPhone());
+        String n = dc.getCmrAux().getName();
+        String l = dc.getCmrAux().getLastname();
+        int i = dc.getCmrAux().getId();
+        String cmrSt = n + "/" + l + "/" + i;
+        dc.getConsumers().add(cmrSt);
         dc.getComboConsumers().setModel(utili.consumerComboModelReturnWNull(dc.getConsumers(), dc, null));
         dc.getComboConsumers().setSelectedIndex(dc.getConsumers().size() - 1);
+        setConsumerFields(dc.getCmrAux(), dc);
         dc.setFndEnabled();
     }
 

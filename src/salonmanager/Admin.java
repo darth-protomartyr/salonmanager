@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -30,6 +32,7 @@ import salonmanager.utilidades.UtilidadesMensajes;
 public class Admin extends FrameHalf {
 
     DAOUser daoU = new DAOUser();
+    DAODeliveryClient daoDC = new DAODeliveryClient();
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
     ServicioTable st = new ServicioTable();
@@ -42,18 +45,22 @@ public class Admin extends FrameHalf {
     User user = null;
     ConfigActual cfgAct = new ConfigActual();
     ArrayList<User> users = new ArrayList<>();
+    ArrayList<DeliveryClient> consumers = new ArrayList<>();
     ArrayList<String> defer1 = new ArrayList<>();
     ArrayList<String> defer2 = new ArrayList<>();
     ArrayList<Workshift> defer1Ws = new ArrayList<>();
     ArrayList<String> defer2Ws = new ArrayList<>();
     Table tabAux = null;
     User userMod = null;
+    DeliveryClient cmrMod = null;
     JComboBox comboUsers = new JComboBox();
+    JComboBox comboClients = new JComboBox();
     JComboBox comboAct = new JComboBox();
     JComboBox comboRol = new JComboBox();
     JComboBox comboTabs = new JComboBox();
     JComboBox comboWs = new JComboBox();
     JLabel labelUserMod = null;
+    JLabel labelConsumerMod = null;
     Admin adm = null;
     Manager manager = null;
     Font newFont = new Font("Arial", Font.BOLD, 17);
@@ -68,6 +75,7 @@ public class Admin extends FrameHalf {
         add(panelPpal);
         cfgAct = daoC.askConfigActual();
         users = daoU.listarUsersCompleto();
+        consumers = daoDC.listarDeliveryClientByActive(true);
 
         JLabel labelTit = utiliGraf.labelTitleBackerA3W("Administrar");
         labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 16, altoUnit * 4);
@@ -90,6 +98,11 @@ public class Admin extends FrameHalf {
 //----------------Panel Workshifts -------------------------------------------
         JPanel panelWs = utiliGrafAdm.panelWsBacker(adm);;
         panelPpal.add(panelWs);
+        
+//----------------Panel Clients-------------------------------------------------
+//----------------Panel Clients-------------------------------------------------
+        JPanel panelClients = utiliGrafAdm.panelClientsBacker(adm);
+        panelPpal.add(panelClients);
 
 //----------------Panel Items-------------------------------------------------
 //----------------Panel Items-------------------------------------------------
@@ -151,6 +164,14 @@ public class Admin extends FrameHalf {
         this.users = users;
     }
 
+    public ArrayList<DeliveryClient> getConsumers() {
+        return consumers;
+    }
+
+    public void setConsumers(ArrayList<DeliveryClient> consumers) {
+        this.consumers = consumers;
+    }
+
     public ArrayList<String> getDefer1() {
         return defer1;
     }
@@ -199,12 +220,28 @@ public class Admin extends FrameHalf {
         this.userMod = userMod;
     }
 
+    public DeliveryClient getCmrMod() {
+        return cmrMod;
+    }
+
+    public void setCmrMod(DeliveryClient cmrMod) {
+        this.cmrMod = cmrMod;
+    }
+
     public JComboBox getComboUsers() {
         return comboUsers;
     }
 
     public void setComboUsers(JComboBox comboUsers) {
         this.comboUsers = comboUsers;
+    }
+    
+    public JComboBox getComboClients() {
+        return comboClients;
+    }
+
+    public void setComboClients(JComboBox comboClients) {
+        this.comboClients = comboClients;
     }
 
     public JComboBox getComboAct() {
@@ -246,6 +283,18 @@ public class Admin extends FrameHalf {
     public void setLabelUserMod(JLabel labelUserMod) {
         this.labelUserMod = labelUserMod;
     }
+
+    public JLabel getLabelConsumerMod() {
+        return labelConsumerMod;
+    }
+
+    public void setLabelConsumerMod(JLabel labelConsumerMod) {
+        this.labelConsumerMod = labelConsumerMod;
+    }
+    
+    
+    
+    
 
     public Manager getManager() {
         return manager;

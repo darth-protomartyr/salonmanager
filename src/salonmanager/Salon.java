@@ -378,7 +378,7 @@ public class Salon extends FrameFull {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                boolean confirmation = utiliMsg.optionConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }
@@ -389,7 +389,7 @@ public class Salon extends FrameFull {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                boolean confirmation = utiliMsg.optionConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }

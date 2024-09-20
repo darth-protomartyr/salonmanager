@@ -363,7 +363,7 @@ public class DAOInit extends DAO {
             System.out.println(sql17);
             insertarModificarEliminar(sql17);
 
-            utiliMsg.cargaTablesLoaded();
+            utiliMsg.successTablesLoaded(null);
 
             System.out.println("Tablas creadas exitosamente.");
         } catch (SQLException e) {

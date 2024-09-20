@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
@@ -73,6 +74,8 @@ public class WorkshiftEndPanel extends FrameHalf {
     ArrayList<Table> toEraseTabs = new ArrayList<>();
     ArrayList<Table> toUpdTabs = new ArrayList<>();
     ArrayList<String> actualTabsSt = new ArrayList<>();
+//    ArrayList<Delivery> deliverys =  new ArrayList<>();
+
 
     double total = 0; //amount billing
     double cash = 0;
@@ -91,6 +94,7 @@ public class WorkshiftEndPanel extends FrameHalf {
     public WorkshiftEndPanel(Salon sal, Admin adm, Manager man, Workshift ws1, Workshift ws2, ArrayList<Table> actTabs, ArrayList<Table> nTabs, ArrayList<Table> toErsdTabs, ArrayList<Table> updTabs, boolean errorW, int k) throws Exception {
         manager = man;
         admin = adm;
+//        deliverys = delis;
         
         kind = k;
         if (sal != null) {
@@ -479,7 +483,7 @@ public class WorkshiftEndPanel extends FrameHalf {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    getTab();
+                    getTab(salon);
                 } catch (Exception ex) {
                     Logger.getLogger(Salon.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -514,7 +518,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirm = utiliMsg.cargaConfirmRealWsMount();
+                boolean confirm = utiliMsg.optionConfirmRealWsMount();
                 if (confirm) {
                     if (salon != null) {
                         salon.setEnabled(true);
@@ -530,7 +534,7 @@ public class WorkshiftEndPanel extends FrameHalf {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                boolean confirm = utiliMsg.cargaConfirmRealWsMount();
+                boolean confirm = utiliMsg.optionConfirmRealWsMount();
                 if (confirm) {
                     
                     if (salon != null) {
@@ -575,10 +579,10 @@ public class WorkshiftEndPanel extends FrameHalf {
                     comment = utiliMsg.requestCause();
                 }
                 if (!comment.equals("") || !comment.equals("<br>")) {
-                    confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
+                    confirm = utiliMsg.optionConfirmarFacturacion(realAmount, realError);
                     if (confirm) {
-                        errorCash = utiliMsg.cargaErrorCash();
-                        errorElec = utiliMsg.cargaErrorElec();
+                        errorCash = utiliMsg.requestErrorCash();
+                        errorElec = utiliMsg.requestErrorElec();
                         if (errorCash + errorElec != realAmount) {
                             confirm = false;
                             utiliMsg.errorSumError();
@@ -588,7 +592,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                     utiliMsg.errorCommentNull();
                 }
             } else {
-                confirm = utiliMsg.cargaConfirmarFacturacion(realAmount, realError);
+                confirm = utiliMsg.optionConfirmarFacturacion(realAmount, realError);
             }
 
             if (confirm) {
@@ -606,7 +610,7 @@ public class WorkshiftEndPanel extends FrameHalf {
                     actualWs.setTotalMountElectronicWs(errorElec);
                     realError = 0;
                 }
-                sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon);
+                sw.saveWorkshift(actualWs, newWs, actualTabs, newTabs, toEraseTabs, toUpdTabs, salon, this);
                 if (salon != null) {
                     salon.getCfgAct().setOpenIdWs(0);
                     salon.getCfgAct().setOpenWs(false);
@@ -621,7 +625,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         }
     }
 
-    public void getTab() throws Exception {
+    public void getTab(Salon salon) throws Exception {
         String id1 = (String) comboTabs.getSelectedItem();
         Table tab = new Table();
         for (int i = 0; i < actualTabs.size(); i++) {
@@ -630,7 +634,7 @@ public class WorkshiftEndPanel extends FrameHalf {
             }
         }
         if (!id1.equals("")) {
-            new TableResumePanel(tab);
+            new TableResumePanel(tab, salon);
         } else {
             utiliMsg.errorTableResume();
         }
@@ -646,11 +650,11 @@ public class WorkshiftEndPanel extends FrameHalf {
         return closeTabs;
     }
 
-    private void buttonDeferWsCloseAction() throws Exception {
-        ArrayList<String> deferWsArray = cfgAct.getArrayDeferWs();
-        daoC.updateCfgActDeferWs(deferWsArray);
-        utiliMsg.cargaWsDefer();
-    }
+//    private void buttonDeferWsCloseAction() throws Exception {
+//        ArrayList<String> deferWsArray = cfgAct.getArrayDeferWs();
+//        daoC.updateCfgActDeferWs(deferWsArray);
+//        utiliMsg.successWsDefer(this);
+//    }
 
     private void butSeeMoneyFlowAction() throws Exception {
         new MoneyFlowViewer(this);
@@ -702,7 +706,7 @@ public class WorkshiftEndPanel extends FrameHalf {
         double error = errorWs;
         
         if (sum <= error) {
-            boolean confirm = utiliMsg.cargaConfirmarCorrection(sum, error);
+            boolean confirm = utiliMsg.optionConfirmarCorrection(sum, error);
             if (confirm) {
                 actualWs.setErrorMountWs(error - sum);
                 daoW.updateWorkshiftErrorWs(actualWs);

@@ -316,7 +316,7 @@ public class ErrorTableCount extends FrameWindow {
         }
 
         if (error == false) {
-            boolean confirm = utiliMsg.cargaConfirmarMontoError(total - wrong, wrong);
+            boolean confirm = utiliMsg.optionConfirmarMontoError(total - wrong, wrong);
             if (confirm) {
                 salon.setTotal(total);
                 salon.getTableAux().setTotal(salon.getTotal());

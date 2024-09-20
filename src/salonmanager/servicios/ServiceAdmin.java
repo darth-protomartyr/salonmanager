@@ -4,13 +4,10 @@
  */
 package salonmanager.servicios;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import salonmanager.Admin;
 import salonmanager.TableAdder;
 import salonmanager.WorkshiftEndPanel;
-import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
@@ -35,7 +32,7 @@ public class ServiceAdmin {
         String selection = (String) admin.getComboUsers().getSelectedItem();
         if (!selection.equals("")) {
             admin.setUserMod(utili.userSelReturn(selection, admin.getUsers()));
-            int index = 0;            
+//            int index = 0;            
             admin.getComboRol().setSelectedItem(admin.getUserMod().getRol());
             if (admin.getUserMod().isActiveUser()) {
                 admin.getComboAct().setSelectedIndex(1);
@@ -45,6 +42,7 @@ public class ServiceAdmin {
             admin.getLabelUserMod().setText("Usuario: " + admin.getUserMod().getName() + " " + admin.getUserMod().getLastName());
         }
     }
+    
 
     public void updateUser(Admin admin, UtilidadesGraficasAdmin uga) throws Exception {
         String userId = admin.getUserMod().getId();
@@ -59,7 +57,7 @@ public class ServiceAdmin {
             }
             daoU.updateActUser(userId, act);
             daoU.updateRolUser(userId, rol);
-            utiliMsg.cargaUserUpdate();
+            utiliMsg.successUserUpdate(null);
             uga.reset(admin);
         } else {
             utiliMsg.errorDataNull();
@@ -93,5 +91,14 @@ public class ServiceAdmin {
         ArrayList<Table> tabs = st.listTablesByTs(ws.getOpenDateWs(), ws.getCloseDateWs(), false);
         new WorkshiftEndPanel(null, adm, adm.getManager(), ws, null, tabs, null, null, null, false, 2);
         adm.setEnabled(false);
+    }
+
+
+    public void selectConsumer(Admin admin) {
+        String selection = (String) admin.getComboClients().getSelectedItem();
+        if (!selection.equals("")) {
+            admin.setCmrMod(utili.consumerSelReturn(selection, admin.getConsumers()));
+            admin.getLabelConsumerMod().setText("Cliente: " + admin.getCmrMod().getName() + " " + admin.getCmrMod().getLastname());
+        }
     }
 }

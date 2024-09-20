@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -57,9 +58,11 @@ public class ItemcardModificacion extends FrameHalf {
     JCheckBox checkTip = new JCheckBox("");
     JButtonMetalBlu butModificarItem = null;
     Manager manager = null;
+    JFrame frame = null;
 
     public ItemcardModificacion(Itemcard ic, Manager man) throws Exception {
         itemAux = ic;
+        frame = this;
         manager = man;
         sm.addFrame(this);
         setTitle("Modificación Item de la Carta");
@@ -150,7 +153,7 @@ public class ItemcardModificacion extends FrameHalf {
             }
 
             if (pric.equals("")) {
-                boolean confirm = utiliMsg.cargaConfirmErrorPriceNull();
+                boolean confirm = utiliMsg.optionConfirmErrorPriceNull();
                 if (confirm) {
                     pric = "0";
                     price = utili.toNumberD(pric);
@@ -209,13 +212,13 @@ public class ItemcardModificacion extends FrameHalf {
                     }
                 }
                 if (tabIdsIc.size() > 0) {
-                    confirm = utiliMsg.cargaConfirmarCambioPrAct();
+                    confirm = utiliMsg.optionConfirmarCambioPrAct();
                 }
             }
 
             if (confirm) {
                 if (manager.getSalon() != null) {
-                    boolean confirm2 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+                    boolean confirm2 = utiliMsg.optionConfirmarUpdateActiveTabs();
                     if (confirm2) {
                         ArrayList<String> modTabsNew = new ArrayList<>();
                         for (int i = 0; i < tabIdsIc.size(); i++) {
@@ -229,7 +232,7 @@ public class ItemcardModificacion extends FrameHalf {
                         }
                         daoC.updateCfgActModTabs(modTabIds);
                         daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
-                        utiliMsg.cargaUpdatePriceItemActive();
+                        utiliMsg.successUpdatePriceItemActive(frame);
 
                     }
                     manager.getSalon().dispose();

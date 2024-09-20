@@ -179,7 +179,7 @@ public class UtilidadesGraficasConfigItemList {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (cil.getButEnab().getText().equals("DESHABILITAR")) {
-                        boolean confirm = utiliMsg.cargaConfirmarCambioCat();
+                        boolean confirm = utiliMsg.optionConfirmarCambioCat();
                         if (confirm == true) {
                             boolean pMod = modifyPnls(cil);
                             if (pMod) {
@@ -260,7 +260,7 @@ public class UtilidadesGraficasConfigItemList {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (cil.getButEnab().getText().equals("DESHABILITAR")) {
-                        boolean confirm = utiliMsg.cargaConfirmarCambioPrice();
+                        boolean confirm = utiliMsg.optionConfirmarCambioPrice();
                         if (confirm == true) {
                             boolean pMod = modifyPnls(cil);
                             if (pMod) {

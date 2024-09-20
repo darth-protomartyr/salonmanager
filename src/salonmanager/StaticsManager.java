@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +49,7 @@ public class StaticsManager extends FrameFull {
     double numBar = 0;
     double numDeli = 0;
     HashMap<String, Double> countWSells = null;
+    HashMap<Integer, Double> countClientBuys = null;
     HashMap<String, Integer> countWWs = null;
     HashMap<String, Double> countCat = null;
     JPanel panelChartByOrder = new JPanel();
@@ -91,6 +91,10 @@ public class StaticsManager extends FrameFull {
     JLabel labelWaiter8 = null;
     JLabel labelWaiter9 = null;
     JLabel labelWaiter10 = null;
+    
+    JLabel labelClient1 = null;
+    JLabel labelClient2 = null;
+    JLabel labelClient3 = null;    
 
     public StaticsManager(Manager man) throws Exception {
         setTitle("Administrador");
@@ -98,7 +102,6 @@ public class StaticsManager extends FrameFull {
         PanelPpal panelPpal = new PanelPpal(frame);
         add(panelPpal);
         Timestamp now = new Timestamp(new Date().getTime());
-        LocalDateTime today = now.toLocalDateTime();
 
         ConfigGeneral cfgGen = daoC.askConfigGeneral();
         categories = cfgGen.getTableItemCategories();
@@ -159,17 +162,13 @@ public class StaticsManager extends FrameFull {
 //PANEL CLIENT STATICS----------------------------------------------------------        
 //PANEL CLIENT STATICS----------------------------------------------------------        
 //PANEL CLIENT STATICS----------------------------------------------------------        
-        panelClients = new JPanel();
-        JLabel labelClients = utiliGraf.labelTitleBacker2("Estadísticas Clientes");
-        labelClients.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 30, altoUnit * 3);
-        panelClients.add(labelClients);
+        panelClients = utiliGrafStats.panelClientStaticsBacker(this);
         panelClients.setLayout(null);
         panelClients.setBounds(anchoUnit * 85, altoUnit * 10, anchoUnit * 18, altoUnit * 37);
         panelClients.setBackground(bluLg);
         panelClients.setVisible(false);
         panelPpal.add(panelClients);
         
-
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
 //PANEL ITEM STATICs-------------------------------------------------------------        
@@ -200,7 +199,7 @@ public class StaticsManager extends FrameFull {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                boolean confirmation = utiliMsg.optionConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }
@@ -211,7 +210,7 @@ public class StaticsManager extends FrameFull {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                boolean confirmation = utiliMsg.optionConfirmarCierreVentana();
                 if (confirmation) {
                     dispose();
                 }
@@ -345,6 +344,14 @@ public class StaticsManager extends FrameFull {
 
     public void setCountWWs(HashMap<String, Integer> countWWs) {
         this.countWWs = countWWs;
+    }
+
+    public HashMap<Integer, Double> getCountClientBuys() {
+        return countClientBuys;
+    }
+
+    public void setCountClientBuys(HashMap<Integer, Double> countClientBuys) {
+        this.countClientBuys = countClientBuys;
     }
 
     public HashMap<String, Double> getCountCat() {
@@ -609,6 +616,30 @@ public class StaticsManager extends FrameFull {
 
     public void setLabelWaiter10(JLabel labelWaiter10) {
         this.labelWaiter10 = labelWaiter10;
+    }
+
+    public JLabel getLabelClient1() {
+        return labelClient1;
+    }
+
+    public void setLabelClient1(JLabel labelClient1) {
+        this.labelClient1 = labelClient1;
+    }
+
+    public JLabel getLabelClient2() {
+        return labelClient2;
+    }
+
+    public void setLabelClient2(JLabel labelClient2) {
+        this.labelClient2 = labelClient2;
+    }
+
+    public JLabel getLabelClient3() {
+        return labelClient3;
+    }
+
+    public void setLabelClient3(JLabel labelClient3) {
+        this.labelClient3 = labelClient3;
     }
 
     public JLabel getLabelTitleProgram() {

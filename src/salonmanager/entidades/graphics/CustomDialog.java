@@ -1,7 +1,6 @@
 package salonmanager.entidades.graphics;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -16,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -23,8 +23,8 @@ import javax.swing.border.Border;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 
+public class CustomDialog extends JDialog {
 
-public class CustomDialog extends JDialog {    
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     Utilidades utili = new Utilidades();
     Toolkit pantalla = Toolkit.getDefaultToolkit();
@@ -34,21 +34,16 @@ public class CustomDialog extends JDialog {
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
     ImageIcon icono = new ImageIcon("menu.png");
-
-    Color black = new Color(50, 50, 50);
-    Color red = new Color(240, 82, 7);
     Color redLg = new Color(243, 103, 91);
-    Color green = new Color(31, 240, 100);
-    Color narUlg = new Color(255, 255, 176);
-    Color bluSt = new Color(3, 166, 136);
-    Color narSt = new Color(217, 103, 4);
     Color narLg = new Color(252, 203, 5);
-    Color viol = new Color(205, 128, 255);
-    Color bluLg = new Color(194, 242, 206);
+    JFrame frame = null;
 
-    Component component = null;
-
-    public CustomDialog(String message, int type) {
+    public CustomDialog(String message, int type, JFrame fram) {
+        if (fram != null) {
+            frame = fram;
+            frame.setEnabled(false);
+        }
+        
         setIconImage(icono.getImage());
         setModal(true);
 
@@ -82,7 +77,7 @@ public class CustomDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    dispose();
+                    closer(frame);
                 } catch (Exception ex) {
                     Logger.getLogger(CustomDialog.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -95,21 +90,28 @@ public class CustomDialog extends JDialog {
             setTitle("ACCION EXITOSA");
             contentPane.setBackground(narLg);
             panelText.setBackground(narLg);
-        } else if( type == 2) {
+        } else if (type == 2) {
             setTitle("ERROR");
             contentPane.setBackground(redLg);
             panelText.setBackground(redLg);
         } else {
             setTitle("ADVERTENCIA");
             contentPane.setBackground(narLg);
-            panelText.setBackground(narLg);            
+            panelText.setBackground(narLg);
         }
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                dispose();
+                closer(frame);
             }
         }
         );
+    }
+
+    public void closer(JFrame frame) {
+        if (frame != null) {
+            frame.setEnabled(true);
+        }
+        dispose();
     }
 }

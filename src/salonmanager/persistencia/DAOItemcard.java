@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Itemcard;
@@ -122,7 +123,7 @@ public class DAOItemcard extends DAO {
                         + "VALUES( '" + SalonManager.encryptInt(item.getId()) + "', '" + SalonManager.encrypt(item.getName()) + "', '" + SalonManager.encrypt(item.getCategory()) + "','" + SalonManager.encrypt(item.getDescription()) + "','" + SalonManager.encryptDouble(item.getCost()) + "','" + prices + "', '" + SalonManager.encryptInt(item.getStock()) + "', '" + SalonManager.encryptTs(item.getDateCreation()) + "', '" + SalonManager.encryptTs(null) + "', '" + SalonManager.encryptBoolean(item.isActiveTip()) + "', '" + SalonManager.encryptBoolean(item.isActiveItem()) + "');";
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
-                utiliMsg.cargaItem();
+                utiliMsg.successItem(null);
             } catch (SQLException e) {
                 if (e.getErrorCode() == 1062) {
                     utiliMsg.errorCargaDB();
@@ -145,7 +146,7 @@ public class DAOItemcard extends DAO {
             System.out.println(sql);
             insertarModificarEliminar(sql);
 
-            utiliMsg.cargaSuccesMod();
+            utiliMsg.successMod(null);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -169,7 +170,7 @@ public class DAOItemcard extends DAO {
             insertarModificarEliminar(sql.trim());
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -178,15 +179,6 @@ public class DAOItemcard extends DAO {
 
     public void upActiveItemOrderTable(Itemcard ic, Table t) throws Exception {
         try {
-            /*
-                item_card_order_tab_id TEXT,
-                item_card_order_tab_active TEXT,
-                item_card_order_id_fkey TEXT,
-                table_id_fkey TEXT,
-                FOREIGN KEY (item_card_order_id_fkey) REFERENCES item_cards(item_card_id),
-                FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)            
-            */  
-            
             ArrayList<String> ids = new ArrayList<>();
             String sql1 = "SELECT item_card_order_tab_id FROM item_card_order_tabs WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "' ;";
             System.out.println(sql1);
@@ -303,7 +295,7 @@ public class DAOItemcard extends DAO {
             insertarModificarEliminar(sql.trim());
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -430,7 +422,7 @@ public class DAOItemcard extends DAO {
             insertarModificarEliminar(sql.trim());
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -555,7 +547,7 @@ public class DAOItemcard extends DAO {
             insertarModificarEliminar(sql.trim());
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -761,15 +753,37 @@ public class DAOItemcard extends DAO {
 
     public int getItemId() throws Exception {
         try {
+            ArrayList<Integer> ids = new ArrayList<>();
+            int max = 1;
             int id = 0;
-            String sql = "SELECT COUNT(*) AS cantidad_filas FROM item_cards;";
+            String sql = "SELECT item_card_id FROM item_cards;";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<String> cmrs = new ArrayList<>();
             while (resultado.next()) {
-                id = resultado.getInt(1) + 1;
+                id = SalonManager.decryptInt(resultado.getString(1));
+                ids.add(id);
             }
-            return id;
+            int max2 = 0;
+            
+            if (ids.size() > 0) {
+                max2 = Collections.max(ids);
+            }
+            
+            max =max + max2;
+            return max;
+            
+            
+            
+            
+//            int id = 0;
+//            String sql = "SELECT COUNT(*) AS cantidad_filas FROM item_cards;";
+//            System.out.println(sql);
+//            consultarBase(sql);
+//            ArrayList<String> cmrs = new ArrayList<>();
+//            while (resultado.next()) {
+//                id = resultado.getInt(1) + 1;
+//            }
+//            return id;
         } catch (Exception e) {
             throw e;
         } finally {

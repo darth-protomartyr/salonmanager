@@ -168,7 +168,7 @@ public class ServiceConfigItemList {
 
                     if (tabIdsIc.size() > 0) {
                         if (counter1 < 1) {
-                            confirm1 = utiliMsg.cargaConfirmarCambioPrAct();
+                            confirm1 = utiliMsg.optionConfirmarCambioPrAct();
                             counter1 += 1;
                         }
                     }
@@ -176,7 +176,7 @@ public class ServiceConfigItemList {
                     if (confirm1) {
                         if (cil.getManager().getSalon() != null) {
                             if (counter2 < 1) {
-                                confirm2 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+                                confirm2 = utiliMsg.optionConfirmarUpdateActiveTabs();
                                 counter2 += 1;
                             }
                             if (confirm2) {
@@ -197,7 +197,7 @@ public class ServiceConfigItemList {
                                 cil.getManager().getSalon().dispose();
                                 cil.getManager().setSalon(null);
                                 if (counter3 < 1) {
-                                    utiliMsg.cargaUpdatePriceItemActive();
+                                    utiliMsg.successUpdatePriceItemActive(cil);
                                     counter3 += 1;
                                 }
                             }
@@ -243,7 +243,7 @@ public class ServiceConfigItemList {
                     }
 
                     if (pri.equals("")) {
-                        boolean confirm = utiliMsg.cargaConfirmErrorPriceNull();
+                        boolean confirm = utiliMsg.optionConfirmErrorPriceNull();
                         if (confirm) {
                             pri = "0";
                             price = utili.toNumberD(pri);
@@ -276,7 +276,7 @@ public class ServiceConfigItemList {
 
                     boolean confirm1 = true;
                     if (price <= cost) {
-                        confirm1 = utiliMsg.cargaConfirmLowerPrice();
+                        confirm1 = utiliMsg.optionConfirmLowerPrice();
                     }
 
                     if (confirm1) {
@@ -292,12 +292,12 @@ public class ServiceConfigItemList {
 
                         boolean confirm2 = true;
                         if (tabIdsIc.size() > 0) {
-                            confirm2 = utiliMsg.cargaConfirmarCambioPrAct();
+                            confirm2 = utiliMsg.optionConfirmarCambioPrAct();
                         }
 
                         if (confirm2) {
                             if (cil.getManager().getSalon() != null) {
-                                boolean confirm3 = utiliMsg.cargaConfirmarUpdateActiveTabs();
+                                boolean confirm3 = utiliMsg.optionConfirmarUpdateActiveTabs();
                                 if (confirm3) {
                                     ArrayList<String> modTabsNew = new ArrayList<>();
                                     for (int y = 0; y < tabIdsIc.size(); y++) {
@@ -314,7 +314,7 @@ public class ServiceConfigItemList {
                                     daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
                                     cil.getManager().getSalon().dispose();
                                     cil.getManager().setSalon(null);
-                                    utiliMsg.cargaUpdatePriceItemActive();
+                                    utiliMsg.successUpdatePriceItemActive(cil);
                                 }
                             } else {
                                 daoI.modificarItem(id, ic.getName(), cat, ic.getDescription(), cost, prices, stock, ic.isActiveTip());
@@ -330,7 +330,7 @@ public class ServiceConfigItemList {
     
     public void reset(ConfigItemList cil) throws Exception {
         cil.setItems(daoI.listarItemsCard(true));
-        utiliMsg.cargaSuccesMod();
+        utiliMsg.successMod(cil);
         cil.getCheckBox().setVisible(false);
         cil.getCheckBox().setSelected(false);
         cil.getButEnab().setText("HABILITAR");

@@ -271,7 +271,7 @@ public class ServicioSalon {
         salon.getTableAux().setGifts(salon.getItemsGift());
         salon.setItemsTableAux(itemTableLesser(salon.getTableAux().getOrder(), ic));
         salon.getTableAux().setOrder(salon.getItemsTableAux());
-        utiliMsg.cargaGift(ic.getName());
+        utiliMsg.successGift(ic.getName(), salon);
         salon.setTotal(countBill(salon.getTableAux(), salon, false));
         salon.getTableAux().setTotal(salon.getTotal());
         daoIC.downActiveItemOrderTable(ic, salon.getTableAux());
@@ -351,7 +351,7 @@ public class ServicioSalon {
         deferTabs.add(salon.getTableAux().getId());
         daoC.updateCfgActDeferWs(deferTabs);
 
-        utiliMsg.cargaError();
+        utiliMsg.successError(salon);
         salon.setEnabled(true);
     }
 
@@ -455,13 +455,13 @@ public class ServicioSalon {
 
         if (errorWs == false) {
             if (openJBTButtonsTester(salon.getTableButtons(), salon.getBarrButtons(), salon.getDeliButtons()) == false) {
-                boolean confirm1 = utiliMsg.cargaConfirmarCambioTurno(salon.getUser());
+                boolean confirm1 = utiliMsg.optionConfirmarCambioTurno(salon.getUser());
                 if (confirm1 == true) {
                     salon.setEnabled(false);
                     inconcludeWsCutter(salon, salon.getWorkshiftNow(), errorWs);
                 }
             } else {
-                boolean confirm2 = utiliMsg.cargaConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
+                boolean confirm2 = utiliMsg.optionConfirmarCierreTurno(salon.getUser().getName(), salon.getUser().getLastName());
                 if (confirm2 == true) {
                     salon.setEnabled(false);
                     closeWorkshift(salon, salon.getManager(), salon.getWorkshiftNow(), null, null, null, null, null, errorWs, 0);
@@ -474,21 +474,21 @@ public class ServicioSalon {
             ws.setCashierWs(cashier);
             ArrayList<Table> prevTabs = st.workshiftTableslistComplete(ws, 2);
             utiliMsg.errorDiferentCashier();
-            boolean confirm3 = utiliMsg.cargaConfirmarNuevoTurno();
+            boolean confirm3 = utiliMsg.optionConfirmarNuevoTurno();
             if (confirm3) {
                 //Cerrar turno abierto por otro usuario y abrir uno nuevo
                 closeWorkshift(null, manager, ws, null, null, null, null, null, errorWs, 1);
             } else {
                 if (prevTabs.size() > 0) {
                     //Mesas abiertas del turno anterior y abrir uno nuevo
-                    boolean confirm5 = utiliMsg.cargaConfirmarOpenTabsOldWs();
+                    boolean confirm5 = utiliMsg.optionConfirmarOpenTabsOldWs();
                     if (confirm5) {
                         new TabsToEnd(manager, ws, errorWs);
                     }
                 } else {
-                    boolean confirm6 = utiliMsg.cargaConfirmarCierreTurnoError();
+                    boolean confirm6 = utiliMsg.optionConfirmarCierreTurnoError();
                     if (confirm6 == true) {
-                        boolean confirm4 = utiliMsg.cargaConfirmAddTables();
+                        boolean confirm4 = utiliMsg.optionConfirmAddTables();
                         if (confirm4) {
                             new TableAdder(ws, manager, null, null);
                         } else {
@@ -511,9 +511,10 @@ public class ServicioSalon {
                 daoW.updateWorkshiftComment(actWs);
                 actWs.setError(true);
                 daoW.updateWorkshiftErrorBool(actWs);
-                utiliMsg.cargaErrorWs();
+                utiliMsg.successErrorWs(salon);
                 daoC.updateCfgActOpenIdWs(0);
                 daoC.updateCfgActOpenWs(false);
+                salon.getManager().updateLabelWs();
             } else if (error == 2) {
                 workshiftConclusive(salon, manager, actWs, nWs, actTabs, nTabs, ersdTabs, updTabs, errorWs);
             }
@@ -598,8 +599,6 @@ public class ServicioSalon {
 
     private Workshift setWsEnd(Workshift ws) throws Exception {
         Workshift newWs = ws;
-//        int id = daoW.findId(newWs.getOpenWs());
-//        newWs.setId(id);
         newWs.setCloseDateWs(new Timestamp(new Date().getTime()));
         newWs.setStateWs(false);
         return newWs;
@@ -628,7 +627,7 @@ public class ServicioSalon {
 
         if (actualTabs.size() == 0) {
             if (salon != null) {
-                boolean confirm = utiliMsg.cargaWorkshiftEmpty();
+                boolean confirm = utiliMsg.optionWorkshiftEmpty();
                 if (confirm) {
                     actualWs.setStateWs(false);
                     actualWs.setActiveWs(false);
@@ -636,7 +635,9 @@ public class ServicioSalon {
                     daoW.downWorkshiftActive(actualWs);
                     daoC.updateCfgActOpenWs(false);
                     daoC.updateCfgActOpenIdWs(0);
+                    salon.getManager().updateLabelWs();
                     salon.setWorkshiftNow(null);
+                    salon.getManager().updateLabelWs();
                     salon.getLabelWorkshift().setText("Turno no iniciado.");
                     salon.getButInitWorkshift().setText("ABRIR TURNO");
                     salon.setEnabled(true);

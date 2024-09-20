@@ -76,6 +76,16 @@ public class Utilidades {
         }
         return user;
     }
+    
+    public DeliveryClient consumerSelReturn(String cmr, ArrayList<DeliveryClient> deliDB) {
+        DeliveryClient dc = new DeliveryClient();
+        for (DeliveryClient d : deliDB) {
+            if (cmr.equals(d.getName() + " " + d.getLastname())) {
+                dc = d;
+            }
+        }
+        return dc;
+    }
 
     public Table tabSelReturn(String tabStr, ArrayList<Table> tabs) {
         Table tab = new Table();
@@ -181,7 +191,7 @@ public class Utilidades {
     public String barrReplaceInverse(String absolutePath, boolean absolute) {
         String path = absolutePath;
         if (absolute) {
-        path = path.replace("|", "\\");
+            path = path.replace("|", "\\");
         } else {
             path = path.replace("|", "\\");
         }
@@ -300,15 +310,15 @@ public class Utilidades {
         for (String cmr : cmrs) {
             String[] words = cmr.split("/");
             String st = "";
-            
+
             String one = words[0];
             String[] first = one.split(" ");
             String ch1 = first[0];
-            
+
             if (cmr.length() > 30) {
                 ch1 = ch1.substring(0, 1) + ".";
             }
-                
+
             String ch2 = words[1];
             if (ch2.length() > 15) {
                 String[] second = ch2.split(" ");
@@ -317,18 +327,27 @@ public class Utilidades {
                     ch2 = ch2.substring(0, 14) + ".";
                 }
             }
-            
-            String i =  words[2];
+
+            String i = words[2];
             int id = (int) parseInt(i);
             if (dc != null) {
                 dc.getIdsCmr().add(id);
             } else {
                 dd.getIdsCmr().add(id);
             }
-            
+
             st = ch2 + ", " + ch1;
 
             modeloCombo.addElement(st);
+        }
+        modeloCombo.addElement("");
+        return modeloCombo;
+    }
+    
+    public ComboBoxModel consumer2ComboModelReturnWNull(ArrayList<DeliveryClient> cmrs) {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        for (DeliveryClient dc : cmrs) {
+            modeloCombo.addElement(dc.getName() + " " + dc.getLastname());
         }
         modeloCombo.addElement("");
         return modeloCombo;
@@ -1131,5 +1150,13 @@ public class Utilidades {
             }
         }
         return st = ch2 + " " + ch1;
+    }
+
+    public int cmrIdBacker(String cmr) {
+        int id = 0;
+        String[] words = cmr.split("/");
+        String i = words[2];
+        id = (int) parseInt(i);
+        return id;
     }
 }

@@ -258,7 +258,7 @@ public class UtilidadesGraficasCfgSal {
                 if (cSF.getCategoriesSel().size() > 0) {
                     try {
                         if (cSF.isSelSectors()) {
-                            boolean confirm = utiliMsg.cargaConfirmRestart();
+                            boolean confirm = utiliMsg.optionConfirmRestart();
                             if (confirm) {
                                 String pass = utiliMsg.requestPass();
                                 if (pass.equals(cSF.getUser().getPassword())) {

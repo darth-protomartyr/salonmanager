@@ -8,6 +8,7 @@ package salonmanager.persistencia;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -169,7 +170,7 @@ public class DAOWorkshift extends DAO {
 
     public void downWorkshiftActive(Workshift ws) throws Exception {
         try {
-            String sql1 = "UPDATE workshifts SET workshift_active = '" + SalonManager.encryptBoolean(false) + "' WHERE workshift_id = '" + SalonManager.encryptDouble(ws.getId()) + "';";
+            String sql1 = "UPDATE workshifts SET workshift_active = '" + SalonManager.encryptBoolean(false) + "' WHERE workshift_id = '" + SalonManager.encryptInt(ws.getId()) + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {
@@ -473,15 +474,37 @@ public class DAOWorkshift extends DAO {
 
     public int getNewWorkshiftId() throws Exception {
         try {
+            ArrayList<Integer> ids = new ArrayList<>();
+            int max = 1;
             int id = 0;
-            String sql = "SELECT COUNT(*) AS cantidad_filas FROM workshifts;";
+            String sql = "SELECT workshift_id FROM workshifts;";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<String> cmrs = new ArrayList<>();
             while (resultado.next()) {
-                id = resultado.getInt(1) + 1;
+                id = SalonManager.decryptInt(resultado.getString(1));
+                ids.add(id);
             }
-            return id;
+            int max2 = 0;
+            
+            if (ids.size() > 0) {
+                max2 = Collections.max(ids);
+            }
+            
+            max =max + max2;
+            return max;
+            
+            
+            
+            
+//            int id = 0;
+//            String sql = "SELECT COUNT(*) AS cantidad_filas FROM workshifts;";
+//            System.out.println(sql);
+//            consultarBase(sql);
+//            ArrayList<String> cmrs = new ArrayList<>();
+//            while (resultado.next()) {
+//                id = resultado.getInt(1) + 1;
+//            }
+//            return id;
         } catch (Exception e) {
             throw e;
         } finally {
@@ -499,6 +522,25 @@ public class DAOWorkshift extends DAO {
                 ts = SalonManager.decryptTs(resultado.getString(1));
             }
             return ts;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+
+    public ArrayList<Integer> listarWsIds() throws Exception {
+        ArrayList<Integer> wsIds = new ArrayList<>();
+        try {
+            String sql = "SELECT workshift_id FROM workshifts WHERE workshift_active = '" + SalonManager.encryptBoolean(true) + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                int id = 0;
+                id = SalonManager.decryptInt(resultado.getString(1));
+                wsIds.add(id);
+            }
+            return wsIds;
         } catch (Exception e) {
             throw e;
         } finally {

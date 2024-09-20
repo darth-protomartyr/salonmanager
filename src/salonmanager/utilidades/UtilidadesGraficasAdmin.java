@@ -16,9 +16,12 @@ import javax.swing.SwingConstants;
 import salonmanager.Admin;
 import salonmanager.ConfigItemList;
 import salonmanager.ConfigSalonFrame;
+import salonmanager.ConsumerTemplate;
+import salonmanager.DeliveryData;
 import salonmanager.TemplateUser;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
+import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
@@ -26,6 +29,7 @@ import salonmanager.servicios.ServiceAdmin;
 import salonmanager.servicios.ServicioTable;
 
 public class UtilidadesGraficasAdmin {
+
     Toolkit pantalla = Toolkit.getDefaultToolkit();
     Dimension tamanioPantalla = pantalla.getScreenSize();
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -36,6 +40,8 @@ public class UtilidadesGraficasAdmin {
     int anchoUnit = anchoFrame / 100;
     int altoUnit = alturaFrame / 100;
 
+    DAOConfig daoC = new DAOConfig();
+    DAODeliveryClient daoDC = new DAODeliveryClient();
     DAOUser daoU = new DAOUser();
     DAOTable daoT = new DAOTable();
     DAOWorkshift daoW = new DAOWorkshift();
@@ -44,7 +50,6 @@ public class UtilidadesGraficasAdmin {
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
-    DAOConfig daoC = new DAOConfig();
     Color bluLg = new Color(194, 242, 206);
     UtilidadesGraficasAdmin uga = this;
 
@@ -246,9 +251,74 @@ public class UtilidadesGraficasAdmin {
         return panelWs;
     }
 
+    
+    public JPanel panelClientsBacker(Admin admin) {
+        JPanel panelClient = new JPanel();
+        panelClient.setLayout(null);
+        panelClient.setBackground(bluLg);
+        panelClient.setBounds(anchoUnit * 2, altoUnit * 59, anchoUnit * 23, altoUnit * 32);
+
+        JLabel labelClients = utiliGraf.labelTitleBacker1("Administrar Clientes");
+        labelClients.setHorizontalAlignment(SwingConstants.CENTER);
+        labelClients.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
+        panelClient.add(labelClients);
+
+        admin.getComboClients().setBounds(anchoUnit * 4, altoUnit * 5, anchoUnit * 15, altoUnit * 4);
+        admin.getComboClients().setModel(utili.consumer2ComboModelReturnWNull(admin.getConsumers()));
+        admin.getComboClients().setSelectedItem("");
+        admin.getComboClients().setFont(admin.getNewFont());
+        panelClient.add(admin.getComboClients());
+
+        JButtonMetalBlu butSelClient = utiliGraf.button2("Elegir Cliente", anchoUnit * 5, altoUnit * 10, anchoUnit * 13);
+        butSelClient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    sa.selectConsumer(admin);
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelClient.add(butSelClient);
+
+        admin.setLabelConsumerMod(utiliGraf.labelTitleBacker2(""));
+        admin.getLabelConsumerMod().setHorizontalAlignment(SwingConstants.CENTER);
+        admin.getLabelConsumerMod().setBounds(anchoUnit * 0, altoUnit * 14, anchoUnit * 23, altoUnit * 5);
+        panelClient.add(admin.getLabelConsumerMod());
+
+        JButtonMetalBlu butModifyClient = utiliGraf.button2("Modificar Cliente", anchoUnit * 3, altoUnit * 21, anchoUnit * 17);
+        butModifyClient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    new ConsumerTemplate(admin, null, null, admin.getCmrMod());
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelClient.add(butModifyClient);
+
+        JButtonMetalBlu butCreateClient = utiliGraf.button2("Crear Cliente", anchoUnit * 3, altoUnit * 26, anchoUnit * 17);
+        butCreateClient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    new ConsumerTemplate(admin, null, null, null);
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelClient.add(butCreateClient);
+
+        return panelClient;
+    }
+
     public JPanel panelItemsBacker(Admin adm) {
         JPanel panelItems = panelCreator("Administrar Items", 59, 15);
-        JButtonMetalBlu butCfgItems = utiliGraf.button1("Modificar Lista", anchoUnit * 15, altoUnit * 6, anchoUnit * 17);
+        JButtonMetalBlu butCfgItems = utiliGraf.button1("Modificar Lista", anchoUnit * 3, altoUnit * 6, anchoUnit * 17);
         butCfgItems.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -263,14 +333,14 @@ public class UtilidadesGraficasAdmin {
 
         return panelItems;
     }
-    
-        public JPanel panelConfigBacker(Admin adm) {
+
+    public JPanel panelConfigBacker(Admin adm) {
         JPanel panelConfig = panelCreator("Administrar Configuración", 76, 15);
-        JButtonMetalBlu butCfgSalon = utiliGraf.button1("Configurar salón", anchoUnit * 15, altoUnit * 6, anchoUnit * 17);
+        JButtonMetalBlu butCfgSalon = utiliGraf.button1("Configurar salón", anchoUnit * 3, altoUnit * 6, anchoUnit * 17);
         butCfgSalon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirmation = utiliMsg.cargaConfirmarConfigSalon();
+                boolean confirmation = utiliMsg.optionConfirmarConfigSalon();
                 if (confirmation) {
                     try {
                         if (!adm.getCfgAct().isOpenWs()) {
@@ -295,10 +365,10 @@ public class UtilidadesGraficasAdmin {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(bluLg);
-        panel.setBounds(anchoUnit * 2, altoUnit * i, anchoUnit * 47, altoUnit * y);
+        panel.setBounds(anchoUnit * 26, altoUnit * i, anchoUnit * 23, altoUnit * y);
         JLabel labelStatics = utiliGraf.labelTitleBacker1(tit);
         labelStatics.setHorizontalAlignment(SwingConstants.CENTER);
-        labelStatics.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 47, altoUnit * 5);
+        labelStatics.setBounds(anchoUnit * 0, altoUnit * 0, anchoUnit * 23, altoUnit * 5);
         panel.add(labelStatics);
 
         return panel;
@@ -319,13 +389,20 @@ public class UtilidadesGraficasAdmin {
         reset(adm);
         adm.setEnabled(true);
     }
-    
+
     public void setErrorCombo(Admin adm) throws Exception {
         adm.setDefer1Ws(daoW.listarErrorId());
         adm.setDefer2Ws(utili.wsEasyReader(adm.getDefer1Ws()));
         adm.getComboWs().setModel(utili.categoryComboModelReturn(adm.getDefer2Ws()));
-        adm.getComboWs().setSelectedItem("");        
+        adm.getComboWs().setSelectedItem("");
     }
     
-    
+    public void comboUpdater(Admin adm, int i) throws Exception {
+        if (i == 1) {
+            adm.setConsumers(daoDC.listarDeliveryClientByActive(true));
+            adm.getComboClients().setModel(utili.consumer2ComboModelReturnWNull(adm.getConsumers()));
+            adm.getComboClients().setSelectedItem("");
+            adm.getLabelConsumerMod().setText("");
+        }        
+    }
 }

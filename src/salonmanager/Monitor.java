@@ -87,7 +87,7 @@ public class Monitor extends FrameHalf {
 
         JPanel panelLabel = new JPanel();
         panelLabel.setBackground(bluSt);
-        panelLabel.setBounds(0, 0, this.getWidth() -  anchoUnit * 10, anchoUnit * 6);
+        panelLabel.setBounds(0, 0, this.getWidth() -  anchoUnit * 10, altoUnit * 6);
         panelPpal.add(panelLabel);
 
         JLabel labelTit = utiliGraf.labelTitleBacker1W("SEGUIMIENTO DE ÓRDENES");

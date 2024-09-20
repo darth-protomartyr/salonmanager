@@ -145,7 +145,7 @@ public class ItemcardInn extends FrameHalf {
             }
 
             if (pric.equals("")) {
-                boolean confirm = utiliMsg.cargaConfirmErrorPriceNull();
+                boolean confirm = utiliMsg.optionConfirmErrorPriceNull();
                 if (confirm) {
                     pric = "0";
                     price = utili.toNumberD(pric);

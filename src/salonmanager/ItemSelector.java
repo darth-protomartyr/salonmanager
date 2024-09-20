@@ -27,12 +27,7 @@ public class ItemSelector extends FrameWindow {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     DAOItemcard daoIC = new DAOItemcard();
-    ServicioUser si = new ServicioUser();
     SalonManager sm = new SalonManager();
-    Color narSt = new Color(217, 103, 4);
-    Color bluSt = new Color(1, 64, 64);
-    Color narMed = new Color(255, 172, 13);
-    Color bluLg = new Color(3, 166, 136);
 
     ArrayList<Itemcard> itemsDB = new ArrayList<>();
     Itemcard itemAux = null;

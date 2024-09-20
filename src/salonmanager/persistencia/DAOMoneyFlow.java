@@ -2,6 +2,7 @@ package salonmanager.persistencia;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.MoneyFlow;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -16,7 +17,7 @@ public class DAOMoneyFlow extends DAO {
                     + "VALUES('" + SalonManager.encryptInt(cf.getId()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwKind()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwMoneyKind()) + "', '" + SalonManager.encryptDouble(cf.getMoneyFwAmount()) + "', '" + SalonManager.encrypt(cf.getMoneyFwComment()) + "', '" + SalonManager.encryptTs(cf.getMoneyFwDate()) + "', '" + SalonManager.encryptInt(cf.getMoneyFwWsId()) + "', '" + SalonManager.encryptBoolean(cf.isMoneyFwActive()) + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
-            utiliMsg.cargaMoneyFlowSuccess();
+            utiliMsg.successMoneyFlow(null);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -75,16 +76,37 @@ public class DAOMoneyFlow extends DAO {
 
     
     public int getMoneyFlowId() throws Exception {
-        try {       
+        try {   
+            ArrayList<Integer> ids = new ArrayList<>();
+            int max = 1;
             int id = 0;
-            String sql = "SELECT COUNT(*) AS cantidad_filas FROM money_flows;";
+            String sql = "SELECT money_flow_id FROM money_flows;";
             System.out.println(sql);
             consultarBase(sql);
-            ArrayList<String> cmrs = new ArrayList<>();
             while (resultado.next()) {
-                id = resultado.getInt(1) + 1;
+                id = SalonManager.decryptInt(resultado.getString(1));
+                ids.add(id);
             }
-            return id;
+            int max2 = 0;
+            
+            if (ids.size() > 0) {
+                max2 = Collections.max(ids);
+            }
+            
+            max =max + max2;
+            return max;
+            
+            
+            
+            
+//            int id = 0;
+//            String sql = "SELECT COUNT(*) AS cantidad_filas FROM money_flows;";
+//            System.out.println(sql);
+//            consultarBase(sql);
+//            while (resultado.next()) {
+//                id = resultado.getInt(1) + 1;
+//            }
+//            return id;
         } catch (Exception e) {
             throw e;
         }  finally {

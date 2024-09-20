@@ -5,7 +5,6 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -132,7 +132,7 @@ public class UtilidadesGraficasSalon {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (salon.getWorkshiftNow() == null) {
-                        boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
+                        boolean confirm1 = utiliMsg.optionConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
                         if (confirm1 == true) {
                             salon.setWorkshiftNow(new Workshift(salon.getUser()));
                             daoW.saveWorkshift(salon.getWorkshiftNow());
@@ -144,16 +144,16 @@ public class UtilidadesGraficasSalon {
                             salon.getCfgAct().setOpenIdWs(salon.getWorkshiftNow().getId());
                             daoC.updateCfgActOpenWs(true);
                             daoC.updateCfgActOpenIdWs(salon.getWorkshiftNow().getId());
+                            salon.getManager().updateLabelWs();
                             new MoneyFlowManager(salon, 0);
                         }
                     } else {
                         if (salon.getPrevTabs().size() > 0) {
                             if (salon.getUser().getId().equals(salon.getWorkshiftNow().getCashierWs().getId())) {
-                                boolean confirm1 = utiliMsg.cargaConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
+                                boolean confirm1 = utiliMsg.optionConfirmarInicioTurno(salon.getUser().getName(), salon.getUser().getLastName());
                                 if (confirm1 == true) {
                                     salon.setWorkshiftNow(new Workshift(salon.getUser()));
                                     daoW.saveWorkshift(salon.getWorkshiftNow());
-//                                    salon.getWorkshiftNow().setId(daoW.findLastWsID());
                                     salon.getWorkshiftNow().setCashierWs(salon.getUser());
                                     daoU.saveCashierWorkshift(salon.getWorkshiftNow());
                                     salon.getLabelWorkshift().setText("Inicio Turno: " + utili.friendlyDate2(salon.getWorkshiftNow().getOpenDateWs()));
@@ -536,7 +536,7 @@ public class UtilidadesGraficasSalon {
             butSelBarr.setBackground(narUlg);
             butSelBarr.setBorder(new LineBorder(narLg, 8));
             butSelBarr.setFont(salon.getFont2());
-            butSelBarr.setText("B-" + butSelBarr.getNum());
+            butSelBarr.setText("B" + butSelBarr.getNum());
             butSelBarr.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -578,7 +578,7 @@ public class UtilidadesGraficasSalon {
             if (butSelBarr.isOpenJBB() == false && butSelBarr.getTable().isBill() == true) {
                 butSelBarr.setBackground(narUlgX);
                 butSelBarr.setEnabled(false);
-                butSelBarr.setText("B-" + butSelBarr.getTable().getNum() + " Cerrado");
+                butSelBarr.setText("B" + butSelBarr.getTable().getNum() + " Cerrado");
             }
         }
 
@@ -751,7 +751,7 @@ public class UtilidadesGraficasSalon {
             butSelDelivery.setBackground(narUlg);
             butSelDelivery.setBorder(new LineBorder(narLg, 8));
             butSelDelivery.setFont(salon.getFont2());
-            butSelDelivery.setText("D-" + butSelDelivery.getNum() + " " + utili.cmrNameBacker(butSelDelivery.getDelivery().getConsumer()));
+            butSelDelivery.setText("D" + butSelDelivery.getNum() + " " + utili.cmrNameBacker(butSelDelivery.getDelivery().getConsumer()));
             butSelDelivery.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -829,7 +829,7 @@ public class UtilidadesGraficasSalon {
             if (butSelDelivery.isOpenJBD() == false && butSelDelivery.getTable().isBill() == true) {
                 butSelDelivery.setBackground(narUlgX);
                 butSelDelivery.setEnabled(false);
-                butSelDelivery.setText("D-" + butSelDelivery.getTable().getNum() + " " + utili.cmrNameBacker(butSelDelivery.getDelivery().getConsumer()) + " Cerrado");
+                butSelDelivery.setText("D" + butSelDelivery.getTable().getNum() + " " + utili.cmrNameBacker(butSelDelivery.getDelivery().getConsumer()) + " Cerrado");
                 butSee.setBackground(narUlgX);
                 butSee.setEnabled(false);
             }
@@ -1213,13 +1213,6 @@ public class UtilidadesGraficasSalon {
             salon.getComboItems().setModel(utili.itemsComboModelReturnWNull(salon.getItemsDB()));
             salon.getComboItems().setSelectedIndex(salon.getItemsDB().size());
             setTableItems(salon);
-//            } else {
-//                utiliMsg.errorSaveTable();
-////                jButExtSetter(salon);
-////                resetTableFull(salon);
-////                setTableItems(salon);
-////                salon.setEnabled(true);
-//            }
         }
     }
 
@@ -1503,7 +1496,7 @@ public class UtilidadesGraficasSalon {
         salon.setEnabled(false);
     }
 
-    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon) throws Exception {
+    public void amountsTypes(ArrayList<Double> amounts, boolean endex, ArrayList<Itemcard> itemsPayed, String comments, Salon salon, JFrame frame) throws Exception {
         double amountC = amounts.get(0);
         double amountE = amounts.get(1);
         salon.getTableAux().setAmountCash(salon.getTableAux().getAmountCash() + amountC);
@@ -1551,6 +1544,7 @@ public class UtilidadesGraficasSalon {
                     daoT.updateTableTotal(salon.getTableAux());
                 }
             }
+            utiliMsg.successTableErase(frame);
             tablePaid(salon);
         }
         salon.setEnabled(true);
@@ -1743,7 +1737,7 @@ public class UtilidadesGraficasSalon {
                 resetTableFull(salon);
             } else {
                 if (salon.getTableAux().isBill() == false) {
-                    boolean confirm = utiliMsg.cargaConfirmarCierre();
+                    boolean confirm = utiliMsg.optionConfirmarCierre();
                     if (confirm) {
                         tableClose(salon);
                     }
@@ -1808,8 +1802,6 @@ public class UtilidadesGraficasSalon {
 
         jButExtSetter(salon);
         resetTableValues(salon);
-
-        utiliMsg.cargaTableErase();
     }
 
     public void tableManager(ArrayList<Table> tables, Salon salon) throws Exception {

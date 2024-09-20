@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="50">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="51">
         <file>
             <url>src/salonmanager/persistencia/DAOItemCarta.java</url>
             <bookmark id="2">
@@ -9,35 +9,17 @@
                 <key/>
             </bookmark>
         </file>
-        <file>
-            <url>src/salonmanager/servicios/ServicioSalon.java</url>
-            <bookmark id="50">
-                <name/>
-                <line>634</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>src/salonmanager/Inn.java</url>
-            <bookmark id="49">
-                <name/>
-                <line>67</line>
-                <key/>
-            </bookmark>
-            <bookmark id="48">
-                <name/>
-                <line>75</line>
-                <key/>
-            </bookmark>
-        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasSalon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/Salon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/servicios/ServicioSalon.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/persistencia/DAOWorkshift.java</file>
-            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/entidades/bussiness/Workshift.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasAdmin.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/TemplateUser.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/ConsumerTemplate.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/servicios/ServiceAdmin.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasDeliCreate.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/Admin.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/UtilidadesGraficasDeliData.java</file>
+            <file>file:/C:/Users/Gonzalo/Documents/NetbeansProject/SalonManager/src/salonmanager/utilidades/Utilidades.java</file>
         </group>
     </open-files>
 </project-private>

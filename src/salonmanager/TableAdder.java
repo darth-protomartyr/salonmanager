@@ -418,7 +418,7 @@ public class TableAdder extends FrameThird {
     }
 
     private void closeTab() throws Exception {
-        boolean confirm = utiliMsg.cargaConfirmarFacturacion(totalMount, sum - totalMount);
+        boolean confirm = utiliMsg.optionConfirmarFacturacion(totalMount, sum - totalMount);
         if (confirm) {
             if (tabAux == null) {
                 Table tab = new Table(num, "barra", manager.getUser());
@@ -444,7 +444,7 @@ public class TableAdder extends FrameThird {
                         daoI.saveItemGiftTable(tab.getGifts().get(i), tab);
                     }
                     daoU.saveWaiterTable(tab);
-                    boolean confirm1 = utiliMsg.cargaConfirmNewTab();
+                    boolean confirm1 = utiliMsg.optionConfirmNewTab();
                     if (confirm1) {
                         new TableAdder(ws, manager, null, null);
                         dispose();
@@ -495,7 +495,7 @@ public class TableAdder extends FrameThird {
 
                     daoI.downActiveItemPayedTableAll(tabAux);
                     daoI.downActiveItemPayedNDTableAll(tabAux);
-                    boolean confirm1 = utiliMsg.cargaConfirmNewTab();
+                    boolean confirm1 = utiliMsg.optionConfirmNewTab();
                     if (confirm1) {
                         new TableAdder(ws, manager, null, null);
                         dispose();

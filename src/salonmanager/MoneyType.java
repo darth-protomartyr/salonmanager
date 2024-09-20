@@ -119,7 +119,10 @@ public class MoneyType extends FrameWindow {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
+                    butElectronicIn.setEnabled(false);
                     butMoneyTypeActionPerformed(2);
+                    butElectronicIn.setEnabled(true);
+
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -204,7 +207,9 @@ public class MoneyType extends FrameWindow {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
+                    butInPartialCash.setEnabled(false);
                     butInPartialCashActionPerformed(cashMix);
+                    butInPartialCash.setEnabled(true);
                 } catch (Exception ex) {
                     Logger.getLogger(MoneyType.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -265,17 +270,18 @@ public class MoneyType extends FrameWindow {
                 break;
             case 2:
                 amounts.set(1, total);
-                utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
+                utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon, this);
                 dispose();
                 break;
             case 3:
                 labelMixed.setVisible(true);
                 fieldAmountCash.setVisible(true);
                 butInPartialCash.setVisible(true);
-                labelChange.setText("Transferencia $: 0.00");
+                labelChange.setText("Transf. $: 0.00");
                 labelChange.setVisible(true);
                 butBack.setVisible(true);
                 cashMix = 2;
+                updateMount();
                 break;
         }
     }
@@ -289,7 +295,7 @@ public class MoneyType extends FrameWindow {
                 if (cash >= total) {
                     cash = total;
                     amounts.set(0, cash);
-                    utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
+                    utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon, this);
                     dispose();
                 } else {
                     utiliMsg.errorInsufficientMount();
@@ -299,7 +305,7 @@ public class MoneyType extends FrameWindow {
                 if (cash < total) {
                     amounts.set(0, cash);
                     amounts.set(1, total - cash);
-                    utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon);
+                    utiliGrafSal.amountsTypes(amounts, endex, itemsPayed, getCommentIn(), salon, this);
                     dispose();
                 } else {
                     utiliMsg.errorUnnecesaryOp();
@@ -330,6 +336,8 @@ public class MoneyType extends FrameWindow {
                 } else if (cashMix == 2) {
                     change = total - paid;
                 }
+            } else {
+                change = total;
             }
         } catch (NumberFormatException e) {
             labelChange.setText("El dato no es numérico.");
@@ -347,9 +355,9 @@ public class MoneyType extends FrameWindow {
                 }
             } else if (cashMix == 2) {
                 if (change > 0) {
-                    labelChange.setText("Transferencia $= " + change + "");
+                    labelChange.setText("Transf. $= " + change + "");
                 } else {
-                    labelChange.setText("Transferencia innecesaria");
+                    labelChange.setText("Transf. innecesaria");
                 }
             }
         }

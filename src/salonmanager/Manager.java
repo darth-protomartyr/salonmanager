@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.bussiness.User;
@@ -26,7 +25,6 @@ import static salonmanager.entidades.graphics.FrameGeneral.altoUnit;
 import static salonmanager.entidades.graphics.FrameGeneral.anchoUnit;
 import salonmanager.entidades.graphics.PanelPpalCustom;
 import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServicioSalon;
@@ -40,8 +38,6 @@ public class Manager extends FrameFull {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
     ServicioSalon ss = new ServicioSalon();
-    Color narUlg = new Color(255, 255, 176);
-    Color bluSt = new Color(3, 166, 136);
     Color narLg = new Color(252, 203, 5);
     Color bluLg = new Color(194, 242, 206);
     SalonManager sm = new SalonManager();
@@ -50,7 +46,6 @@ public class Manager extends FrameFull {
     Workshift actualWs = null;
     DAOConfig daoC = new DAOConfig();
     DAOWorkshift daoW = new DAOWorkshift();
-    DAOItemcard daoI = new DAOItemcard();
     DAOUser daoU = new DAOUser();
     Salon salon = null;
     int f1 = anchoUnit * 3;
@@ -64,6 +59,8 @@ public class Manager extends FrameFull {
     int f5 = (int) Math.round(anchoUnit * 1.1);
     Font font5 = new Font("Arial", Font.BOLD, f5);
     ConfigActual cfgAct = null;
+    JLabel labelWsData = null;
+
 
     public Manager(User userIn, String passIn) throws Exception {
         sm.addFrame(this);
@@ -95,10 +92,7 @@ public class Manager extends FrameFull {
         panelUser.setBorder(new LineBorder(bluLg, 4));
         panelPpal.add(panelUser);
 
-//        String workingDir = System.getProperty("user.dir");
-//        System.out.println("Current working directory: " + workingDir);
         String route = utili.barrReplaceInverse(userIn.getRouteImage(), false);
-        System.out.println(route);
         ImageIcon imageIcon = new ImageIcon(route);
         Image originalImage = imageIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(anchoUnit * 8, altoUnit * 14, Image.SCALE_SMOOTH);
@@ -130,14 +124,7 @@ public class Manager extends FrameFull {
         labelWsTit.setBounds(anchoUnit * 2, altoUnit * 1, anchoUnit * 46, altoUnit * 5);
         panelWorkshift.add(labelWsTit);
 
-        String wsSt = "Estado del Turno: NO hay un turno iniciado.";
-        if (cfgAct.isOpenWs()) {
-            Timestamp date = daoW.askInitWsDateById(cfgAct.getOpenIdWs());
-            User cashier = daoU.getCashierByWorkshift(cfgAct.getOpenIdWs());
-            wsSt = "<html>Turno Activo. Fecha de Inicio: " + utili.friendlyDate2(date) + ".<br>Responsable de caja: " + cashier.getName() + " " + cashier.getLastName() + ".</html>";
-        }
-
-        JLabel labelWsData = utiliGraf.labelTitleBacker1(wsSt);
+        labelWsData = utiliGraf.labelTitleBacker1("");
         labelWsData.setBounds(anchoUnit * 2, altoUnit * 7, anchoUnit * 46, altoUnit * 12);
         panelWorkshift.add(labelWsData);
 
@@ -164,12 +151,14 @@ public class Manager extends FrameFull {
             }
         });
         panelCard.add(butList);
+        
+        updateLabelWs();
 
         JButtonMetalBlu butSalir = utiliGraf.buttonSalir2(frame, 4);
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                boolean confirm = utiliMsg.cargaConfirmarCierrePrograma();
+                boolean confirm = utiliMsg.optionConfirmarCierrePrograma();
                 if (confirm) {
                     sm.frameCloser();
                     System.exit(0);
@@ -181,7 +170,7 @@ public class Manager extends FrameFull {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                boolean confirmation = utiliMsg.optionConfirmarCierreVentana();
                 if (confirmation) {
                     sm.frameCloser();
                     System.exit(0);
@@ -207,7 +196,7 @@ public class Manager extends FrameFull {
 
             if (userWs != null) {
                 if (!userWs.getId().equals(user.getId())) {
-                    ss.endWorkshift(null, man, true);
+                        ss.endWorkshift(null, man, true);
                 } else {
                     salon = new Salon(man, cfgAct);
                 }
@@ -221,6 +210,19 @@ public class Manager extends FrameFull {
             salon.setExtendedState(JFrame.MAXIMIZED_BOTH);
             salon.requestFocus();
         }
+    }
+    
+    public void updateLabelWs() throws Exception {
+        cfgAct = daoC.askConfigActual();
+        String wsSt = "Estado del Turno: NO hay un turno iniciado.";
+        if (cfgAct.isOpenWs()) {
+            Timestamp date = daoW.askInitWsDateById(cfgAct.getOpenIdWs());
+            User cashier = daoU.getCashierByWorkshift(cfgAct.getOpenIdWs());
+            wsSt = "<html>Turno Activo. Fecha de Inicio: " + utili.friendlyDate2(date) + ".<br>Responsable de caja: " + cashier.getName() + " " + cashier.getLastName() + ".</html>";
+        }
+        labelWsData.setText(wsSt);
+        labelWsData.revalidate();
+        labelWsData.repaint();
     }
 
     public Workshift getActualWorkShift() {
@@ -291,121 +293,15 @@ public class Manager extends FrameFull {
         this.font5 = font5;
     }
 
-//    public JTable createTableItems() throws Exception {
-//        tableItems = new JTable();
-//
-//        String col1 = "Item";
-//        String col2 = "Unidades";
-//        String col3 = "Precio";
-//
-//        ArrayList<Itemcard> totalItems = daoI.listarItemsCard();
-//        int rows = totalItems.size();
-//
-//        String[] colNames = {col1, col2, col3};
-//        String[][] data = new String[rows][3];
-//
-//        for (int i = 0; i < rows; i++) {
-//            Itemcard ic = totalItems.get(i);
-//
-//            data[i][0] = " " + ic.getName();
-//            data[i][1] = " " + ic.getStock() + " u.";
-//            data[i][2] = " $ " + ic.getPrice().get(0);
-//        }
-//
-//        DefaultTableModel tableModel = new DefaultTableModel(data, colNames);
-//        tableItems.setModel(tableModel);
-//        tableItems.setDefaultEditor(Object.class, null);
-//
-//        JTableHeader header = tableItems.getTableHeader();
-//        header.setPreferredSize(new java.awt.Dimension(header.getWidth(), altoUnit * 6));
-//        header.setFont(new Font("Arial", Font.BOLD, 16));
-//        header.setBackground(narLg);
-//
-//        Font cellFont = new Font("Arial", Font.BOLD, 14);
-//        tableItems.setFont(cellFont);
-//        tableItems.setRowHeight(altoUnit * 4);
-//        tableItems.setBackground(narUlg);
-//
-//        TableColumn column1 = tableItems.getColumnModel().getColumn(0);
-//        column1.setPreferredWidth(anchoUnit * 20);
-//        TableColumn column2 = tableItems.getColumnModel().getColumn(1);
-//        column2.setPreferredWidth(anchoUnit * 7);
-//        TableColumn column3 = tableItems.getColumnModel().getColumn(2);
-//        column3.setPreferredWidth(anchoUnit * 8);
-//
-//        return tableItems;
-//    }
-
-    
-    
-//    public void updateTableItem() throws Exception {
-//        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-//            @Override
-//            protected Void doInBackground() throws Exception {
-//                // Obtener los nuevos datos para la tabla
-//                ArrayList<Itemcard> totalItems = daoI.listarItemsCard();
-//                int rows = totalItems.size();
-//
-//                String[] colNames = {"Item", "Unidades", "Precio"};
-//                String[][] data = new String[rows][3];
-//
-//                for (int i = 0; i < rows; i++) {
-//                    Itemcard ic = totalItems.get(i);
-//                    data[i][0] = " " + ic.getName();
-//                    data[i][1] = " " + ic.getStock() + " u.";
-//                    data[i][2] = " $ " + ic.getPrice().get(0);
-//                }
-//
-//                // Actualizar el modelo de la tabla en el hilo de la interfaz de usuario
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        DefaultTableModel tableModel = new DefaultTableModel(data, colNames);
-//                        tableItems.setModel(tableModel);
-//                    }
-//                });
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void done() {
-//                // Revalidar y repintar los componentes en el hilo de la interfaz de usuario
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        panelCard.revalidate();
-//                        scrollPane.revalidate();
-//                        tableItems.revalidate();
-//                        panelCard.repaint();
-//                        scrollPane.repaint();
-//                        tableItems.repaint();
-//                    }
-//                });
-//            }
-//        };
-//        worker.execute();
-//    }
-
-//    public void updateTableItems() throws Exception {
-//        panelCard.removeAll();
-//        scrollPane.removeAll();
-//        tableItems.removeAll();
-//        tableItems = createTableItems();
-//        scrollPane = new JScrollPane(tableItems);
-//        scrollPane.setPreferredSize(new Dimension(anchoUnit * 35, altoUnit * 38));
-//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrollPane.setBounds(anchoUnit * 2, altoUnit * 7, anchoUnit * 35, altoUnit * 36);
-//        panelCard.add(scrollPane);
-//        panelCard.revalidate();
-//        scrollPane.revalidate();
-//        tableItems.revalidate();        
-//        panelCard.repaint();
-//        scrollPane.repaint();
-//        tableItems.repaint();  
-//    }
     private void listOpener() throws Exception {
         new ItemcardList(this);
-//        updateTableItems();
     }
+
+    public JLabel getLabelWsData() {
+        return labelWsData;
+    }
+
+    public void setLabelWsData(JLabel labelWsData) {
+        this.labelWsData = labelWsData;
+    }  
 }

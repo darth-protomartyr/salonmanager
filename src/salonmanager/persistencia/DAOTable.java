@@ -14,17 +14,17 @@ public class DAOTable extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
 
-    public boolean saveTable(Table tab, Timestamp ts) throws Exception {
+    public boolean saveTable(Table tab, Timestamp ts1) throws Exception {
         boolean done = false;
         if (tab.getComments().equals("<br>")) {
             tab.setComments("");
         }
         boolean error = false;
-        if (ts != null) {
+        if (ts1 != null) {
             Timestamp close = new Timestamp(new Date().getTime());
             ArrayList<Timestamp> wsTs = listarTabsTsActive();
             if (!wsTs.isEmpty()) {
-                wsTs = utili.tsFilter(wsTs, ts, close);
+                wsTs = utili.tsFilter(wsTs, ts1, close);
                 for (int i = 0; i < wsTs.size(); i++) {
                     if (wsTs.get(i).equals(tab.getOpenTime())) {
                         error = true;
@@ -34,6 +34,14 @@ public class DAOTable extends DAO {
             }
         } else {
             error = true;
+        }
+
+        ArrayList<String> tsList = listarTabsIdOpen();
+        for (int i = 0; i < tsList.size(); i++) {
+            if (tab.getId().equals(tsList.get(i))) {
+                error = true;
+                System.out.println("Doblada");
+            }
         }
 
         if (tab.getNum() == 0) {
@@ -55,6 +63,8 @@ public class DAOTable extends DAO {
             utiliMsg.errorIngresoId();
             error = true;
         }
+        
+        
 
         if (error == false) {
             String sql = "";
@@ -547,6 +557,26 @@ public class DAOTable extends DAO {
             desconectarBase();
         }
     }
+    
+    public ArrayList<String> listarTabsIdOpen() throws Exception {
+        ArrayList<String> tabsTs = new ArrayList<>();
+        try {
+            String sql = "SELECT table_id FROM tabs WHERE table_open = '" + SalonManager.encryptBoolean(true) + "' AND table_active = '" + SalonManager.encryptBoolean(true) + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                String ts = SalonManager.decrypt(resultado.getString(1));
+                tabsTs.add(ts);
+            }
+            return tabsTs;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
+        }
+    }
+    
+    
 
     public ArrayList<Timestamp> listarTabsTsActiveBarr() throws Exception {
         ArrayList<Timestamp> tabsTs = new ArrayList<>();

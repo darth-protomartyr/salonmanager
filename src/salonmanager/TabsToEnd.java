@@ -108,7 +108,7 @@ public class TabsToEnd extends FrameWindow {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (openTabs.size() == 0) {
-                        boolean confirm4 = utiliMsg.cargaConfirmAddTables();
+                        boolean confirm4 = utiliMsg.optionConfirmAddTables();
                         if (confirm4) {
                             new TableAdder(ws, manager, null, null);
                         } else {

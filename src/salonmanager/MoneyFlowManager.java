@@ -53,6 +53,7 @@ public class MoneyFlowManager extends FrameWindow {
 
     public MoneyFlowManager(Salon sal, int kind) {
         salon = sal;
+        sal.setEnabled(false);
         sm.addFrame(this);
         flowKind = kind;
         PanelPpal panelPpal = new PanelPpal(frame);
@@ -158,6 +159,7 @@ public class MoneyFlowManager extends FrameWindow {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+                salon.setEnabled(true);
                 dispose();
             }
         });
@@ -183,6 +185,7 @@ public class MoneyFlowManager extends FrameWindow {
         }
 
         if (moneyFlowSt.equals("") || moneyFlowSt.equals("0")) {
+            salon.setEnabled(true);
             dispose();
         } else {
             try {
@@ -201,6 +204,7 @@ public class MoneyFlowManager extends FrameWindow {
 
             if (error == false) {
                 smf.moneyFlowAdd(flowKind, moneyKind, moneyFlow, comment, salon);
+                salon.setEnabled(true);
                 dispose();
             } else {
                 resetValues();

@@ -1,5 +1,6 @@
 package salonmanager.servicios;
 
+import salonmanager.StatsClientListViewer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +12,7 @@ import java.util.Map;
 import salonmanager.ItemSaleViewer;
 import salonmanager.StaticsManager;
 import salonmanager.StaticsSelectorPeriod;
+import salonmanager.StatsClientViewer;
 import salonmanager.StatsItemViewer;
 import salonmanager.StatsWaiterViewer;
 import salonmanager.TabViewer;
@@ -88,6 +90,23 @@ public class ServiceStatics {
         }
         return hashMapOrdenado;
     }
+    
+    public static HashMap<Integer, Double> orderHsIDUpToDown(HashMap<Integer, Double> hashMap) {
+        List<Map.Entry<Integer, Double>> lista = new LinkedList<>(hashMap.entrySet());
+
+        Collections.sort(lista, new Comparator<Map.Entry<Integer, Double>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Double> o1, Map.Entry<Integer, Double> o2) {
+                return o2.getKey().compareTo(o1.getKey()); // Ordenar de mayor a menor
+            }
+        });
+
+        HashMap<Integer, Double> hashMapOrdenado = new LinkedHashMap<>();
+        for (Map.Entry<Integer, Double> entrada : lista) {
+            hashMapOrdenado.put(entrada.getKey(), entrada.getValue());
+        }
+        return hashMapOrdenado;
+    }
 
     public void openSelectorPeriod(StaticsManager statsM) {
         new StaticsSelectorPeriod(statsM);
@@ -117,6 +136,15 @@ public class ServiceStatics {
     public void openWSellsViewer(int i, StaticsManager statsM) throws Exception {
         new StatsWaiterViewer(statsM, i, statsM.getPeriod());
     }
+    
+    public void openClientListViewer(StaticsManager statsM) throws Exception {
+        new StatsClientListViewer(statsM, statsM.getCountClientBuys() );  
+    }
+    
+    public void openClientSellsViewer(StaticsManager statsM) throws Exception {
+        new StatsClientViewer(statsM, statsM.getPeriod());
+    }
+    
 
     public ArrayList<Table> filterTabsOpenState(ArrayList<Table> tabs) {
         ArrayList<Table>tabsClose = new ArrayList<Table>();

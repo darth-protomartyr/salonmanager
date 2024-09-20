@@ -21,22 +21,16 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.PanelPpal;
-import salonmanager.persistencia.DAOConfig;
-import salonmanager.persistencia.DAOInit;
 
 public class Inn extends FrameWindow {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-    Utilidades utili = new Utilidades();
     DAOUser daoU = new DAOUser();
-    DAOConfig daoC = new DAOConfig();
-    DAOInit daoI = new DAOInit();
     SalonManager sm = new SalonManager();
     Color bluLg = new Color(3, 166, 136);
 
     String mail = "";
-    String pass = "";
     User userAux = new User();
 
     JButtonMetalBlu butInUser = new JButtonMetalBlu();
@@ -111,8 +105,7 @@ public class Inn extends FrameWindow {
         char[] pass = fieldPass.getPassword();  
         String passString = new String(pass);
         java.util.Arrays.fill(pass, ' ');
-        
-        
+                
         boolean error = false;
 
         if (mail.equals("") || pass.equals("")) {

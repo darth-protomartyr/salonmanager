@@ -105,7 +105,7 @@ public class ServiceConfigSal {
     }
 
     public void createSpace(ConfigSalonFrame cSF) throws Exception {
-        String space = utiliMsg.cargaNewString(1, 15);
+        String space = utiliMsg.requestNewString(1, 15);
         cSF.getSpaces().add(space);
         daoC.saveSpace(space);
         String cha = space.substring(0, 1);
@@ -153,7 +153,7 @@ public class ServiceConfigSal {
     }
 
     public void createCategory(ConfigSalonFrame cSF) throws Exception {
-        String category = utiliMsg.cargaNewString(2, 10);
+        String category = utiliMsg.requestNewString(2, 10);
         cSF.getCategories().add(category);
         daoC.saveCategory(category);
         cSF.setCategories(daoC.askCategories());

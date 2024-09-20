@@ -36,9 +36,9 @@ public class DAOUser extends DAO {
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
             if (rol.equals("NULL")) {
-                utiliMsg.cargaUsuarioRolNull();
+                utiliMsg.successUsuarioRolNull(null);
             } else {
-                utiliMsg.cargaUsuarioRolFull();
+                utiliMsg.successUsuarioRolFull(null);
             }
 
             
@@ -316,7 +316,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql.trim());
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -342,7 +342,7 @@ public class DAOUser extends DAO {
             }
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -474,7 +474,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql.trim());
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -489,7 +489,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -503,7 +503,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -517,7 +517,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -531,7 +531,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -546,7 +546,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -561,7 +561,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -576,7 +576,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -591,7 +591,7 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
@@ -606,10 +606,27 @@ public class DAOUser extends DAO {
             insertarModificarEliminar(sql);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
-                utiliMsg.cargaError();
+                utiliMsg.errorError(null);
             } else {
                 e.printStackTrace();
             }
+        }
+    }
+    
+    public int getNumUsers(String rol) throws Exception {
+        try {
+            int id = 0;
+            String sql = "SELECT COUNT(*) AS cantidad_filas FROM users WHERE user_role = '" + SalonManager.encrypt(rol) + "';";
+            System.out.println(sql);
+            consultarBase(sql);
+            while (resultado.next()) {
+                id = resultado.getInt(1);
+            }
+            return id;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            desconectarBase();
         }
     }
 }

@@ -71,7 +71,7 @@ public class TemplateUser extends FrameHalf {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("REGISTRAR");
         labelTit.setBounds(anchoUnit * 2, altoUnit * 0, anchoUnit * 20, altoUnit * 4);
         panelPpal.add(labelTit);
-        
+
         JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
         panelPpal.add(panelLogo);
 
@@ -84,10 +84,10 @@ public class TemplateUser extends FrameHalf {
         JPanel panelData1 = utiliGraf.dataPanelBacker("Nombre:", 16);
         panelData1.setBounds(anchoUnit * 1, altoUnit * 3, anchoUnit * 30, altoUnit * 7);
         fieldName.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
-        fieldName.setFont(newFont);        
+        fieldName.setFont(newFont);
         panelData1.add(fieldName);
         panelA.add(panelData1);
-        
+
         JPanel panelData2 = utiliGraf.dataPanelBacker("Apellido:", 16);
         panelData2.setBounds(anchoUnit * 1, altoUnit * 12, anchoUnit * 30, altoUnit * 7);
         fieldLastName.setBounds(anchoUnit * 12, altoUnit * 1, anchoUnit * 17, altoUnit * 5);
@@ -125,7 +125,7 @@ public class TemplateUser extends FrameHalf {
 
         JPanel panelBut = new JPanel(null);
         panelBut.setBackground(bluLg);
-        panelBut.setBounds(anchoUnit * 0, altoUnit * 57, anchoUnit * 32, altoUnit * 6  );
+        panelBut.setBounds(anchoUnit * 0, altoUnit * 57, anchoUnit * 32, altoUnit * 6);
         panelA.add(panelBut);
 
         butSelImage = utiliGraf.button2("Seleccionar Imagen", anchoUnit * 9, altoUnit * 1, anchoUnit * 14);
@@ -143,14 +143,13 @@ public class TemplateUser extends FrameHalf {
 
         labelImage.setBounds(anchoUnit * 2, altoUnit * 61, anchoUnit * 9, altoUnit * 4);
         panelLabelImage.add(labelImage);
-        
+
         butCreateUser = utiliGraf.button1("Crear Usuario", anchoUnit * 16, altoUnit * 83, anchoUnit * 21);
         butCreateUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
                     butCreateUserActionPerformed();
-
                 } catch (Exception ex) {
                     Logger.getLogger(TemplateUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -197,11 +196,11 @@ public class TemplateUser extends FrameHalf {
         char[] passCh1 = fieldPass1.getPassword();
         String passString1 = new String(passCh1);
         java.util.Arrays.fill(passCh1, ' ');
-        
+
         char[] passCh2 = fieldPass2.getPassword();
         String passString2 = new String(passCh2);
         java.util.Arrays.fill(passCh2, ' ');
-        
+
         boolean error = false;
 
         if (name.length() > 30 || name.length() < 2) {
@@ -260,9 +259,11 @@ public class TemplateUser extends FrameHalf {
             nameImage = "avatar.jpg";
         }
 
-        if (su.repeatMail(mail)) {
-            utiliMsg.errorMailRepeat();
-            error = true;
+        if (userMod == null) {
+            if (su.repeatMail(mail)) {
+                utiliMsg.errorMailRepeat();
+                error = true;
+            }
         }
 
         if (error == false) {
@@ -285,8 +286,9 @@ public class TemplateUser extends FrameHalf {
                 daoU.updateNameImageUser(id, nameImage);
                 daoU.updatePhoneUser(id, phone);
                 daoU.updatePassUser(id, passString1);
-                utiliMsg.cargaUpdateUsuario();
+                utiliMsg.successUpdateUsuario(this);
                 if (admin != null) {
+                    admin.comboUsersUpdater();
                     utiliGrafAdm.enabledTrue(2, admin);
                 }
                 dispose();

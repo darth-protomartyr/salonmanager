@@ -21,8 +21,16 @@ public class DAODelivery extends DAO {
             String activeUser = SalonManager.encryptBoolean(active);
             String activeOpen = SalonManager.encryptBoolean(open);
 
-            String sql1 = "INSERT INTO deliverys(delivery_id, delivery_consumer_phone, delivery_tab_id, delivery_user_id, delivery_open, delivery_active)"
+            String sql1 = "";
+            
+            if (deliUserId != null) {
+                sql1 = "INSERT INTO deliverys(delivery_id, delivery_consumer_phone, delivery_tab_id, delivery_user_id, delivery_open, delivery_active)"
                     + "VALUES('" + SalonManager.encrypt(deliId) + "','" + SalonManager.encrypt(cmrPhone) + "', '" + SalonManager.encrypt(tabId) + "', '" + SalonManager.encrypt(deliUserId) + "', '" + activeOpen + "', '" + activeUser + "');";
+            } else {
+                deliUserId = "null";
+                sql1 = "INSERT INTO deliverys(delivery_id, delivery_consumer_phone, delivery_tab_id, delivery_user_id, delivery_open, delivery_active)"
+                    + "VALUES('" + SalonManager.encrypt(deliId) + "','" + SalonManager.encrypt(cmrPhone) + "', '" + SalonManager.encrypt(tabId) + "', '" + SalonManager.encrypt(deliUserId) + "', '" + activeOpen + "', '" + activeUser + "');";                
+            }
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
         } catch (SQLException e) {

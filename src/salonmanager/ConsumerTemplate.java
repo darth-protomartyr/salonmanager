@@ -26,6 +26,7 @@ import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
+import salonmanager.utilidades.UtilidadesGraficasAdmin;
 import salonmanager.utilidades.UtilidadesGraficasDeliCreate;
 import salonmanager.utilidades.UtilidadesGraficasDeliData;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -33,6 +34,7 @@ import salonmanager.utilidades.UtilidadesMensajes;
 public class ConsumerTemplate extends FrameHalf {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
+    UtilidadesGraficasAdmin utiliGrafAdm = new UtilidadesGraficasAdmin();
     UtilidadesGraficasDeliCreate utiliGrafDC = new UtilidadesGraficasDeliCreate();
     UtilidadesGraficasDeliData utiliGrafDD = new UtilidadesGraficasDeliData();
 
@@ -74,8 +76,9 @@ public class ConsumerTemplate extends FrameHalf {
 
     JButtonMetalBlu butCreateConsumer = null;
     DeliveryClient cmrFull = null;
+    Admin admin = null;
 
-    public ConsumerTemplate(DeliveryCreate dCr, DeliveryData dDa, DeliveryClient cmr) throws Exception {
+    public ConsumerTemplate(Admin adm, DeliveryCreate dCr, DeliveryData dDa, DeliveryClient cmr) throws Exception {
 
         String tit = "";
         if (cmr != null) {
@@ -91,6 +94,10 @@ public class ConsumerTemplate extends FrameHalf {
 
         if (dDa != null) {
             dd = dDa;
+        }
+        
+        if (adm != null) {
+            admin = adm;
         }
 
         setTitle(tit);
@@ -189,7 +196,7 @@ public class ConsumerTemplate extends FrameHalf {
 
         panelPpal.add(panelForm);
 
-        butCreateConsumer = utiliGraf.button1("Crear Cliente", 206, 600, 270);
+        butCreateConsumer = utiliGraf.button1("CREAR CLIENTE", anchoUnit * 15, altoUnit * 87, anchoUnit * 21);
         if (cmrFull != null) {
             butCreateConsumer.addActionListener(new ActionListener() {
                 @Override
@@ -201,7 +208,7 @@ public class ConsumerTemplate extends FrameHalf {
                     }
                 }
             });
-            butCreateConsumer.setText("Modificar Cliente");
+            butCreateConsumer.setText("MODIFICAR CLIENTE");
         } else {
             butCreateConsumer.addActionListener(new ActionListener() {
                 @Override
@@ -234,10 +241,12 @@ public class ConsumerTemplate extends FrameHalf {
         butSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (dd != null) {
-                    dd.setFndEnabled();
-                } else {
-                    dc.setFndEnabled();
+                if (dd != null || dc != null) {
+                    if (dd != null) {
+                        dd.setFndEnabled();
+                    } else {
+                        dc.setFndEnabled();
+                    }
                 }
                 dispose();
             }
@@ -246,10 +255,12 @@ public class ConsumerTemplate extends FrameHalf {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                if (dd != null) {
-                    dd.setFndEnabled();
-                } else {
-                    dc.setFndEnabled();
+                if (dd != null || dc != null) {
+                    if (dd != null) {
+                        dd.setFndEnabled();
+                    } else {
+                        dc.setFndEnabled();
+                    }
                 }
                 dispose();
             }
@@ -280,12 +291,11 @@ public class ConsumerTemplate extends FrameHalf {
             error = true;
             utiliMsg.errorCantCharName();
         }
-        
-        if (socialNetwork.length() > 60 ) {
+
+        if (socialNetwork.length() > 60) {
             error = true;
             utiliMsg.errorCantCharName();
         }
-        
 
         if (i == 0) {
             if (utili.stringRepeat(phone, phonesCmrs)) {
@@ -348,6 +358,11 @@ public class ConsumerTemplate extends FrameHalf {
                 utiliGrafDD.getConsumer(cmrAux, dd);
                 dd.setFndEnabled();
             }
+            
+            if (admin != null) {
+                utiliGrafAdm.comboUpdater(admin, 1);
+            }
+            
             dispose();
         } else {
             resetFields();

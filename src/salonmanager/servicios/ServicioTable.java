@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import salonmanager.Salon;
+import salonmanager.entidades.bussiness.Delivery;
 import salonmanager.entidades.bussiness.Itemcard;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
@@ -88,23 +89,28 @@ public class ServicioTable {
         return tab;
     }
 
-    public void saveTableCompleteChangeWs(Table tab, Salon salon) throws Exception {
+    public void saveTableCompleteChangeWs(Table tab, Salon salon, Timestamp wsNewTs, Delivery delivery) throws Exception {
         ArrayList<Integer> indexes = daoC.askIndexes();
         if (tab.getPos().equals("delivery")) {
             int i = indexes.get(1) + 1;
             tab.setNum(i);
             indexes.set(1, i);
-            daoC.updateIndexes(indexes, true);
+            daoC.updateIndexes(indexes, false);
+            tab.setWaiter(salon.getUser());
+            Delivery newDeli = new Delivery(delivery.getConsumer().getPhone(), delivery.getDeliUser().getId());
+            newDeli.setTab(tab);
+            daoD.saveDelivery(newDeli);
         }
 
         if (tab.getPos().equals("barra")) {
             int i = indexes.get(0) + 1;
             tab.setNum(i);
             indexes.set(0, i);
-            daoC.updateIndexes(indexes, true);
+            daoC.updateIndexes(indexes, false);
+            tab.setWaiter(salon.getUser());
         }
 
-        boolean done = daoT.saveTable(tab, null);
+        boolean done = daoT.saveTable(tab, wsNewTs);
         if (done) {
             daoU.saveWaiterTable(tab);
             if (tab.getPos().equals("delivery")) {

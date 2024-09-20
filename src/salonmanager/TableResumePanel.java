@@ -49,7 +49,7 @@ public class TableResumePanel extends FrameThird {
 
     Table tabAux = new Table();
 
-    TableResumePanel(Table tab) throws Exception {
+    TableResumePanel(Table tab, Salon salon) throws Exception {
         sm.addFrame(this);
         tabAux = tab;
         String tit = "Consulta Mesa";
@@ -60,15 +60,15 @@ public class TableResumePanel extends FrameThird {
         JLabel labelTit = utiliGraf.labelTitleBackerA4W(tit.toUpperCase());
         labelTit.setBounds(anchoUnit * 4, altoUnit * 1, anchoUnit * 26, altoUnit * 5);
         panelPpal.add(labelTit);
-        
+
         JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
         panelPpal.add(panelLogo);
 
-        JPanel panelPn = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 7, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Mesa: ", tabAux.getPos() + tabAux.getNum());
+        JPanel panelPn = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 7, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Orden: ", tabAux.getPos() + tabAux.getNum());
         panelPpal.add(panelPn);
 
         String dateOpen = utili.friendlyDate1(tabAux.getOpenTime());
-        JPanel panelInit = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 12, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Inicio de mesa: ", dateOpen);
+        JPanel panelInit = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 12, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Inicio de orden: ", dateOpen);
         panelPpal.add(panelInit);
 
         String dateClose = "";
@@ -79,10 +79,24 @@ public class TableResumePanel extends FrameThird {
             dateClose = utili.friendlyDate1(tabAux.getCloseTime());
         }
 
-        JPanel panelEnd = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 17, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Fin de mesa: ", dateClose);
+        JPanel panelEnd = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 17, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Fin de orden: ", dateClose);
         panelPpal.add(panelEnd);
 
-        JPanel panelWaiter = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 22, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Mozo: ", tabAux.getWaiter().getName() + " " + tabAux.getWaiter().getLastName());
+        String stRol = "";
+        String stName = "";
+        String stLastname = "";
+
+        if (tabAux.getPos().equals("delivery") || tabAux.getPos().equals("barra")) {
+            stRol = "Cajero";
+            stName = salon.getUser().getName();
+            stLastname = salon.getUser().getLastName();
+        } else {
+            stRol = "Mozo";
+            stName = tabAux.getWaiter().getName();
+            stLastname = tabAux.getWaiter().getLastName();
+        }
+
+        JPanel panelWaiter = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 22, anchoUnit * 26, altoUnit * 5, bluLg, 20, stRol + ": ", stName + " " + stLastname);
         panelPpal.add(panelWaiter);
 
         JPanel panelDiscount = utiliGraf.panelInfoBacker(anchoUnit * 4, altoUnit * 27, anchoUnit * 26, altoUnit * 5, bluLg, 20, "Descuento: ", tabAux.getDiscount() + "%");
@@ -123,7 +137,7 @@ public class TableResumePanel extends FrameThird {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                boolean confirmation = utiliMsg.cargaConfirmarCierreVentana();
+                boolean confirmation = utiliMsg.optionConfirmarCierreVentana();
                 dispose();
             }
         });
@@ -131,12 +145,10 @@ public class TableResumePanel extends FrameThird {
 
     private void confirmMount() throws Exception {
         boolean error = false;
-        
+
         Workshift ws = askWorshiftByTabDate(tabAux.getOpenTime());
 
-        
 //        Workshift ws = daoW.askWorshiftByTabDate(tabAux.getOpenTime());
-
         if (ws.getCloseDateWs() == null) {
             utiliMsg.errorWsOpen();
             error = true;
@@ -155,11 +167,11 @@ public class TableResumePanel extends FrameThird {
         if (error == false) {
             boolean confirm = false;
             if (loss > sum) {
-                confirm = utiliMsg.cargaConfirmErrorInsuf();
+                confirm = utiliMsg.optionConfirmErrorInsuf();
                 String mess = tabAux.getComments() + "El error fue revisado y quedó un monto pendiente.<br>";
                 tabAux.setComments(mess);
             } else {
-                confirm = utiliMsg.cargaConfirmErrorSuf();
+                confirm = utiliMsg.optionConfirmErrorSuf();
                 String mess = tabAux.getComments() + "El monto pendiente fue subsanado.<br>";
                 tabAux.setComments(mess);
             }
@@ -205,7 +217,7 @@ public class TableResumePanel extends FrameThird {
     }
 
     private void closeTab() throws Exception {
-        boolean confirm = utiliMsg.cargaConfirmarFacturacion(totalMount, sum - totalMount);
+        boolean confirm = utiliMsg.optionConfirmarFacturacion(totalMount, sum - totalMount);
         if (confirm) {
             daoT.updateCloseTime(tabAux);
             tabAux.setOpen(false);

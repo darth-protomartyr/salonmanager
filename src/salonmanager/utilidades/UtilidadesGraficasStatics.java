@@ -35,17 +35,20 @@ import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.style.Styler;
 import salonmanager.StaticsManager;
+import salonmanager.entidades.bussiness.DeliveryClient;
 import salonmanager.entidades.bussiness.ItemSale;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
+import salonmanager.persistencia.DAODeliveryClient;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOItemSale;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.persistencia.DAOUser;
 import salonmanager.persistencia.DAOWorkshift;
 import salonmanager.servicios.ServiceStatics;
+import salonmanager.servicios.ServicioItemSale;
 import salonmanager.servicios.ServicioTable;
 
 /**
@@ -64,12 +67,14 @@ public class UtilidadesGraficasStatics {
     DAOItemSale daoIs = new DAOItemSale();
     DAOUser daoU = new DAOUser();
     DAOItemcard daoI = new DAOItemcard();
+    DAODeliveryClient daoDC = new DAODeliveryClient();
     Utilidades utili = new Utilidades();
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServiceStatics sStats = new ServiceStatics();
     ServicioTable st = new ServicioTable();
+    ServicioItemSale sis = new ServicioItemSale();
     Color bluLg = new Color(194, 242, 206);
     Color narUlg = new Color(255, 255, 176);
 
@@ -212,6 +217,71 @@ public class UtilidadesGraficasStatics {
         return chartWaiter;
     }
 
+    public JPanel panelClientStaticsBacker(StaticsManager statsM) throws Exception {
+        int clients = daoDC.getConsumerId() - 1;
+
+        JPanel panelClientStatics = new JPanel();
+        panelClientStatics.setSize(anchoUnit * 18, altoUnit * 37);
+
+        JLabel labelClientStatics = utiliGraf.labelTitleBacker2("Estadísticas Clientes");
+        labelClientStatics.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 30, altoUnit * 3);
+        panelClientStatics.add(labelClientStatics);
+
+        JLabel labelClients = utiliGraf.labelTitleBacker1("Top 3 Clientes");
+        labelClients.setBounds(anchoUnit * 1, altoUnit * 5, anchoUnit * 25, altoUnit * 4);
+        panelClientStatics.add(labelClients);
+
+        statsM.setLabelClient1(utiliGraf.labelTitleBacker2("Client"));
+        statsM.getLabelClient1().setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 25, altoUnit * 4);
+        panelClientStatics.add(statsM.getLabelClient1());
+
+        statsM.setLabelClient2(utiliGraf.labelTitleBacker2("Client"));
+        statsM.getLabelClient2().setBounds(anchoUnit * 1, altoUnit * 15, anchoUnit * 25, altoUnit * 4);
+        panelClientStatics.add(statsM.getLabelClient2());
+
+        statsM.setLabelClient3(utiliGraf.labelTitleBacker2("Client"));
+        statsM.getLabelClient3().setBounds(anchoUnit * 1, altoUnit * 20, anchoUnit * 25, altoUnit * 4);
+        panelClientStatics.add(statsM.getLabelClient3());
+
+        JButtonMetalBlu butCGlobal = utiliGraf.button2("Lista Completa", anchoUnit, altoUnit * 26, anchoUnit * 16);
+        butCGlobal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    if (clients > 0) {
+                        sStats.openClientListViewer(statsM);
+                    } else {
+                        utiliMsg.errorNullClient();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelClientStatics.add(butCGlobal);
+
+        JButtonMetalBlu butCSingle = utiliGraf.button2("Registros por Cliente", anchoUnit, altoUnit * 31, anchoUnit * 16);
+        butCSingle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    if (clients > 0) {
+                        sStats.openWSellsViewer(2, statsM);
+                        sStats.openClientSellsViewer(statsM);
+
+                    } else {
+                        utiliMsg.errorNullClient();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(StaticsManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        panelClientStatics.add(butCSingle);
+
+        return panelClientStatics;
+    }
+
     public JPanel panelWaiterBacker(StaticsManager sMan, int kind) {
         JPanel panelWaiterSells = new JPanel();
         JLabel labelWaiters = null;
@@ -317,8 +387,8 @@ public class UtilidadesGraficasStatics {
     public JPanel panelLateralBacker(StaticsManager statsM) throws Exception {
         JPanel panelStatsBySell = new JPanel();
 
-        JLabel labelAsk = utiliGraf.labelTitleBackerA3("Consulta:");
-        labelAsk.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 16, altoUnit * 4);
+        JLabel labelAsk = utiliGraf.labelTitleBackerA3("CONSULTA");
+        labelAsk.setBounds(anchoUnit * 1, altoUnit * 1, anchoUnit * 15, altoUnit * 4);
         panelStatsBySell.add(labelAsk);
 
         JLabel labelStatsTime = utiliGraf.labelTitleBacker1("Por período de tpo.:");
@@ -367,7 +437,7 @@ public class UtilidadesGraficasStatics {
         statsM.getLabelPeriod().setBounds(anchoUnit * 2, altoUnit * 39, anchoUnit * 16, altoUnit * 6);
         panelStatsBySell.add(statsM.getLabelPeriod());
 
-        JButtonMetalBlu butViewAllItemSales = utiliGraf.button3("Ver Ventas", anchoUnit * 2, altoUnit * 46, anchoUnit * 6);
+        JButtonMetalBlu butViewAllItemSales = utiliGraf.button3("Ver Ventas", anchoUnit * 1, altoUnit * 46, anchoUnit * 7);
         butViewAllItemSales.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -381,7 +451,7 @@ public class UtilidadesGraficasStatics {
         });
         panelStatsBySell.add(butViewAllItemSales);
 
-        JButtonMetalBlu butViewAllTabs = utiliGraf.button3("Ver Mesas", anchoUnit * 9, altoUnit * 46, anchoUnit * 6);
+        JButtonMetalBlu butViewAllTabs = utiliGraf.button3("Ver Órdenes", anchoUnit * 9, altoUnit * 46, anchoUnit * 7);
         butViewAllTabs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -482,7 +552,7 @@ public class UtilidadesGraficasStatics {
     private void workshiftSelector(String st, StaticsManager statsM) throws Exception {
         int ws = 0;
         if (st.equals("ACTUAL")) {
-            utiliMsg.cargaAdvertNotOpen();
+            utiliMsg.successAdvertNotOpen(statsM);
             ws = daoW.askWorshiftActualId();
         } else {
             String[] words = st.split("\\.");
@@ -582,8 +652,8 @@ public class UtilidadesGraficasStatics {
         panelItemsCategoryPie.setLayout(null);
         panelItemsCategoryPie.setBounds(anchoUnit * 1, altoUnit * 10, anchoUnit * 38, altoUnit * 33);
         panelItemsCategoryPie.setBackground(narUlg);
-        panelItemsStatics.add(panelItemsCategoryPie);       
-        
+        panelItemsStatics.add(panelItemsCategoryPie);
+
         statsM.setLabelCategory0(utiliGraf.labelTitleBacker3(""));
         statsM.getLabelCategory0().setBounds(anchoUnit * 25, altoUnit * 6, anchoUnit * 14, altoUnit * 3);
         panelItemsCategoryPie.add(statsM.getLabelCategory0());
@@ -612,7 +682,7 @@ public class UtilidadesGraficasStatics {
     }
 
     public JPanel panelWaiterStaticsBacker(StaticsManager statsM) throws Exception {
-        ArrayList<User> waiters = daoU.listUserByRol("MOZO", true);
+        int waiters = daoU.getNumUsers("MOZO");
 
         JPanel panelWaiterStatics = new JPanel();
 
@@ -637,9 +707,9 @@ public class UtilidadesGraficasStatics {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (waiters.size() > 0) {
+                    if (waiters > 0) {
                         sStats.openWSellsViewer(1, statsM);
-                    }  else {
+                    } else {
                         utiliMsg.errorNullWaiter();
                     }
                 } catch (Exception ex) {
@@ -654,7 +724,7 @@ public class UtilidadesGraficasStatics {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    if (waiters.size() > 0) {
+                    if (waiters > 0) {
                         sStats.openWSellsViewer(2, statsM);
                     } else {
                         utiliMsg.errorNullWaiter();
@@ -730,14 +800,8 @@ public class UtilidadesGraficasStatics {
             Timestamp ts1 = tsList.get(0);
             Timestamp ts2 = tsList.get(size - 1);
 
-            ArrayList<Timestamp> isSalesTs = daoIs.listarItemSalesTs();
-            isSalesTs = utili.tsFilter(isSalesTs, ts1, ts2);
-
-            ArrayList<ItemSale> is = new ArrayList<>();
-            for (int i = 0; i < isSalesTs.size(); i++) {
-                ItemSale iSale = daoIs.askItemSaleByDate(isSalesTs.get(i));
-                is.add(iSale);
-            }
+            ArrayList<String> isSalesSt = daoIs.listarItemSalesSt();
+            ArrayList<ItemSale> is = sis.listarItemsSale(isSalesSt, ts1, ts2);
 
             ArrayList<Table> tabs = st.listTablesByTs(ts1, ts2, false);
             tabs = sStats.filterTabsOpenState(tabs);
@@ -781,17 +845,21 @@ public class UtilidadesGraficasStatics {
         int tabInt = 0;
         statsM.setCountCat(new HashMap<>());
         statsM.setCountWSells(new HashMap<String, Double>());
+        statsM.setCountClientBuys(new HashMap<Integer, Double>());
         statsM.setCountWWs(new HashMap<String, Integer>());
         ArrayList<String> waiterIdsDB = daoU.listarUserByRol("MOZO");
         ArrayList<String> waiterIds = new ArrayList<>();
+        ArrayList<String> clientIdsDB = daoDC.getConsumersName();      
+        ArrayList<Integer> clientIds = new ArrayList<>();
         ArrayList<HashSet<Integer>> listHS = new ArrayList<>();
         statsM.getLabelTitleProgram().setVisible(false);
+        
         for (Table tab : statsM.getTabs()) {
             tot += tab.getTotal();
             if (tab.getPos().equals("barra")) {
                 statsM.setNumBar(statsM.getNumBar() + tab.getTotal());
             } else if (tab.getPos().equals("delivery")) {
-                statsM.setNumBar(statsM.getNumDeli() + tab.getTotal());
+                statsM.setNumDeli(statsM.getNumDeli() + tab.getTotal());
             } else {
                 statsM.setNumTabs(statsM.getNumTabs() + tab.getTotal());
             }
@@ -826,6 +894,18 @@ public class UtilidadesGraficasStatics {
                     entry.setValue(newValue);
                 }
             }
+            
+            if (is.getIdClient() != 0) {
+                for (int i = 0; i < clientIdsDB.size(); i++) {
+                    int id1 = utili.cmrIdBacker(clientIdsDB.get(i));
+                    int Id2 = is.getIdClient();
+                    if (id1 == Id2) {
+                        clientIds.add(is.getIdClient());
+                        HashSet<Integer> counterWs = new HashSet<Integer>();
+                        listHS.add(counterWs);
+                    }
+                }
+            }
 
             for (int i = 0; i < waiterIdsDB.size(); i++) {
                 String id1 = waiterIdsDB.get(i);
@@ -838,14 +918,31 @@ public class UtilidadesGraficasStatics {
             }
         }
 
-        ArrayList<String> ids = new ArrayList<>(waiterIds);
-        for (int i = 0; i < ids.size(); i++) {
-            String id = ids.get(i);
+        ArrayList<Integer> idClients = new ArrayList<>(clientIds);
+        for (int i = 0; i < idClients.size(); i++) {
+            int id = idClients.get(i);
+            statsM.getCountClientBuys().put(id, 0.0);
+        }
+
+        ArrayList<String> idWaiters = new ArrayList<>(waiterIds);
+        for (int i = 0; i < idWaiters.size(); i++) {
+            String id = idWaiters.get(i);
             statsM.getCountWSells().put(id, 0.0);
             statsM.getCountWWs().put(id, 0);
         }
 
         for (ItemSale is : statsM.getISales()) {
+            for (Map.Entry<Integer, Double> entry : statsM.getCountClientBuys().entrySet()) {
+                int key = entry.getKey();
+                if (key == is.getIdClient()) {
+                    double value = entry.getValue();
+                    double newValue = value + is.getItemSalePrice();
+                    entry.setValue(newValue);
+                }
+            }
+            
+            
+            
             for (Map.Entry<String, Double> entry : statsM.getCountWSells().entrySet()) {
                 String key = entry.getKey();
                 if (key.equals(is.getItemSaleWaiterId())) {
@@ -904,12 +1001,37 @@ public class UtilidadesGraficasStatics {
         statsM.getPanelChartByOrder().revalidate();
         statsM.getPanelChartByOrder().repaint();
 
-//        Curve by mount volume
+//      Curve by mount volume
         statsM.setChartCurveSell(chartCurveBacker(statsM));
         statsM.getPanelChartSellCurve().removeAll();
         statsM.getPanelChartSellCurve().add(new XChartPanel<>(statsM.getChartCurveSell()));
         statsM.getPanelChartSellCurve().revalidate();
         statsM.getPanelChartSellCurve().repaint();
+
+//      TOP Client Buys
+        statsM.setCountClientBuys(sStats.orderHsIDUpToDown(statsM.getCountClientBuys()));
+        ArrayList<Integer> clientsBuys1 = new ArrayList<>(statsM.getCountClientBuys().keySet());
+        ArrayList<String> clientsBuys2 = new ArrayList<>();
+        ArrayList<Double> amounts3 = new ArrayList<>(statsM.getCountClientBuys().values());
+        ArrayList<Double> amounts4 = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            if (i < clientsBuys1.size()) {
+                String name = daoDC.getClientNameById(clientsBuys1.get(i));
+                clientsBuys2.add(name);
+                amounts4.add(amounts3.get(i));
+            } else {
+                clientsBuys2.add("--");
+                amounts4.add(0.0);
+            }
+        }
+        
+        
+        
+        statsM.getLabelClient1().setText("1- " + clientsBuys2.get(0) + " $: " + amounts4.get(0));
+        statsM.getLabelClient2().setText("2- " + clientsBuys2.get(1) + " $: " + amounts4.get(1));
+        statsM.getLabelClient3().setText("3- " + clientsBuys2.get(2) + " $: " + amounts4.get(2));
+        
 
         //Volume by item Category
         statsM.setChartCategoryPie(chartCategoryBacker(statsM.getCountCat(), statsM));

@@ -204,7 +204,7 @@ public class UtilidadesGraficasDeliData {
     }
 
     private void updateConsumer(DeliveryData dd) throws Exception {
-        new ConsumerTemplate(null, dd, dd.getCmrAux());
+        new ConsumerTemplate(null, null, dd, dd.getCmrAux());
         dd.setEnabled(false);
     }
 
@@ -291,24 +291,44 @@ public class UtilidadesGraficasDeliData {
         }
 
         User deliU = dd.getDeliAux();
+        
+        String name = "";
+        String lastname = "";
+        String phone = "";
+        String mail = "";
+        String role = "";
+        
+        if (deliU.getId() != null) {
+            name = deliU.getName();
+            lastname = deliU.getLastName();
+            phone = deliU.getPhone();
+            mail = deliU.getMail();
+            role = deliU.getRol();
+        } else {
+            name = "--";
+            lastname = "--";
+            phone = "--";
+            mail = "--";
+            role = "--";            
+        }
 
-        dd.setLabelNameDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Nombre:</span><span style='font-weight: 900;'>" + deliU.getName().toUpperCase() + "</span></html>"));
+        dd.setLabelNameDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Nombre:</span><span style='font-weight: 900;'>" + name.toUpperCase() + "</span></html>"));
         dd.getLabelNameDeli().setBounds(anchoUnit * 8, altoUnit * 11, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dd.getLabelNameDeli());
 
-        dd.setLabelLastNameDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Apellido:</span><span style='font-weight: 900;'>" + deliU.getLastName().toUpperCase() + "</span></html>"));
+        dd.setLabelLastNameDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Apellido:</span><span style='font-weight: 900;'>" + lastname.toUpperCase() + "</span></html>"));
         dd.getLabelLastNameDeli().setBounds(anchoUnit * 8, altoUnit * 16, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dd.getLabelLastNameDeli());
 
-        dd.setLabelPhoneDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Teléfono:</span><span style='font-weight: 900;'>" + deliU.getPhone().toUpperCase() + "</span></html>"));
+        dd.setLabelPhoneDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Teléfono:</span><span style='font-weight: 900;'>" + phone.toUpperCase() + "</span></html>"));
         dd.getLabelPhoneDeli().setBounds(anchoUnit * 8, altoUnit * 21, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dd.getLabelPhoneDeli());
 
-        dd.setLabelMailDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Mail:</span><span style='font-weight: 900;'>" + deliU.getMail().toUpperCase() + "</span></html>"));
+        dd.setLabelMailDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Mail:</span><span style='font-weight: 900;'>" + mail.toUpperCase() + "</span></html>"));
         dd.getLabelMailDeli().setBounds(anchoUnit * 8, altoUnit * 26, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dd.getLabelMailDeli());
 
-        dd.setLabelRolDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Puesto:</span><span style='font-weight: 900;'>" + deliU.getRol().toUpperCase() + "</span></html>"));
+        dd.setLabelRolDeli(utiliGraf.labelTitleBacker1("<html><span style='font-weight: 400;'>Puesto:</span><span style='font-weight: 900;'>" + role.toUpperCase() + "</span></html>"));
         dd.getLabelRolDeli().setBounds(anchoUnit * 8, altoUnit * 31, anchoUnit * 22, altoUnit * 4);
         panelDelivery.add(dd.getLabelRolDeli());
 
