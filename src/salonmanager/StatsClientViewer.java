@@ -55,7 +55,7 @@ public class StatsClientViewer extends FrameFull {
     ArrayList<ItemSale> iSales = null;
     ArrayList<DeliveryClient> dcDB = null;
     ArrayList<ItemSale> iSalesByClient = null;
-    JLabel labelWaiter = null;
+    JLabel labelClient = null;
     JLabel labelPanel1 = null;
     JLabel labelPanel2 = null;
 
@@ -118,12 +118,12 @@ public class StatsClientViewer extends FrameFull {
         });
         panelPpal.add(butSelItem);
 
-        labelWaiter = utiliGraf.labelTitleBacker1W("");
-        labelWaiter.setBounds(anchoUnit * 2, altoUnit * 6, anchoUnit * 33, altoUnit * 4);
-        panelPpal.add(labelWaiter);
+        labelClient = utiliGraf.labelTitleBacker1W("fgjdjjdgdjg");
+        labelClient.setBounds(anchoUnit * 35, altoUnit * 6, anchoUnit * 33, altoUnit * 4);
+        panelPpal.add(labelClient);
 
         labelPanel1.setBounds(anchoUnit * 2, altoUnit * 10, anchoUnit * 30, altoUnit * 4);
-        labelPanel1.setText("Evoulución de facturación por Cliente");
+        labelPanel1.setText("Evolución de facturación por Cliente");
         labelPanel2.setBounds(anchoUnit * 53, altoUnit * 10, anchoUnit * 20, altoUnit * 4);
         labelPanel2.setText("Items más comprados por cliente");
 
@@ -150,7 +150,6 @@ public class StatsClientViewer extends FrameFull {
     private void selectClient() throws Exception {
         String st = (String) comboClients.getSelectedItem();
         DeliveryClient cmr = null;
-        labelWaiter.setText(st);
 
         for (DeliveryClient dc : dcDB) {
             String uName = dc.getName() + " " + dc.getLastname();
@@ -162,15 +161,14 @@ public class StatsClientViewer extends FrameFull {
         iSalesByClient = new ArrayList<>();
         for (ItemSale is : iSales) {
             if (is.getItemSaleTabPos().equals("delivery")) {
-                iSalesByClient.add(is);
+                if (is.getIdClient() == cmr.getId()) {
+                    iSalesByClient.add(is);
+                }
             }
         }
         
         ArrayList<Integer> wsIds = daoW.listarWsIds();
         HashSet<Integer> wssID = new HashSet<Integer>();
-//        for (ItemSale is : iSalesByClient) {
-//            wssID.add(is.getItemSaleWorkshiftId());
-//        }
 
         for (int i : wsIds) {
             wssID.add(i);
@@ -211,6 +209,7 @@ public class StatsClientViewer extends FrameFull {
         }
 
         if (iSalesByClient.size() > 0) {
+            labelClient.setText(st);
 
             volSells = statsS.orderHsIDDownToUp(volSells);
             ArrayList<Integer> wss = new ArrayList<>(volSells.keySet());
@@ -270,4 +269,10 @@ public class StatsClientViewer extends FrameFull {
             utiliMsg.errorNullItemDates();
         }
     }
+    
+    private void pageSetter() {
+        
+    }
+    
+    
 }

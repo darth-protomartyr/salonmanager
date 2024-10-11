@@ -25,8 +25,9 @@ import salonmanager.utilidades.UtilidadesMensajes;
 public class CustomDialogTextInAlt extends JDialog {
 
     UtilidadesGraficas utiliGraf = new UtilidadesGraficas();
-    Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    Utilidades utili = new Utilidades();
+
     Toolkit pantalla = Toolkit.getDefaultToolkit();
     Dimension tamanioPantalla = pantalla.getScreenSize();
     int anchoFrame = tamanioPantalla.width;
@@ -60,20 +61,19 @@ public class CustomDialogTextInAlt extends JDialog {
         panelText.setBorder(bordeInterno);
         panelText.setBackground(narLg);
         contentPane.add(panelText);
-
         
-        JLabel labelIText = utiliGraf.labelTitleBacker1W(utili.stringMsgFrd(message, 25, 2));
-        labelIText.setBounds(anchoUnit * 2, altoUnit * 2, anchoUnit * 27, altoUnit * 7);
+        JLabel labelIText = utiliGraf.labelTitleBacker1W(utili.stringMsgFrd(message, large, 1));
+        labelIText.setBounds(anchoUnit * 3, altoUnit * 5, anchoUnit * 25, altoUnit * 9);
         panelText.add(labelIText);
 
-        Font newFont = new Font("Arial", Font.PLAIN, 16);
+        Font newFont = new Font("Arial", Font.PLAIN, 24);
 
         textField.setFont(newFont);
-        textField.setBounds(anchoUnit * 6, altoUnit * 18, anchoUnit * 15, altoUnit * 4);
+        textField.setBounds(anchoUnit * 4, altoUnit * 18, anchoUnit * 21, altoUnit * 6);
         textField.setBackground(narUlg);
         contentPane.add(textField);
 
-        JButtonMetalBlu butInText = utiliGraf.button2("Ingresar", anchoUnit * 10, altoUnit * 30, anchoUnit * 10);
+        JButtonMetalBlu butInText = utiliGraf.button2("Ingresar", anchoUnit * 10, altoUnit * 28, anchoUnit * 10);
         butInText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

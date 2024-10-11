@@ -51,14 +51,16 @@ public class UtilidadesGraficasCfgSal {
         labelItemsTP.setBounds(anchoUnit * 2, altoUnit * 3, anchoUnit * 12, altoUnit * 3);
         panelSpaces.add(labelItemsTP);
 
-        cSF.getListSpaces().setModel(utili.spacesListModelReturnMono(cSF.getSpaces()));
+        cSF.getListSpaces().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getSpaces()));
         cSF.getListSpaces().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                    if (cSF.getSpacesSel().size() < 8) {
+                    if (cSF.getSpacesSel().size() < 9) {
                         String selectedValue = (String) cSF.getListSpaces().getSelectedValue();
-                        scs.selSpace(selectedValue, 1, cSF);
+                        if (!selectedValue.equals("")) {
+                            scs.selSpace(selectedValue, 1, cSF);
+                        }
                     } else {
                         utiliMsg.errorSpacesExcess();
                     }
@@ -73,13 +75,17 @@ public class UtilidadesGraficasCfgSal {
         labelItemsSel.setBounds(anchoUnit * 15, altoUnit * 3, anchoUnit * 12, altoUnit * 3);
         panelSpaces.add(labelItemsSel);
 
-        cSF.getListSpacesSel().setModel(utili.spacesListModelReturnMono(cSF.getSpacesSel()));
+        cSF.getListSpacesSel().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getSpacesSel()));
         cSF.getListSpacesSel().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                    String selectedValue = (String) cSF.getListSpacesSel().getSelectedValue();
-                    scs.unSelSpace(selectedValue, cSF);
+                    if (cSF.getSpacesSel().size() > 0) {
+                        String selectedValue = (String) cSF.getListSpacesSel().getSelectedValue();
+                        if (!selectedValue.equals("")) {
+                            scs.unSelSpace(selectedValue, cSF);
+                        }
+                    }
                 }
             }
         });
@@ -144,7 +150,7 @@ public class UtilidadesGraficasCfgSal {
         JPanel panelSpaces = new JPanel(null);
         panelSpaces.setBounds(anchoUnit * 0, altoUnit * 46, anchoFrameThird, altoUnit * 14);
         panelSpaces.setBackground(bluSt);
-        
+
         JLabel labelIndications3 = utiliGraf.labelTitleBacker2W("Seleccione hasta 6 categorías");
         labelIndications3.setBounds(anchoUnit * 8, altoUnit * 0, anchoUnit * 18, altoUnit * 3);
         panelSpaces.add(labelIndications3);
@@ -153,7 +159,7 @@ public class UtilidadesGraficasCfgSal {
         labelCat.setBounds(anchoUnit * 2, altoUnit * 3, anchoUnit * 13, altoUnit * 3);
         panelSpaces.add(labelCat);
 
-        cSF.getListCat().setModel(utili.spacesListModelReturnMono(cSF.getCategories()));
+        cSF.getListCat().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getCategories()));
         cSF.getListCat().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -175,7 +181,7 @@ public class UtilidadesGraficasCfgSal {
         labelCatSel.setBounds(anchoUnit * 15, altoUnit * 3, anchoUnit * 13, altoUnit * 3);
         panelSpaces.add(labelCatSel);
 
-        cSF.getListCatSel().setModel(utili.spacesListModelReturnMono(cSF.getCategoriesSel()));
+        cSF.getListCatSel().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getCategoriesSel()));
         cSF.getListCatSel().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -207,18 +213,18 @@ public class UtilidadesGraficasCfgSal {
     }
 
     public JPanel panelTipBacker(ConfigSalonFrame cSF) {
-        
+
         JPanel panelSpaces = new JPanel(null);
         panelSpaces.setBounds(anchoUnit * 0, altoUnit * 61, anchoFrameThird, altoUnit * 22);
         panelSpaces.setBackground(bluSt);
-        
+
         JLabel labelIndications4 = utiliGraf.labelTitleBacker2W("Seleccione el porcentaje de las Propinas:");
         labelIndications4.setBounds(anchoUnit * 4, altoUnit * 0, anchoUnit * 25, altoUnit * 3);
         panelSpaces.add(labelIndications4);
-        
+
         JLabel labelPorcentaje = utiliGraf.labelTitleBacker1W("Porcentaje %:");
         labelPorcentaje.setBounds(anchoUnit * 8, altoUnit * 3, anchoUnit * 11, altoUnit * 4);
-        panelSpaces.add(labelPorcentaje);        
+        panelSpaces.add(labelPorcentaje);
 
         SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
         cSF.getSpinnerTip().setModel(model);
@@ -226,11 +232,11 @@ public class UtilidadesGraficasCfgSal {
         cSF.getSpinnerTip().setFont(cSF.getFont1());
         cSF.getSpinnerTip().setValue(10);
         panelSpaces.add(cSF.getSpinnerTip());
-        
+
         JSeparator separator4 = new JSeparator(SwingConstants.HORIZONTAL);
         separator4.setBounds(anchoUnit * 1, altoUnit * 7 + 3, anchoUnit * 32, 4); // Posición y tamaño del separador
         panelSpaces.add(separator4);
-        
+
         cSF.setData1("<html><b>SECTORES</b>:</html>");
         cSF.setLabelData1(utiliGraf.labelTitleBacker2W(cSF.getData1()));
         cSF.getLabelData1().setText(cSF.getData1());
@@ -246,7 +252,7 @@ public class UtilidadesGraficasCfgSal {
         cSF.getLabelData2().setFont(cSF.getFont2());
         cSF.getLabelData2().setBackground(bluLg);
         panelSpaces.add(cSF.getLabelData2());
-                
+
         return panelSpaces;
     }
 
@@ -279,7 +285,7 @@ public class UtilidadesGraficasCfgSal {
                 }
             }
         });
-        
+
         return cSF.getButConfirm2();
     }
 

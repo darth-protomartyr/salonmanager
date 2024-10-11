@@ -105,18 +105,6 @@ public class DAOItemSale extends DAO {
             
             max =max + max2;
             return max;
-            
-            
-            
-//            int id = 0;
-//            String sql = "SELECT COUNT(*) AS cantidad_filas FROM item_sales_statics;";
-//            System.out.println(sql);
-//            consultarBase(sql);
-//            ArrayList<String> cmrs = new ArrayList<>();
-//            while (resultado.next()) {
-//                id = resultado.getInt(1) + 1;
-//            }
-//            return id;
         } catch (Exception e) {
             throw e;
         }  finally {

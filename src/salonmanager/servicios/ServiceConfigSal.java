@@ -29,7 +29,7 @@ public class ServiceConfigSal {
         if (i == 1) {
             cSF.getSpacesSel().add(selectedValue);
         }
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(cSF.getSpacesSel());
+        ListModel modeloLista1 = utili.spacesCategoriesListModelReturnMono(cSF.getSpacesSel());
         cSF.getListSpacesSel().setModel(modeloLista1);
 
         Iterator<String> iterador = cSF.getSpaces().iterator();
@@ -39,7 +39,7 @@ public class ServiceConfigSal {
                 iterador.remove();
             }
         }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(cSF.getSpaces());
+        ListModel modeloLista2 = utili.spacesCategoriesListModelReturnMono(cSF.getSpaces());
         cSF.getListSpaces().setModel(modeloLista2);
 
         PanelNestedSpace pn = new PanelNestedSpace(selectedValue, cSF.getPanels().size());
@@ -49,7 +49,7 @@ public class ServiceConfigSal {
 
     public void unSelSpace(String selectedValue, ConfigSalonFrame cSF) {
         cSF.getSpaces().add(selectedValue);
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(cSF.getSpaces());
+        ListModel modeloLista1 = utili.spacesCategoriesListModelReturnMono(cSF.getSpaces());
         cSF.getListSpaces().setModel(modeloLista1);
         Iterator<String> iterador = cSF.getSpacesSel().iterator();
         while (iterador.hasNext()) {
@@ -58,7 +58,7 @@ public class ServiceConfigSal {
                 iterador.remove();
             }
         }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(cSF.getSpacesSel());
+        ListModel modeloLista2 = utili.spacesCategoriesListModelReturnMono(cSF.getSpacesSel());
         cSF.getListSpacesSel().setModel(modeloLista2);
 
         panelManager(null, selectedValue, cSF);
@@ -105,21 +105,34 @@ public class ServiceConfigSal {
     }
 
     public void createSpace(ConfigSalonFrame cSF) throws Exception {
-        String space = utiliMsg.requestNewString(1, 15);
-        cSF.getSpaces().add(space);
-        daoC.saveSpace(space);
-        String cha = space.substring(0, 1);
-        cSF.getCharsDB().add(cha);
-        daoC.saveChar(cha);
-        cSF.setSpaces(daoC.askSpaces());
-        cSF.getListSpaces().setModel(utili.spacesListModelReturnMono(cSF.getSpaces()));
+        String space = utiliMsg.requestNewString(1, 25);
+        if (!space.equals("")) {
+            daoC.saveSpace(space);
+            cSF.getSpaces().add(space);
+            String cha = space.substring(0, 1);
+            cSF.getCharsDB().add(cha);
+            daoC.saveChar(cha);
+            cSF.setSpaces(daoC.askSpaces());
+
+            ArrayList<String> spacesDB = daoC.askSpaces();
+            for (int i = 0; i < cSF.getSpacesSel().size(); i++) {
+                Iterator<String> iterator = spacesDB.iterator();
+                while (iterator.hasNext()) {
+                    String st = iterator.next();
+                    if (st.equals(cSF.getSpacesSel().get(i))) {
+                        iterator.remove();
+                    }
+                }
+            }
+            cSF.getListSpaces().setModel(utili.spacesCategoriesListModelReturnMono(spacesDB));
+        }
     }
 
     public void selCategory(String selectedValue, int i, ConfigSalonFrame cSF) {
         if (i == 1) {
             cSF.getCategoriesSel().add(selectedValue);
         }
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(cSF.getCategoriesSel());
+        ListModel modeloLista1 = utili.spacesCategoriesListModelReturnMono(cSF.getCategoriesSel());
         cSF.getListCatSel().setModel(modeloLista1);
 
         Iterator<String> iterador = cSF.getCategories().iterator();
@@ -129,7 +142,7 @@ public class ServiceConfigSal {
                 iterador.remove();
             }
         }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(cSF.getCategories());
+        ListModel modeloLista2 = utili.spacesCategoriesListModelReturnMono(cSF.getCategories());
         cSF.getListCat().setModel(modeloLista2);
 
         data2Updater(cSF);
@@ -138,7 +151,7 @@ public class ServiceConfigSal {
     public void unSelCategory(String selectedValue, ConfigSalonFrame cSF) {
         selectedValue = (String) cSF.getListCatSel().getSelectedValue();
         cSF.getCategories().add(selectedValue);
-        ListModel modeloLista1 = utili.spacesListModelReturnMono(cSF.getCategories());
+        ListModel modeloLista1 = utili.spacesCategoriesListModelReturnMono(cSF.getCategories());
         cSF.getListCat().setModel(modeloLista1);
         Iterator<String> iterador = cSF.getCategoriesSel().iterator();
         while (iterador.hasNext()) {
@@ -147,17 +160,19 @@ public class ServiceConfigSal {
                 iterador.remove();
             }
         }
-        ListModel modeloLista2 = utili.spacesListModelReturnMono(cSF.getCategoriesSel());
+        ListModel modeloLista2 = utili.spacesCategoriesListModelReturnMono(cSF.getCategoriesSel());
         cSF.getListCatSel().setModel(modeloLista2);
         data2Updater(cSF);
     }
 
     public void createCategory(ConfigSalonFrame cSF) throws Exception {
-        String category = utiliMsg.requestNewString(2, 10);
-        cSF.getCategories().add(category);
-        daoC.saveCategory(category);
-        cSF.setCategories(daoC.askCategories());
-        cSF.getListCat().setModel(utili.spacesListModelReturnMono(cSF.getCategories()));
+        String category = utiliMsg.requestNewString(2, 25);
+        if (!category.equals("")) {
+            cSF.getCategories().add(category);
+            daoC.saveCategory(category);
+            cSF.setCategories(daoC.askCategories());
+            cSF.getListCat().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getCategories()));
+        }
     }
 
     public void createConfig(ConfigSalonFrame cSF) throws Exception {
@@ -269,10 +284,10 @@ public class ServiceConfigSal {
         cSF.setSpacesSel(new ArrayList<>());
         cSF.setCharsSel(new ArrayList<>());
         cSF.setQuants(new ArrayList<>());
-        cSF.getListSpaces().setModel(utili.spacesListModelReturnMono(cSF.getSpaces()));
-        cSF.getListSpacesSel().setModel(utili.spacesListModelReturnMono(cSF.getSpacesSel()));
-        cSF.getListCat().setModel(utili.spacesListModelReturnMono(cSF.getCategories()));
-        cSF.getListCatSel().setModel(utili.spacesListModelReturnMono(cSF.getCategoriesSel()));
+        cSF.getListSpaces().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getSpaces()));
+        cSF.getListSpacesSel().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getSpacesSel()));
+        cSF.getListCat().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getCategories()));
+        cSF.getListCatSel().setModel(utili.spacesCategoriesListModelReturnMono(cSF.getCategoriesSel()));
         cSF.getSpinnerTip().setValue(10);
         data1Updater(cSF);
         data2Updater(cSF);
@@ -293,43 +308,47 @@ public class ServiceConfigSal {
         cSF.setQuants(cSF.getCfgGen().getTableNum());
 
         for (int i = 0; i < cSF.getSpacesSel().size(); i++) {
-            selSpace(cSF.getSpacesSel().get(i), 0, cSF);
+            String spa = cSF.getSpacesSel().get(i);
+            selSpace(spa, 0, cSF);
         }
 
         for (int i = 0; i < cSF.getCategoriesSel().size(); i++) {
-            selCategory(cSF.getCategoriesSel().get(i), 0, cSF);
+            String cat = cSF.getCategoriesSel().get(i);
+            selCategory(cat, 0, cSF);
         }
 
-        for (int i = 0; i < cSF.getQuants().size(); i++) {
-            PanelNestedSpace paN = cSF.getPanels().get(i);
-            ButtonGroup group = paN.getGroup();
-            int m = cSF.getQuants().get(i);
-            String tabs = "";
-            if (m == 12) {
-                tabs = "12 Mesas";
-            } else if (m == 24) {
-                tabs = "24 Mesas";
-            } else if (m == 35) {
-                tabs = "35 Mesas";
-            } else {
-                tabs = "48 Mesas";
-            }
+        if (cSF.getSpacesSel().size() > 0) {
+            for (int i = 0; i < cSF.getQuants().size(); i++) {
+                PanelNestedSpace paN = cSF.getPanels().get(i);
+                ButtonGroup group = paN.getGroup();
+                int m = cSF.getQuants().get(i);
+                String tabs = "";
+                if (m == 12) {
+                    tabs = "12 Mesas";
+                } else if (m == 24) {
+                    tabs = "24 Mesas";
+                } else if (m == 35) {
+                    tabs = "35 Mesas";
+                } else {
+                    tabs = "48 Mesas";
+                }
 
-            for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
-                AbstractButton button = buttons.nextElement();
-                String selection = button.getText();
-                if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
-                } else if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
-                } else if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
-                } else if (selection.equals(tabs)) {
-                    button.setSelected(true);
-                    break;
+                for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+                    AbstractButton button = buttons.nextElement();
+                    String selection = button.getText();
+                    if (selection.equals(tabs)) {
+                        button.setSelected(true);
+                        break;
+                    } else if (selection.equals(tabs)) {
+                        button.setSelected(true);
+                        break;
+                    } else if (selection.equals(tabs)) {
+                        button.setSelected(true);
+                        break;
+                    } else if (selection.equals(tabs)) {
+                        button.setSelected(true);
+                        break;
+                    }
                 }
             }
         }

@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import salonmanager.entidades.graphics.FrameHalf;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.entidades.graphics.PanelPpal;
@@ -23,6 +24,8 @@ import salonmanager.persistencia.DAOConfig;
 import salonmanager.persistencia.DAOItemcard;
 import salonmanager.persistencia.DAOTable;
 import salonmanager.servicios.ServicioItemcard;
+import salonmanager.servicios.ServicioSalon;
+import salonmanager.servicios.ServicioTable;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -33,6 +36,8 @@ public class ItemcardModificacion extends FrameHalf {
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     ServicioItemcard si = new ServicioItemcard();
+    ServicioTable st = new ServicioTable();
+    ServicioSalon ss = new ServicioSalon();
     DAOItemcard daoIC = new DAOItemcard();
     DAOTable daoT = new DAOTable();
     DAOConfig daoC = new DAOConfig();
@@ -74,7 +79,7 @@ public class ItemcardModificacion extends FrameHalf {
         JLabel labelTit = utiliGraf.labelTitleBacker1W("MODIFICAR ITEMS DEL MENÚ");
         labelTit.setBounds(anchoUnit * 3, altoUnit * 3, anchoUnit * 40, altoUnit * 4);
         panelPpal.add(labelTit);
-        
+
         JPanel panelLogo = utiliGraf.panelLogoBacker2(this.getWidth());
         panelPpal.add(panelLogo);
 
@@ -219,8 +224,18 @@ public class ItemcardModificacion extends FrameHalf {
             if (confirm) {
                 if (manager.getSalon() != null) {
                     boolean confirm2 = utiliMsg.optionConfirmarUpdateActiveTabs();
+                    ArrayList<String> modTabsNew = new ArrayList<>();
+                    daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
+
                     if (confirm2) {
-                        ArrayList<String> modTabsNew = new ArrayList<>();
+                        for (int i = 0; i < tabIdsIc.size(); i++) {
+                            Table tab = st.getCompleteTableById(tabIdsIc.get(i));
+                            double price = ss.countBill(tab, manager.getSalon(), true);
+                            tab.setTotal(price);
+                            daoT.updateTableTotal(tab);
+                        }
+                    } else {
+                        modTabsNew = new ArrayList<>();
                         for (int i = 0; i < tabIdsIc.size(); i++) {
                             modTabsNew.add(tabIdsIc.get(i));
                             modTabsNew.add(itemAux.getId() + "");
@@ -231,13 +246,21 @@ public class ItemcardModificacion extends FrameHalf {
                             modTabIds.add(modTabsNew.get(i));
                         }
                         daoC.updateCfgActModTabs(modTabIds);
-                        daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
                         utiliMsg.successUpdatePriceItemActive(frame);
 
                     }
                     manager.getSalon().dispose();
                     manager.setSalon(null);
+
                 } else {
+                    if (tabIdsIc.size() > 0) {
+                        for (int i = 0; i < tabIdsIc.size(); i++) {
+                            Table tab = st.getCompleteTableById(tabIdsIc.get(i));
+                            double price = ss.countBill(tab, manager.getSalon(), true);
+                            tab.setTotal(price);
+                            daoT.updateTableTotal(tab);
+                        }
+                    }
                     daoIC.modificarItem(itemAux.getId(), name, category, description, cost, prices, stock, tipAlta);
                 }
             }
@@ -246,7 +269,6 @@ public class ItemcardModificacion extends FrameHalf {
         }
     }
 
-    
     private void resetItemcard() throws Exception {
         itemsCardDB = daoIC.listarItemsCard(true);
         name = "";
@@ -266,7 +288,6 @@ public class ItemcardModificacion extends FrameHalf {
         checkTip.setSelected(false);
     }
 
-    
     private void itemSetter() {
         fieldName.setText(itemAux.getName());
         int index = 0;

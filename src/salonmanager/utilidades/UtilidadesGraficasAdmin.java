@@ -18,6 +18,7 @@ import salonmanager.ConfigItemList;
 import salonmanager.ConfigSalonFrame;
 import salonmanager.ConsumerTemplate;
 import salonmanager.DeliveryData;
+import salonmanager.RegisterListViewer;
 import salonmanager.TemplateUser;
 import salonmanager.entidades.graphics.JButtonMetalBlu;
 import salonmanager.persistencia.DAOConfig;
@@ -251,7 +252,6 @@ public class UtilidadesGraficasAdmin {
         return panelWs;
     }
 
-    
     public JPanel panelClientsBacker(Admin admin) {
         JPanel panelClient = new JPanel();
         panelClient.setLayout(null);
@@ -318,7 +318,7 @@ public class UtilidadesGraficasAdmin {
 
     public JPanel panelItemsBacker(Admin adm) {
         JPanel panelItems = panelCreator("Administrar Items", 59, 15);
-        JButtonMetalBlu butCfgItems = utiliGraf.button1("Modificar Lista", anchoUnit * 3, altoUnit * 6, anchoUnit * 17);
+        JButtonMetalBlu butCfgItems = utiliGraf.button2("Modificar Lista", anchoUnit * 3, altoUnit * 7, anchoUnit * 17);
         butCfgItems.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -330,13 +330,12 @@ public class UtilidadesGraficasAdmin {
             }
         });
         panelItems.add(butCfgItems);
-
         return panelItems;
     }
 
     public JPanel panelConfigBacker(Admin adm) {
         JPanel panelConfig = panelCreator("Administrar Configuración", 76, 15);
-        JButtonMetalBlu butCfgSalon = utiliGraf.button1("Configurar salón", anchoUnit * 3, altoUnit * 6, anchoUnit * 17);
+        JButtonMetalBlu butCfgSalon = utiliGraf.button2("Configurar salón", anchoUnit * 3, altoUnit * 5, anchoUnit * 17);
         butCfgSalon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -357,6 +356,24 @@ public class UtilidadesGraficasAdmin {
             }
         });
         panelConfig.add(butCfgSalon);
+
+        JButtonMetalBlu butRgos = utiliGraf.button2("Ver Registros", anchoUnit * 3, altoUnit * 10, anchoUnit * 17);
+        butRgos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    if (adm.getUser().getRol().equals("ADMIN")) {
+                        new RegisterListViewer();
+                    } else {
+                        utiliMsg.errorAccessDenied();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//                }
+            }
+        });
+        panelConfig.add(butRgos);
 
         return panelConfig;
     }
@@ -396,13 +413,13 @@ public class UtilidadesGraficasAdmin {
         adm.getComboWs().setModel(utili.categoryComboModelReturn(adm.getDefer2Ws()));
         adm.getComboWs().setSelectedItem("");
     }
-    
+
     public void comboUpdater(Admin adm, int i) throws Exception {
         if (i == 1) {
             adm.setConsumers(daoDC.listarDeliveryClientByActive(true));
             adm.getComboClients().setModel(utili.consumer2ComboModelReturnWNull(adm.getConsumers()));
             adm.getComboClients().setSelectedItem("");
             adm.getLabelConsumerMod().setText("");
-        }        
+        }
     }
 }

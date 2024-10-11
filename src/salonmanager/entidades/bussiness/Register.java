@@ -1,69 +1,61 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package salonmanager.entidades.bussiness;
 
-import salonmanager.utilidades.Utilidades;
-import java.awt.Image;
 import java.sql.Timestamp;
-import java.util.Date;
 
-/**
- *
- * @author Gonzalo
- */
 public class Register {
 
     int id;
     Timestamp ejecution;
-    String user;
-    String userModify;
+    String userId;
+    String objectKind;
+    String objectId;
     String operation;
-    String object;
-    String modification;
 
     public Register() {
     }
 
-    //Completo consulta
-    public Register(int id, Timestamp ejecution, String user, String userModify, String operation, String object, String modification) {
+    public Register(Timestamp ejecution, String userId, String objectKind, String objectId, int opKind, String modification) {
+        String operation = "";
+        if (opKind == 1) {
+            operation = "CREACION";
+        } else if (opKind == 2) {
+            operation = "MODIFICACION";
+        } else if (opKind == 3) {
+            operation = "CONSULTA";
+        } else if (opKind == 4) {
+            operation = "ALTA";
+        } else if (opKind == 5) {
+            operation = "BAJA";
+        }
+        operation += " - " + modification;
+        this.ejecution = ejecution;
+        this.userId = userId;
+        this.objectKind = objectKind;
+        this.objectId = objectId;
+        this.operation = operation;
+    }
+
+    
+    public Register(int id, Timestamp ejecution, String userId, String objectKind, String objectId, int opKind, String modification) {
+        String operation = "";
+        if (opKind == 1) {
+            operation = "CREACIÓN";
+        } else if (opKind == 2) {
+            operation = "MODIFICACIÖN";
+        } else if (opKind == 3) {
+            operation = "CONSULTA";
+        } else if (opKind == 4) {
+            operation = "ALTA";
+        } else if (opKind == 5) {
+            operation = "BAJA";
+        }
+        operation += " - " + modification;
         this.id = id;
         this.ejecution = ejecution;
-        this.user = user;
-        this.userModify = userModify;
+        this.userId = userId;
+        this.objectKind = objectKind;
+        this.objectId = objectId;
         this.operation = operation;
-        this.object = object;
-        this.modification = modification;
-    }
-
-//    //Dar inicio en los daos
-//    public Register(String userModify, String operation, String object, String modification) {
-//        this.ejecution = new Timestamp(new Date().getTime());
-//        this.userModify = userModify;
-//        this.userModify = userModify;
-//        this.operation = operation;
-//        this.object = object;
-//        this.modification = modification;
-//    }
-    public Register(String user, String operation, String object, String modification) {
-        this.ejecution = new Timestamp(new Date().getTime());;
-        this.user = user;
-        this.userModify = "";
-        this.operation = operation;
-        this.object = object;
-        this.modification = modification;
-    }
-
-    //Agregar User en DAORegister
-    public Register(String user, String userModify, String operation, String object, String modification) {
-        this.ejecution = new Timestamp(new Date().getTime());;
-        this.user = user;
-        this.userModify = userModify;
-        this.operation = operation;
-        this.object = object;
-        this.modification = modification;
     }
 
     public int getId() {
@@ -82,20 +74,28 @@ public class Register {
         this.ejecution = ejecution;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getUserModify() {
-        return userModify;
+    public String getObjectKind() {
+        return objectKind;
     }
 
-    public void setUserModify(String userModify) {
-        this.userModify = userModify;
+    public void setObjectKind(String objectKind) {
+        this.objectKind = objectKind;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public String getOperation() {
@@ -105,21 +105,4 @@ public class Register {
     public void setOperation(String operation) {
         this.operation = operation;
     }
-
-    public String getObject() {
-        return object;
-    }
-
-    public void setObject(String object) {
-        this.object = object;
-    }
-
-    public String getModification() {
-        return modification;
-    }
-
-    public void setModification(String modification) {
-        this.modification = modification;
-    }
-
 }

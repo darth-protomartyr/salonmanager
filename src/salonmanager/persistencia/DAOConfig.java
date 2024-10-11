@@ -1,8 +1,11 @@
 package salonmanager.persistencia;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import salonmanager.SalonManager;
+import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.config.ConfigGeneral;
 import salonmanager.entidades.config.ConfigActual;
 import salonmanager.utilidades.Utilidades;
@@ -10,8 +13,10 @@ import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DAOConfig extends DAO {
 
+    
     Utilidades utili = new Utilidades();
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    DAORegister daoReg = new DAORegister();
 
     public void saveConfigGeneral(int totalTab, ArrayList<Integer> numTab, ArrayList<String> strPan, ArrayList<String> chartPan, ArrayList<String> strCat, int tip, boolean cfgActive, boolean init) throws Exception {
         try {
@@ -33,6 +38,10 @@ public class DAOConfig extends DAO {
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "ConfigGeneral", "", 1, "");
+            daoReg.saveRegister(rgo);
+            
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -92,7 +101,7 @@ public class DAOConfig extends DAO {
                 cfnAct.setOpenIdWs(SalonManager.decryptInt(resultado.getString(2)));
                 String defers = resultado.getString(3);
                 ArrayList<String> deferTabs = new ArrayList<>();
-                if (defers != null) {
+                if (!defers.equals("")) {
                     deferTabs = utili.strToArrayStrAlt(SalonManager.decrypt(defers));
                 }
                 cfnAct.setArrayDeferWs(deferTabs);
@@ -123,6 +132,8 @@ public class DAOConfig extends DAO {
             String sql1 = "UPDATE config_actual SET config_open_ws = '" + bool + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -237,6 +248,9 @@ public class DAOConfig extends DAO {
                     + "VALUES('" + SalonManager.encrypt(space) + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "ConfigGeneral", "Crear Espacio", 1, "");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -252,6 +266,9 @@ public class DAOConfig extends DAO {
                     + "VALUES('" + SalonManager.encrypt(category) + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "ConfigGeneral", "Crear Categoría", 1, "");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -328,6 +345,9 @@ public class DAOConfig extends DAO {
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "ConfigActual", "", 1, "");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();

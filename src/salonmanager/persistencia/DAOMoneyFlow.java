@@ -1,16 +1,20 @@
 package salonmanager.persistencia;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.MoneyFlow;
+import salonmanager.entidades.bussiness.Register;
 import salonmanager.utilidades.UtilidadesMensajes;
 
 public class DAOMoneyFlow extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-
+    DAORegister daoReg = new DAORegister();
+    
     public void saveMoneyFlow(MoneyFlow cf) throws Exception {
         try {
             String sql1 = "INSERT INTO money_flows( money_flow_id, money_flow_kind, money_flow_m_k, money_flow_amount, money_flow_comment, money_flow_date, money_flow_ws_id, money_flow_active)"
@@ -18,6 +22,14 @@ public class DAOMoneyFlow extends DAO {
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
             utiliMsg.successMoneyFlow(null);
+            
+            String inOut = "Salida: ";
+            if (cf.isMoneyFwKind()) {
+                inOut = "Ingreso: ";
+            }
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Flujo de Caja", "", 1, inOut + cf.getMoneyFwAmount() + "");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -94,19 +106,7 @@ public class DAOMoneyFlow extends DAO {
             }
             
             max =max + max2;
-            return max;
-            
-            
-            
-            
-//            int id = 0;
-//            String sql = "SELECT COUNT(*) AS cantidad_filas FROM money_flows;";
-//            System.out.println(sql);
-//            consultarBase(sql);
-//            while (resultado.next()) {
-//                id = resultado.getInt(1) + 1;
-//            }
-//            return id;
+            return max;            
         } catch (Exception e) {
             throw e;
         }  finally {

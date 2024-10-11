@@ -2,11 +2,15 @@ package salonmanager.persistencia;
 
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Delivery;
+import salonmanager.entidades.bussiness.Register;
 
 public class DAODelivery extends DAO {
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
+    DAORegister daoReg = new DAORegister();
     public void saveDelivery(Delivery deli) throws Exception {
         try {
             String deliId = deli.getId();
@@ -33,6 +37,8 @@ public class DAODelivery extends DAO {
             }
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Delivery", "", 1, "");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -64,6 +70,8 @@ public class DAODelivery extends DAO {
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Delivery", "", 2, "");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();

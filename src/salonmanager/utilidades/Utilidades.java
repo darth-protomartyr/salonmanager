@@ -76,7 +76,7 @@ public class Utilidades {
         }
         return user;
     }
-    
+
     public DeliveryClient consumerSelReturn(String cmr, ArrayList<DeliveryClient> deliDB) {
         DeliveryClient dc = new DeliveryClient();
         for (DeliveryClient d : deliDB) {
@@ -115,19 +115,6 @@ public class Utilidades {
             st = str;
         }
         return st;
-    }
-
-    public <T> String conversorCadena(ArrayList<T> lista) {
-        String listaStr = "";
-        if (lista.size() > 0) {
-            for (int i = 0; i < lista.size(); i++) {
-                String str = lista.get(i).toString();
-                listaStr += str + "-";
-            }
-        } else {
-            listaStr = "";
-        }
-        return listaStr.trim();
     }
 
     public String stringPlain(String st) {
@@ -343,7 +330,20 @@ public class Utilidades {
         modeloCombo.addElement("");
         return modeloCombo;
     }
-    
+
+    public ComboBoxModel objectKindComboModelReturnWNull() {
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
+        modeloCombo.addElement("Itemcard");
+        modeloCombo.addElement("Cliente");
+        modeloCombo.addElement("Usuario");
+        modeloCombo.addElement("Configuración");
+        modeloCombo.addElement("Turno");
+        modeloCombo.addElement("Orden");
+        modeloCombo.addElement("Todo");
+        modeloCombo.addElement("");
+        return modeloCombo;
+    }
+
     public ComboBoxModel consumer2ComboModelReturnWNull(ArrayList<DeliveryClient> cmrs) {
         DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<String>();
         for (DeliveryClient dc : cmrs) {
@@ -411,125 +411,6 @@ public class Utilidades {
         return ic;
     }
 
-    public String booleanStringBack(boolean activeTip) {
-        String yn = "NO";
-        if (activeTip) {
-            yn = "SÍ";
-        }
-        return yn;
-    }
-
-    public String arrayIntToStr(ArrayList<Integer> numTab) {
-        String str = "";
-        for (Integer i : numTab) {
-            str += i + "-";
-        }
-        return str;
-    }
-
-    public String emptyToStr(String stEmtSp) {
-        StringBuilder str = new StringBuilder();
-        // Recorrer cada caracter de la cadena
-        for (int i = 0; i < stEmtSp.length(); i++) {
-            char caracter = stEmtSp.charAt(i);
-
-            // Reemplazar espacio por el caracter especificado
-            if (caracter == ' ') {
-                str.append("_");
-            } else {
-                str.append(caracter);
-            }
-        }
-
-        return str.toString();
-    }
-
-    public ArrayList<Integer> strToArrayInt(String str) {
-        ArrayList<Integer> arrayInt = new ArrayList<>();
-        String strAux = "";
-        for (int i = 0; i < str.length(); i++) {
-            String s = str.substring(i, i + 1);
-            if (s.equals("-")) {
-                int num = parseInt(strAux);
-                arrayInt.add(num);
-                strAux = "";
-            } else {
-                strAux += s;
-            }
-        }
-        return arrayInt;
-    }
-
-    public ArrayList<Double> strToArrayDou(String str) {
-        ArrayList<Double> arrayDou = new ArrayList<>();
-        String strAux = "";
-        for (int i = 0; i < str.length(); i++) {
-            String s = str.substring(i, i + 1);
-            if (s.equals("-")) {
-                double num = parseDouble(strAux);
-                arrayDou.add(num);
-                strAux = "";
-            } else {
-                strAux += s;
-            }
-        }
-        return arrayDou;
-    }
-
-    public String arrayDouToStr(ArrayList<Double> numTab) {
-        String str = "";
-        for (Double i : numTab) {
-            str += i + "-";
-        }
-        return str;
-    }
-
-    public String arrayStrToStr(ArrayList<String> strPane) {
-        String str = "";
-        for (String s : strPane) {
-            str += s + "-";
-        }
-        return str;
-    }
-
-    public ArrayList<String> strToArrayStr(String str) {
-        ArrayList<String> arrayStr = new ArrayList<>();
-        String strAux = "";
-        for (int i = 0; i < str.length(); i++) {
-            String s = str.substring(i, i + 1);
-            if (s.equals("-")) {
-                arrayStr.add(strAux);
-                strAux = "";
-            } else {
-                strAux += s;
-            }
-        }
-        return arrayStr;
-    }
-
-    public String arrayStrToStrAlt(ArrayList<String> strPane) {
-        String str = "";
-        for (String s : strPane) {
-            str += s + "<";
-        }
-        return str;
-    }
-
-    public ArrayList<String> strToArrayStrAlt(String str) {
-        ArrayList<String> arrayStr = new ArrayList<>();
-        String strAux = "";
-        for (int i = 0; i < str.length(); i++) {
-            String s = str.substring(i, i + 1);
-            if (s.equals("<")) {
-                arrayStr.add(strAux);
-                strAux = "";
-            } else {
-                strAux += s;
-            }
-        }
-        return arrayStr;
-    }
-
     public Itemcard ItemcardBacker(String Card, ArrayList<Itemcard> itemsDB) {
         Itemcard ic = null;
         for (Itemcard i : itemsDB) {
@@ -571,7 +452,7 @@ public class Utilidades {
         return modeloLista;
     }
 
-    public ListModel spacesListModelReturnMono(ArrayList<String> listMayor) {
+    public ListModel spacesCategoriesListModelReturnMono(ArrayList<String> listMayor) {
         DefaultListModel<String> modeloLista = new DefaultListModel<String>();
         for (String st : listMayor) {
             modeloLista.addElement(st);
@@ -999,15 +880,14 @@ public class Utilidades {
         return pr;
     }
 
-    public double priceMod(Itemcard ic, Salon sal) {
-        ConfigActual cfgAct = sal.getCfgAct();
+    public double priceMod(Itemcard ic, Table tabAct, ConfigActual cfgAct) {
         ArrayList<String> tabsMod = cfgAct.getArrayUnModTabs();
         double price = ic.getPrice().get(0);
         if (tabsMod.size() > 0) {
             for (int i = 0; i < tabsMod.size() / 2; i++) {
                 int index = i * 2;
                 int icId = parseInt(tabsMod.get(index + 1));
-                if (sal.getTableAux().getId().equals(tabsMod.get(index)) && ic.getId() == icId) {
+                if (tabAct.getId().equals(tabsMod.get(index)) && ic.getId() == icId) {
                     price = ic.getPrice().get(1);
                 }
             }
@@ -1158,5 +1038,127 @@ public class Utilidades {
         String i = words[2];
         id = (int) parseInt(i);
         return id;
+    }
+
+    //CONVERTERS
+    //CONVERTERS    
+    //CONVERTERS
+    //CONVERTERS
+    public String booleanStringBack(boolean activeTip) {
+        String yn = "NO";
+        if (activeTip) {
+            yn = "SÍ";
+        }
+        return yn;
+    }
+
+    public String emptyToStr(String stEmtSp) {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < stEmtSp.length(); i++) {
+            char caracter = stEmtSp.charAt(i);
+            if (caracter == ' ') {
+                str.append("_");
+            } else {
+                str.append(caracter);
+            }
+        }
+        return str.toString();
+    }
+
+    public String arrayIntToStr(ArrayList<Integer> numTab) {
+        String str = "";
+        for (Integer i : numTab) {
+            str += i + "-";
+        }
+        return str.substring(0, str.length() - 1);
+    }
+
+    public ArrayList<Integer> strToArrayInt(String str) {
+        ArrayList<Integer> arrayInt = new ArrayList<>();
+        if (!str.equals("")) {
+            String[] ints = str.split("-");
+            for (int i = 0; i < ints.length; i++) {
+                String inte = ints[i];
+                int num = parseInt(inte);
+                arrayInt.add(num);
+            }
+        }
+        return arrayInt;
+    }
+
+    public String arrayDouToStr(ArrayList<Double> numTab) {
+        String str = "";
+        for (Double i : numTab) {
+            str += i + "-";
+        }
+        return str.substring(0, str.length() - 1);
+    }
+
+    public ArrayList<Double> strToArrayDou(String str) {
+        ArrayList<Double> arrayDou = new ArrayList<>();
+        if (!str.equals("")) {
+
+            String[] dous = str.split("-");
+
+            for (int i = 0; i < dous.length; i++) {
+                String dou = dous[i];
+                double num = parseDouble(dou);
+                arrayDou.add(num);
+            }
+        }
+        return arrayDou;
+    }
+
+    public String arrayStrToStr(ArrayList<String> strPane) {
+        String str = "";
+        for (String s : strPane) {
+            str += s + "-";
+        }
+        return str.substring(0, str.length() - 1);
+    }
+
+    public ArrayList<String> strToArrayStr(String str) {
+        ArrayList<String> arrayStr = new ArrayList<>();
+        if (!str.equals("")) {
+            String[] strR = str.split("-");
+            for (int i = 0; i < strR.length; i++) {
+                String st = strR[i];
+                arrayStr.add(st);
+            }
+        }
+        return arrayStr;
+    }
+
+    public String arrayStrToStrAlt(ArrayList<String> strPane) {
+        String str = "";
+        for (String s : strPane) {
+            str += s + "<";
+        }
+        return str.substring(0, str.length() - 1);
+    }
+
+    public ArrayList<String> strToArrayStrAlt(String str) {
+        ArrayList<String> arrayStr = new ArrayList<>();
+        if (!str.equals("")) {
+            String[] strR = str.split("<");
+            for (int i = 0; i < strR.length; i++) {
+                String st = strR[i];
+                arrayStr.add(st);
+            }
+        }
+        return arrayStr;
+    }
+
+    public <T> String conversorCadena(ArrayList<T> lista) {
+        String listaStr = "";
+        if (lista.size() > 0) {
+            for (int i = 0; i < lista.size(); i++) {
+                String str = lista.get(i).toString();
+                listaStr += str + "-";
+            }
+        } else {
+            listaStr = "";
+        }
+        return listaStr.trim();
     }
 }

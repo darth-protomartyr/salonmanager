@@ -3,8 +3,11 @@ package salonmanager.persistencia;
 import salonmanager.entidades.bussiness.User;
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import salonmanager.SalonManager;
+import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.entidades.bussiness.Workshift;
 import salonmanager.utilidades.Utilidades;
@@ -13,6 +16,8 @@ public class DAOUser extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
+    DAORegister daoReg = new DAORegister();
+
     public void saveUser(User user) throws Exception {
         try {
             String name = SalonManager.encrypt(user.getName());
@@ -35,13 +40,15 @@ public class DAOUser extends DAO {
                     + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Usuario", "", 1, name + " "+ apellido);
+            daoReg.saveRegister(rgo);
+
             if (rol.equals("NULL")) {
                 utiliMsg.successUsuarioRolNull(null);
             } else {
                 utiliMsg.successUsuarioRolFull(null);
             }
 
-            
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -71,6 +78,9 @@ public class DAOUser extends DAO {
                     + "VALUES('" + id + "', '" + name + "', '" + apellido + "', '" + mail + "', '" + rol + "', '" + routeImage + "', '" + nameImage + "', '" + pass + "', '" + phone + "', '" + activeUser + "');";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Usuario", "", 1, name +" "+ apellido);
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -119,7 +129,7 @@ public class DAOUser extends DAO {
             return ids;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
 
@@ -152,7 +162,7 @@ public class DAOUser extends DAO {
             return user;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
@@ -190,7 +200,7 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        }  finally {
+        } finally {
             desconectarBase();
         }
         return users;
@@ -228,7 +238,7 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        }  finally {
+        } finally {
             desconectarBase();
         }
 
@@ -242,6 +252,8 @@ public class DAOUser extends DAO {
                     + "' WHERE user_id = '" + SalonManager.encrypt(id) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Usuario", id, 2, "Estado: " + activeUser);
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -299,7 +311,7 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        }  finally {
+        } finally {
             if (fin) {
                 desconectarBase();
             }
@@ -346,7 +358,7 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        }  finally {
+        } finally {
             desconectarBase();
         }
         return waiter;
@@ -379,7 +391,7 @@ public class DAOUser extends DAO {
             return user;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             if (fin) {
                 desconectarBase();
             }
@@ -403,13 +415,12 @@ public class DAOUser extends DAO {
             return nameC;
         } catch (Exception e) {
             throw e;
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
 
     public void updateUser(User userAux, String id) throws Exception {
-
         String name = SalonManager.encrypt(userAux.getName());
         String lastName = SalonManager.encrypt(userAux.getLastName());
         String mail = SalonManager.encrypt(userAux.getMail());
@@ -429,13 +440,16 @@ public class DAOUser extends DAO {
                     + "' WHERE user_id = '" + id + "';";
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Usuario", id, 2, "");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
             } else {
                 e.printStackTrace();
             }
-        }  finally {
+        } finally {
             desconectarBase();
         }
     }
@@ -457,7 +471,7 @@ public class DAOUser extends DAO {
             } else {
                 e.printStackTrace();
             }
-        }  finally {
+        } finally {
             desconectarBase();
         }
         return cashier;
@@ -612,7 +626,7 @@ public class DAOUser extends DAO {
             }
         }
     }
-    
+
     public int getNumUsers(String rol) throws Exception {
         try {
             int id = 0;

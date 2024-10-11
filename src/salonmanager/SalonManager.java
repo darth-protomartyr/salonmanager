@@ -67,7 +67,7 @@ public class SalonManager {
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, ALGORITHM);
     }
 
-    /*
+//    /*
     public static String encrypt(String data) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, keySpec);
@@ -149,77 +149,30 @@ public class SalonManager {
         return bool;
     }
 
-    public static String encryptTs(Timestamp ts) throws Exception {
-        String st = encrypt("NULL");
-        if (ts != null) {
-            st = encrypt(ts.toString());
-        }
-        return st;
-    }
-
-    public static Timestamp decryptTs(String encSt) throws Exception {
-        Timestamp ts = null;
-        if (!encSt.equals(encrypt("NULL"))) {
-            encSt = decrypt(encSt);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            try {
-                Date parsedDate = dateFormat.parse(encSt);
-                ts = new Timestamp(parsedDate.getTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return ts;
-    }
-     */
-    public static String encrypt(String data) throws Exception {
-        return data;
-    }
-
-    public static String decrypt(String data) throws Exception {
-        return data;
-    }
-
-    public static String encryptDouble(double number) {
-        String numberStr = Double.toString(number);
-        return numberStr;
-    }
-
-    public static double decryptDouble(String data) {
-        return Double.parseDouble(data);
-    }
-
-    public static String encryptInt(int number) {
-        String numberStr = Integer.toString(number);
-        return numberStr;
-    }
-
-    public static int decryptInt(String data) {
-        return Integer.parseInt(data);
-    }
-
-    public static String encryptBoolean(boolean value) throws Exception {
-        String bool;
-        if (value) {
-            bool = "true";
-        } else {
-            bool = "false";
-        }
-        return bool;
-    }
-
-    public static boolean decryptBoolean(String boo) throws Exception {
-        Boolean bool = false;
-        if (boo.equals("true")) {
-            bool = true;
-        }
-
-        if (boo.equals("false")) {
-            bool = false;
-        }
-        return bool;
-    }
-
+//    public static String encryptTs(Timestamp ts) throws Exception {
+//        String st = encrypt("NULL");
+//        if (ts != null) {
+//            st = encrypt(ts.toString());
+//        }
+//        return st;
+//    }
+//
+//    public static Timestamp decryptTs(String encSt) throws Exception {
+//        Timestamp ts = null;
+//        if (!encSt.equals(encrypt("NULL"))) {
+//            encSt = decrypt(encSt);
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+//            try {
+//                Date parsedDate = dateFormat.parse(encSt);
+//                ts = new Timestamp(parsedDate.getTime());
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return ts;
+//    }
+    
+    
     public static String encryptTs(Timestamp ts) throws Exception {
         String st = encrypt("NULL");
         if (ts != null) {
@@ -242,6 +195,8 @@ public class SalonManager {
         return st;
     }
 
+    
+    
     public static Timestamp decryptTs(String tsT) throws Exception {
         Timestamp ts = null;
 
@@ -272,29 +227,57 @@ public class SalonManager {
 
         return ts;
     }
-
-//    public static Timestamp decryptTs(String tsT) throws Exception {
-//        Timestamp ts = null;
-//        if (!tsT.equals(encrypt("NULL"))) {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-//            try {
-//                String[] parts = tsT.split("\\.");
-//                if (parts.length == 2) {
-//                    // Si hay menos de 3 dígitos en los milisegundos, agregar ceros
-//                    while (parts[1].length() < 3) {
-//                        parts[1] += "0";
-//                    }
-//                    tsT = parts[0] + "." + parts[1];
-//                }
-//
-//                Date parsedDate = dateFormat.parse(tsT);
-//                ts = new Timestamp(parsedDate.getTime());
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return ts;
+    
+//    public static String encrypt(String data) throws Exception {
+//        return data;
 //    }
+//
+//    public static String decrypt(String data) throws Exception {
+//        return data;
+//    }
+//
+//    public static String encryptDouble(double number) {
+//        String numberStr = Double.toString(number);
+//        return numberStr;
+//    }
+//
+//    public static double decryptDouble(String data) {
+//        return Double.parseDouble(data);
+//    }
+//
+//    public static String encryptInt(int number) {
+//        String numberStr = Integer.toString(number);
+//        return numberStr;
+//    }
+//
+//    public static int decryptInt(String data) {
+//        return Integer.parseInt(data);
+//    }
+//
+//    public static String encryptBoolean(boolean value) throws Exception {
+//        String bool;
+//        if (value) {
+//            bool = "true";
+//        } else {
+//            bool = "false";
+//        }
+//        return bool;
+//    }
+//
+//    public static boolean decryptBoolean(String boo) throws Exception {
+//        Boolean bool = false;
+//        if (boo.equals("true")) {
+//            bool = true;
+//        }
+//
+//        if (boo.equals("false")) {
+//            bool = false;
+//        }
+//        return bool;
+//    }
+
+
+
     public void salir() throws Exception {
         setPassIn("");
         setUserIn(null);
@@ -352,6 +335,10 @@ public class SalonManager {
         for (JFrame of : framesOpen) {
             of.dispose();
         }
+    }
+
+    public static String getUserId() {
+        return userIn.getId();
     }
 
 }

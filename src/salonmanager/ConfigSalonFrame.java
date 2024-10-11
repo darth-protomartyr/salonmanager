@@ -20,7 +20,6 @@ import salonmanager.entidades.graphics.PanelNestedSpace;
 import salonmanager.entidades.graphics.PanelPpal;
 import salonmanager.persistencia.DAOConfig;
 import salonmanager.servicios.ServiceConfigSal;
-import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesGraficas;
 import salonmanager.utilidades.UtilidadesGraficasCfgSal;
 import salonmanager.utilidades.UtilidadesMensajes;

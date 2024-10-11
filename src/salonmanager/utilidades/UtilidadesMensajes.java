@@ -536,70 +536,70 @@ public class UtilidadesMensajes extends JFrame {
     //Mensaje de optativos
     //Mensaje de optativos
     public boolean optionConfirmRestart() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presiona ACEPTAR se realizará la acción, el programa se cerrará y deberá reiniciarlo");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presiona ACEPTAR se realizará la acción, el programa se cerrará y deberá reiniciarlo", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean errorPriceCost() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Error: el precio de venta es inferior o igual al costo. Si presiona ACEPTAR, la operación se realizará de todos modos");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Error: el precio de venta es inferior o igual al costo. Si presiona ACEPTAR, la operación se realizará de todos modos", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarConfigSalon() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si está seguro de que quiere configurar el salón, presione ACEPTAR");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si está seguro de que quiere configurar el salón, presione ACEPTAR", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarInicioTurno(String name, String lastName) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea iniciar un turno con el usuario " + name + " " + lastName + ", presione ACEPTAR");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea iniciar un turno con el usuario " + name + " " + lastName + ", presione ACEPTAR", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmRealWsMount() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si NO desea cerrar el turno");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si NO desea cerrar el turno", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCierreTurno(String name, String lastName) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presionea ACEPTAR, el turno se cerrará");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si presionea ACEPTAR, el turno se cerrará", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCambioTurno(User user) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar el turno a pesar de que aún hay órdenes abiertas, presione ACEPTAR");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea cerrar el turno a pesar de que aún hay órdenes abiertas, presione ACEPTAR", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCierreVentana() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si desea cerrar la ventana");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si desea cerrar la ventana", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCierrePrograma() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si desea cerrar el programa?");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si desea cerrar el programa?", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmErrorPriceNull() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si está seguro de que quiere que el precio de venta sea 0 (cero)");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si está seguro de que quiere que el precio de venta sea 0 (cero)", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -614,7 +614,7 @@ public class UtilidadesMensajes extends JFrame {
         } else {
             mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + realMount + " y hay un excedente de $" + error;
         }
-        CustomDialogConfirm cdc = new CustomDialogConfirm(mess);
+        CustomDialogConfirm cdc = new CustomDialogConfirm(mess, 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -628,7 +628,7 @@ public class UtilidadesMensajes extends JFrame {
             double missing = error - sum; 
             mess = "Presione ACEPTAR para confirmar que el monto ingresado es de $" + sum + " y hay un excedente de $" + missing;
         }
-        CustomDialogConfirm cdc = new CustomDialogConfirm(mess);
+        CustomDialogConfirm cdc = new CustomDialogConfirm(mess, 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
@@ -636,112 +636,112 @@ public class UtilidadesMensajes extends JFrame {
     
 
     public boolean optionConfirmarMontoError(double in, double out) {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para cónfirmar que el monto ingresado es de $" + in + " y el faltante  es de $" + out);
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para cónfirmar que el monto ingresado es de $" + in + " y el faltante  es de $" + out, 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCierre() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar el cierre de la órden, recuerde que no podrá agregar obsequios ni descuentos");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar el cierre de la órden, recuerde que no podrá agregar obsequios ni descuentos", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCambioCat() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que quiere cambiar la categoría de los Items seleccionados");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que quiere cambiar la categoría de los Items seleccionados", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCambioPrice() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que quiere cambiar el precio de los Items seleccionados");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que quiere cambiar el precio de los Items seleccionados", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionWorkshiftEmpty() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("No se registran movimientos. Presione ACEPTAR para confirmar que desea descartarlo y cerrar el turno");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("No se registran movimientos. Presione ACEPTAR para confirmar que desea descartarlo y cerrar el turno", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarConfiguracion() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si está seguro de que desea configurar el salón");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR si está seguro de que desea configurar el salón", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarCambioPrAct() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay mesas abiertas que ordenaron el item modificado, presione ACEPTAR si desea continuar la operación");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Hay mesas abiertas que ordenaron el item modificado, presione ACEPTAR si desea continuar la operación", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmLowerPrice() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que desea ingresar un precio final inferior o igual al costo");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que desea ingresar un precio final inferior o igual al costo", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmarUpdateActiveTabs() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea que el precio modificado NO se actualice en las mesas que ya lo ordenaron, presione ACEPTAR");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si desea que el precio modificado se ACTUALICE en las mesas que ya lo ordenaron, presione ACTUALIZAR", 2);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmErrorInsuf() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("El monto es insuficiente y no podrá ser corregido luego. Presione ACEPTAR para confirmar la operación");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El monto es insuficiente y no podrá ser corregido luego. Presione ACEPTAR para confirmar la operación", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
 
     public boolean optionConfirmErrorSuf() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que el monto cubre el error");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Presione ACEPTAR para confirmar que el monto cubre el error",1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;
     }
     
     public boolean optionConfirmarNuevoTurno() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si NO posee el dinero ni la información del turno anterior, presione ACEPTAR para abrir un nuevo turno");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si NO posee el dinero ni la información del turno anterior, presione ACEPTAR para abrir un nuevo turno", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;        
     }
 
     public boolean optionConfirmarOpenTabsOldWs() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno anterior posee mesas abiertas, presione ACEPTAR para resolver dichas mesas y abrir turno");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("El turno anterior posee mesas abiertas, presione ACEPTAR para resolver dichas mesas y abrir turno", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;    
     }
 
     public boolean optionConfirmarCierreTurnoError() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si posee el dinero y la información del turno anterior, presione ACEPTAR para completar la información");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si posee el dinero y la información del turno anterior, presione ACEPTAR para completar la información", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;       
     }
 
     public boolean optionConfirmAddTables() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("Si en el turno anterior se facturaron nuevas mesas, presione ACEPTAR para optionr la información");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("Si en el turno anterior se facturaron nuevas mesas, presione ACEPTAR para optionr la información", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;  
     }
 
     public boolean optionConfirmNewTab() {
-        CustomDialogConfirm cdc = new CustomDialogConfirm("La mesa fue cargada. Si desea ingresar una nueva mesa presione ACEPTAR");
+        CustomDialogConfirm cdc = new CustomDialogConfirm("La mesa fue cargada. Si desea ingresar una nueva mesa presione ACEPTAR", 1);
         cdc.setVisible(true);
         boolean confirm = cdc.getConfirm();
         return confirm;  
@@ -781,9 +781,10 @@ public class UtilidadesMensajes extends JFrame {
             tit = "Nuevo espacio";
             question = "Ingrese el nombre de un nuevo espacio de hasta 15 caracteres";
         } else if (i == 2) {
-            tit = "Nuevo Categoría";
+            tit = "Nueva Categoría";
             question = "Ingrese el nombre de una nueva categoría de hasta 10 caracteres";
         }
+        
         CustomDialogTextInAlt cdti = new CustomDialogTextInAlt(tit, question, large);
         cdti.setVisible(true);
         st = cdti.getText();

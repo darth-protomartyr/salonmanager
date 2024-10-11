@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.Itemcard;
+import salonmanager.entidades.bussiness.Register;
 import salonmanager.entidades.bussiness.Table;
 import salonmanager.utilidades.Utilidades;
 import salonmanager.utilidades.UtilidadesMensajes;
@@ -16,6 +17,7 @@ public class DAOItemcard extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
     Utilidades utili = new Utilidades();
+    DAORegister daoReg = new DAORegister();
 
     public ArrayList<Itemcard> listarItemsCard(boolean fin) throws Exception {
         ArrayList<Itemcard> items = new ArrayList<>();
@@ -124,6 +126,9 @@ public class DAOItemcard extends DAO {
                 System.out.println(sql);
                 insertarModificarEliminar(sql);
                 utiliMsg.successItem(null);
+
+                Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Itemcard", "" +  item.getId(), 1, "");
+                daoReg.saveRegister(rgo);
             } catch (SQLException e) {
                 if (e.getErrorCode() == 1062) {
                     utiliMsg.errorCargaDB();
@@ -145,8 +150,10 @@ public class DAOItemcard extends DAO {
                     + "' WHERE item_card_id = " + SalonManager.encryptInt(id) + ";";
             System.out.println(sql);
             insertarModificarEliminar(sql);
-
             utiliMsg.successMod(null);
+
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Itemcard", "" + id, 2, name);
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorCargaDB();
@@ -187,14 +194,14 @@ public class DAOItemcard extends DAO {
                 String i = SalonManager.decrypt(resultado.getString(1));
                 ids.add(i);
             }
-            
+
             String id = ids.get(0);
-            
-            String sql2 = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) +
-                    "' WHERE item_card_order_tab_id = '" + SalonManager.encrypt(id) + 
-                    "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId()) + 
-                    "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + 
-                    "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "';";
+
+            String sql2 = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(true)
+                    + "' WHERE item_card_order_tab_id = '" + SalonManager.encrypt(id)
+                    + "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId())
+                    + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId())
+                    + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + "';";
             System.out.println(sql2);
             insertarModificarEliminar(sql2);
         } catch (Exception e) {
@@ -212,14 +219,14 @@ public class DAOItemcard extends DAO {
                 String i = SalonManager.decrypt(resultado.getString(1));
                 ids.add(i);
             }
-            
+
             String id = ids.get(0);
-            
-            String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(false) + 
-                    "' WHERE item_card_order_tab_id = '" + SalonManager.encrypt(id) + 
-                    "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId()) + 
-                    "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + 
-                    "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
+
+            String sql = "UPDATE item_card_order_tabs SET item_card_order_tab_active = '" + SalonManager.encryptBoolean(false)
+                    + "' WHERE item_card_order_tab_id = '" + SalonManager.encrypt(id)
+                    + "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId())
+                    + "' AND item_card_order_id_fkey = '" + SalonManager.encryptInt(ic.getId())
+                    + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
         } catch (Exception e) {
@@ -253,8 +260,8 @@ public class DAOItemcard extends DAO {
         ArrayList<Itemcard> items = new ArrayList<>();
         try {
             String sql = "SELECT item_card_order_id_fkey FROM item_card_order_tabs "
-                    + "WHERE table_id_fkey = '" + SalonManager.encrypt(tabId) + 
-                    "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
+                    + "WHERE table_id_fkey = '" + SalonManager.encrypt(tabId)
+                    + "' AND item_card_order_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             consultarBase(sql);
             ArrayList<Integer> idItems = new ArrayList<>();
@@ -287,12 +294,15 @@ public class DAOItemcard extends DAO {
     //Tabla Itemcard_gift_tabs-----------------------------------------------------------------------
     public void saveItemGiftTable(Itemcard ic, Table tab) throws Exception {
         try {
-            String id = idRandom();          
+            String id = idRandom();
             String sql = "INSERT INTO item_card_gift_tabs(item_card_gift_tab_id, item_card_gift_tab_active, item_card_gift_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES('" + SalonManager.encrypt(id) + "', '" + SalonManager.encryptBoolean(true) + "', '" + SalonManager.encryptInt(ic.getId()) + "', '" + SalonManager.encrypt(tab.getId()) + "');";
             sql += parcialA;
             System.out.println(sql);
             insertarModificarEliminar(sql.trim());
+
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Itemcard", ic.getId() + "", 2, "Obsequio");
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorError(null);
@@ -303,7 +313,7 @@ public class DAOItemcard extends DAO {
     }
 
     public void downActiveItemGiftTable(Itemcard ic, Table t) throws Exception {
-        try {            
+        try {
             ArrayList<String> ids = new ArrayList<>();
             String sql1 = "SELECT item_card_gift_tab_id FROM item_card_gift_tabs WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_gift_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_gift_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql1);
@@ -312,15 +322,14 @@ public class DAOItemcard extends DAO {
                 String i = SalonManager.decrypt(resultado.getString(1));
                 ids.add(i);
             }
-            
+
             String id = ids.get(0);
-            
-            
-            String sql = "UPDATE item_card_gift_tabs SET item_card_gift_tab_active = '" + SalonManager.encryptBoolean(false) + 
-                    "' WHERE item_card_order_tab_id = '" + SalonManager.encrypt(id) +
-                    "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId()) + 
-                    "' AND item_card_gift_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + 
-                    "' AND item_card_gift_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
+
+            String sql = "UPDATE item_card_gift_tabs SET item_card_gift_tab_active = '" + SalonManager.encryptBoolean(false)
+                    + "' WHERE item_card_order_tab_id = '" + SalonManager.encrypt(id)
+                    + "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId())
+                    + "' AND item_card_gift_id_fkey = '" + SalonManager.encryptInt(ic.getId())
+                    + "' AND item_card_gift_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
 
@@ -350,14 +359,14 @@ public class DAOItemcard extends DAO {
                 String i = SalonManager.decrypt(resultado.getString(1));
                 ids.add(i);
             }
-            
+
             String id = ids.get(0);
-            
-            String sql = "UPDATE item_card_gift_tabs SET item_card_gift_tab_active = '" + SalonManager.encryptBoolean(true) + 
-                    "' WHERE item_card_gift_tab_id = '" + SalonManager.encrypt(id) +
-                    "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId()) + 
-                    "' AND item_card_gift_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + 
-                    "' AND item_card_gift_tab_active = '" + SalonManager.encryptBoolean(false) + "';";
+
+            String sql = "UPDATE item_card_gift_tabs SET item_card_gift_tab_active = '" + SalonManager.encryptBoolean(true)
+                    + "' WHERE item_card_gift_tab_id = '" + SalonManager.encrypt(id)
+                    + "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId())
+                    + "' AND item_card_gift_id_fkey = '" + SalonManager.encryptInt(ic.getId())
+                    + "' AND item_card_gift_tab_active = '" + SalonManager.encryptBoolean(false) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
 
@@ -402,24 +411,13 @@ public class DAOItemcard extends DAO {
     //Tabla Itemcardpayed_tabs-----------------------------------------------------------------------    
     public void saveItemPayedTable(Itemcard ic, Table tab) throws Exception {
         try {
-            /*
-            CREATE TABLE IF NOT EXISTS item_card_payed_tabs(
-    item_card_payed_tab_id TEXT,
-    item_card_payed_tab_active TEXT,
-    item_card_payed_id_fkey TEXT,
-    table_id_fkey TEXT,
-    FOREIGN KEY (item_card_payed_id_fkey) REFERENCES item_cards(item_card_id),
-    FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)
-);
-            */
-            
-            
-            String id =  idRandom();
+            String id = idRandom();
             String sql = "INSERT INTO item_card_payed_tabs(item_card_payed_tab_id, item_card_payed_tab_active, item_card_payed_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES('" + SalonManager.encrypt(id) + "', '" + SalonManager.encryptBoolean(true) + "', '" + SalonManager.encryptInt(ic.getId()) + "', '" + SalonManager.encrypt(tab.getId()) + "');";
             sql += parcialA;
             System.out.println(sql);
             insertarModificarEliminar(sql.trim());
+
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorError(null);
@@ -439,14 +437,14 @@ public class DAOItemcard extends DAO {
                 String i = SalonManager.decrypt(resultado.getString(1));
                 ids.add(i);
             }
-            
+
             String id = ids.get(0);
-            
-            String sql = "UPDATE item_card_payed_tabs SET item_card_payed_tab_active = '" + SalonManager.encryptBoolean(false) + 
-                    "' WHERE item_card_payed_tab_id = '" + SalonManager.encrypt(id) +
-                    "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId()) +
-                    "' AND item_card_payed_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + 
-                    "' AND item_card_payed_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
+
+            String sql = "UPDATE item_card_payed_tabs SET item_card_payed_tab_active = '" + SalonManager.encryptBoolean(false)
+                    + "' WHERE item_card_payed_tab_id = '" + SalonManager.encrypt(id)
+                    + "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId())
+                    + "' AND item_card_payed_id_fkey = '" + SalonManager.encryptInt(ic.getId())
+                    + "' AND item_card_payed_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
 
@@ -476,13 +474,13 @@ public class DAOItemcard extends DAO {
                 String i = SalonManager.decrypt(resultado.getString(1));
                 ids.add(i);
             }
-            
+
             String id = ids.get(0);
-            String sql = "UPDATE item_card_payed_tabs SET item_card_payed_tab_active = '" + SalonManager.encryptBoolean(true) + 
-                    "' WHERE item_card_payed_tab_id = '" + SalonManager.encrypt(id) +
-                    "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId()) + 
-                    "' AND item_card_payed_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + 
-                    "' AND item_card_payed_tab_active = '" + SalonManager.encryptBoolean(false) + "';";
+            String sql = "UPDATE item_card_payed_tabs SET item_card_payed_tab_active = '" + SalonManager.encryptBoolean(true)
+                    + "' WHERE item_card_payed_tab_id = '" + SalonManager.encrypt(id)
+                    + "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId())
+                    + "' AND item_card_payed_id_fkey = '" + SalonManager.encryptInt(ic.getId())
+                    + "' AND item_card_payed_tab_active = '" + SalonManager.encryptBoolean(false) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
 
@@ -527,18 +525,6 @@ public class DAOItemcard extends DAO {
 //Tabla ItemcardpayedND_tabs-----------------------------------------------------------------------      
     public void saveItemPayedNDTable(Itemcard ic, Table tab) throws Exception {
         try {
-            /*
-            CREATE TABLE IF NOT EXISTS item_card_payed_nd_tabs(
-    item_card_payed_nd_tab_id TEXT,
-    item_card_payed_nd_tab_active TEXT,
-    item_card_payed_nd_id_fkey TEXT,
-    table_id_fkey TEXT,
-    FOREIGN KEY (item_card_payed_nd_id_fkey) REFERENCES item_cards(item_card_id),
-    FOREIGN KEY (table_id_fkey) REFERENCES tabs(table_id)
-);
-            */
-            
-            
             String id = idRandom();
             String sql = "INSERT INTO item_card_payed_nd_tabs(item_card_payed_nd_tab_id, item_card_payed_nd_tab_active, item_card_payed_nd_id_fkey, table_id_fkey) ";
             String parcialA = "VALUES('" + SalonManager.encrypt(id) + "', '" + SalonManager.encryptBoolean(true) + "', '" + SalonManager.encryptInt(ic.getId()) + "', '" + SalonManager.encrypt(tab.getId()) + "');";
@@ -555,7 +541,7 @@ public class DAOItemcard extends DAO {
     }
 
     public void downActiveItemPayedNDTable(Itemcard ic, Table t) throws Exception {
-        try {  
+        try {
             ArrayList<String> ids = new ArrayList<>();
             String sql1 = "SELECT item_card_payed_nd_tab_id FROM item_card_payed_nd_tabs WHERE table_id_fkey = '" + SalonManager.encrypt(t.getId()) + "' AND item_card_payed_nd_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + "' AND item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql1);
@@ -565,13 +551,12 @@ public class DAOItemcard extends DAO {
                 ids.add(i);
             }
             String id = ids.get(0);
-            
-            
-            String sql = "UPDATE item_card_payed_nd_tabs SET item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(false) +
-                    "' WHERE item_card_payed_nd_tab_id = '" + SalonManager.encrypt(id) +
-                    "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId()) + 
-                    "' AND item_card_payed_nd_id_fkey = '" + SalonManager.encryptInt(ic.getId()) + 
-                    "' AND item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
+
+            String sql = "UPDATE item_card_payed_nd_tabs SET item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(false)
+                    + "' WHERE item_card_payed_nd_tab_id = '" + SalonManager.encrypt(id)
+                    + "' AND table_id_fkey = '" + SalonManager.encrypt(t.getId())
+                    + "' AND item_card_payed_nd_id_fkey = '" + SalonManager.encryptInt(ic.getId())
+                    + "' AND item_card_payed_nd_tab_active = '" + SalonManager.encryptBoolean(true) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
 
@@ -691,6 +676,10 @@ public class DAOItemcard extends DAO {
                     + "SET item_card_category = '" + SalonManager.encrypt(newCat) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
+
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Itemcard", id + "", 2, "Modificación Categoría: " + newCat);
+            daoReg.saveRegister(rgo);
+
         } catch (Exception e) {
             throw e;
         }
@@ -703,6 +692,9 @@ public class DAOItemcard extends DAO {
                     + "SET item_card_stock = '" + SalonManager.encryptInt(stock) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
+
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Itemcard", id + "", 2, "Modificación Stock: " + stock);
+            daoReg.saveRegister(rgo);
         } catch (Exception e) {
             throw e;
         }
@@ -734,6 +726,9 @@ public class DAOItemcard extends DAO {
                     + "SET item_card_cost = '" + SalonManager.encryptDouble(cost) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
+
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Itemcard", id + "" , 2, "Modificación Costo" + cost);
+            daoReg.saveRegister(rgo);
         } catch (Exception e) {
             throw e;
         }
@@ -746,6 +741,9 @@ public class DAOItemcard extends DAO {
                     + "SET item_card_price = '" + SalonManager.encrypt(st) + "' WHERE item_card_id = '" + SalonManager.encryptInt(id) + "';";
             System.out.println(sql);
             insertarModificarEliminar(sql);
+
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Itemcard", id + "" , 2, "Modificación Precio" + price);
+            daoReg.saveRegister(rgo);
         } catch (Exception e) {
             throw e;
         }
@@ -764,33 +762,20 @@ public class DAOItemcard extends DAO {
                 ids.add(id);
             }
             int max2 = 0;
-            
+
             if (ids.size() > 0) {
                 max2 = Collections.max(ids);
             }
-            
-            max =max + max2;
+
+            max = max + max2;
             return max;
-            
-            
-            
-            
-//            int id = 0;
-//            String sql = "SELECT COUNT(*) AS cantidad_filas FROM item_cards;";
-//            System.out.println(sql);
-//            consultarBase(sql);
-//            ArrayList<String> cmrs = new ArrayList<>();
-//            while (resultado.next()) {
-//                id = resultado.getInt(1) + 1;
-//            }
-//            return id;
         } catch (Exception e) {
             throw e;
         } finally {
             desconectarBase();
         }
     }
-    
+
     public String idRandom() {
         String id = "";
         String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -804,5 +789,4 @@ public class DAOItemcard extends DAO {
         id = randomString.toString();
         return id;
     }
-    
 }

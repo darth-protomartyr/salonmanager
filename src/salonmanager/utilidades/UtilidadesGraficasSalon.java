@@ -1266,7 +1266,7 @@ public class UtilidadesGraficasSalon {
                 int u = st.itemUnitsBacker(salon.getItemsTableAux(), ic);
                 salon.getData()[i][0] = " " + u;
                 salon.getData()[i][1] = " " + utili.reduxName(ic.getName(), false);
-                salon.getData()[i][2] = " " + utili.priceMod(ic, salon) * u * (1 - disc);
+                salon.getData()[i][2] = " " + utili.priceMod(ic, salon.getTableAux(), salon.getCfgAct()) * u * (1 - disc);
             }
 
             if (partials.size() > 0 && i >= intAux && i < intPartial) {

@@ -39,7 +39,7 @@ public class ServicioItemSale {
         int wsId = salon.getWorkshiftNow().getId();
         for (Itemcard ic : items) {
             Timestamp ts = new Timestamp(new Date().getTime());
-            ItemSale is = new ItemSale(ic.getId(), ic.getCategory(), tabId, waiterId, wsId, ic.getCost(), utili.priceMod(ic, salon), idClient, ts);
+            ItemSale is = new ItemSale(ic.getId(), ic.getCategory(), tabId, waiterId, wsId, ic.getCost(), utili.priceMod(ic, salon.getTableAux(), salon.getCfgAct()), idClient, ts);
             daoI.saveItemSale(is);
         }
     }

@@ -86,7 +86,7 @@ public class CorrectorItem extends FrameWindow {
         panelPpal.add(labelComboItems1);
         
         
-        JButtonMetalBlu butItemsOrder = utiliGraf.button2("Items A Pagar", anchoUnit * 2, altoUnit * 13, anchoUnit * 13);
+        JButtonMetalBlu butItemsOrder = utiliGraf.button2("Items A Pagar", anchoUnit * 1, altoUnit * 13, anchoUnit * 13);
         butItemsOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -99,7 +99,7 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsOrder);
 
-        JButtonMetalBlu butItemsGift = utiliGraf.button2("Items Obsequiados", anchoUnit * 2, altoUnit * 18, anchoUnit * 13);
+        JButtonMetalBlu butItemsGift = utiliGraf.button2("Items Obsequiados", anchoUnit * 1, altoUnit * 18, anchoUnit * 13);
         butItemsGift.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -112,7 +112,7 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsGift);
 
-        JButtonMetalBlu butItemsPayed = utiliGraf.button2("Items pagados", anchoUnit * 2, altoUnit * 23, anchoUnit * 13);
+        JButtonMetalBlu butItemsPayed = utiliGraf.button2("Items pagados", anchoUnit * 1, altoUnit * 23, anchoUnit * 13);
         butItemsPayed.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -125,10 +125,8 @@ public class CorrectorItem extends FrameWindow {
         });
         panelPpal.add(butItemsPayed);
 
-
-
         itemsComboChanger(itemsOrder, 1);
-        comboItems.setBounds(anchoUnit * 16, altoUnit * 17, anchoUnit * 12, altoUnit * 6);
+        comboItems.setBounds(anchoUnit * 15, altoUnit * 17, anchoUnit * 13, altoUnit * 6);
         comboItems.setFont(salon.getFont4());
         panelPpal.add(comboItems);
 

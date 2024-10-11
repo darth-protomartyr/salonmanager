@@ -190,7 +190,6 @@ public class StatsWaiterViewer extends FrameFull {
     private void selectWaiter() throws Exception {
         String st = (String) comboWaiters.getSelectedItem();
         User user = null;
-        labelWaiter.setText(st);
 
         for (User u : usersDB) {
             String uName = u.getName() + " " + u.getLastName();
@@ -248,6 +247,7 @@ public class StatsWaiterViewer extends FrameFull {
         }
 
         if (iSalesByWaiter.size() > 0) {
+            labelWaiter.setText(st);
 
             volSells = statsS.orderHsIDDownToUp(volSells);
             ArrayList<Integer> wss = new ArrayList<>(volSells.keySet());

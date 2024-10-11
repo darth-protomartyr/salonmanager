@@ -266,9 +266,7 @@ public class UtilidadesGraficasStatics {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     if (clients > 0) {
-                        sStats.openWSellsViewer(2, statsM);
                         sStats.openClientSellsViewer(statsM);
-
                     } else {
                         utiliMsg.errorNullClient();
                     }

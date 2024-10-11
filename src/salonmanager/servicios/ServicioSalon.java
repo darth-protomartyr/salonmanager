@@ -130,7 +130,7 @@ public class ServicioSalon {
         ArrayList<Itemcard> itemsTableND = tableAux.getPartialPayedND();
         for (int i = 0; i < itemsTable.size(); i++) {
             if (itemsTable.get(i).isActiveItem()) {
-                bill = bill + utili.priceMod(itemsTable.get(i), sal);
+                bill = bill + utili.priceMod(itemsTable.get(i), sal.getTableAux(), sal.getCfgAct());
             }
         }
         if (discount > 0) {
@@ -139,7 +139,7 @@ public class ServicioSalon {
         if (total) {
             for (int i = 0; i < itemsTableND.size(); i++) {
                 if (itemsTableND.get(i).isActiveItem()) {
-                    bill = bill + utili.priceMod(itemsTableND.get(i), sal);
+                    bill = bill + utili.priceMod(itemsTableND.get(i), sal.getTableAux(), sal.getCfgAct());
                 }
             }
         }
@@ -153,7 +153,7 @@ public class ServicioSalon {
         ArrayList<Itemcard> itemsTableND = tableAux.getPartialPayedND();
         for (int i = 0; i < itemsTable.size(); i++) {
             if (itemsTable.get(i).isActiveItem() && itemsTable.get(i).isActiveTip()) {
-                bill = bill + utili.priceMod(itemsTable.get(i), sal);
+                bill = bill + utili.priceMod(itemsTable.get(i), sal.getTableAux(), sal.getCfgAct());
             }
         }
         if (discount > 0) {
@@ -162,7 +162,7 @@ public class ServicioSalon {
         if (total) {
             for (int i = 0; i < itemsTableND.size(); i++) {
                 if (itemsTableND.get(i).isActiveItem() && itemsTable.get(i).isActiveTip()) {
-                    bill = bill + utili.priceMod(itemsTableND.get(i), sal);
+                    bill = bill + utili.priceMod(itemsTableND.get(i), sal.getTableAux(), sal.getCfgAct());
                 }
             }
         }
@@ -175,14 +175,14 @@ public class ServicioSalon {
         int discount = tableAux.getDiscount();
         ArrayList<Itemcard> itemsPartial = new ArrayList<>(tableAux.getPartialPayed());
         for (int i = 0; i < itemsPartial.size(); i++) {
-            partial += utili.priceMod(itemsPartial.get(i), sal);
+            partial += utili.priceMod(itemsPartial.get(i), sal.getTableAux(), sal.getCfgAct());
         }
         double disc = (double) discount;
         partial = partial * (1 - disc / 100);
         ArrayList<Itemcard> itemsPartialAux = new ArrayList<>(tableAux.getPartialPayedND());
         double partialND = 0;
         for (int i = 0; i < itemsPartialAux.size(); i++) {
-            partialND += utili.priceMod(itemsPartialAux.get(i), sal);
+            partialND += utili.priceMod(itemsPartialAux.get(i), sal.getTableAux(), sal.getCfgAct());
         }
 
         partial += partialND /* + tableAux.getErrorMod*/;
@@ -193,7 +193,7 @@ public class ServicioSalon {
     public double billPartial(ArrayList<Itemcard> items, int discount, Salon sal) {
         double bill = 0;
         for (Itemcard ic : items) {
-            bill += utili.priceMod(ic, sal);
+            bill += utili.priceMod(ic, sal.getTableAux(), sal.getCfgAct());
         }
         double disc = discount;
         bill = bill * (1 - disc / 100);
@@ -671,11 +671,11 @@ public class ServicioSalon {
         }
     }
 
-    public double countBillTip2(ArrayList<Itemcard> items, int discount, Salon salon) {
+    public double countBillTip2(ArrayList<Itemcard> items, int discount, Salon sal) {
         double bill = 0;
         for (Itemcard ic : items) {
             if (ic.isActiveTip()) {
-                bill += utili.priceMod(ic, salon);
+                bill += utili.priceMod(ic, sal.getTableAux(), sal.getCfgAct());
             }
         }
         double disc = discount;

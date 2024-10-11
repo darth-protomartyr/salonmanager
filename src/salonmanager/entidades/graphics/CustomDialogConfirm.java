@@ -55,7 +55,18 @@ public class CustomDialogConfirm extends JDialog {
 
     Component component = null;
 
-    public CustomDialogConfirm(String message) {
+    public CustomDialogConfirm(String message, int kind) {
+        String stBut1 = "";
+        String stBut2 = "";
+        
+        if (kind == 1) {
+            stBut1 = "Rechazar";
+            stBut2 = "Aceptar";
+        } else if (kind == 2) {
+            stBut1 = "No Actualizar";
+            stBut2 = "Actualizar";
+        }
+
         setIconImage(icono.getImage());
         setModal(true);
         setTitle("CONFIRME LA ACCIÓN");
@@ -87,7 +98,7 @@ public class CustomDialogConfirm extends JDialog {
         constraints.weighty = 1.0;
         panelText.add(labelText, constraints);
 
-        JButtonMetalBlu rejectButton = utiliGraf.button2("Rechazar", anchoUnit * 3, altoUnit * 28, anchoUnit * 10);
+        JButtonMetalBlu rejectButton = utiliGraf.button2(stBut1, anchoUnit * 3, altoUnit * 28, anchoUnit * 10);
         rejectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -102,7 +113,7 @@ public class CustomDialogConfirm extends JDialog {
         );
         contentPane.add(rejectButton);
 
-        JButtonMetalBlu acceptButton = utiliGraf.button2("Aceptar", anchoUnit * 16, altoUnit * 28, anchoUnit * 10);
+        JButtonMetalBlu acceptButton = utiliGraf.button2(stBut2, anchoUnit * 16, altoUnit * 28, anchoUnit * 10);
         acceptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

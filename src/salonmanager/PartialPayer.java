@@ -252,7 +252,7 @@ public class PartialPayer extends FrameWindow {
     private double pricer(ArrayList<Itemcard> iPTP) {
         double toPay = 0;
         for (int i = 0; i < iPTP.size(); i++) {
-            toPay += utili.priceMod(iPTP.get(i), salon);
+            toPay += utili.priceMod(iPTP.get(i), salon.getTableAux(), salon.getCfgAct());
         }
         return toPay;
     }

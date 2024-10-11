@@ -2,15 +2,18 @@ package salonmanager.persistencia;
 
 import salonmanager.utilidades.UtilidadesMensajes;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import salonmanager.SalonManager;
 import salonmanager.entidades.bussiness.DeliveryClient;
+import salonmanager.entidades.bussiness.Register;
 
 public class DAODeliveryClient extends DAO {
 
     UtilidadesMensajes utiliMsg = new UtilidadesMensajes();
-
+    DAORegister daoReg = new DAORegister();
     public void saveConsumer(DeliveryClient cmr) throws Exception {
         try {
             String id = SalonManager.encryptInt(cmr.getId());
@@ -32,6 +35,9 @@ public class DAODeliveryClient extends DAO {
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Cliente", "" + id, 1, name + " " + lastname);
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -150,6 +156,9 @@ public class DAODeliveryClient extends DAO {
 
             System.out.println(sql1);
             insertarModificarEliminar(sql1.trim());
+            
+            Register rgo = new Register(new Timestamp(new Date().getTime()), SalonManager.getUserId(), "Cliente", "" + id, 2, name  +" " + lastname);
+            daoReg.saveRegister(rgo);
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062) {
                 utiliMsg.errorRegistroFallido();
@@ -215,37 +224,6 @@ public class DAODeliveryClient extends DAO {
         }
     }
 
-//    public ArrayList<DeliveryClient> listarConsumers(int i) throws Exception {
-//        ArrayList<DeliveryClient> clients = new ArrayList<>();
-//
-//        try {
-//            String sql = "SELECT * FROM delivery_clients WHERE delivery_client_id = '" + SalonManager.encryptInt(i) + "' AND delivery_client_active = '" + SalonManager.encryptBoolean(true) + "';";
-//            System.out.println(sql);
-//            consultarBase(sql);
-//            DeliveryClient cmr = new DeliveryClient();
-//            while (resultado.next()) {
-//                cmr.setId(SalonManager.decryptInt(resultado.getString(1)));
-//                cmr.setStreet(SalonManager.decrypt(resultado.getString(2)));
-//                cmr.setNumSt(SalonManager.decrypt(resultado.getString(3)));
-//                cmr.setDeptFloor(SalonManager.decrypt(resultado.getString(4)));
-//                cmr.setDeptNum(SalonManager.decrypt(resultado.getString(5)));
-//                cmr.setDistrict(SalonManager.decrypt(resultado.getString(6)));
-//                cmr.setArea(SalonManager.decrypt(resultado.getString(7)));
-//                cmr.setDetails(SalonManager.decrypt(resultado.getString(8)));
-//                cmr.setName(SalonManager.decrypt(resultado.getString(9)));
-//                cmr.setLastname(SalonManager.decrypt(resultado.getString(10)));
-//                cmr.setPhone(SalonManager.decrypt(resultado.getString(11)));
-//                cmr.setSocialNetwork(SalonManager.decrypt(resultado.getString(12)));
-//                cmr.setConsumerActive(SalonManager.decryptBoolean(resultado.getString(13)));
-//                clients.add(cmr);
-//            }
-//            return clients;
-//        } catch (Exception e) {
-//            throw e;
-//        } finally {
-//            desconectarBase();
-//        }
-//    }
     public String getClientNameById(int client) throws Exception {
         try {
             boolean act = true;
@@ -302,6 +280,5 @@ public class DAODeliveryClient extends DAO {
         } finally {
             desconectarBase();
         }
-
     }
 }
